@@ -1,8 +1,13 @@
 // node class
 
 
+//extern class JQuery extends Dummy {}
+
 class Node
 {
+  var ui: UI;
+
+  public var id: Int;
   public var power: Array<Dynamic>; // intimidation, persuasion, bribe, worship
   public var powerGenerated: Array<Dynamic>;
   public var marker: Dynamic;
@@ -12,21 +17,25 @@ class Node
   public var centerY: Int;
   public var isOwned: Bool;
   public var isGenerator: Bool;
+  public var level: Int;
 
-  public function new(map, newx, newy, index: Int)
+  public function new(uivar, newx, newy, index: Int)
     {
+      ui = uivar;
+      id = index;
       isOwned = false;
 	  isGenerator = false;
       power = [0, 0, 0, 0];
 	  powerGenerated = [0, 0, 0, 0];
       marker = null;
+      level = 0;
       
 	  x = newx;
       y = newy;
       centerX = x + Math.round(UI.markerWidth / 2);
       centerY = y + Math.round(UI.markerHeight / 2);
 
-      marker = js.Lib.document.createElement("map.node" + index);
+      marker = js.Lib.document.createElement("map.node" + id);
 	  marker.node = this;
 	  marker.style.innerHTML = ' ';
 	  marker.style.background = '#222';
@@ -42,7 +51,7 @@ class Node
 //      marker.style.fontSize = '14px';
 	  marker.style.zIndex = 20;
 	  marker.style.cursor = 'pointer';
-	  map.appendChild(marker);
+	  ui.map.appendChild(marker);
     }
 
 
@@ -50,18 +59,31 @@ class Node
   public function update()
     {
       var s = "";
-      for (i in 0...4)
-        if (power[i] > 0)
-		  {
-            s += "<b style='color:" + Game.powerColors[i] + "'>" +
-              Game.powerNames[i] + "</b> " + power[i] + "<br>";
-			marker.innerHTML = Game.powerShortNames[i];
-            marker.style.color = Game.powerColors[i];
-		  }
+
+      // amount of generated power
+      if (!isOwned)
+        {
+          for (i in 0...4)
+            if (power[i] > 0)
+		      {
+                s += "<b style='color:" + Game.powerColors[i] + "'>" +
+                  Game.powerNames[i] + "</b> " + power[i] + "<br>";
+			    marker.innerHTML = Game.powerShortNames[i];
+                marker.style.color = Game.powerColors[i];
+		      }
+        }
+      else
+        s += "<b>" + Game.followerNames[level] + 
+          "</b> <span style='color:white'>L" +
+          (level + 1) + "</span><br>";
 
 	  marker.style.background = '#111';
       if (isOwned)
-        marker.style.background = '#555';
+        {
+          marker.innerHTML = "" + (level + 1);
+          marker.style.color = '#ffffff';
+          marker.style.background = '#005500';
+        }
 	  if (isGenerator)
 		{
 		  marker.style.border = '3px solid #aaa';
@@ -73,7 +95,8 @@ class Node
 			    powerGenerated[i] + "<br>";
 		}
 
-	  marker.title = s;
+      marker.title = s;
+//      new JQuery('map.node' + id).tooltip({ delay: 0 });
     }
 
 
@@ -97,6 +120,17 @@ class Node
   public function setOwned(isown: Bool)
     {
       isOwned = isown;
+      update();
+    }
+
+
+// upgrade node
+  public function upgrade()
+    {
+      if (level >= Game.followerNames.length - 1)
+        return;
+
+      level++;
       update();
     }
 }
