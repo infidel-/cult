@@ -3,7 +3,7 @@
 import js.Lib;
 import js.Dom;
 
-extern class JQuery extends Dummy {}
+//extern class JQuery extends Dummy {}
 extern class JQDialog implements Dynamic
 {
   static function notify(?p1: Dynamic, ?p2: Dynamic): Void;
@@ -52,18 +52,23 @@ class UI
         "font-weight: bold; font-size:20px;'>Cult v1</div><br>";
 
       s += "<fieldset>";
-      s += "<legend>STATS</legend>";
+      s += "<legend>FOLLOWERS</legend>";
       s += "<table width=100% style='font-size:14px'>";
 
       // nodes
-      s += "<tr><td>Nodes<td>" +
-        "<span id='status.nodes' style='font-weight:bold;'>0</span>" +
-        " / <span id='status.totalNodes' " +
-          "style='font-weight:bold;'>0</span>";
+      for (i in 0...Game.followerNames.length)
+        s += "<tr><td>" + Game.followerNames[i] + "s" +
 
-      // turns
-	  s += "<tr><td>Turns<td><span id='status.turns' "+
-		  "style='font-weight:bold'>0</span>";
+          // icon
+	      "<td><div id='status.upgrade" + i + "' " +
+		  "style='cursor: pointer; width:12; height:12; " +
+		  "background:#222; border:1px solid #777; " +
+          "color:lightgreen; " +
+		  "text-align:center; font-size: 10px; font-weight: bold; '>+</div>" +
+
+          // number
+          "<td><span id='status.followers" + i +
+          "' style='font-weight:bold;'>0</span>";
 
       s += "</table></fieldset><br>";
 
@@ -112,20 +117,31 @@ class UI
 		}
       s += "</table></fieldset>";
 
+
+      s += "<fieldset>";
+      s += "<legend>STATS</legend>";
+      s += "<table width=100% style='font-size:14px'>";
+
+      // turns
+	  s += "<tr><td>Turns<td><span id='status.turns' "+
+		  "style='font-weight:bold'>0</span>";
+
+      s += "</table></fieldset><br>";
+
       // end turn button
-	  s += "<br><center><button id='status.endTurn'>End turn</button></center>";
+	  s += "<br><center><button id='status.endTurn'>End<br>turn</button> ";
 	 
       if (Game.isDebug)
-        s += "<br><br><center>" +
-          "<button id='status.debug'>Debug</button></center>";
+        s += "<button id='status.debug'>DBG</button> ";
 
       // restart button
-      s += "<br><br>" +
-        "<center><button id='status.restart'>Restart</button></center>";
+      s += "<button id='status.restart'>Restart</button></center>";
       
       status.innerHTML = s;
 
 	  // setting events
+	  for (i in 0...Game.followerNames.length)
+		e("status.upgrade" + i).onclick = onStatusUpgrade;
 	  for (i in 0...4)
 	    for (ii in 0...4)
 		  if (i != ii)
@@ -182,9 +198,17 @@ class UI
 // debug info button
   function onStatusDebug(event)
     {
-      game.spawnNode();
       for (n in game.nodes)
         n.marker.style.visibility = 'visible';
+    }
+
+
+// upgrade button
+  function onStatusUpgrade(event)
+    {
+	  var lvl = Std.parseInt(event.target.id.substr(14, 1));
+
+	  game.upgrade(lvl);
     }
 
 
@@ -230,18 +254,29 @@ class UI
 		  if (game.powerMod[i] > 0)
 		    e("status.powerMod" + i).innerHTML =
               " +" + game.powerMod[i];
-		  else if (game.powerMod[i] < 0)
-		    e("status.power" + i).innerHTML =
+		  else
+		    e("status.powerMod" + i).innerHTML =
               " " + game.powerMod[i];
 		}
 	
 	  e("status.turns").innerHTML = "" + game.turns;
-      var cntNodes = 0;
+
+      // count number of nodes by level
+      var cnt = new Array<Int>();
+      for (i in Game.followerNames)
+        cnt.push(0);
       for (n in game.nodes)
         if (n.isOwned)
-          cntNodes++;
-      e("status.nodes").innerHTML = "" + cntNodes;
-      e("status.totalNodes").innerHTML = "" + game.nodes.length;
+          cnt[n.level]++;
+      for (i in 0...cnt.length)
+        e("status.followers" + i).innerHTML = "" + cnt[i];
+
+      // upgrade buttons visibility
+      for (i in 0...Game.followerNames.length)
+//        if (cnt[i] >= Game.upgradeCost)
+          e("status.upgrade" + i).style.visibility = 
+            (cnt[i] >= Game.upgradeCost ? 'visible' : 'hidden');
+
     }
 
 
@@ -251,7 +286,7 @@ class UI
       e('jqDialog_close').style.visibility = 'hidden';
 //      e('jqDialog_box').style.width = '400';
 //      e('jqDialog_box').style.height = '50';
-      
+
       if (playerWon == 1)
         JQDialog.alert("You have taken over the world in " + game.turns +
           " turns.", onStatusRestart); }

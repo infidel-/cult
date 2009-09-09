@@ -34,9 +34,12 @@ class Game
     [ "I", "P", "B", "W" ];
   public static var powerColors: Array<String> =
     [ "#ff0000", "#00ffff", "#00ff00", "#ffff00" ];
+  public static var followerNames: Array<String> =
+    [ "Neophyte", "Adept", "Priest" ];
 
   static var nodesCount = 70;
   static var conversionCost = 3;
+  public static var upgradeCost = 3;
   public static var isDebug = true;
 
 
@@ -46,6 +49,21 @@ class Game
 	  ui = new UI(this);
 	  ui.init();
       restart();
+    }
+
+
+// upgrade nodes
+  public function upgrade(level)
+    {
+      // find first node of this level and upgrade
+      for (n in nodes)
+        if (n.isOwned && n.level == level)
+          {
+            n.upgrade();
+            break;
+          }
+
+      ui.updateStatus();
     }
 
 
@@ -133,6 +151,8 @@ class Game
       node.setOwned(true);
       updateVisibility(node);
 	  ui.updateStatus();
+//      ui.updateMap();
+//      new JQuery('#map *').tooltip({ delay: 0 });
 
 	  // create lines between this node and adjacent ones
       for (n in nodes)
@@ -173,7 +193,7 @@ class Game
 		}
 
       // node attributes
-      var node = new Node(ui.map, x, y, lastNodeIndex++);
+      var node = new Node(ui, x, y, lastNodeIndex++);
 	  node.marker.onclick = ui.onNodeClick;
 	  var index: Int = Math.round(3 * Math.random());
 	  node.power[index] = 1;
