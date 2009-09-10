@@ -25,8 +25,8 @@ class Node
       id = index;
       isOwned = false;
 	  isGenerator = false;
-      power = [0, 0, 0, 0];
-	  powerGenerated = [0, 0, 0, 0];
+      power = [0, 0, 0];
+	  powerGenerated = [0, 0, 0];
       marker = null;
       level = 0;
       
@@ -63,7 +63,7 @@ class Node
       // amount of generated power
       if (!isOwned)
         {
-          for (i in 0...4)
+          for (i in 0...Game.numPowers)
             if (power[i] > 0)
 		      {
                 s += "<b style='color:" + Game.powerColors[i] + "'>" +
@@ -88,7 +88,7 @@ class Node
 		{
 		  marker.style.border = '3px solid #aaa';
 		  s += "<br>Generates:<br>";
-	      for (i in 0...4)
+	      for (i in 0...Game.numPowers)
      	    if (powerGenerated[i] > 0)
           	  s += "<b style='color:" + Game.powerColors[i] + "'>" +
                 Game.powerNames[i] + "</b> " +

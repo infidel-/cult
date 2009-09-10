@@ -57,25 +57,31 @@ class UI
 
       // nodes
       for (i in 0...Game.followerNames.length)
-        s += "<tr><td>" + Game.followerNames[i] + "s" +
+        {
+          s += "<tr><td>" + Game.followerNames[i] + "s";
 
           // icon
-	      "<td><div id='status.upgrade" + i + "' " +
-		  "style='cursor: pointer; width:12; height:12; " +
-		  "background:#222; border:1px solid #777; " +
-          "color:lightgreen; " +
-		  "text-align:center; font-size: 10px; font-weight: bold; '>+</div>" +
+	      s += "<td><div id='status.upgrade" + i + "' " +
+		    "style='cursor: pointer; width:12; height:12; " +
+		    "background:#222; border:1px solid #777; " +
+            "color:lightgreen; " +
+		    "text-align:center; font-size: 10px; font-weight: bold; '>";
+          if (i < Game.followerNames.length - 1)
+            s += "+";
+          else s += "!";
+          s += "</div>";
 
           // number
-          "<td><span id='status.followers" + i +
+          s += "<td><span id='status.followers" + i +
           "' style='font-weight:bold;'>0</span>";
+        }
 
       s += "</table></fieldset><br>";
 
       s += "<fieldset><legend" +
-        " style='padding:0 5 0 5;color:lightgray;'>POWER RESERVE</legend>" +
-        "<table width=100% cellpadding=3 cellspacing=0 style='font-size:14px'>";
-      for (i in 0...4)
+        " style='padding:0 5 0 5;color:lightgray;'>RESOURCES</legend>" +
+        "<table width=100% cellpadding=1 cellspacing=0 style='font-size:14px'>";
+      for (i in 0...Game.numPowers)
 	    {
           s += "<tr style='";
           if (i % 2 == 1)
@@ -104,7 +110,7 @@ class UI
             s += "background:#101010";
           s += "'><td colspan=4><table style='font-size:12px'>" +
             "<tr><td width=25 halign=right>To";
-	  	  for (ii in 0...4)
+	  	  for (ii in 0...Game.numPowers)
 			if (ii != i)
 	      	  s += "<td><div id='status.convert" + i + ii + "' " +
 			    "style='cursor: pointer; width:12; height:12; " +
@@ -113,7 +119,6 @@ class UI
 		    	"text-align:center; font-size: 10px; font-weight: bold; '>" +
 		    	Game.powerShortNames[ii] + "</div>";
 		  s += "</table>";
-          s += "<tr height=5>";
 		}
       s += "</table></fieldset>";
 
@@ -123,8 +128,12 @@ class UI
       s += "<table width=100% style='font-size:14px'>";
 
       // turns
-	  s += "<tr><td>Turns<td><span id='status.turns' "+
-		  "style='font-weight:bold'>0</span>";
+	  s += "<tr><td>Turns<td><span id='status.turns' " +
+		"style='font-weight:bold'>0</span>";
+
+      // virgins
+      s += "<tr><td>Virgins<td><span id='status.virgins' " +
+        "style='font-weight:bold'>0</span>";
 
       s += "</table></fieldset><br>";
 
@@ -142,8 +151,8 @@ class UI
 	  // setting events
 	  for (i in 0...Game.followerNames.length)
 		e("status.upgrade" + i).onclick = onStatusUpgrade;
-	  for (i in 0...4)
-	    for (ii in 0...4)
+	  for (i in 0...Game.numPowers)
+	    for (ii in 0...Game.numPowers)
 		  if (i != ii)
 		    e("status.convert" + i + ii).onclick = onStatusConvert;
 	  e("status.endTurn").onclick = onStatusEndTurn;
@@ -247,7 +256,7 @@ class UI
 // update status window (fups)
   public function updateStatus()
     {
-	  for (i in 0...4)
+	  for (i in 0...Game.numPowers)
 	    {
           e("status.power" + i).innerHTML = 
             "<b>" + game.power[i] + "</b>";
@@ -258,8 +267,9 @@ class UI
 		    e("status.powerMod" + i).innerHTML =
               " " + game.powerMod[i];
 		}
-	
+
 	  e("status.turns").innerHTML = "" + game.turns;
+      e("status.virgins").innerHTML = "" + game.virgins;
 
       // count number of nodes by level
       var cnt = new Array<Int>();
@@ -272,11 +282,15 @@ class UI
         e("status.followers" + i).innerHTML = "" + cnt[i];
 
       // upgrade buttons visibility
-      for (i in 0...Game.followerNames.length)
-//        if (cnt[i] >= Game.upgradeCost)
+      for (i in 0...(Game.followerNames.length - 1))
           e("status.upgrade" + i).style.visibility = 
-            (cnt[i] >= Game.upgradeCost ? 'visible' : 'hidden');
+            ((cnt[i] >= Game.upgradeCost && game.virgins >= i + 1) ?
+             'visible' : 'hidden');
 
+      // summon button visibility
+      e("status.upgrade2").style.visibility = 
+        ((cnt[2] >= Game.upgradeCost && game.virgins >= Game.numSummonVirgins) ?
+          'visible' : 'hidden');
     }
 
 
@@ -284,12 +298,19 @@ class UI
   public function finish(playerWon)
     {
       e('jqDialog_close').style.visibility = 'hidden';
-//      e('jqDialog_box').style.width = '400';
-//      e('jqDialog_box').style.height = '50';
 
       if (playerWon == 1)
-        JQDialog.alert("You have taken over the world in " + game.turns +
-          " turns.", onStatusRestart); }
+        JQDialog.alert("The stars are right. Elder God was summoned in " +
+          game.turns +
+          " turns.", onStatusRestart);
+    }
+
+
+// message with confirmation
+  public function alert(s)
+    {
+      JQDialog.alert(s);
+    }
 
 
 // get element shortcut
