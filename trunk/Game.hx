@@ -11,6 +11,9 @@ class Game
   // turns passed
   public var turns: Int;
 
+  // virgins
+  public var virgins: Int;
+
   // index of the last node (for id generation)
   var lastNodeIndex: Int;
 
@@ -37,6 +40,8 @@ class Game
   public static var followerNames: Array<String> =
     [ "Neophyte", "Adept", "Priest" ];
 
+  public static var numPowers = 3;
+  public static var numSummonVirgins = 9;
   static var nodesCount = 70;
   static var conversionCost = 3;
   public static var upgradeCost = 3;
@@ -55,6 +60,21 @@ class Game
 // upgrade nodes
   public function upgrade(level)
     {
+      // summon
+      if (level == 2)
+        {
+          summon();
+          return;
+        }
+
+      if (virgins < level + 1)
+        {
+          ui.msg("Not enough virgins");
+          return;
+        }
+
+      virgins -= level + 1;
+
       // find first node of this level and upgrade
       for (n in nodes)
         if (n.isOwned && n.level == level)
@@ -62,8 +82,39 @@ class Game
             n.upgrade();
             break;
           }
-
+  
       ui.updateStatus();
+    }
+
+
+// summon elder god
+  public function summon()
+    {
+      if (virgins < numSummonVirgins)
+        {
+          ui.msg("Not enough virgins");
+          return;
+        }
+
+      virgins -= numSummonVirgins;
+
+      // 25% chance of failure
+      if (Math.random() < 0.25)
+        {
+          // 1 priest goes totally insane and has to be replaced with neophyte
+          for (n in nodes)
+            if (n.isOwned && n.level == 2)
+              {
+                n.level = 0;
+                n.update();
+                break;
+              }
+
+          ui.alert("The stars were not right. The high priest goes insane.");
+          return;
+        }
+
+      ui.finish(1);
     }
 
 
@@ -87,7 +138,7 @@ class Game
     {
       startNode = node;
       startNode.setOwned(true);
-	  for (i in 0...4)
+	  for (i in 0...numPowers)
 	    if (startNode.power[i] > 0)
 		  {
 		    startNode.powerGenerated[i] = 1;
@@ -104,16 +155,28 @@ class Game
   public function endTurn()
     {
 	  // give player power and recalculate power mod cache
-	  powerMod = [0, 0, 0, 0];
+	  powerMod = [0, 0, 0];
+      var cntNeophytes = 0;
 	  for (node in nodes)
-	    if (node.isOwned && node.isGenerator)
-		  for (i in 0...4)
-		    {
-		      power[i] += Math.round(node.powerGenerated[i]);
-			  powerMod[i] += Math.round(node.powerGenerated[i]);
-			}
-	  turns++;
+	    if (node.isOwned)
+          {
+            if (node.level == 0)
+              cntNeophytes++;
 
+            if (node.isGenerator)
+		      for (i in 0...numPowers)
+		        {
+		          power[i] += Math.round(node.powerGenerated[i]);
+			      powerMod[i] += Math.round(node.powerGenerated[i]);
+			    }
+          }
+
+      // neophytes bring in some virgins
+      var value = Std.int(Math.random() * cntNeophytes / 3);
+//      trace(value + " by " + cntNeophytes);
+      virgins += value;
+
+	  turns++;
 	  ui.updateStatus();
 	}
 
@@ -134,7 +197,7 @@ class Game
 		return;
 
 	  // check for power
-	  for (i in 0...4)
+	  for (i in 0...numPowers)
 		if (power[i] < node.power[i])
 		  {
 			ui.msg("Not enough " + powerNames[i]);
@@ -142,11 +205,11 @@ class Game
 		  }
 
 	  // subtract power
-	  for (i in 0...4)
+	  for (i in 0...numPowers)
 		power[i] = Math.round(power[i] - node.power[i]);
 
 	  if (node.isGenerator)
-	    for (i in 0...4)
+	    for (i in 0...numPowers)
 		  powerMod[i] += Math.round(node.powerGenerated[i]);
       node.setOwned(true);
       updateVisibility(node);
@@ -160,7 +223,7 @@ class Game
           lines.push(Line.paint(ui.map, n, node));
 
       // check for game end
-      checkFinish();
+//      checkFinish();
     }
 
 
@@ -195,7 +258,7 @@ class Game
       // node attributes
       var node = new Node(ui, x, y, lastNodeIndex++);
 	  node.marker.onclick = ui.onNodeClick;
-	  var index: Int = Math.round(3 * Math.random());
+	  var index: Int = Math.round((numPowers - 1) * Math.random());
 	  node.power[index] = 1;
 
       node.update();
@@ -209,9 +272,10 @@ class Game
       ui.clearMap();
 
       this.lines = new Array<Line>();
-      this.power = [0, 0, 0, 0];
-      this.powerMod = [0, 0, 0, 0];
+      this.power = [0, 0, 0];
+      this.powerMod = [0, 0, 0];
 	  this.turns = 0;
+      this.virgins = 0;
 	  this.lastNodeIndex = 0;
       nodes = new Array<Node>();
 
@@ -227,7 +291,7 @@ class Game
           var node = nodes[nodeIndex];
 
           var powerIndex = 0;
-          for (ii in 0...4)
+          for (ii in 0...numPowers)
             if (node.power[ii] > 0)
               {
                 node.power[ii]++;
@@ -238,7 +302,7 @@ class Game
 		  var ii = -1;
 		  while (true)
 			{
-			  ii = Math.round(3 * Math.random());
+			  ii = Math.round((numPowers - 1) * Math.random());
 			  if (ii != powerIndex)
 			    break;
 			}
@@ -251,7 +315,7 @@ class Game
 	  setStartingNode(nodes[index]);
 
 	  // give initial power from starting node
-	  for (i in 0...4)
+	  for (i in 0...numPowers)
 	    power[i] += Math.round(startNode.powerGenerated[i]);
 
       ui.updateMap();
@@ -260,6 +324,7 @@ class Game
 
 
 // check for game end
+/*
   function checkFinish()
     {
       // count player nodes
@@ -274,7 +339,7 @@ class Game
       // player won
       ui.finish(1);
     }
-
+*/
 
 // main function
   static var inst: Game;
