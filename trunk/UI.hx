@@ -24,9 +24,31 @@ class UI
   public static var mapHeight = 580;
   public static var tooltipWidth = 100;
   public static var tooltipHeight = 80;
-  public static var markerWidth = 20;
-  public static var markerHeight = 20;
+  public static var markerWidth = 15;
+  public static var markerHeight = 15;
   public static var nodeVisibility = 101;
+
+  static var tipPowers: Array<String> =
+    [ powerName(0) + " is needed to gain new followers.",
+      powerName(1) + " is needed to gain new followers.",
+      powerName(2) + " is needed to gain new followers.", 
+      powerName(3) + " are gathered by your neophytes.<br>" +
+      "They are needed for rituals to upgrade your<br>followers " +
+      "and also for the final ritual of summoning." ];
+  static var tipConvert = "Cost to convert to ";
+  static var tipUpgrade: Array<String> =
+    [ "To gain an adept you need " + Game.upgradeCost +
+      " neophytes and 1 virgin.",
+      "To gain a priest you need " + Game.upgradeCost +
+      " adepts and 2 virgins.",
+      "For the ritual of summoning you need " + Game.upgradeCost +
+      " priests and " + Game.numSummonVirgins + " virgins." ];
+  static var tipFollowers: Array<String> =
+    [ "Neophytes can find some virgins if they're lucky.",
+      "Adepts are useless lol. TODO",
+      "3 Priests and " + Game.numSummonVirgins + 
+      " virgins are needed to summon the Elder God." ];
+
 
   public function new(g)
     {
@@ -58,16 +80,19 @@ class UI
       s += "<legend>FOLLOWERS</legend>";
       s += "<table width=100% style='font-size:14px'>";
 
-      // nodes
+      // followers
       for (i in 0...Game.followerNames.length)
         {
-          s += "<tr><td>" + Game.followerNames[i] + "s";
+          s += "<tr><td id='status.follower" + i + "'>" +
+            Game.followerNames[i] + "s";
 
           // icon
 	      s += "<td><div id='status.upgrade" + i + "' " +
 		    "style='cursor: pointer; width:12; height:12; " +
 		    "background:#222; border:1px solid #777; " +
             "color:lightgreen; " +
+            (i < Game.followerNames.length - 1 ? "" : 
+              "text-decoration:blink; ") +
 		    "text-align:center; font-size: 10px; font-weight: bold; '>";
           if (i < Game.followerNames.length - 1)
             s += "+";
@@ -79,28 +104,27 @@ class UI
           "' style='font-weight:bold;'>0</span>";
         }
 
-      s += "</table></fieldset><br>";
+      s += "</table></fieldset>";
 
       s += "<fieldset><legend" +
         " style='padding:0 5 0 5;color:lightgray;'>RESOURCES</legend>" +
-        "<table width=100% cellpadding=1 cellspacing=0 style='font-size:14px'>";
-      for (i in 0...Game.numPowers)
+        "<table width=100% cellpadding=0 cellspacing=0 style='font-size:14px'>";
+      for (i in 0...(Game.numPowers + 1))
 	    {
           s += "<tr style='";
           if (i % 2 == 1)
             s += "background:#101010";
           s += "'><td>" + 
 	  	  // icon
-		    "<div style='width:" + markerWidth +
+		    "<div id='status.powerMark" + i + "' style='width:" + markerWidth +
 		    "; height: " + markerHeight +
-            "; font-size: 16px; " +
+            "; font-size: 12px; " +
 		    "; background:#222; border:1px solid #777; color: " +
             Game.powerColors[i] + ";'>" + 
 		    "<center><b>" + Game.powerShortNames[i] +
 		    "</b></center></div>" +
 		  // name
-		    "<td><b style='color:" + Game.powerColors[i] + ";'>" +
-            Game.powerNames[i] + "</b>" +
+            "<td><b id='status.powerName" + i + "' " + powerName(i) + "</b>" +
 		  // level
 		    "<td><td><span id='status.power" +
 		    i + "'>0</span><br>" +
@@ -111,8 +135,8 @@ class UI
 	  	  s += "<tr style='";
           if (i % 2 == 1)
             s += "background:#101010";
-          s += "'><td colspan=4><table style='font-size:12px'>" +
-            "<tr><td width=25 halign=right>To";
+          s += "'><td colspan=4><table style='font-size:11px'>" +
+            "<tr><td width=20 halign=right>To";
 	  	  for (ii in 0...Game.numPowers)
 			if (ii != i)
 	      	  s += "<td><div id='status.convert" + i + ii + "' " +
@@ -120,7 +144,7 @@ class UI
 		        "background:#222; border:1px solid #777; " +
                 "color:" + Game.powerColors[ii] + "; " +
 		    	"text-align:center; font-size: 10px; font-weight: bold; '>" +
-		    	Game.powerShortNames[ii] + "</div>";
+		        Game.powerShortNames[ii] + "</div>";
 		  s += "</table>";
 		}
       s += "</table></fieldset>";
@@ -134,22 +158,18 @@ class UI
 	  s += "<tr><td>Turns<td><span id='status.turns' " +
 		"style='font-weight:bold'>0</span>";
 
-      // virgins
-      s += "<tr><td>Virgins<td><span id='status.virgins' " +
-        "style='font-weight:bold'>0</span>";
-
-      s += "</table></fieldset><br>";
+      s += "</table></fieldset>";
 
       // end turn button
-	  s += "<br><center><button id='status.endTurn'>End<br>turn</button> ";
+	  s += "<center style='padding-top:10px'><button id='status.endTurn'>End<br>turn</button> ";
 	 
       if (Game.isDebug)
         s += "<button id='status.debug'>DBG</button> ";
 
       // restart button
-      s += "<button id='status.restart'>Restart</button></center><br>";
+      s += "<button id='status.restart'>Restart</button></center>";
       
-      s += "<fieldset style='bottom: 5px;'>";
+      s += "<fieldset style='bottom: 5px; margin-top: 10px; padding:0 5 0 5'>";
       s += "<legend>MUSIC</legend>";
       s += "<div id='status.track' " + 
         "style='background: #222; cursor:pointer; font-size:10px; color: #00ff00'> - </div>";
@@ -162,13 +182,27 @@ class UI
 
       status.innerHTML = s;
 
-	  // setting events
+	  // setting events and tooltips
 	  for (i in 0...Game.followerNames.length)
-		e("status.upgrade" + i).onclick = onStatusUpgrade;
-	  for (i in 0...Game.numPowers)
-	    for (ii in 0...Game.numPowers)
-		  if (i != ii)
-		    e("status.convert" + i + ii).onclick = onStatusConvert;
+        {
+          e("status.follower" + i).title = tipFollowers[i];
+          var c = e("status.upgrade" + i);
+          c.onclick = onStatusUpgrade;
+          c.title = tipUpgrade[i];
+        }
+	  for (i in 0...(Game.numPowers + 1))
+        {
+          e("status.powerMark" + i).title = tipPowers[i];
+          e("status.powerName" + i).title = tipPowers[i];
+          for (ii in 0...Game.numPowers)
+		    if (i != ii)
+              {
+                var c = e("status.convert" + i + ii);
+		        c.onclick = onStatusConvert;
+                c.title = tipConvert + powerName(ii) + ": " +
+                  Game.powerConversionCost[i];
+              }
+        }
 	  e("status.endTurn").onclick = onStatusEndTurn;
 	  e("status.restart").onclick = onStatusRestart;
       e("status.debug").onclick = onStatusDebug;
@@ -193,6 +227,9 @@ class UI
         width: mapWidth,
         height: mapHeight});
 */
+      new JQuery(function()
+        { new JQuery('#status *').tooltip({ delay: 0 }); });
+
     }
 
 
@@ -247,8 +284,6 @@ class UI
   public inline function msg(s)
 	{
       e('jqDialog_close').style.visibility = 'hidden';
-//      e('jqDialog_box').style.width = '220';
-//      e('jqDialog_box').style.height = '40';
       JQDialog.notify(s, 1);
 	}
 
@@ -305,20 +340,17 @@ class UI
 // update status window (fups)
   public function updateStatus()
     {
-	  for (i in 0...Game.numPowers)
-	    {
-          e("status.power" + i).innerHTML = 
-            "<b>" + game.power[i] + "</b>";
-		  if (game.powerMod[i] > 0)
-		    e("status.powerMod" + i).innerHTML =
-              " +" + game.powerMod[i];
-		  else
-		    e("status.powerMod" + i).innerHTML =
-              " " + game.powerMod[i];
-		}
+      // convert buttons
+	  for (i in 0...(Game.numPowers + 1))
+        for (ii in 0...Game.numPowers)
+          {
+            if (i == ii) continue;
 
-	  e("status.turns").innerHTML = "" + game.turns;
-      e("status.virgins").innerHTML = "" + game.virgins;
+            var c = e("status.convert" + i + ii);
+            c.style.visibility = 
+              (game.power[i] >= Game.powerConversionCost[i] ? 'visible' :
+               'hidden');
+          }
 
       // count number of nodes by level
       var cnt = new Array<Int>();
@@ -330,15 +362,34 @@ class UI
       for (i in 0...cnt.length)
         e("status.followers" + i).innerHTML = "" + cnt[i];
 
+      // update powers
+	  for (i in 0...(Game.numPowers + 1))
+	    {
+          e("status.power" + i).innerHTML = 
+            "<b>" + game.power[i] + "</b>";
+          if (i == 3)
+            e("status.powerMod3").innerHTML = " +0-" +
+              Std.int(cnt[0] / 4 - 0.5);
+		  else if (game.powerMod[i] > 0)
+		    e("status.powerMod" + i).innerHTML =
+              " +" + game.powerMod[i];
+		  else
+		    e("status.powerMod" + i).innerHTML =
+              " " + game.powerMod[i];
+		}
+
+	  e("status.turns").innerHTML = "" + game.turns;
+
       // upgrade buttons visibility
       for (i in 0...(Game.followerNames.length - 1))
           e("status.upgrade" + i).style.visibility = 
-            ((cnt[i] >= Game.upgradeCost && game.virgins >= i + 1) ?
+            ((cnt[i] >= Game.upgradeCost && game.power[3] >= i + 1) ?
              'visible' : 'hidden');
 
       // summon button visibility
       e("status.upgrade2").style.visibility = 
-        ((cnt[2] >= Game.upgradeCost && game.virgins >= Game.numSummonVirgins) ?
+        ((cnt[2] >= Game.upgradeCost &&
+          game.power[3] >= Game.numSummonVirgins) ?
           'visible' : 'hidden');
     }
 
@@ -351,14 +402,26 @@ class UI
 
 
 // finish game window
-  public function finish(playerWon)
+  public function finish(state)
     {
       e('jqDialog_close').style.visibility = 'hidden';
 
-      if (playerWon == 1)
-        JQDialog.alert("The stars are right. Elder God was summoned in " +
+      if (state == "summon")
+        JQDialog.alert("The stars were right. The Elder God was summoned in " +
           game.turns +
           " turns.", onStatusRestart);
+
+      else if (state == "conquer")
+        JQDialog.alert("The cult has taken over the world in " +
+          game.turns + " turns. The Elder Gods are pleased. ", onStatusRestart);
+    }
+
+
+// show colored power name
+  static function powerName(i)
+    {
+      return "<span style='color:" + Game.powerColors[i] + "'>" +
+        Game.powerNames[i] + "</span>";
     }
 
 
