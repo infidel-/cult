@@ -15,6 +15,7 @@ class Node
   public var y: Int;
   public var centerX: Int;
   public var centerY: Int;
+  public var isVisible(default, setVisible): Bool;
   public var isOwned: Bool;
   public var isGenerator: Bool;
   public var level: Int;
@@ -23,6 +24,7 @@ class Node
     {
       ui = uivar;
       id = index;
+//      isVisible = false;
       isOwned = false;
 	  isGenerator = false;
       power = [0, 0, 0];
@@ -48,7 +50,7 @@ class Node
 	  marker.style.visibility = 'hidden';
 	  marker.style.textAlign = 'center';
 	  marker.style.fontWeight = 'bold';
-//      marker.style.fontSize = '14px';
+      marker.style.fontSize = '12px';
 	  marker.style.zIndex = 20;
 	  marker.style.cursor = 'pointer';
 	  ui.map.appendChild(marker);
@@ -121,6 +123,15 @@ class Node
     {
       isOwned = isown;
       update();
+    }
+
+// set visible flag
+  public function setVisible(v: Bool)
+    {
+      isVisible = v;
+      marker.style.visibility = 
+        (isVisible ? 'visible' : 'hidden');
+      return v;
     }
 
 

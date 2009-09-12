@@ -11,9 +11,6 @@ class Game
   // turns passed
   public var turns: Int;
 
-  // virgins
-  public var virgins: Int;
-
   // index of the last node (for id generation)
   var lastNodeIndex: Int;
 
@@ -32,18 +29,18 @@ class Game
 
 
   public static var powerNames: Array<String> =
-    [ "Intimidation", "Persuasion", "Bribery", "Worship" ];
+    [ "Intimidation", "Persuasion", "Bribery", "Virgins" ];
   public static var powerShortNames: Array<String> =
-    [ "I", "P", "B", "W" ];
+    [ "I", "P", "B", "V" ];
   public static var powerColors: Array<String> =
     [ "#ff0000", "#00ffff", "#00ff00", "#ffff00" ];
   public static var followerNames: Array<String> =
     [ "Neophyte", "Adept", "Priest" ];
+  public static var powerConversionCost: Array<Int> = [2, 2, 2, 1];
 
   public static var numPowers = 3;
   public static var numSummonVirgins = 9;
-  static var nodesCount = 70;
-  static var conversionCost = 3;
+  static var nodesCount = 100;
   public static var upgradeCost = 3;
   public static var isDebug = true;
 
@@ -67,13 +64,13 @@ class Game
           return;
         }
 
-      if (virgins < level + 1)
+      if (power[3] < level + 1)
         {
           ui.msg("Not enough virgins");
           return;
         }
 
-      virgins -= level + 1;
+      power[3] -= level + 1;
 
       // find first node of this level and upgrade
       for (n in nodes)
@@ -90,16 +87,16 @@ class Game
 // summon elder god
   public function summon()
     {
-      if (virgins < numSummonVirgins)
+      if (power[3] < numSummonVirgins)
         {
           ui.msg("Not enough virgins");
           return;
         }
 
-      virgins -= numSummonVirgins;
+      power[3] -= numSummonVirgins;
 
-      // 25% chance of failure
-      if (Math.random() < 0.25)
+      // 33% chance of failure
+      if (Math.random() < 0.33)
         {
           // 1 priest goes totally insane and has to be replaced with neophyte
           for (n in nodes)
@@ -115,20 +112,20 @@ class Game
           return;
         }
 
-      ui.finish(1);
+      ui.finish("summon");
     }
 
 
 // convert resources
-  public function convert(from, to)
+  public function convert(from: Int, to: Int)
     {
-	  if (power[from] < conversionCost)
+	  if (power[from] < powerConversionCost[from])
 	    {
 	      ui.msg("Not enough " + powerNames[from]);
 		  return;
 		}
 	
-	  power[from] -= conversionCost;
+	  power[from] -= powerConversionCost[from];
 	  power[to] += 1;
 	  ui.updateStatus();
 	}
@@ -146,8 +143,8 @@ class Game
 			powerMod[i] += 1;
 		  }
 	  startNode.setGenerator(true);
-
-	  startNode.marker.style.visibility = 'visible';
+ 
+      startNode.isVisible = true;
       updateVisibility(startNode);
 	}
 
@@ -156,7 +153,7 @@ class Game
   public function endTurn()
     {
 	  // give player power and recalculate power mod cache
-	  powerMod = [0, 0, 0];
+	  powerMod = [0, 0, 0, 0];
       var cntNeophytes = 0;
 	  for (node in nodes)
 	    if (node.isOwned)
@@ -173,9 +170,9 @@ class Game
           }
 
       // neophytes bring in some virgins
-      var value = Std.int(Math.random() * cntNeophytes / 3);
+      var value = Std.int(Math.random() * (cntNeophytes / 4 - 0.5));
 //      trace(value + " by " + cntNeophytes);
-      virgins += value;
+      power[3] += value;
 
 	  turns++;
 	  ui.updateStatus();
@@ -187,7 +184,7 @@ class Game
     {
       for (n in nodes)
         if (node.distance(n) < UI.nodeVisibility)
-	  n.marker.style.visibility = 'visible';
+          n.isVisible = true;
     }
 
 
@@ -219,12 +216,45 @@ class Game
 //      new JQuery('#map *').tooltip({ delay: 0 });
 
 	  // create lines between this node and adjacent ones
+      var hasLine = false;
       for (n in nodes)
-        if (n.isOwned && node != n && node.distance(n) < UI.nodeVisibility + 10)
-          lines.push(Line.paint(ui.map, n, node));
+        if (n.isOwned && node != n &&
+            node.distance(n) < UI.nodeVisibility - 10)
+          {
+            lines.push(Line.paint(ui.map, n, node));
+            hasLine = true;
+          }
 
-      // check for game end
-//      checkFinish();
+      // no lines were drawn - draw to closest player node 
+      if (!hasLine)
+        {
+          var dist = 10000;
+          var nc = null;
+          for (n in nodes)
+            if (n.isOwned && node != n &&
+                node.distance(n) < dist)
+              {
+                dist = node.distance(n);
+                nc = n;
+              }
+
+          lines.push(Line.paint(ui.map, nc, node));
+        }
+
+      // check for finish
+      var cntOwned = 0;
+      var cntVisible = 0;
+      for (n in nodes)
+        {
+          if (n.isOwned)
+            cntOwned++;
+          if (n.isVisible)
+            cntVisible++;
+        }
+
+      // all visible nodes are owned, player won
+      if (cntOwned == cntVisible)
+        ui.finish("conquer");
     }
 
 
@@ -273,10 +303,9 @@ class Game
       ui.clearMap();
 
       this.lines = new Array<Line>();
-      this.power = [0, 0, 0];
-      this.powerMod = [0, 0, 0];
+      this.power = [0, 0, 0, 0];
+      this.powerMod = [0, 0, 0, 0];
 	  this.turns = 0;
-      this.virgins = 0;
 	  this.lastNodeIndex = 0;
       nodes = new Array<Node>();
 
@@ -323,24 +352,6 @@ class Game
       ui.updateStatus();
     }
 
-
-// check for game end
-/*
-  function checkFinish()
-    {
-      // count player nodes
-      var cnt = 0;
-      for (n in nodes)
-        if (n.isOwned)
-          cnt++;
-
-      if (cnt < nodes.length)
-        return;
-
-      // player won
-      ui.finish(1);
-    }
-*/
 
 // main function
   static var instance: Game;
