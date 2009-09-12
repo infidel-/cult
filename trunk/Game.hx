@@ -111,6 +111,7 @@ class Game
               }
 
           ui.alert("The stars were not right. The high priest goes insane.");
+          ui.updateStatus();
           return;
         }
 
@@ -342,9 +343,9 @@ class Game
 */
 
 // main function
-  static var inst: Game;
+  static var instance: Game;
   static function main()
     {
-      inst = new Game();
+      instance = new Game();
     }
 }
