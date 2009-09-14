@@ -11,6 +11,9 @@ class Game
   // turns passed
   public var turns: Int;
 
+  // public awareness
+  public var awareness(default, setAwareness): Int;
+
   // index of the last node (for id generation)
   var lastNodeIndex: Int;
 
@@ -27,6 +30,11 @@ class Game
   public var nodes: Array<Node>;
   public var lines: Array<Line>;
 
+  // followers number cache
+  public var numFollowers: Array<Int>;
+
+  // how many adepts were used this turn
+  public var adeptsUsed: Int;
 
   public static var powerNames: Array<String> =
     [ "Intimidation", "Persuasion", "Bribery", "Virgins" ];
@@ -57,6 +65,13 @@ class Game
 // upgrade nodes
   public function upgrade(level)
     {
+      if ((level == 2 && power[3] < numSummonVirgins) ||
+          (level < 2 && power[3] < level + 1))
+        {
+          ui.msg("Not enough virgins");
+          return;
+        }
+
       // summon
       if (level == 2)
         {
@@ -64,13 +79,19 @@ class Game
           return;
         }
 
-      if (power[3] < level + 1)
+      power[3] -= level + 1;
+
+      // check for failure
+      if (100 * Math.random() > getUpgradeChance(level))
         {
-          ui.msg("Not enough virgins");
+          ui.alert("Ritual failed.");
+          ui.updateStatus();
           return;
         }
 
-      power[3] -= level + 1;
+      awareness += level;
+      numFollowers[level]--;
+      numFollowers[level + 1]++;
 
       // find first node of this level and upgrade
       for (n in nodes)
@@ -87,16 +108,10 @@ class Game
 // summon elder god
   public function summon()
     {
-      if (power[3] < numSummonVirgins)
-        {
-          ui.msg("Not enough virgins");
-          return;
-        }
-
       power[3] -= numSummonVirgins;
 
-      // 33% chance of failure
-      if (Math.random() < 0.33)
+      // chance of failure
+      if (100 * Math.random() > getUpgradeChance(2))
         {
           // 1 priest goes totally insane and has to be replaced with neophyte
           for (n in nodes)
@@ -104,6 +119,7 @@ class Game
               {
                 n.level = 0;
                 n.update();
+                numFollowers[2]--;
                 break;
               }
 
@@ -131,6 +147,32 @@ class Game
 	}
 
 
+// setter for awareness
+  function setAwareness(v)
+    {
+      awareness = v;
+      for (n in nodes)
+        if (n.isVisible && !n.isOwned)
+          n.update();
+      return v;
+    }
+
+
+// lower awareness
+  public function lowerAwareness(pwr)
+    {
+      if (awareness == 0)
+        return;
+
+      awareness -= 2;
+      if (awareness < 0)
+        awareness = 0;
+      power[pwr]--;
+      adeptsUsed++;
+      ui.updateStatus();
+    }
+
+
 // setup starting node
   function setStartingNode(node)
     {
@@ -142,8 +184,8 @@ class Game
 		    startNode.powerGenerated[i] = 1;
 			powerMod[i] += 1;
 		  }
+      numFollowers[0]++;
 	  startNode.setGenerator(true);
- 
       startNode.isVisible = true;
       updateVisibility(startNode);
 	}
@@ -154,29 +196,71 @@ class Game
     {
 	  // give player power and recalculate power mod cache
 	  powerMod = [0, 0, 0, 0];
-      var cntNeophytes = 0;
 	  for (node in nodes)
 	    if (node.isOwned)
-          {
-            if (node.level == 0)
-              cntNeophytes++;
-
-            if (node.isGenerator)
-		      for (i in 0...numPowers)
-		        {
+          if (node.isGenerator)
+		    for (i in 0...numPowers)
+		      {
+                // failure chance
+                if (100 * Math.random() < getResourceChance())
 		          power[i] += Math.round(node.powerGenerated[i]);
-			      powerMod[i] += Math.round(node.powerGenerated[i]);
-			    }
-          }
+			    powerMod[i] += Math.round(node.powerGenerated[i]);
+			  }
 
       // neophytes bring in some virgins
-      var value = Std.int(Math.random() * (cntNeophytes / 4 - 0.5));
+      var value = Std.int(Math.random() * (numFollowers[0] / 4 - 0.5));
 //      trace(value + " by " + cntNeophytes);
       power[3] += value;
 
 	  turns++;
+      adeptsUsed = 0;
 	  ui.updateStatus();
 	}
+
+
+// get resource chance
+  public function getResourceChance()
+    {
+      var ch = Std.int(99 - 1.5 * awareness);
+      if (ch < 1)
+        ch = 1;
+      return ch;
+    }
+
+
+// get upgrade chance
+  public function getUpgradeChance(level)
+    {
+      var ch = 0;
+      if (level == 0)
+        ch = 99 - awareness;
+/*
+      else if (level == 1)
+        ch = 85 - awareness;
+      else if (level == 2)
+        ch = 75 - awareness;
+*/
+      else if (level == 1)
+        ch = 99 - awareness * 2;
+      else if (level == 2)
+        ch = 99 - awareness * 3;
+      if (ch < 1)
+        ch = 1;
+      return ch;
+    }
+
+
+// get gain chance
+  public function getGainChance(isGenerator)
+    {
+      var ch = 0;
+      if (!isGenerator)
+        ch = 99 - awareness;
+      else ch = 99 - awareness * 2;
+      if (ch < 1)
+        ch = 1;
+      return ch;
+    }
 
 
 // update visibility area around node
@@ -206,12 +290,25 @@ class Game
 	  for (i in 0...numPowers)
 		power[i] = Math.round(power[i] - node.power[i]);
 
+      // failure chance
+      if (100 * Math.random() > getGainChance(node.isGenerator))
+        {
+          ui.alert("Could not gain a follower.");
+          ui.updateStatus();
+          return;
+        }
+
 	  if (node.isGenerator)
 	    for (i in 0...numPowers)
 		  powerMod[i] += Math.round(node.powerGenerated[i]);
       node.setOwned(true);
+      numFollowers[0]++;
       updateVisibility(node);
-	  ui.updateStatus();
+
+      // raise public awareness
+      awareness++;
+
+      ui.updateStatus();
 //      ui.updateMap();
 //      new JQuery('#map *').tooltip({ delay: 0 });
 
@@ -287,7 +384,7 @@ class Game
 		}
 
       // node attributes
-      var node = new Node(ui, x, y, lastNodeIndex++);
+      var node = new Node(this, ui, x, y, lastNodeIndex++);
 	  node.marker.onclick = ui.onNodeClick;
 	  var index: Int = Math.round((numPowers - 1) * Math.random());
 	  node.power[index] = 1;
@@ -305,9 +402,12 @@ class Game
       this.lines = new Array<Line>();
       this.power = [0, 0, 0, 0];
       this.powerMod = [0, 0, 0, 0];
+      this.numFollowers = [0, 0, 0];
 	  this.turns = 0;
+      this.adeptsUsed = 0;
 	  this.lastNodeIndex = 0;
       nodes = new Array<Node>();
+      this.awareness = 0;
 
       // spawn nodes
       for (i in 1...(nodesCount + 1))

@@ -6,8 +6,10 @@
 class Node
 {
   var ui: UI;
+  var game: Game;
 
   public var id: Int;
+  public var name: String;
   public var power: Array<Dynamic>; // intimidation, persuasion, bribe, worship
   public var powerGenerated: Array<Dynamic>;
   public var marker: Dynamic;
@@ -20,8 +22,9 @@ class Node
   public var isGenerator: Bool;
   public var level: Int;
 
-  public function new(uivar, newx, newy, index: Int)
+  public function new(gvar, uivar, newx, newy, index: Int)
     {
+      game = gvar;
       ui = uivar;
       id = index;
 //      isVisible = false;
@@ -31,6 +34,8 @@ class Node
 	  powerGenerated = [0, 0, 0];
       marker = null;
       level = 0;
+
+      name = names[Std.int(Math.random() * (names.length - 1))];
       
 	  x = newx;
       y = newy;
@@ -61,10 +66,11 @@ class Node
   public function update()
     {
       var s = "";
+      s += name + "<br><br>";
 
-      // amount of generated power
       if (!isOwned)
         {
+          // amount of generated power
           for (i in 0...Game.numPowers)
             if (power[i] > 0)
 		      {
@@ -73,6 +79,8 @@ class Node
 			    marker.innerHTML = Game.powerShortNames[i];
                 marker.style.color = Game.powerColors[i];
 		      }
+          s += "Chance of success: " + game.getGainChance(isGenerator) +
+           "%<br>";
         }
       else
         s += "<b>" + Game.followerNames[level] + 
@@ -144,4 +152,14 @@ class Node
       level++;
       update();
     }
+
+
+  static var names: Array<String> = 
+    [
+      "Government official",
+      "Corporate worker",
+      "University professor",
+      "Army officer",
+      "Scientist"
+    ];
 }
