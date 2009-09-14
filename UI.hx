@@ -27,6 +27,7 @@ class UI
   public static var markerWidth = 15;
   public static var markerHeight = 15;
   public static var nodeVisibility = 101;
+  static var colAwareness = "#ff9999";
 
   static var tipPowers: Array<String> =
     [ powerName(0) + " is needed to gain new followers.",
@@ -42,12 +43,23 @@ class UI
       "To gain a priest you need " + Game.upgradeCost +
       " adepts and 2 virgins.",
       "For the ritual of summoning you need " + Game.upgradeCost +
-      " priests and " + Game.numSummonVirgins + " virgins." ];
+      " priests and " + Game.numSummonVirgins + " virgins.<br>" +
+      "<li>The more society is aware of the cult the harder it is to " +
+      "summon Elder God."];
   static var tipFollowers: Array<String> =
     [ "Neophytes can find some virgins if they're lucky.",
-      "Adepts are useless lol. TODO",
-      "3 Priests and " + Game.numSummonVirgins + 
+      "Adepts can lower society awareness.",
+      "3 priests and " + Game.numSummonVirgins + 
       " virgins are needed to summon the Elder God." ];
+  static var tipTurns = "Shows the number of turns passed from the start.";
+  static var tipAwareness =
+    "Shows how much human society is aware of the cult.<br>" +
+    "<li>The greater awareness is the harder it is to do anything:<br>" +
+    "gain new followers, resources or make rituals.<br> " +
+    "<li>Adepts can lower the society awareness using resources.<br>" +
+    "<li>The more adepts you have the more you can lower awareness each turn.";
+  static var tipLowerAwareness =
+    "Your adepts can use resources to lower society awareness.";
 
 
   public function new(g)
@@ -145,17 +157,28 @@ class UI
                 "color:" + Game.powerColors[ii] + "; " +
 		    	"text-align:center; font-size: 10px; font-weight: bold; '>" +
 		        Game.powerShortNames[ii] + "</div>";
-		  s += "</table>";
+
+          if (i != 3)
+	        s += "<td><div id='status.lowerAwareness" + i + "' " +
+			  "style='cursor: pointer; width:12; height:12; " +
+		      "background:#222; border:1px solid #777; " +
+              "color:" + colAwareness + "; " +
+		      "text-align:center; font-size: 10px; font-weight: bold; '>A</div>";
+          s += "</table>";
 		}
       s += "</table></fieldset>";
-
 
       s += "<fieldset>";
       s += "<legend>STATS</legend>";
       s += "<table width=100% style='font-size:14px'>";
 
+      // awareness
+	  s += "<tr title='" + tipAwareness +
+        "'><td>Awareness<td><span id='status.awareness' " +
+		"style='font-weight:bold'>0</span>";
       // turns
-	  s += "<tr><td>Turns<td><span id='status.turns' " +
+	  s += "<tr title='" + tipTurns +
+        "'><td>Turns<td><span id='status.turns' " +
 		"style='font-weight:bold'>0</span>";
 
       s += "</table></fieldset>";
@@ -202,6 +225,13 @@ class UI
                 c.title = tipConvert + powerName(ii) + ": " +
                   Game.powerConversionCost[i];
               }
+
+          if (i != 3)
+            {
+              var c = e("status.lowerAwareness" + i);
+		      c.onclick = onStatusLowerAwareness;
+              c.title = tipLowerAwareness;
+            }
         }
 	  e("status.endTurn").onclick = onStatusEndTurn;
 	  e("status.restart").onclick = onStatusRestart;
@@ -230,6 +260,13 @@ class UI
       new JQuery(function()
         { new JQuery('#status *').tooltip({ delay: 0 }); });
 
+    }
+
+
+  public function onStatusLowerAwareness(event)
+    {
+	  var power = Std.parseInt(event.target.id.substr(21, 1));
+      game.lowerAwareness(power);
     }
 
 
@@ -291,6 +328,9 @@ class UI
 // debug info button
   function onStatusDebug(event)
     {
+      for (i in 0...(Game.followerNames.length - 1))
+        e("status.upgrade" + i).style.visibility = 'visible';
+
       for (n in game.nodes)
         n.marker.style.visibility = 'visible';
     }
@@ -340,6 +380,18 @@ class UI
 // update status window (fups)
   public function updateStatus()
     {
+      // update tooltips
+	  for (i in 0...(Game.numPowers + 1))
+        {
+          var s = tipPowers[i] + "<br>Chance to gain each unit: " +
+            game.getResourceChance() + "%";
+          e("status.powerMark" + i).title = s;
+          e("status.powerName" + i).title = s;
+        }
+      for (i in 0...game.numFollowers.length)
+        e("status.upgrade" + i).title = tipUpgrade[i] +
+          "<br>Chance of success: " + game.getUpgradeChance(i) + "%";
+
       // convert buttons
 	  for (i in 0...(Game.numPowers + 1))
         for (ii in 0...Game.numPowers)
@@ -352,15 +404,8 @@ class UI
                'hidden');
           }
 
-      // count number of nodes by level
-      var cnt = new Array<Int>();
-      for (i in Game.followerNames)
-        cnt.push(0);
-      for (n in game.nodes)
-        if (n.isOwned)
-          cnt[n.level]++;
-      for (i in 0...cnt.length)
-        e("status.followers" + i).innerHTML = "" + cnt[i];
+      for (i in 0...game.numFollowers.length)
+        e("status.followers" + i).innerHTML = "" + game.numFollowers[i];
 
       // update powers
 	  for (i in 0...(Game.numPowers + 1))
@@ -369,26 +414,33 @@ class UI
             "<b>" + game.power[i] + "</b>";
           if (i == 3)
             e("status.powerMod3").innerHTML = " +0-" +
-              Std.int(cnt[0] / 4 - 0.5);
-		  else if (game.powerMod[i] > 0)
+              Std.int(game.numFollowers[0] / 4 - 0.5);
+		  else 
 		    e("status.powerMod" + i).innerHTML =
-              " +" + game.powerMod[i];
-		  else
-		    e("status.powerMod" + i).innerHTML =
-              " " + game.powerMod[i];
+              " +0-" + game.powerMod[i];
 		}
 
 	  e("status.turns").innerHTML = "" + game.turns;
+	  e("status.awareness").innerHTML = "" + game.awareness + "%";
+  
+      for (i in 0...Game.numPowers)
+        e("status.lowerAwareness" + i).style.visibility = 'hidden';
+      if (game.adeptsUsed < game.numFollowers[1] &&
+          game.numFollowers[1] > 0)
+        for (i in 0...Game.numPowers)
+          if (game.power[i] > 0)
+            e("status.lowerAwareness" + i).style.visibility = 'visible';
 
       // upgrade buttons visibility
       for (i in 0...(Game.followerNames.length - 1))
-          e("status.upgrade" + i).style.visibility = 
-            ((cnt[i] >= Game.upgradeCost && game.power[3] >= i + 1) ?
+          e("status.upgrade" + i).style.visibility =
+            ((game.numFollowers[i] >= Game.upgradeCost &&
+              game.power[3] >= i + 1) ?
              'visible' : 'hidden');
 
       // summon button visibility
       e("status.upgrade2").style.visibility = 
-        ((cnt[2] >= Game.upgradeCost &&
+        ((game.numFollowers[2] >= Game.upgradeCost &&
           game.power[3] >= Game.numSummonVirgins) ?
           'visible' : 'hidden');
     }
