@@ -43,6 +43,7 @@ class Node
       centerY = y + Math.round(UI.markerHeight / 2);
 
       marker = js.Lib.document.createElement("map.node" + id);
+      marker.id = "map.node" + id;
 	  marker.node = this;
 	  marker.style.innerHTML = ' ';
 	  marker.style.background = '#222';
@@ -79,8 +80,8 @@ class Node
 			    marker.innerHTML = Game.powerShortNames[i];
                 marker.style.color = Game.powerColors[i];
 		      }
-          s += "Chance of success: " + game.getGainChance(isGenerator) +
-           "%<br>";
+          s += "Chance of success: <span style='color:white'>" +
+            game.getGainChance(isGenerator) + "%</span><br>";
         }
       else
         s += "<b>" + Game.followerNames[level] + 
@@ -106,7 +107,7 @@ class Node
 		}
 
       marker.title = s;
-//      new JQuery('map.node' + id).tooltip({ delay: 0 });
+      new JQuery("#map\\.node" + id).tooltip({ delay: 0 });
     }
 
 

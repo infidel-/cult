@@ -24,7 +24,7 @@ class Game
   public var powerMod: Array<Int>;
 
   // starting node
-  var startNode: Node;
+  public var startNode: Node;
 
   // nodes and lines arrays
   public var nodes: Array<Node>;
@@ -59,6 +59,7 @@ class Game
 	  ui = new UI(this);
 	  ui.init();
       restart();
+      ui.updateStatus();
     }
 
 
@@ -234,16 +235,10 @@ class Game
       var ch = 0;
       if (level == 0)
         ch = 99 - awareness;
-/*
       else if (level == 1)
-        ch = 85 - awareness;
+        ch = 80 - awareness * 2;
       else if (level == 2)
-        ch = 75 - awareness;
-*/
-      else if (level == 1)
-        ch = 99 - awareness * 2;
-      else if (level == 2)
-        ch = 99 - awareness * 3;
+        ch = 75 - awareness * 3;
       if (ch < 1)
         ch = 1;
       return ch;
@@ -306,11 +301,11 @@ class Game
       updateVisibility(node);
 
       // raise public awareness
-      awareness++;
+      if (node.isGenerator)
+        awareness += 2;
+      else awareness++;
 
       ui.updateStatus();
-//      ui.updateMap();
-//      new JQuery('#map *').tooltip({ delay: 0 });
 
 	  // create lines between this node and adjacent ones
       var hasLine = false;
@@ -448,7 +443,6 @@ class Game
 	  for (i in 0...numPowers)
 	    power[i] += Math.round(startNode.powerGenerated[i]);
 
-      ui.updateMap();
       ui.updateStatus();
     }
 

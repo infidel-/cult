@@ -173,11 +173,11 @@ class UI
       s += "<table width=100% style='font-size:14px'>";
 
       // awareness
-	  s += "<tr title='" + tipAwareness +
+	  s += "<tr id='status.awRow' title='" + tipAwareness +
         "'><td>Awareness<td><span id='status.awareness' " +
 		"style='font-weight:bold'>0</span>";
       // turns
-	  s += "<tr title='" + tipTurns +
+	  s += "<tr id='status.tuRow' title='" + tipTurns +
         "'><td>Turns<td><span id='status.turns' " +
 		"style='font-weight:bold'>0</span>";
 
@@ -257,9 +257,22 @@ class UI
         width: mapWidth,
         height: mapHeight});
 */
-      new JQuery(function()
-        { new JQuery('#status *').tooltip({ delay: 0 }); });
+  
+      new JQuery('#status *').tooltip({ delay: 0 });
+    }
 
+
+// update tooltip for object
+  function updateTip(name, tip)
+    {
+//      e(name).title = tip;
+      name = "#" + name;
+      if (name.indexOf(".") > 0)
+        {
+          name = name.substr(0, name.indexOf(".")) + "\\" +
+            name.substr(name.indexOf("."));
+        }
+      new JQuery(name).attr('tooltipText', tip);
     }
 
 
@@ -297,15 +310,6 @@ class UI
   public function onStatusTrack(event)
     {
       Lib.window.open(music.getPage(), '');
-    }
-
-
-// update ui
-  public function updateMap()
-    {
-	  // jquery map tooltip init
-	  new JQuery(function()
-	   { new JQuery('#map *').tooltip({ delay: 0 }); });
     }
 
 
@@ -383,14 +387,19 @@ class UI
       // update tooltips
 	  for (i in 0...(Game.numPowers + 1))
         {
-          var s = tipPowers[i] + "<br>Chance to gain each unit: " +
-            game.getResourceChance() + "%";
-          e("status.powerMark" + i).title = s;
-          e("status.powerName" + i).title = s;
+          var s = tipPowers[i] + 
+            "<br>Chance to gain each unit: <span style='color:white'>" +
+            game.getResourceChance() + "%</span>";
+          updateTip("status.powerMark" + i, s);
+          updateTip("status.powerName" + i, s);
         }
       for (i in 0...game.numFollowers.length)
-        e("status.upgrade" + i).title = tipUpgrade[i] +
-          "<br>Chance of success: " + game.getUpgradeChance(i) + "%";
+        {
+          updateTip("status.follower" + i, tipFollowers[i]);
+          updateTip("status.upgrade" + i, tipUpgrade[i] +
+            "<br>Chance of success: <span style='color:white'>" +
+            game.getUpgradeChance(i) + "%</span>");
+        }
 
       // convert buttons
 	  for (i in 0...(Game.numPowers + 1))
