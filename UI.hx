@@ -279,7 +279,7 @@ class UI
   public function onStatusLowerAwareness(event)
     {
 	  var power = Std.parseInt(event.target.id.substr(21, 1));
-      game.lowerAwareness(power);
+      game.player.lowerAwareness(power);
     }
 
 
@@ -345,7 +345,7 @@ class UI
     {
 	  var lvl = Std.parseInt(event.target.id.substr(14, 1));
 
-	  game.upgrade(lvl);
+	  game.player.upgrade(lvl);
     }
 
 
@@ -355,7 +355,7 @@ class UI
 	  var from = Std.parseInt(event.target.id.substr(14, 1));
 	  var to = Std.parseInt(event.target.id.substr(15, 1));
 
-	  game.convert(from, to);
+	  game.player.convert(from, to);
 	}
 
 
@@ -376,8 +376,7 @@ class UI
 // on clicking node
   public function onNodeClick(event)
     {
-      var node: Dynamic = event.target.node;
-      game.activate(node);
+      game.player.activate(event.target.node);
     }
 
 
@@ -389,16 +388,16 @@ class UI
         {
           var s = tipPowers[i] + 
             "<br>Chance to gain each unit: <span style='color:white'>" +
-            game.getResourceChance() + "%</span>";
+            game.player.getResourceChance() + "%</span>";
           updateTip("status.powerMark" + i, s);
           updateTip("status.powerName" + i, s);
         }
-      for (i in 0...game.numFollowers.length)
+      for (i in 0...game.player.numFollowers.length)
         {
           updateTip("status.follower" + i, tipFollowers[i]);
           updateTip("status.upgrade" + i, tipUpgrade[i] +
             "<br>Chance of success: <span style='color:white'>" +
-            game.getUpgradeChance(i) + "%</span>");
+            game.player.getUpgradeChance(i) + "%</span>");
         }
 
       // convert buttons
@@ -409,48 +408,49 @@ class UI
 
             var c = e("status.convert" + i + ii);
             c.style.visibility = 
-              (game.power[i] >= Game.powerConversionCost[i] ? 'visible' :
-               'hidden');
+              (game.player.power[i] >= Game.powerConversionCost[i] ?
+               'visible' : 'hidden');
           }
 
-      for (i in 0...game.numFollowers.length)
-        e("status.followers" + i).innerHTML = "" + game.numFollowers[i];
+      for (i in 0...game.player.numFollowers.length)
+        e("status.followers" + i).innerHTML = "" +
+          game.player.numFollowers[i];
 
       // update powers
 	  for (i in 0...(Game.numPowers + 1))
 	    {
           e("status.power" + i).innerHTML = 
-            "<b>" + game.power[i] + "</b>";
+            "<b>" + game.player.power[i] + "</b>";
           if (i == 3)
             e("status.powerMod3").innerHTML = " +0-" +
-              Std.int(game.numFollowers[0] / 4 - 0.5);
+              Std.int(game.player.numFollowers[0] / 4 - 0.5);
 		  else 
 		    e("status.powerMod" + i).innerHTML =
-              " +0-" + game.powerMod[i];
+              " +0-" + game.player.powerMod[i];
 		}
 
 	  e("status.turns").innerHTML = "" + game.turns;
-	  e("status.awareness").innerHTML = "" + game.awareness + "%";
+	  e("status.awareness").innerHTML = "" + game.player.awareness + "%";
   
       for (i in 0...Game.numPowers)
         e("status.lowerAwareness" + i).style.visibility = 'hidden';
-      if (game.adeptsUsed < game.numFollowers[1] &&
-          game.numFollowers[1] > 0)
+      if (game.player.adeptsUsed < game.player.numFollowers[1] &&
+          game.player.numFollowers[1] > 0)
         for (i in 0...Game.numPowers)
-          if (game.power[i] > 0)
+          if (game.player.power[i] > 0)
             e("status.lowerAwareness" + i).style.visibility = 'visible';
 
       // upgrade buttons visibility
       for (i in 0...(Game.followerNames.length - 1))
           e("status.upgrade" + i).style.visibility =
-            ((game.numFollowers[i] >= Game.upgradeCost &&
-              game.power[3] >= i + 1) ?
+            ((game.player.numFollowers[i] >= Game.upgradeCost &&
+              game.player.power[3] >= i + 1) ?
              'visible' : 'hidden');
 
       // summon button visibility
       e("status.upgrade2").style.visibility = 
-        ((game.numFollowers[2] >= Game.upgradeCost &&
-          game.power[3] >= Game.numSummonVirgins) ?
+        ((game.player.numFollowers[2] >= Game.upgradeCost &&
+          game.player.power[3] >= Game.numSummonVirgins) ?
           'visible' : 'hidden');
     }
 
@@ -463,18 +463,27 @@ class UI
 
 
 // finish game window
-  public function finish(state)
+  public function finish(player, state)
     {
       e('jqDialog_close').style.visibility = 'hidden';
+      var msg = "";
 
-      if (state == "summon")
-        JQDialog.alert("The stars were right. The Elder God was summoned in " +
+      if (state == "summon" && !player.isAI)
+        msg = "The stars were right. The Elder God was summoned in " +
           game.turns +
-          " turns.", onStatusRestart);
+          " turns.";
 
-      else if (state == "conquer")
-        JQDialog.alert("The cult has taken over the world in " +
-          game.turns + " turns. The Elder Gods are pleased. ", onStatusRestart);
+      else if (state == "summon" && player.isAI)
+        msg = "Other cult has completed the ritual of summoning. You fail.";
+
+      else if (state == "conquer" && !player.isAI)
+        msg = "The cult has taken over the world in " +
+          game.turns + " turns. The Elder Gods are pleased.";
+
+      else if (state == "conquer" && player.isAI)
+        msg = "Other cult has taken over the world. You fail.";
+
+      JQDialog.alert(msg, onStatusRestart);
     }
 
 

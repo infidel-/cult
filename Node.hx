@@ -17,23 +17,27 @@ class Node
   public var y: Int;
   public var centerX: Int;
   public var centerY: Int;
-  public var isVisible(default, setVisible): Bool;
-  public var isOwned: Bool;
+//  public var isVisible(default, setVisible): Bool;
+  var visibility: Array<Bool>;
   public var isGenerator: Bool;
   public var level: Int;
+  public var owner: Player;
 
   public function new(gvar, uivar, newx, newy, index: Int)
     {
       game = gvar;
       ui = uivar;
       id = index;
-//      isVisible = false;
-      isOwned = false;
+      visibility = new Array<Bool>();
+      for (i in 0...Game.numPlayers)
+        visibility.push(false);
+
 	  isGenerator = false;
       power = [0, 0, 0];
 	  powerGenerated = [0, 0, 0];
       marker = null;
       level = 0;
+      owner = null;
 
       name = names[Std.int(Math.random() * (names.length - 1))];
       
@@ -69,7 +73,7 @@ class Node
       var s = "";
       s += name + "<br><br>";
 
-      if (!isOwned)
+      if (owner == null)
         {
           // amount of generated power
           for (i in 0...Game.numPowers)
@@ -81,7 +85,7 @@ class Node
                 marker.style.color = Game.powerColors[i];
 		      }
           s += "Chance of success: <span style='color:white'>" +
-            game.getGainChance(isGenerator) + "%</span><br>";
+            game.player.getGainChance(this) + "%</span><br>";
         }
       else
         s += "<b>" + Game.followerNames[level] + 
@@ -89,7 +93,7 @@ class Node
           (level + 1) + "</span><br>";
 
 	  marker.style.background = '#111';
-      if (isOwned)
+      if (owner != null)
         {
           marker.innerHTML = "" + (level + 1);
           marker.style.color = '#ffffff';
@@ -128,19 +132,26 @@ class Node
 
 
 // set owned flag
-  public function setOwned(isown: Bool)
+  public function setOwner(p: Player)
     {
-      isOwned = isown;
+      owner = p;
       update();
     }
 
 // set visible flag
-  public function setVisible(v: Bool)
+  public function setVisible(player: Player, v: Bool)
     {
-      isVisible = v;
+      visibility[player.id] = v;
       marker.style.visibility = 
-        (isVisible ? 'visible' : 'hidden');
+        (v ? 'visible' : 'hidden');
       return v;
+    }
+
+
+// is visible?
+  public inline function isVisible(player: Player)
+    {
+      return visibility[player.id];
     }
 
 
@@ -152,6 +163,15 @@ class Node
 
       level++;
       update();
+    }
+
+
+// update visibility area around
+  public function updateVisibility()
+    {
+      for (n in game.nodes)
+        if (n.distance(this) < UI.nodeVisibility)
+          n.setVisible(this.owner, true);
     }
 
 
