@@ -22,7 +22,7 @@ class Game
 
   // nodes and lines arrays
   public var nodes: Array<Node>;
-  public var lines: Array<Line>;
+  public var lines: List<Line>;
 
 
   public static var powerNames: Array<String> =
@@ -34,6 +34,12 @@ class Game
   public static var followerNames: Array<String> =
     [ "Neophyte", "Adept", "Priest" ];
   public static var powerConversionCost: Array<Int> = [2, 2, 2, 1];
+  public static var lineColors: Array<String> =
+    [ "#55dd55", "#2727D7", "#E052CA", "#D8E151" ];
+  public static var nodeColors: Array<String> =
+    [ "#005500", "#010955", "#560053", "#565300" ];
+  public static var playerColors: Array<String> =
+    [ "#00B400", "#2F43FD", "#B400AE", "#B4AE00" ];
 
   public static var numPowers = 3;
   public static var numPlayers = 4;
@@ -41,6 +47,8 @@ class Game
   static var nodesCount = 100;
   public static var upgradeCost = 3;
   public static var isDebug = true;
+  public static var debugTime = false;
+  public static var debugVis = false;
 
 
 // constructor
@@ -58,7 +66,7 @@ class Game
     {
       ui.clearMap();
 
-      this.lines = new Array<Line>();
+      this.lines = new List<Line>();
       this.nodes = new Array<Node>();
 
       this.players = new Array<Player>();
@@ -66,9 +74,14 @@ class Game
 
       // clear players
       for (i in 0...numPlayers)
-        players.push(new Player(this, ui, this.lastPlayerID++));
+        {
+          var p = null;
+          if (i == 0)
+            p = new Player(this, ui, this.lastPlayerID++);
+          else p = new AI(this, ui, this.lastPlayerID++);
+          players.push(p);
+        }
       player = players[0];
-      player.isAI = false;
 	  this.turns = 0;
 	  this.lastNodeIndex = 0;
 
@@ -117,7 +130,14 @@ class Game
       // ensure player goes last
       for (p in players)
         if (p.isAI)
-          p.turn();
+          {
+            p.turn();
+            if (debugTime)
+              startTimer();
+            untyped p.aiTurn();
+            if (debugTime)
+              endTimer();
+          }
       player.turn();
 
 	  turns++;
@@ -142,7 +162,7 @@ class Game
 		  if (cnt > 100)
 		    return;
 
-		  // nodes overlap
+		  // node
 		  var ok = 1;
 		  for (n in nodes)
 	    	if ((x - 30 < n.x && x + UI.markerWidth + 30 > n.x) &&
@@ -161,6 +181,21 @@ class Game
 
       node.update();
       nodes.push(node);
+    }
+
+
+// start counting time
+  var timerTime: Float;
+  public function startTimer()
+    {
+      timerTime = Date.now().getTime();
+    }
+
+
+// end counting time and display it
+  public function endTimer()
+    {
+      trace(Date.now().getTime() - timerTime);
     }
 
 

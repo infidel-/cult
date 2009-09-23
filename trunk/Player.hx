@@ -5,6 +5,7 @@ class Player
   var game: Game;
   var ui: UI;
   public var id: Int;
+  public var name: String;
 
   // or AI?
   public var isAI: Bool;
@@ -33,7 +34,8 @@ class Player
       game = gvar;
       ui = uivar;
       this.id = id;
-      this.isAI = true;
+      this.name = "Cult " + id;
+      this.isAI = false;
       this.power = [0, 0, 0, 0];
       this.powerMod = [0, 0, 0, 0];
       this.numFollowers = [0, 0, 0];
@@ -45,7 +47,31 @@ class Player
 // setup random starting node
   public function setStartingNode()
     {
-      var index = Math.round((game.nodes.length - 1) * Math.random());
+      // find appropriate node
+      var index = -1;
+      while (true)
+        {
+          index = Math.round((game.nodes.length - 1) * Math.random());
+          var node = game.nodes[index];
+
+          if (node.owner != null)
+            continue;
+
+          // check for close nodes
+          var ok = 1;
+          for (n in game.nodes)
+            if (n != node && n.owner != null &&
+                n.distance(node) < UI.nodeVisibility + 50)
+              {
+                ok = 0;
+                break;
+              }
+
+          if (ok == 0)
+            continue;
+
+          break;
+        }
 	  startNode = game.nodes[index];
       startNode.setOwner(this);
 
@@ -98,7 +124,7 @@ class Player
       else if (level == 1)
         ch = 80 - awareness * 2;
       else if (level == 2)
-        ch = 75 - awareness * 3;
+        ch = 75 - awareness * 2;
       if (ch < 1)
         ch = 1;
       return ch;
@@ -229,7 +255,7 @@ class Player
     }
 
 
-// make turn - gain resources and do ai stuff if it's ai
+// make turn - gain resources
   public function turn()
     {
 	  // give power and recalculate power mod cache
@@ -248,29 +274,14 @@ class Player
       var value = Std.int(Math.random() * (numFollowers[0] / 4 - 0.5));
       power[3] += value;
       adeptsUsed = 0;
-
-      if (!isAI) return;
-
-      // TODO: do ai stuff
-
-      for (node in game.nodes)
-        {
-          if (node.owner == this || !node.isVisible(this))
-            continue;
-
-          var ret = activate(node);
-          if (!ret)
-            continue;
-          break;
-        }
     }
 
 
-// activate node (returns result for AI stuf)
-  public function activate(node: Dynamic): Bool
+// activate node (returns result for AI stuff)
+  public function activate(node: Dynamic): String
     {
 	  if (node.owner == this)
-		return false;
+		return "isOwner";
 
 	  // check for power
 	  for (i in 0...Game.numPowers)
@@ -278,7 +289,7 @@ class Player
 		  {
             if (!isAI)
 		 	  ui.msg("Not enough " + Game.powerNames[i]);
-			return false;
+			return "notEnoughPower";
 		  }
 
 	  // subtract power
@@ -293,15 +304,44 @@ class Player
               ui.alert("Could not gain a follower.");
               ui.updateStatus();
             }
-          return false;
+          return "failure";
         }
 
+      // save prev owner
+      var prevOwner = node.owner;
+      // update power mod cache
 	  if (node.isGenerator)
 	    for (i in 0...Game.numPowers)
 		  powerMod[i] += Math.round(node.powerGenerated[i]);
+      node.clearLines();
       node.setOwner(this);
       numFollowers[0]++;
       node.updateVisibility();
+
+      // update nodes visibility for previous owner in a radius
+/*
+      if (prevOwner != null)
+        for (n in node.links)
+          if (n.isVisible(prevOwner))
+*/            
+      if (prevOwner != null)
+        for (n in game.nodes)
+          if (n != node && n.distance(node) < UI.nodeVisibility &&
+              n.isVisible(prevOwner))
+            {
+              var vis = false;
+              // try to find any adjacent node of this player
+              for (n2 in game.nodes)
+                if (n != n2 && n2.distance(n) < UI.nodeVisibility &&
+                    n.owner == prevOwner)
+                  {
+                    vis = true;
+                    break;
+                  }
+
+              n.setVisible(prevOwner, vis);
+              n.update();
+            }
 
       // raise public awareness
       if (node.isGenerator)
@@ -317,7 +357,13 @@ class Player
         if (n.owner == this && node != n &&
             node.distance(n) < UI.nodeVisibility - 10)
           {
-            game.lines.push(Line.paint(ui.map, n, node));
+            var l = Line.paint(ui.map, this, n, node);
+            game.lines.add(l);
+            n.lines.add(l);
+            node.lines.add(l);
+            if (!isAI ||
+                (n.isVisible(game.player) && node.isVisible(game.player)))
+              l.setVisible(true);
             hasLine = true;
           }
 
@@ -334,9 +380,29 @@ class Player
                 nc = n;
               }
 
-          game.lines.push(Line.paint(ui.map, nc, node));
+          var l = Line.paint(ui.map, this, nc, node);
+          game.lines.add(l);
+          nc.lines.add(l);
+          node.lines.add(l);
+          if (!isAI ||
+              (nc.isVisible(game.player) && node.isVisible(game.player)))
+            l.setVisible(true);
         }
 
+      // check for prev owner's death
+      if (prevOwner != null)
+        prevOwner.checkDeath();
+
+      // check for victory
+      checkVictory();
+
+      return "ok";
+    }
+
+
+// check for player victory
+  function checkVictory()
+    {
       // check for finish
       var cntOwned = 0;
       var cntVisible = 0;
@@ -351,7 +417,21 @@ class Player
       // all visible nodes are owned, won
       if (cntOwned == cntVisible)
         ui.finish(this, "conquer");
+    }
 
-      return true;
+
+// check if player still has any nodes
+  function checkDeath()
+    {
+      for (n in game.nodes)
+        if (n.owner == this)
+          return;
+
+      // owner dead
+      ui.msg(name + " was wiped completely from the world.");
+
+      // player dead
+      if (!isAI)
+        ui.finish(this, "wiped");
     }
 }

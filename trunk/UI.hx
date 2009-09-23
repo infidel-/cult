@@ -332,11 +332,16 @@ class UI
 // debug info button
   function onStatusDebug(event)
     {
+      for (i in 0...4)
+        game.player.power[i] += 100;
+      updateStatus();
+/*
       for (i in 0...(Game.followerNames.length - 1))
         e("status.upgrade" + i).style.visibility = 'visible';
 
       for (n in game.nodes)
         n.marker.style.visibility = 'visible';
+*/
     }
 
 
@@ -482,6 +487,10 @@ class UI
 
       else if (state == "conquer" && player.isAI)
         msg = "Other cult has taken over the world. You fail.";
+
+      else if (state == "wiped")
+        msg = "The cult was wiped away completely. " +
+          "The Elder God lies dormant beneath the sea, waiting.";
 
       JQDialog.alert(msg, onStatusRestart);
     }
