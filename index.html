@@ -36,7 +36,8 @@ body {
 </head>
 <body>
 
-<div id="haxe:trace"></div>
+<div id="haxe:trace"
+  style="position: absolute; left:230px; font-size:10px; color:green"></div>
 <table>
 <tr>
 <td>
@@ -52,7 +53,7 @@ body {
   soundManager.url = "lib/soundmanager2.swf";
   soundManager.onload = Game.instance.ui.music.init;
   soundManager.onerror = function() {
-    window.alert("No music!");
+    window.alert("No music! Either you don't have Flash or it's blocked.");
     }
 </script>
 </body>

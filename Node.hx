@@ -22,12 +22,14 @@ class Node
   public var isGenerator: Bool;
   public var level: Int;
   public var owner: Player;
+  public var lines: List<Line>;
 
   public function new(gvar, uivar, newx, newy, index: Int)
     {
       game = gvar;
       ui = uivar;
       id = index;
+      lines = new List<Line>();
       visibility = new Array<Bool>();
       for (i in 0...Game.numPlayers)
         visibility.push(false);
@@ -71,10 +73,25 @@ class Node
   public function update()
     {
       var s = "";
-      s += name + "<br><br>";
-
-      if (owner == null)
+      if (Game.debugVis)
         {
+          s += "Node " + id + "<br>";
+          for (i in 0...Game.numPlayers)
+            s += visibility[i] + "<br>";
+        }
+
+      if (owner != null)
+        s += "<span style='color:" + Game.playerColors[owner.id] + "'>" +
+          owner.name + "</span><br>";
+      s += name + "<br>";
+
+      if (owner != null)
+        s += "<b>" + Game.followerNames[level] + 
+          "</b> <span style='color:white'>L" +
+          (level + 1) + "</span><br>";
+      if (owner == null || owner.isAI)
+        {
+          s += "<br>";
           // amount of generated power
           for (i in 0...Game.numPowers)
             if (power[i] > 0)
@@ -87,17 +104,13 @@ class Node
           s += "Chance of success: <span style='color:white'>" +
             game.player.getGainChance(this) + "%</span><br>";
         }
-      else
-        s += "<b>" + Game.followerNames[level] + 
-          "</b> <span style='color:white'>L" +
-          (level + 1) + "</span><br>";
 
 	  marker.style.background = '#111';
       if (owner != null)
         {
           marker.innerHTML = "" + (level + 1);
           marker.style.color = '#ffffff';
-          marker.style.background = '#005500';
+          marker.style.background = Game.nodeColors[owner.id];
         }
 	  if (isGenerator)
 		{
@@ -142,8 +155,13 @@ class Node
   public function setVisible(player: Player, v: Bool)
     {
       visibility[player.id] = v;
-      marker.style.visibility = 
-        (v ? 'visible' : 'hidden');
+      if (!player.isAI)
+        {
+          marker.style.visibility = 
+            (v ? 'visible' : 'hidden');
+          for (l in lines)
+            l.setVisible(v);
+        }
       return v;
     }
 
@@ -174,6 +192,21 @@ class Node
           n.setVisible(this.owner, true);
     }
 
+
+// clear lines leading to this node
+  public function clearLines()
+    {
+      if (owner == null)
+        return;
+   
+      for (l in lines)
+        {
+          l.clear();
+          game.lines.remove(l);
+          l.startNode.lines.remove(l);
+          l.endNode.lines.remove(l);
+        }
+    }
 
   static var names: Array<String> = 
     [

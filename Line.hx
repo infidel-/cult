@@ -4,29 +4,42 @@ import js.Lib;
 
 class Line
 {
+  var screen: Dynamic;
+
   public var startNode: Dynamic;
   public var endNode: Dynamic;
   public var pixels: Array<Dynamic>;
+  public var owner: Player;
+  public var isVisible: Bool;
 
 
-  function new()
+  function new(screen)
 	{
+      this.screen = screen;
 	  this.pixels = new Array<Dynamic>();
 	}
 
 
 // make a new line on screen
-  public static function paint(screen, startNode, endNode): Dynamic
+  public static function paint(screen, player,
+      startNode: Node, endNode: Node): Dynamic
 	{
-	  var line = new Line();
+	  var line = new Line(screen);
+      line.owner = player;
 	  line.startNode = startNode;
 	  line.endNode = endNode;
+      line.isVisible = false;
+
+      var cnt = 10;
+      var dist = cast startNode.distance(endNode);
+      if (dist < 50)
+        cnt = Std.int(dist / 6) + 1;
 
 	  var x: Float = startNode.centerX, y: Float = startNode.centerY;
-      var modx = (endNode.centerX - startNode.centerX) / 10,
-        mody = (endNode.centerY - startNode.centerY) / 10;
+      var modx = (endNode.centerX - startNode.centerX) / cnt,
+        mody = (endNode.centerY - startNode.centerY) / cnt;
 
-      for (i in 1...10)
+      for (i in 1...cnt)
         {
 		  x += modx;
 		  y += mody;
@@ -37,12 +50,33 @@ class Line
 		  pixel.style.top = Math.round(y) + 'px';
 		  pixel.style.width = '2';
 		  pixel.style.height = '2';
-		  pixel.style.background = '#55dd55';
+		  pixel.style.background = Game.lineColors[player.id];
           pixel.style.zIndex = 10;
+          pixel.style.visibility = 'hidden';
 		  screen.appendChild(pixel);
 
 		  line.pixels.push(pixel);
         }
+
+      return line;
 	}
+
+
+// set line visibility
+  public function setVisible(vis)
+    {
+      for (p in pixels)
+        p.style.visibility = (vis ? 'visible' : 'hidden');
+      isVisible = vis;
+    }
+
+
+// clear a line
+  public function clear()
+    {
+      for (p in pixels)
+        screen.removeChild(p);
+      pixels = null;
+    }
 }
 
