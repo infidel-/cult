@@ -10,19 +10,20 @@ class Node
 
   public var id: Int;
   public var name: String;
-  public var power: Array<Dynamic>; // intimidation, persuasion, bribe, worship
+  public var power: Array<Dynamic>; // intimidation, persuasion, bribe
   public var powerGenerated: Array<Dynamic>;
   public var marker: Dynamic;
   public var x: Int;
   public var y: Int;
   public var centerX: Int;
   public var centerY: Int;
-//  public var isVisible(default, setVisible): Bool;
   var visibility: Array<Bool>;
   public var isGenerator: Bool;
   public var level: Int;
   public var owner: Player;
+
   public var lines: List<Line>;
+  public var links: List<Node>;
 
   public function new(gvar, uivar, newx, newy, index: Int)
     {
@@ -30,6 +31,7 @@ class Node
       ui = uivar;
       id = index;
       lines = new List<Line>();
+      links = new List<Node>();
       visibility = new Array<Bool>();
       for (i in 0...Game.numPlayers)
         visibility.push(false);
@@ -73,6 +75,13 @@ class Node
   public function update()
     {
       var s = "";
+      if (Game.debugNear)
+        {
+          s += "Node " + id + "<br>";
+          for (n in links)
+            s += n.id + "<br>";
+        }
+
       if (Game.debugVis)
         {
           s += "Node " + id + "<br>";
@@ -83,6 +92,9 @@ class Node
       if (owner != null)
         s += "<span style='color:" + Game.playerColors[owner.id] + "'>" +
           owner.name + "</span><br>";
+      if (owner != null && owner.startNode == this)
+        s += "<span style='color:" + Game.playerColors[owner.id] +
+          "'>The Source</span><br>";
       s += name + "<br>";
 
       if (owner != null)
@@ -147,7 +159,17 @@ class Node
 // set owned flag
   public function setOwner(p: Player)
     {
+      // +1 to hardness on first gain
+      if (owner == null)
+        for (i in 0...Game.numPowers)
+          if (power[i] > 0)
+            power[i]++;
+
+      // update caches
+      if (owner != null)
+        owner.nodes.remove(this);
       owner = p;
+      owner.nodes.add(this);
       update();
     }
 
@@ -179,17 +201,84 @@ class Node
       if (level >= Game.followerNames.length - 1)
         return;
 
+      // +1 hardness
+      for (i in 0...Game.numPowers)
+        if (power[i] > 0)
+          power[i]++;
+
       level++;
       update();
     }
 
 
-// update visibility area around
-  public function updateVisibility()
+// update link visibility for given player
+  public function updateLinkVisibility(player)
     {
-      for (n in game.nodes)
-        if (n.distance(this) < UI.nodeVisibility)
-          n.setVisible(this.owner, true);
+      // update nodes visibility for previous owner in a radius
+      for (n in links)
+        if (n.isVisible(player) && n.owner != player)
+          {
+            var vis = false;
+            // try to find any adjacent node of this player
+            for (n2 in n.links)
+              if (n2.owner == player)
+                {
+                  vis = true;
+                  break;
+                }
+
+            n.setVisible(player, vis);
+            n.update();
+          }
+    }
+
+
+// paint links from adjacent nodes owned by node owner to this one
+  public function paintLines()
+    {
+	  // create lines between this node and adjacent ones
+      var hasLine = false;
+      for (n in links)
+        if (n.owner == this.owner)
+          {
+            var l = Line.paint(ui.map, this.owner, n, this);
+            game.lines.add(l);
+            n.lines.add(l);
+            this.lines.add(l);
+            if (!owner.isAI ||
+                (n.isVisible(game.player) && this.isVisible(game.player)))
+              l.setVisible(true);
+            hasLine = true;
+          }
+
+      if (hasLine)
+        return;
+
+      // no lines were drawn - draw to closest player node
+      var dist: Float = 10000;
+      var nc = null;
+      for (n in owner.nodes)
+        if (this != n && this.distance(n) < dist)
+          {
+            dist = this.distance(n);
+            nc = n;
+          }
+
+      var l = Line.paint(ui.map, this.owner, nc, this);
+      game.lines.add(l);
+      nc.lines.add(l);
+      this.lines.add(l);
+      if (!owner.isAI ||
+          (nc.isVisible(game.player) && this.isVisible(game.player)))
+        l.setVisible(true);
+    }
+
+
+// show nodes around to the current owner
+  public function showLinks()
+    {
+      for (n in links)
+        n.setVisible(this.owner, true);
     }
 
 
