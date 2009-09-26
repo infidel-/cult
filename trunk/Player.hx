@@ -7,14 +7,18 @@ class Player
   public var id: Int;
   public var name: String;
 
-  // or AI?
+  // player or AI?
   public var isAI: Bool;
+
+  // player is dead
+  public var isDead: Bool;
 
   // public awareness
   public var awareness(default, setAwareness): Int;
 
   // power reserve
-  public var power: Array<Int>; // intimidation, persuasion, bribe, worship
+  public var power: Array<Int>; // intimidation, persuasion, bribe, virgins
+  public var virgins(getVirgins, setVirgins): Int;
   
   // power that will be generated next turn (cache variable)
   public var powerMod: Array<Int>;
@@ -23,7 +27,12 @@ class Player
   public var startNode: Node;
 
   // followers number cache
-  public var numFollowers: Array<Int>;
+  public var neophytes(getNeophytes, null): Int;
+  public var adepts(getAdepts, null): Int;
+  public var priests(getPriests, null): Int;
+
+  // cache of owned nodes
+  public var nodes: List<Node>;
 
   // how many adepts were used this turn
   public var adeptsUsed: Int;
@@ -38,14 +47,14 @@ class Player
       this.isAI = false;
       this.power = [0, 0, 0, 0];
       this.powerMod = [0, 0, 0, 0];
-      this.numFollowers = [0, 0, 0];
       this.adeptsUsed = 0;
       this.awareness = 0;
+      this.nodes = new List<Node>();
     }
 
 
 // setup random starting node
-  public function setStartingNode()
+  public function setStartNode()
     {
       // find appropriate node
       var index = -1;
@@ -59,14 +68,13 @@ class Player
 
           // check for close nodes
           var ok = 1;
-          for (n in game.nodes)
-            if (n != node && n.owner != null &&
-                n.distance(node) < UI.nodeVisibility + 50)
+          for (p in game.players)
+            if (p.startNode != null &&
+                node.distance(p.startNode) < UI.nodeVisibility + 50)
               {
                 ok = 0;
                 break;
               }
-
           if (ok == 0)
             continue;
 
@@ -75,22 +83,29 @@ class Player
 	  startNode = game.nodes[index];
       startNode.setOwner(this);
 
+      // make starting node generator
 	  for (i in 0...Game.numPowers)
 	    if (startNode.power[i] > 0)
 		  {
 		    startNode.powerGenerated[i] = 1;
 			powerMod[i] += 1;
 		  }
-      numFollowers[0]++;
+      neophytes++;
 	  startNode.setGenerator(true);
 
       startNode.setVisible(this, true);
-      startNode.updateVisibility();
+      startNode.showLinks();
 
       // give initial power from starting node
 	  for (i in 0...Game.numPowers)
-	    power[i] += Math.round(startNode.powerGenerated[i]);
+        {
+	      power[i] += Math.round(startNode.powerGenerated[i]);
 
+          // 50% chance of raising the conquer difficulty
+          if (Math.random() < 0.5)
+            startNode.power[i]++;
+        }
+      startNode.update();
 	}
 
 
@@ -122,7 +137,7 @@ class Player
       if (level == 0)
         ch = 99 - awareness;
       else if (level == 1)
-        ch = 80 - awareness * 2;
+        ch = 80 - Std.int(awareness * 1.5);
       else if (level == 2)
         ch = 75 - awareness * 2;
       if (ch < 1)
@@ -147,7 +162,7 @@ class Player
 // lower awareness
   public function lowerAwareness(pwr)
     {
-      if (awareness == 0)
+      if (awareness == 0 || adeptsUsed >= adepts)
         return;
 
       awareness -= 2;
@@ -181,8 +196,8 @@ class Player
 // upgrade nodes
   public function upgrade(level)
     {
-      if ((level == 2 && power[3] < Game.numSummonVirgins) ||
-          (level < 2 && power[3] < level + 1))
+      if ((level == 2 && virgins < Game.numSummonVirgins) ||
+          (level < 2 && virgins < level + 1))
         {
           if (!isAI)
             ui.msg("Not enough virgins");
@@ -196,7 +211,7 @@ class Player
           return;
         }
 
-      power[3] -= level + 1;
+      virgins -= (level + 1);
 
       // check for failure
       if (100 * Math.random() > getUpgradeChance(level))
@@ -210,16 +225,35 @@ class Player
         }
 
       awareness += level;
-      numFollowers[level]--;
-      numFollowers[level + 1]++;
 
-      // find first node of this level and upgrade
-      for (n in game.nodes)
-        if (n.owner == this && n.level == level)
-          {
-            n.upgrade();
-            break;
-          }
+      // starting node upgrades first
+      var ok = false;
+      if (startNode.level == level)
+        {
+          startNode.upgrade();
+          ok = true;
+        }
+
+      // generators upgrade 2nd
+      if (!ok)
+        for (n in nodes)
+          if (n.level == level && n.isGenerator)
+            {
+              n.upgrade();
+              ok = true;
+              break;
+            }
+ 
+
+      // usual nodes upgrade last
+      if (!ok)
+        for (n in nodes)
+          if (n.level == level)
+            {
+              n.upgrade();
+              ok = true;
+              break;
+            }
   
       ui.updateStatus();
     }
@@ -228,18 +262,19 @@ class Player
 // summon elder god
   public function summon()
     {
-      power[3] -= Game.numSummonVirgins;
+      virgins -= Game.numSummonVirgins;
 
       // chance of failure
       if (100 * Math.random() > getUpgradeChance(2))
         {
           // 1 priest goes totally insane and has to be replaced with neophyte
-          for (n in game.nodes)
-            if (n.owner == this && n.level == 2)
+          for (n in nodes)
+            if (n.level == 2)
               {
                 n.level = 0;
                 n.update();
-                numFollowers[2]--;
+                priests--;
+                neophytes++;
                 break;
               }
 
@@ -260,25 +295,25 @@ class Player
     {
 	  // give power and recalculate power mod cache
 	  powerMod = [0, 0, 0, 0];
-	  for (node in game.nodes)
-	    if (node.owner == this && node.isGenerator)
-		    for (i in 0...Game.numPowers)
-		      {
-                // failure chance
-                if (100 * Math.random() < getResourceChance())
-		          power[i] += Math.round(node.powerGenerated[i]);
-			    powerMod[i] += Math.round(node.powerGenerated[i]);
-			  }
+	  for (node in nodes)
+	    if (node.isGenerator)
+		  for (i in 0...Game.numPowers)
+		    {
+              // failure chance
+              if (100 * Math.random() < getResourceChance())
+		        power[i] += Math.round(node.powerGenerated[i]);
+			  powerMod[i] += Math.round(node.powerGenerated[i]);
+			}
 
       // neophytes bring in some virgins
-      var value = Std.int(Math.random() * (numFollowers[0] / 4 - 0.5));
-      power[3] += value;
+      var value = Std.int(Math.random() * (neophytes / 4 - 0.5));
+      virgins += value;
       adeptsUsed = 0;
     }
 
 
 // activate node (returns result for AI stuff)
-  public function activate(node: Dynamic): String
+  public function activate(node: Node): String
     {
 	  if (node.owner == this)
 		return "isOwner";
@@ -315,33 +350,11 @@ class Player
 		  powerMod[i] += Math.round(node.powerGenerated[i]);
       node.clearLines();
       node.setOwner(this);
-      numFollowers[0]++;
-      node.updateVisibility();
+      node.showLinks();
 
-      // update nodes visibility for previous owner in a radius
-/*
+      // update previous owner's visibility of the links for this node
       if (prevOwner != null)
-        for (n in node.links)
-          if (n.isVisible(prevOwner))
-*/            
-      if (prevOwner != null)
-        for (n in game.nodes)
-          if (n != node && n.distance(node) < UI.nodeVisibility &&
-              n.isVisible(prevOwner))
-            {
-              var vis = false;
-              // try to find any adjacent node of this player
-              for (n2 in game.nodes)
-                if (n != n2 && n2.distance(n) < UI.nodeVisibility &&
-                    n.owner == prevOwner)
-                  {
-                    vis = true;
-                    break;
-                  }
-
-              n.setVisible(prevOwner, vis);
-              n.update();
-            }
+        node.updateLinkVisibility(prevOwner);
 
       // raise public awareness
       if (node.isGenerator)
@@ -351,43 +364,8 @@ class Player
       if (!isAI)
         ui.updateStatus();
 
-	  // create lines between this node and adjacent ones
-      var hasLine = false;
-      for (n in game.nodes)
-        if (n.owner == this && node != n &&
-            node.distance(n) < UI.nodeVisibility - 10)
-          {
-            var l = Line.paint(ui.map, this, n, node);
-            game.lines.add(l);
-            n.lines.add(l);
-            node.lines.add(l);
-            if (!isAI ||
-                (n.isVisible(game.player) && node.isVisible(game.player)))
-              l.setVisible(true);
-            hasLine = true;
-          }
-
-      // no lines were drawn - draw to closest node 
-      if (!hasLine)
-        {
-          var dist = 10000;
-          var nc = null;
-          for (n in game.nodes)
-            if (n.owner == this && node != n &&
-                node.distance(n) < dist)
-              {
-                dist = node.distance(n);
-                nc = n;
-              }
-
-          var l = Line.paint(ui.map, this, nc, node);
-          game.lines.add(l);
-          nc.lines.add(l);
-          node.lines.add(l);
-          if (!isAI ||
-              (nc.isVisible(game.player) && node.isVisible(game.player)))
-            l.setVisible(true);
-        }
+      // paint lines to this node from adjacent nodes owned by node owner
+      node.paintLines();
 
       // check for prev owner's death
       if (prevOwner != null)
@@ -404,34 +382,77 @@ class Player
   function checkVictory()
     {
       // check for finish
-      var cntOwned = 0;
-      var cntVisible = 0;
-      for (n in game.nodes)
-        {
-          if (n.owner == this)
-            cntOwned++;
-          if (n.isVisible(this))
-            cntVisible++;
-        }
+      var ok = true;
+      for (p in game.players)
+        if (p != this && !p.isDead)
+          ok = false;
 
-      // all visible nodes are owned, won
-      if (cntOwned == cntVisible)
-        ui.finish(this, "conquer");
+      // there are live players left
+      if (!ok)
+        return;
+
+      ui.finish(this, "conquer");
     }
 
 
 // check if player still has any nodes
   function checkDeath()
     {
-      for (n in game.nodes)
-        if (n.owner == this)
-          return;
+      if (this.nodes.length > 0)
+        return;
 
       // owner dead
       ui.msg(name + " was wiped completely from the world.");
 
+      isDead = true;
+
       // player dead
       if (!isAI)
         ui.finish(this, "wiped");
+    }
+
+
+// getter for virgins
+  function getVirgins()
+    {
+      return power[3];
+    }
+
+
+// setter for virgins
+  function setVirgins(v)
+    {
+      power[3] = v;
+      return v;
+    }
+
+
+// get number of followers of this level
+  public function getNumFollowers(level)
+    {
+      var cnt = 0;
+      for (n in nodes)
+        if (n.level == level)
+          cnt++;
+      return cnt;
+    }
+
+
+// getters and setters for different numFollowers
+  function getNeophytes()
+    {
+      return getNumFollowers(0);
+    }
+
+
+  function getAdepts()
+    {
+      return getNumFollowers(1);
+    }
+
+
+  function getPriests()
+    {
+      return getNumFollowers(2);
     }
 }

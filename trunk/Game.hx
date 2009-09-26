@@ -10,7 +10,7 @@ class Game
   var ui: UI;
 
   // players list and link to player
-  var players: Array<Player>;
+  public var players: Array<Player>;
   public var player: Player;
 
   // turns passed
@@ -40,7 +40,8 @@ class Game
     [ "#005500", "#010955", "#560053", "#565300" ];
   public static var playerColors: Array<String> =
     [ "#00B400", "#2F43FD", "#B400AE", "#B4AE00" ];
-
+ 
+  public static var followerLevels = 3;
   public static var numPowers = 3;
   public static var numPlayers = 4;
   public static var numSummonVirgins = 9;
@@ -49,6 +50,8 @@ class Game
   public static var isDebug = true;
   public static var debugTime = false;
   public static var debugVis = false;
+  public static var debugNear = false;
+  public static var debugAI = true;
 
 
 // constructor
@@ -64,6 +67,7 @@ class Game
 // restart a game
   public function restart()
     {
+      startTimer("restart");
       ui.clearMap();
 
       this.lines = new List<Line>();
@@ -116,11 +120,21 @@ class Game
 		  node.setGenerator(true);
         }
 
+      // fill near lists
+      for (n in nodes)
+        for (n2 in nodes)
+          if (n != n2 && n.distance(n2) < UI.nodeVisibility)
+            {
+              n.links.remove(n2);
+              n.links.add(n2);
+            }
+
       // choose and setup starting nodes
       for (p in players)
-	    p.setStartingNode();
+	    p.setStartNode();
 
       ui.updateStatus();
+      endTimer("restart"); 
     }
 
 
@@ -129,14 +143,12 @@ class Game
     {
       // ensure player goes last
       for (p in players)
-        if (p.isAI)
+        if (p.isAI && !p.isDead)
           {
             p.turn();
-            if (debugTime)
-              startTimer();
+            startTimer("ai");
             untyped p.aiTurn();
-            if (debugTime)
-              endTimer();
+            endTimer("ai");
           }
       player.turn();
 
@@ -186,16 +198,18 @@ class Game
 
 // start counting time
   var timerTime: Float;
-  public function startTimer()
+  public inline function startTimer(name)
     {
-      timerTime = Date.now().getTime();
+      if (debugTime)
+        timerTime = Date.now().getTime();
     }
 
 
 // end counting time and display it
-  public function endTimer()
+  public inline function endTimer(name)
     {
-      trace(Date.now().getTime() - timerTime);
+      if (debugTime)
+        trace(name + ": " + (Date.now().getTime() - timerTime) + "ms");
     }
 
 

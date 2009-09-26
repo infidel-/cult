@@ -397,7 +397,7 @@ class UI
           updateTip("status.powerMark" + i, s);
           updateTip("status.powerName" + i, s);
         }
-      for (i in 0...game.player.numFollowers.length)
+      for (i in 0...Game.followerLevels)
         {
           updateTip("status.follower" + i, tipFollowers[i]);
           updateTip("status.upgrade" + i, tipUpgrade[i] +
@@ -417,9 +417,9 @@ class UI
                'visible' : 'hidden');
           }
 
-      for (i in 0...game.player.numFollowers.length)
+      for (i in 0...Game.followerLevels)
         e("status.followers" + i).innerHTML = "" +
-          game.player.numFollowers[i];
+          game.player.getNumFollowers(i);
 
       // update powers
 	  for (i in 0...(Game.numPowers + 1))
@@ -428,7 +428,7 @@ class UI
             "<b>" + game.player.power[i] + "</b>";
           if (i == 3)
             e("status.powerMod3").innerHTML = " +0-" +
-              Std.int(game.player.numFollowers[0] / 4 - 0.5);
+              Std.int(game.player.neophytes / 4 - 0.5);
 		  else 
 		    e("status.powerMod" + i).innerHTML =
               " +0-" + game.player.powerMod[i];
@@ -439,8 +439,8 @@ class UI
   
       for (i in 0...Game.numPowers)
         e("status.lowerAwareness" + i).style.visibility = 'hidden';
-      if (game.player.adeptsUsed < game.player.numFollowers[1] &&
-          game.player.numFollowers[1] > 0)
+      if (game.player.adeptsUsed < game.player.adepts &&
+          game.player.adepts > 0)
         for (i in 0...Game.numPowers)
           if (game.player.power[i] > 0)
             e("status.lowerAwareness" + i).style.visibility = 'visible';
@@ -448,14 +448,14 @@ class UI
       // upgrade buttons visibility
       for (i in 0...(Game.followerNames.length - 1))
           e("status.upgrade" + i).style.visibility =
-            ((game.player.numFollowers[i] >= Game.upgradeCost &&
-              game.player.power[3] >= i + 1) ?
+            ((game.player.getNumFollowers(i) >= Game.upgradeCost &&
+              game.player.virgins >= i + 1) ?
              'visible' : 'hidden');
 
       // summon button visibility
       e("status.upgrade2").style.visibility = 
-        ((game.player.numFollowers[2] >= Game.upgradeCost &&
-          game.player.power[3] >= Game.numSummonVirgins) ?
+        ((game.player.priests >= Game.upgradeCost &&
+          game.player.virgins >= Game.numSummonVirgins) ?
           'visible' : 'hidden');
     }
 
@@ -479,7 +479,7 @@ class UI
           " turns.";
 
       else if (state == "summon" && player.isAI)
-        msg = "Other cult has completed the ritual of summoning. You fail.";
+        msg = player.name + " has completed the ritual of summoning. You fail.";
 
       else if (state == "conquer" && !player.isAI)
         msg = "The cult has taken over the world in " +
