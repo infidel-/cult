@@ -436,11 +436,12 @@ class UI
 
 	  e("status.turns").innerHTML = "" + game.turns;
 	  e("status.awareness").innerHTML = "" + game.player.awareness + "%";
-  
+ 
+      // lower awareness buttons visibility
       for (i in 0...Game.numPowers)
         e("status.lowerAwareness" + i).style.visibility = 'hidden';
       if (game.player.adeptsUsed < game.player.adepts &&
-          game.player.adepts > 0)
+          game.player.adepts > 0 && game.player.awareness > 0)
         for (i in 0...Game.numPowers)
           if (game.player.power[i] > 0)
             e("status.lowerAwareness" + i).style.visibility = 'visible';
