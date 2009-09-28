@@ -254,8 +254,13 @@ class Player
               ok = true;
               break;
             }
-  
-      ui.updateStatus();
+
+      if (!isAI)
+        ui.updateStatus();
+      
+      // notify player
+      if (this != game.player && priests >= 3)
+        ui.alert(name + " has 3 priests. Be careful.");
     }
 
 
@@ -273,8 +278,6 @@ class Player
               {
                 n.level = 0;
                 n.update();
-                priests--;
-                neophytes++;
                 break;
               }
 
@@ -283,6 +286,7 @@ class Player
               ui.alert("The stars were not right. The high priest goes insane.");
               ui.updateStatus();
             }
+          else ui.alert(name + " tried to summon Elder God but failed.");
           return;
         }
 
@@ -317,6 +321,23 @@ class Player
     {
 	  if (node.owner == this)
 		return "isOwner";
+
+      // cannot gain a generator if it has 3+ active links
+      if (node.isGenerator && node.owner != null)
+        {
+          // count links with same owner
+          var cnt = 0;
+          for (n in node.links)
+            if (n.owner == node.owner)
+              cnt++;
+
+          if (cnt >= 3)
+            {
+              if (!isAI)
+                ui.msg("Generator has " + cnt + " links.");
+              return "hasLinks";
+            }
+        }
 
 	  // check for power
 	  for (i in 0...Game.numPowers)
@@ -366,6 +387,10 @@ class Player
 
       // paint lines to this node from adjacent nodes owned by node owner
       node.paintLines();
+
+      // update display
+      for (n in node.links)
+        n.update();
 
       // check for prev owner's death
       if (prevOwner != null)

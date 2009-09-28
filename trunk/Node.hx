@@ -94,7 +94,7 @@ class Node
           owner.name + "</span><br>";
       if (owner != null && owner.startNode == this)
         s += "<span style='color:" + Game.playerColors[owner.id] +
-          "'>The Source</span><br>";
+          "'>The Origin</span><br>";
       s += name + "<br>";
 
       if (owner != null)
@@ -126,7 +126,18 @@ class Node
         }
 	  if (isGenerator)
 		{
-		  marker.style.border = '3px solid #aaa';
+		  marker.style.border = '3px solid #777';
+          if (owner != null)
+            {
+              var cnt = 0;
+              for (n in links)
+                if (n.owner == owner)
+                  cnt++;
+
+              if (cnt >= 3)
+                marker.style.border = '3px solid #ffffff';
+            }
+
 		  s += "<br>Generates:<br>";
 	      for (i in 0...Game.numPowers)
      	    if (powerGenerated[i] > 0)

@@ -15,8 +15,13 @@ class AI extends Player
       // TODO real AI: loop over nodes getting all interesting targets
       // that can be conquered
       // then sort targets by priority like this :
-      // free generator -> free node -> owned generator -> owned node
-      // --> free but need to convert -> owned but need to convert
+      // owned node by cult in war with this one
+      // free generator -> 
+      // free node -> 
+      // owned generator with < 3 links ->
+      // owned node ->
+      // free but need to convert -> 
+      // owned but need to convert
 
       // try to upgrade followers
       aiUpgradeFollowers();
@@ -41,6 +46,10 @@ class AI extends Player
           // check if player can convert resources for a try
           if (ret == "notEnoughPower")
             aiActivateNodeByConvert(node);
+
+          // node is a generator with links, should try to cut them
+          else if (ret == "hasLinks")
+            1;
         }
     }
 
