@@ -47,11 +47,11 @@ class Game
   public static var numSummonVirgins = 9;
   static var nodesCount = 100;
   public static var upgradeCost = 3;
-  public static var isDebug = true;
+  public static var isDebug = false;
   public static var debugTime = false;
   public static var debugVis = false;
   public static var debugNear = false;
-  public static var debugAI = true;
+  public static var debugAI = false;
 
 
 // constructor
