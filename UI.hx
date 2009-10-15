@@ -186,8 +186,7 @@ class UI
       // end turn button
 	  s += "<center style='padding-top:10px'><button id='status.endTurn'>End<br>turn</button> ";
 	 
-      if (Game.isDebug)
-        s += "<button id='status.debug'>DBG</button> ";
+      s += "<button id='status.debug'>DBG</button> ";
 
       // restart button
       s += "<button id='status.restart'>Restart</button></center>";
@@ -241,6 +240,8 @@ class UI
       e("status.stop").onclick = onStatusStop;
       e("status.random").onclick = onStatusRandom;
       e("status.track").onclick = onStatusTrack;
+      if (!Game.isDebug)
+        e("status.debug").style.visibility = 'hidden';
 
       // map display
       map = e("map");
