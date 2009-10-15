@@ -1,8 +1,4 @@
-#summary Tutorial for the game
 #labels tutorial
-
-= Tutorial =
-
 Evil Cult is a turn-based strategy of global conquest. You play as the leader of a certain cult whose goal is either to destroy all other cults (there are three of them) or summon Elder God, which is the same. You can try summoning when you have 3 priests and 9 virgins. Chance of success greatly depends on society awareness. Other cults have other goals but the principle is the same - they need priests and virgins of complete it.
 
 At the start of the game you have one follower - a neophyte. As this neophyte is the Origin of your cult, each turn he generates a point of one of the three resources - Intimidation, Persuasion or Bribery. You will need these resources to gain more followers or to convert the followers of other cults. You can convert resources between themselves at the ratio 2 to 1. 
