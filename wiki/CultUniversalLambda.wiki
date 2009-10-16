@@ -1,0 +1,26 @@
+#summary Information about the Universal Lambda.
+
+= Name =
+
+The Universal Lambda
+
+
+= Short Description =
+
+Programmers who want to turn humanity into a vast computer.
+
+= Long Description =
+
+_Long description goes here._
+
+= Mastery Start =
+
+_Mastery start goes here._
+
+= Mastery Success =
+
+_Mastery success goes here._
+
+= Mastery Failure =
+
+_Mastery Failure goes here._
