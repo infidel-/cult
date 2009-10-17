@@ -119,7 +119,7 @@ class UI
       s += "</table></fieldset>";
 
       s += "<fieldset><legend" +
-        " style='padding:0 5 0 5;color:lightgray;'>RESOURCES</legend>" +
+        " style='padding:0 5 0 5;'>RESOURCES</legend>" +
         "<table width=100% cellpadding=0 cellspacing=0 style='font-size:14px'>";
       for (i in 0...(Game.numPowers + 1))
 	    {
@@ -260,6 +260,14 @@ class UI
 */
   
       new JQuery('#status *').tooltip({ delay: 0 });
+/*
+//          JQDialog.alert("NO IE!", function() { });
+      new JQuery().ready(function()
+        {
+          untyped JQDialog.init();
+          JQDialog.alert("NO IE!", function() { });
+        });
+*/
     }
 
 
@@ -277,9 +285,9 @@ class UI
     }
 
 
-  public function onStatusLowerAwareness(event)
+  public function onStatusLowerAwareness(event: Dynamic)
     {
-	  var power = Std.parseInt(event.target.id.substr(21, 1));
+	  var power = Std.parseInt(getTarget(event).id.substr(21, 1));
       game.player.lowerAwareness(power);
     }
 
@@ -347,42 +355,53 @@ class UI
 
 
 // upgrade button
-  function onStatusUpgrade(event)
+  function onStatusUpgrade(event: Dynamic)
     {
-	  var lvl = Std.parseInt(event.target.id.substr(14, 1));
+	  var lvl = Std.parseInt(getTarget(event).id.substr(14, 1));
 
 	  game.player.upgrade(lvl);
     }
 
 
 // convert button
-  function onStatusConvert(event)
+  function onStatusConvert(event: Dynamic)
     {
-	  var from = Std.parseInt(event.target.id.substr(14, 1));
-	  var to = Std.parseInt(event.target.id.substr(15, 1));
+	  var from = Std.parseInt(getTarget(event).id.substr(14, 1));
+	  var to = Std.parseInt(getTarget(event).id.substr(15, 1));
 
 	  game.player.convert(from, to);
 	}
 
 
 // end turn button
-  function onStatusEndTurn(event)
+  function onStatusEndTurn(event: Dynamic)
     {
 	  game.endTurn();
 	}
 
 
 // restart game button
-  function onStatusRestart(event)
+  function onStatusRestart(event: Dynamic)
     {
       game.restart();
     }
 
 
-// on clicking node
-  public function onNodeClick(event)
+// compatibility crap
+  public function getTarget(event)
     {
-      game.player.activate(event.target.node);
+      if (event == null)
+        event = untyped __js__("window.event");
+      var t = event.target;
+      if (t == null)
+        t = event.srcElement;
+      return t;
+    }
+
+// on clicking node
+  public function onNodeClick(event: Dynamic)
+    {
+      game.player.activate(getTarget(event).node);
     }
 
 
