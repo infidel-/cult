@@ -1,8 +1,4 @@
 // game class for Cult
-// TODO: ai wont finish by conquering all
-
-import js.Lib;
-
 
 
 class Game
@@ -188,7 +184,6 @@ class Game
 
       // node attributes
       var node = new Node(this, ui, x, y, lastNodeIndex++);
-	  node.marker.onclick = ui.onNodeClick;
 	  var index: Int = Math.round((numPowers - 1) * Math.random());
 	  node.power[index] = 1;
 
