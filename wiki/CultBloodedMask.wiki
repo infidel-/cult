@@ -1,0 +1,23 @@
+= Name =
+
+The Blooded Mask
+
+= Short Description =
+
+A group devoted to ripping away the masks people wear and revealing the insane reality beyond.
+
+= Long Description =
+
+_Long description goes here._
+
+= Mastery Start =
+
+_Mastery start goes here._
+
+= Mastery Success =
+
+_Mastery success goes here._
+
+= Mastery Failure =
+
+_Mastery Failure goes here._
