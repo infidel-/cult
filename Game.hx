@@ -47,11 +47,12 @@ class Game
   public static var numSummonVirgins = 9;
   static var nodesCount = 100;
   public static var upgradeCost = 3;
-  public static var isDebug = false;
+  public static var isDebug = true;
   public static var debugTime = false;
   public static var debugVis = false;
   public static var debugNear = false;
   public static var debugAI = false;
+  public static var mapVisible = false;
 
 
 // constructor
@@ -190,6 +191,9 @@ class Game
 	  node.marker.onclick = ui.onNodeClick;
 	  var index: Int = Math.round((numPowers - 1) * Math.random());
 	  node.power[index] = 1;
+
+      if (mapVisible)
+        node.setVisible(player, true);
 
       node.update();
       nodes.push(node);

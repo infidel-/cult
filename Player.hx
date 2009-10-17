@@ -19,7 +19,10 @@ class Player
   // power reserve
   public var power: Array<Int>; // intimidation, persuasion, bribe, virgins
   public var virgins(getVirgins, setVirgins): Int;
-  
+ 
+  // wars
+  public var wars: Array<Bool>;
+
   // power that will be generated next turn (cache variable)
   public var powerMod: Array<Int>;
 
@@ -47,6 +50,7 @@ class Player
       this.isAI = false;
       this.power = [0, 0, 0, 0];
       this.powerMod = [0, 0, 0, 0];
+      this.wars = [false, false, false, false];
       this.adeptsUsed = 0;
       this.awareness = 0;
       this.nodes = new List<Node>();
@@ -259,8 +263,8 @@ class Player
         ui.updateStatus();
       
       // notify player
-      if (this != game.player && priests >= 3)
-        ui.alert(name + " has 3 priests. Be careful.");
+      if (this != game.player && priests >= 2)
+        ui.alert(name + " has " + priests + " priests. Be careful.");
     }
 
 
@@ -313,6 +317,17 @@ class Player
       var value = Std.int(Math.random() * (neophytes / 4 - 0.5));
       virgins += value;
       adeptsUsed = 0;
+    }
+
+
+// can this player activate this node?
+  public function canActivate(node: Node): Bool
+    {
+	  for (i in 0...Game.numPowers)
+        if (power[i] < node.power[i])
+          return false;
+
+      return true;
     }
 
 
@@ -395,6 +410,16 @@ class Player
       // check for prev owner's death
       if (prevOwner != null)
         prevOwner.checkDeath();
+
+      // declare war
+      if (prevOwner != null && !prevOwner.isDead && !wars[prevOwner.id])
+        {
+          wars[prevOwner.id] = true;
+          prevOwner.wars[id] = true;
+
+          ui.alert(name + " has declared a war against " +
+            prevOwner.name + ".");
+        }
 
       // check for victory
       checkVictory();

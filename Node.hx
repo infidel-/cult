@@ -19,6 +19,7 @@ class Node
   public var centerY: Int;
   var visibility: Array<Bool>;
   public var isGenerator: Bool;
+  public var isProtected: Bool;
   public var level: Int;
   public var owner: Player;
 
@@ -124,6 +125,7 @@ class Node
           marker.style.color = '#ffffff';
           marker.style.background = Game.nodeColors[owner.id];
         }
+      isProtected = false;
 	  if (isGenerator)
 		{
 		  marker.style.border = '3px solid #777';
@@ -135,7 +137,10 @@ class Node
                   cnt++;
 
               if (cnt >= 3)
-                marker.style.border = '3px solid #ffffff';
+                {
+                  isProtected = true;
+                  marker.style.border = '3px solid #ffffff';
+                }
             }
 
 		  s += "<br>Generates:<br>";
@@ -190,6 +195,8 @@ class Node
       visibility[player.id] = v;
       if (!player.isAI)
         {
+          if (Game.mapVisible)
+            v = true;
           marker.style.visibility = 
             (v ? 'visible' : 'hidden');
           for (l in lines)
