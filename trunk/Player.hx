@@ -353,7 +353,7 @@ class Player
               return "hasLinks";
             }
         }
-
+  
 	  // check for power
 	  for (i in 0...Game.numPowers)
 		if (power[i] < node.power[i])

@@ -496,23 +496,38 @@ class UI
       var msg = "";
 
       if (state == "summon" && !player.isAI)
-        msg = "The stars were right. The Elder God was summoned in " +
-          game.turns +
-          " turns.";
+        {
+          msg = "The stars were right. The Elder God was summoned in " +
+            game.turns + " turns.";
+          track("winGame", "summon", game.turns);
+        }
 
       else if (state == "summon" && player.isAI)
-        msg = player.name + " has completed the ritual of summoning. You fail.";
+        {
+          msg = player.name +
+            " has completed the ritual of summoning. You fail.";
+          track("winGame", "summon", game.turns);
+        }
 
       else if (state == "conquer" && !player.isAI)
-        msg = "The cult has taken over the world in " +
-          game.turns + " turns. The Elder Gods are pleased.";
+        {
+          msg = "The cult has taken over the world in " +
+            game.turns + " turns. The Elder Gods are pleased.";
+          track("winGame", "conquer", game.turns);
+        }
 
       else if (state == "conquer" && player.isAI)
-        msg = "Other cult has taken over the world. You fail.";
+        {
+          msg = "Other cult has taken over the world. You fail.";
+          track("loseGame", "conquer", game.turns);
+        }
 
       else if (state == "wiped")
-        msg = "The cult was wiped away completely. " +
-          "The Elder God lies dormant beneath the sea, waiting.";
+        {
+          msg = "The cult was wiped away completely. " +
+            "The Elder God lies dormant beneath the sea, waiting.";
+          track("loseGame", "wiped", game.turns);
+        }
 
       JQDialog.alert(msg, onStatusRestart);
     }
@@ -538,4 +553,11 @@ class UI
     {
 	  return Lib.document.getElementById(s);
 	}
+
+
+// track stuff through google analytics
+  public inline function track(action: String, ?label: String, ?value: Int)
+    {
+      untyped pageTracker._trackEvent('Evil Cult', action, label, value);
+    }
 }
