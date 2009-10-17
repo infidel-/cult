@@ -64,6 +64,7 @@ class Game
 // restart a game
   public function restart()
     {
+      ui.track("startGame");
       startTimer("restart");
       ui.clearMap();
 
