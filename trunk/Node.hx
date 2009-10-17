@@ -1,23 +1,20 @@
 // node class
 
-
-//extern class JQuery extends Dummy {}
-
 class Node
 {
   var ui: UI;
   var game: Game;
+  var uiNode: UINode;
 
   public var id: Int;
   public var name: String;
   public var power: Array<Dynamic>; // intimidation, persuasion, bribe
   public var powerGenerated: Array<Dynamic>;
-  public var marker: Dynamic;
   public var x: Int;
   public var y: Int;
   public var centerX: Int;
   public var centerY: Int;
-  var visibility: Array<Bool>;
+  public var visibility: Array<Bool>;
   public var isGenerator: Bool;
   public var isProtected: Bool;
   public var level: Int;
@@ -40,7 +37,6 @@ class Node
 	  isGenerator = false;
       power = [0, 0, 0];
 	  powerGenerated = [0, 0, 0];
-      marker = null;
       level = 0;
       owner = null;
 
@@ -51,108 +47,27 @@ class Node
       centerX = x + Math.round(UI.markerWidth / 2);
       centerY = y + Math.round(UI.markerHeight / 2);
 
-      marker = js.Lib.document.createElement("map.node" + id);
-      marker.id = "map.node" + id;
-	  marker.node = this;
-	  marker.style.innerHTML = ' ';
-	  marker.style.background = '#222';
-	  marker.style.border = '1px solid #777';
-	  marker.style.width = UI.markerWidth;
-	  marker.style.height = UI.markerHeight;
-	  marker.style.position = 'absolute';
-	  marker.style.left = x;
-	  marker.style.top = y;
-	  marker.style.visibility = 'hidden';
-	  marker.style.textAlign = 'center';
-	  marker.style.fontWeight = 'bold';
-      marker.style.fontSize = '12px';
-	  marker.style.zIndex = 20;
-	  marker.style.cursor = 'pointer';
-	  ui.map.appendChild(marker);
+      uiNode = new UINode(game, ui, this);
     }
 
 
 // update node display
   public function update()
     {
-      var s = "";
-      if (Game.debugNear)
-        {
-          s += "Node " + id + "<br>";
-          for (n in links)
-            s += n.id + "<br>";
-        }
-
-      if (Game.debugVis)
-        {
-          s += "Node " + id + "<br>";
-          for (i in 0...Game.numPlayers)
-            s += visibility[i] + "<br>";
-        }
-
-      if (owner != null)
-        s += "<span style='color:" + Game.playerColors[owner.id] + "'>" +
-          owner.name + "</span><br>";
-      if (owner != null && owner.startNode == this)
-        s += "<span style='color:" + Game.playerColors[owner.id] +
-          "'>The Origin</span><br>";
-      s += name + "<br>";
-
-      if (owner != null)
-        s += "<b>" + Game.followerNames[level] + 
-          "</b> <span style='color:white'>L" +
-          (level + 1) + "</span><br>";
-      if (owner == null || owner.isAI)
-        {
-          s += "<br>";
-          // amount of generated power
-          for (i in 0...Game.numPowers)
-            if (power[i] > 0)
-		      {
-                s += "<b style='color:" + Game.powerColors[i] + "'>" +
-                  Game.powerNames[i] + "</b> " + power[i] + "<br>";
-			    marker.innerHTML = Game.powerShortNames[i];
-                marker.style.color = Game.powerColors[i];
-		      }
-          s += "Chance of success: <span style='color:white'>" +
-            game.player.getGainChance(this) + "%</span><br>";
-        }
-
-	  marker.style.background = '#111';
-      if (owner != null)
-        {
-          marker.innerHTML = "" + (level + 1);
-          marker.style.color = '#ffffff';
-          marker.style.background = Game.nodeColors[owner.id];
-        }
+      // update protected flag
       isProtected = false;
-	  if (isGenerator)
+	  if (isGenerator && owner != null)
 		{
-		  marker.style.border = '3px solid #777';
-          if (owner != null)
-            {
-              var cnt = 0;
-              for (n in links)
-                if (n.owner == owner)
-                  cnt++;
+          var cnt = 0;
+          for (n in links)
+            if (n.owner == owner)
+              cnt++;
 
-              if (cnt >= 3)
-                {
-                  isProtected = true;
-                  marker.style.border = '3px solid #ffffff';
-                }
-            }
+          if (cnt >= 3)
+            isProtected = true;
+        }
 
-		  s += "<br>Generates:<br>";
-	      for (i in 0...Game.numPowers)
-     	    if (powerGenerated[i] > 0)
-          	  s += "<b style='color:" + Game.powerColors[i] + "'>" +
-                Game.powerNames[i] + "</b> " +
-			    powerGenerated[i] + "<br>";
-		}
-
-      marker.title = s;
-      new JQuery("#map\\.node" + id).tooltip({ delay: 0 });
+      uiNode.update();
     }
 
 
@@ -193,16 +108,14 @@ class Node
   public function setVisible(player: Player, v: Bool)
     {
       visibility[player.id] = v;
+      uiNode.setVisible(player, v);
       if (!player.isAI)
         {
           if (Game.mapVisible)
             v = true;
-          marker.style.visibility = 
-            (v ? 'visible' : 'hidden');
           for (l in lines)
             l.setVisible(v);
         }
-      return v;
     }
 
 

@@ -21,8 +21,8 @@ class AI extends Player
       // try to summon
       aiSummon();
 
-      // TODO: possibly a point-based weighted prioritization is better
-      // and more readable. It also raises thoughts about current AI
+      // TODO: point-based weighted prioritization raises some thoughts
+      // about current AI
       // "mood". Is it in an aggressive mood? +1 for any owned node
       // Is it in a war rage? +1 for any enemy node
       // give/take a point for each node attribute, storing the result
@@ -36,6 +36,26 @@ class AI extends Player
 
           var item = { node: node, priority: 0 };
 
+          // free node
+          if (node.owner == null)
+            item.priority++;
+
+          // enemy node
+          if (node.owner != null && wars[node.owner.id])
+            item.priority++;
+          // owned node
+          else if (node.owner != null)
+            item.priority--;
+
+          // unprotected generators are always yummy
+          if (node.isGenerator && !node.isProtected)
+            item.priority += 2;
+
+          // can activate it
+          if (canActivate(node))
+            item.priority++;
+
+/*
           // save priority of this node
           // unprotected enemy generator
           if (node.owner != null && wars[node.owner.id] &&
@@ -80,7 +100,7 @@ class AI extends Player
 
           // not interesting in everything else
           else continue; 
-
+*/
           list.push(item);
         }
 

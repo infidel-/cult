@@ -29,6 +29,7 @@ class UI
   public static var nodeVisibility = 101;
   static var colAwareness = "#ff9999";
 
+
   static var tipPowers: Array<String> =
     [ powerName(0) + " is needed to gain new followers.",
       powerName(1) + " is needed to gain new followers.",
