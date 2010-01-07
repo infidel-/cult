@@ -2,7 +2,7 @@
 
 = Name =
 
-The Universal Lambda
+Universal Lambda
 
 = Short Description =
 
