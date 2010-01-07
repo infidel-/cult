@@ -61,6 +61,10 @@ class UI
     "<li>The more adepts you have the more you can lower awareness each turn.";
   static var tipLowerAwareness =
     "Your adepts can use resources to lower society awareness.";
+  static var tipEndTurn = "Click to end current turn.";
+  static var tipInfo = "Click to view cults information.";
+  static var tipRestart = "Click to restart a game.";
+
 
 
   public function new(g)
@@ -87,7 +91,7 @@ class UI
       status.style.overflow = 'hidden';
 
       var s = "<div style='padding:5 5 5 5; " +
-        "font-weight: bold; font-size:20px;'>Evil Cult v1</div><br>";
+        "font-weight: bold; font-size:20px;'>Evil Cult v2</div><br>";
 
       s += "<fieldset>";
       s += "<legend>FOLLOWERS</legend>";
@@ -185,22 +189,29 @@ class UI
       s += "</table></fieldset>";
 
       // end turn button
-	  s += "<center style='padding-top:10px'><button id='status.endTurn'>End<br>turn</button> ";
+	  s += "<center style='padding-top:10px'>" +
+        "<button title='" + tipEndTurn +
+        "' id='status.endTurn'>T</button> ";
 	 
-      s += "<button id='status.debug'>DBG</button> ";
+      // info screen button
+	  s += "<button title='" + tipInfo +
+        "' id='status.info'>I</button> ";
+
+      s += "<button id='status.debug'>D</button> ";
 
       // restart button
-      s += "<button id='status.restart'>Restart</button></center>";
+      s += "<button title='" + tipRestart +
+        "' id='status.restart'>!R!</button></center>";
       
       s += "<fieldset style='bottom: 5px; margin-top: 10px; padding:0 5 0 5'>";
       s += "<legend>MUSIC</legend>";
       s += "<div id='status.track' " + 
         "style='background: #222; cursor:pointer; font-size:10px; color: #00ff00'> - </div>";
       s += "<table width=100% cellpadding=0 cellspacing=2>";
-      s += "<tr><td><button id='status.play'>|></button>";
-      s += "<td><button id='status.pause'>||</button>";
-      s += "<td><button id='status.stop'>[]</button>";
-      s += "<td><button id='status.random'>RND</button>";
+      s += "<tr><td><button title='Play' id='status.play'>|></button>";
+      s += "<td><button title='Pause' id='status.pause'>||</button>";
+      s += "<td><button title='Stop' id='status.stop'>[]</button>";
+      s += "<td><button title='Random track' id='status.random'>RND</button>";
       s += "</table></fieldset>";
 
       status.innerHTML = s;
@@ -234,6 +245,7 @@ class UI
             }
         }
 	  e("status.endTurn").onclick = onStatusEndTurn;
+	  e("status.info").onclick = onStatusInfo;
 	  e("status.restart").onclick = onStatusRestart;
       e("status.debug").onclick = onStatusDebug;
       e("status.play").onclick = onStatusPlay;
@@ -286,13 +298,6 @@ class UI
     }
 
 
-  public function onStatusLowerAwareness(event: Dynamic)
-    {
-	  var power = Std.parseInt(getTarget(event).id.substr(21, 1));
-      game.player.lowerAwareness(power);
-    }
-
-
   public function onStatusPlay(event)
     {
       music.play();
@@ -323,6 +328,17 @@ class UI
     }
 
 
+// try to lower awareness
+  public function onStatusLowerAwareness(event: Dynamic)
+    {
+      if (game.isFinished)
+        return;
+
+	  var power = Std.parseInt(getTarget(event).id.substr(21, 1));
+      game.player.lowerAwareness(power);
+    }
+
+
 // clear map
   public function clearMap()
     {
@@ -339,25 +355,50 @@ class UI
 	}
 
 
-// debug info button
+// debug info button (fdeb)
   function onStatusDebug(event)
     {
+      if (game.isFinished)
+        return;
+
       for (i in 0...4)
         game.player.power[i] += 100;
       updateStatus();
+
+/*
+      game.player.isRitual = true;
+      game.player.ritual = Static.rituals[0];
+      game.player.ritualTurns =3;
+*/
+
+      game.players[1].isRitual = true;
+      game.players[1].ritual = Static.rituals[0];
+      game.players[1].ritualTurns = 3;
+
+/*
+      for (p in game.players)
+        for (i in 0...4)
+          if (i != p.id)
+            p.wars[i] = true;
+*/
+//      finish(game.players[1], "summon");
 /*
       for (i in 0...(Game.followerNames.length - 1))
         e("status.upgrade" + i).style.visibility = 'visible';
-
-      for (n in game.nodes)
-        n.marker.style.visibility = 'visible';
 */
+      for (n in game.nodes)
+        n.setVisible(game.player, true);
+
+      game.players[2].summonFinish();
     }
 
 
 // upgrade button
   function onStatusUpgrade(event: Dynamic)
     {
+      if (game.isFinished)
+        return;
+
 	  var lvl = Std.parseInt(getTarget(event).id.substr(14, 1));
 
 	  game.player.upgrade(lvl);
@@ -367,6 +408,9 @@ class UI
 // convert button
   function onStatusConvert(event: Dynamic)
     {
+      if (game.isFinished)
+        return;
+
 	  var from = Std.parseInt(getTarget(event).id.substr(14, 1));
 	  var to = Std.parseInt(getTarget(event).id.substr(15, 1));
 
@@ -377,6 +421,9 @@ class UI
 // end turn button
   function onStatusEndTurn(event: Dynamic)
     {
+      if (game.isFinished)
+        return;
+
 	  game.endTurn();
 	}
 
@@ -389,7 +436,7 @@ class UI
 
 
 // compatibility crap
-  public function getTarget(event)
+  public function getTarget(event): Dynamic
     {
       if (event == null)
         event = untyped __js__("window.event");
@@ -402,6 +449,9 @@ class UI
 // on clicking node
   public function onNodeClick(event: Dynamic)
     {
+      if (game.isFinished)
+        return;
+
       game.player.activate(getTarget(event).node);
     }
 
@@ -493,43 +543,103 @@ class UI
   public function finish(player, state)
     {
       e('jqDialog_close').style.visibility = 'hidden';
-      var msg = "";
+      e('jqDialog_content').style.textAlign = 'center';
+      var msg = "<h2>Game over</h2>";
 
       if (state == "summon" && !player.isAI)
         {
-          msg = "The stars were right. The Elder God was summoned in " +
+          msg += "The stars were right. The Elder God was summoned in " +
             game.turns + " turns.";
           track("winGame", "summon", game.turns);
         }
 
       else if (state == "summon" && player.isAI)
         {
-          msg = player.name +
-            " has completed the ritual of summoning. You fail.";
-          track("winGame", "summon", game.turns);
+          msg += cultName(player.id, player.info) +
+            " has completed the ritual of summoning.<br><br>" +
+            untyped player.info.summonFinish;
+          track("loseGame", "summon", game.turns);
         }
 
       else if (state == "conquer" && !player.isAI)
         {
-          msg = "The cult has taken over the world in " +
+          msg += cultName(player.id, player.info) + " has taken over the world in " +
             game.turns + " turns. The Elder Gods are pleased.";
           track("winGame", "conquer", game.turns);
         }
 
       else if (state == "conquer" && player.isAI)
         {
-          msg = "Other cult has taken over the world. You fail.";
+          msg += cultName(player.id, player.info) + " has taken over the world. You fail.";
           track("loseGame", "conquer", game.turns);
         }
 
       else if (state == "wiped")
         {
-          msg = "The cult was wiped away completely. " +
+          msg += cultName(player.id, player.info) + " was wiped away completely. " +
             "The Elder God lies dormant beneath the sea, waiting.";
           track("loseGame", "wiped", game.turns);
         }
 
       JQDialog.alert(msg, onStatusRestart);
+      untyped JQDialog.makeCenter();
+    }
+
+
+// show info screen (finf)
+  function onStatusInfo(event: Dynamic)
+    {
+      e('jqDialog_close').style.visibility = 'hidden';
+      e('jqDialog_content').style.textAlign = 'left';
+      var s = '<h3><center>Info</center></h3>';
+
+      var i = 0;
+      for (p in game.players)
+        {
+          // name
+          s += '<div style="' + (i == 0 ? 'background:#333333' : 
+            '') +
+            '">';
+//          s += cultName(i, p.info);
+          s += "<span title='" + p.info.longNote +
+            "' style='color:" + Game.playerColors[i] + "'>" +
+            p.info.name + "</span>";
+
+          // wars
+          var w = '';
+          for (i in 0...p.wars.length)
+            if (p.wars[i])
+              w += cultName(i, game.players[i].info) + ' ';
+          if (w != '')
+            s += ' wars: ' + w;
+          s += '<br>';
+
+          // ritual
+          if (p.isRitual == true)
+            {
+              s += "Casting <span title='" + p.ritual.note +
+                "' id='info.ritual" + i +
+                "' style='color:#ffaaaa'>" + p.ritual.name +
+                "</span>, " + p.ritualTurns + " turns left<br>";
+//              new JQuery('info.ritual' + i).tooltip();
+//              updateTip("info.ritual" + i, p.ritual.note);
+            }
+
+          // followers
+          s += p.nodes.length + ' followers (' +
+            p.neophytes + ' neophytes, ' + p.adepts + ' adepts, ' +
+            p.priests + ' priests)';
+          s += '<br>';
+          s += '<br>';
+
+          // description
+          s += p.info.note + '<br>';
+          s += '</div><hr>';
+          i++;
+        }
+
+      untyped JQDialog.makeCenter();
+      JQDialog.alert(s);
     }
 
 
@@ -541,9 +651,18 @@ class UI
     }
 
 
+// show colored cult name
+  public static function cultName(i, info)
+    {
+      return "<span style='color:" + Game.playerColors[i] + "'>" +
+        info.name + "</span>";
+    }
+
+
 // message with confirmation
   public function alert(s)
     {
+      e('jqDialog_content').style.textAlign = 'center';
       JQDialog.alert(s);
     }
 
@@ -558,6 +677,10 @@ class UI
 // track stuff through google analytics
   public inline function track(action: String, ?label: String, ?value: Int)
     {
+      if (label == null)
+        label = '';
+      if (value == null)
+        value = 0;
       untyped pageTracker._trackEvent('Evil Cult', action, label, value);
     }
 }
