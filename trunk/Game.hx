@@ -9,8 +9,8 @@ class Game
   public var players: Array<Player>;
   public var player: Player;
 
-  // turns passed
-  public var turns: Int;
+  public var turns: Int; // turns passed
+  public var isFinished: Bool; // game finished?
 
   // index of the last node/player (for id generation)
   var lastNodeIndex: Int;
@@ -47,7 +47,7 @@ class Game
   public static var debugTime = false;
   public static var debugVis = false;
   public static var debugNear = false;
-  public static var debugAI = false;
+  public static var debugAI = true;
   public static var mapVisible = false;
 
 
@@ -66,6 +66,7 @@ class Game
     {
       ui.track("startGame");
       startTimer("restart");
+      this.isFinished = false;
       ui.clearMap();
 
       this.lines = new List<Line>();
@@ -78,9 +79,10 @@ class Game
       for (i in 0...numPlayers)
         {
           var p = null;
+          var id = this.lastPlayerID++;
           if (i == 0)
-            p = new Player(this, ui, this.lastPlayerID++);
-          else p = new AI(this, ui, this.lastPlayerID++);
+            p = new Player(this, ui, id, id);
+          else p = new AI(this, ui, id, id);
           players.push(p);
         }
       player = players[0];
@@ -144,6 +146,11 @@ class Game
         if (p.isAI && !p.isDead)
           {
             p.turn();
+
+            // game could be finished on summoning success
+            if (isFinished)
+              return;
+
             startTimer("ai");
             untyped p.aiTurn();
             endTimer("ai");

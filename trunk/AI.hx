@@ -2,9 +2,9 @@
 
 class AI extends Player
 {
-  public function new(gvar, uivar, id)
+  public function new(gvar, uivar, id, infoID)
     {
-      super(gvar, uivar, id);
+      super(gvar, uivar, id, infoID);
       isAI = true;
     }
 
@@ -55,52 +55,6 @@ class AI extends Player
           if (canActivate(node))
             item.priority++;
 
-/*
-          // save priority of this node
-          // unprotected enemy generator
-          if (node.owner != null && wars[node.owner.id] &&
-              canActivate(node) && node.isGenerator && !node.isProtected)
-            item.priority = 120;
-
-          // gainable enemy node 
-          else if (node.owner != null && wars[node.owner.id] &&
-              canActivate(node))
-            item.priority = 110;
-
-          // enemy node
-          else if (node.owner != null && wars[node.owner.id])
-            item.priority = 100;
-
-          // gainable generator
-          else if (node.owner == null && node.isGenerator &&
-              canActivate(node))
-            item.priority = 90;
-
-          // owned gainable generator (yum-yum!)
-          else if (node.owner != null && canActivate(node) &&
-              node.isGenerator && !node.isProtected)
-            item.priority = 80;
-
-          // free node
-          else if (node.owner == null && canActivate(node))
-            item.priority = 70;
-
-          // owned node
-          else if (node.owner != null && canActivate(node) &&
-              !node.isProtected)
-            item.priority = 60;
-
-          // free but need to convert
-          else if (node.owner == null && !canActivate(node))
-            item.priority = 50;
-
-          // owned but need to convert and everything else
-          else if (node.owner != null && !canActivate(node))
-            item.priority = 40;
-
-          // not interesting in everything else
-          else continue; 
-*/
           list.push(item);
         }
 
@@ -200,13 +154,13 @@ class AI extends Player
 // try to summon elder god
   public function aiSummon()
     {
-      if (priests < 3 || virgins < 9 && getUpgradeChance(2) > 60)
+      if (priests < 3 || virgins < 9 || getUpgradeChance(2) < 60 || isRitual)
         return;
 
       if (Game.debugAI)
         trace(name + " TRY SUMMON!");
 
-      summon();
+      summonStart();
     }
 
 
