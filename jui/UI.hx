@@ -14,11 +14,14 @@ extern class JQDialog implements Dynamic
 class UI
 {
   var game: Game;
+  public var music: Music; // music player
 
-  // map and status divs
-  public var map: Dynamic;
-  public var music: Music;
-  var status: Dynamic;
+  public var map: Dynamic; // map element
+  var status: Dynamic; // status element
+  var logWindow: Dynamic; // log window element
+  var logText: Dynamic; // log text element
+  var infoWindow: Dynamic; // info window element
+  var infoText: Dynamic; // info text element
 
   public static var mapWidth = 800;
   public static var mapHeight = 580;
@@ -28,44 +31,6 @@ class UI
   public static var markerHeight = 15;
   public static var nodeVisibility = 101;
   static var colAwareness = "#ff9999";
-
-
-  static var tipPowers: Array<String> =
-    [ powerName(0) + " is needed to gain new followers.",
-      powerName(1) + " is needed to gain new followers.",
-      powerName(2) + " is needed to gain new followers.", 
-      powerName(3) + " are gathered by your neophytes.<br>" +
-      "They are needed for rituals to upgrade your<br>followers " +
-      "and also for the final ritual of summoning." ];
-  static var tipConvert = "Cost to convert to ";
-  static var tipUpgrade: Array<String> =
-    [ "To gain an adept you need " + Game.upgradeCost +
-      " neophytes and 1 virgin.",
-      "To gain a priest you need " + Game.upgradeCost +
-      " adepts and 2 virgins.",
-      "For the ritual of summoning you need " + Game.upgradeCost +
-      " priests and " + Game.numSummonVirgins + " virgins.<br>" +
-      "<li>The more society is aware of the cult the harder it is to " +
-      "summon Elder God."];
-  static var tipFollowers: Array<String> =
-    [ "Neophytes can find some virgins if they're lucky.",
-      "Adepts can lower society awareness.",
-      "3 priests and " + Game.numSummonVirgins + 
-      " virgins are needed to summon the Elder God." ];
-  static var tipTurns = "Shows the number of turns passed from the start.";
-  static var tipAwareness =
-    "Shows how much human society is aware of the cult.<br>" +
-    "<li>The greater awareness is the harder it is to do anything:<br>" +
-    "gain new followers, resources or make rituals.<br> " +
-    "<li>Adepts can lower the society awareness using resources.<br>" +
-    "<li>The more adepts you have the more you can lower awareness each turn.";
-  static var tipLowerAwareness =
-    "Your adepts can use resources to lower society awareness.";
-  static var tipEndTurn = "Click to end current turn.";
-  static var tipInfo = "Click to view cults information.";
-  static var tipRestart = "Click to restart a game.";
-
-
 
   public function new(g)
     {
@@ -78,6 +43,66 @@ class UI
 // init game screen
   public function init()
     {
+      // log window
+      logWindow = Lib.document.createElement("logWindow");
+      logWindow.style.visibility = 'hidden';
+      logWindow.style.position = 'absolute';
+      logWindow.style.zIndex = 20;
+      logWindow.style.left = 100;
+      logWindow.style.top = 50;
+      logWindow.style.width = 800;
+      logWindow.style.height = 500;
+      logWindow.style.background = '#222';
+	  logWindow.style.border = '4px double #ffffff';
+      Lib.document.body.appendChild(logWindow);
+
+      // log text
+      logText = Lib.document.createElement("logText");
+      logText.style.overflow = 'auto';
+      logText.style.position = 'absolute';
+      logText.style.left = 10;
+      logText.style.top = 10;
+      logText.style.width = 780;
+      logText.style.height = 450;
+      logText.style.background = '#111';
+	  logText.style.border = '1px solid #777';
+      logWindow.appendChild(logText);
+
+      // log close button
+      var logClose = createCloseButton(logWindow, 360, 465, 'logClose');
+	  logClose.onclick = onLogCloseClick;
+
+      // info window
+      infoWindow = Lib.document.createElement("infoWindow");
+      infoWindow.style.fontSize = 16;
+      infoWindow.style.fontWeight = 'bold';
+      infoWindow.style.visibility = 'hidden';
+      infoWindow.style.position = 'absolute';
+      infoWindow.style.zIndex = 20;
+      infoWindow.style.left = 100;
+      infoWindow.style.top = 45;
+      infoWindow.style.width = 800;
+      infoWindow.style.height = 520;
+      infoWindow.style.background = '#111';
+      infoWindow.style.padding = '5 5 5 5';
+	  infoWindow.style.border = '4px double #ffffff';
+      Lib.document.body.appendChild(infoWindow);
+
+      // info text
+      infoText = Lib.document.createElement("logText");
+      infoText.style.overflow = 'auto';
+      infoText.style.position = 'absolute';
+      infoText.style.left = 10;
+      infoText.style.top = 10;
+      infoText.style.width = 780;
+      infoText.style.height = 480;
+      infoText.style.background = '#111';
+      infoWindow.appendChild(infoText);
+
+      // info close button
+      var infoClose = createCloseButton(infoWindow, 365, 490, 'infoClose');
+	  infoClose.onclick = onInfoCloseClick;
+
 	  // status screen
       status = e("status");
       status.style.border = 'double white 4px';
@@ -91,7 +116,8 @@ class UI
       status.style.overflow = 'hidden';
 
       var s = "<div style='padding:5 5 5 5; " +
-        "font-weight: bold; font-size:20px;'>Evil Cult v2</div><br>";
+        "font-weight: bold; font-size:20px;'>Evil Cult v" +
+        Game.version + "</div><br>";
 
       s += "<fieldset>";
       s += "<legend>FOLLOWERS</legend>";
@@ -197,13 +223,15 @@ class UI
 	  s += "<button title='" + tipInfo +
         "' id='status.info'>I</button> ";
 
-      s += "<button id='status.debug'>D</button> ";
+      s += "<button title='" + tipLog + "' id='status.log'>L</button> ";
+      if (Game.isDebug)
+        s += "<button width=10 height=10 id='status.debug'>D</button> ";
 
       // restart button
       s += "<button title='" + tipRestart +
         "' id='status.restart'>!R!</button></center>";
       
-      s += "<fieldset style='bottom: 5px; margin-top: 10px; padding:0 5 0 5'>";
+      s += "<fieldset style='bottom: 5px; margin-top: 10px; width: 175px; padding:0 5 0 5'>";
       s += "<legend>MUSIC</legend>";
       s += "<div id='status.track' " + 
         "style='background: #222; cursor:pointer; font-size:10px; color: #00ff00'> - </div>";
@@ -246,6 +274,7 @@ class UI
         }
 	  e("status.endTurn").onclick = onStatusEndTurn;
 	  e("status.info").onclick = onStatusInfo;
+	  e("status.log").onclick = onStatusLog;
 	  e("status.restart").onclick = onStatusRestart;
       e("status.debug").onclick = onStatusDebug;
       e("status.play").onclick = onStatusPlay;
@@ -328,6 +357,28 @@ class UI
     }
 
 
+// show log
+  function onStatusLog(event: Dynamic)
+    {
+      logText.scrollTop = 10000;
+      logWindow.style.visibility = 'visible';
+    }
+
+
+// hide log
+  function onLogCloseClick(event)
+    {
+      logWindow.style.visibility = 'hidden';
+    }
+
+
+// hide info
+  function onInfoCloseClick(event)
+    {
+      infoWindow.style.visibility = 'hidden';
+    }
+
+
 // try to lower awareness
   public function onStatusLowerAwareness(event: Dynamic)
     {
@@ -369,12 +420,18 @@ class UI
       game.player.isRitual = true;
       game.player.ritual = Static.rituals[0];
       game.player.ritualTurns =3;
-*/
 
       game.players[1].isRitual = true;
       game.players[1].ritual = Static.rituals[0];
       game.players[1].ritualTurns = 3;
+*/
 
+    for (p in game.players)
+      {
+        p.isRitual = true;
+        p.ritual = Static.rituals[0];
+        p.ritualTurns = 3;
+      }
 /*
       for (p in game.players)
         for (i in 0...4)
@@ -389,7 +446,7 @@ class UI
       for (n in game.nodes)
         n.setVisible(game.player, true);
 
-      game.players[2].summonFinish();
+//      game.players[2].summonFinish();
     }
 
 
@@ -556,7 +613,7 @@ class UI
       else if (state == "summon" && player.isAI)
         {
           msg += cultName(player.id, player.info) +
-            " has completed the ritual of summoning.<br><br>" +
+            " has completed the Ritual of Summoning.<br><br>" +
             untyped player.info.summonFinish;
           track("loseGame", "summon", game.turns);
         }
@@ -581,17 +638,35 @@ class UI
           track("loseGame", "wiped", game.turns);
         }
 
-      JQDialog.alert(msg, onStatusRestart);
+      JQDialog.alert(msg);//, onStatusRestart);
       untyped JQDialog.makeCenter();
+    }
+
+
+// create close button
+  function createCloseButton(container: Dynamic, x: Int, y: Int, name: String)
+    {
+      var b: Dynamic = Lib.document.createElement(name);
+      b.innerHTML = '<b>Close</b>';
+      b.style.fontSize = 20;
+      b.style.position = 'absolute';
+      b.style.width = 80;
+      b.style.height = 25;
+      b.style.left = x;
+      b.style.top = y;
+      b.style.background = '#111';
+	  b.style.border = '1px solid #777';
+	  b.style.cursor = 'pointer';
+      b.style.textAlign = 'center';
+      container.appendChild(b);
+      return b;
     }
 
 
 // show info screen (finf)
   function onStatusInfo(event: Dynamic)
     {
-      e('jqDialog_close').style.visibility = 'hidden';
-      e('jqDialog_content').style.textAlign = 'left';
-      var s = '<h3><center>Info</center></h3>';
+      var s = '';
 
       var i = 0;
       for (p in game.players)
@@ -600,10 +675,7 @@ class UI
           s += '<div style="' + (i == 0 ? 'background:#333333' : 
             '') +
             '">';
-//          s += cultName(i, p.info);
-          s += "<span title='" + p.info.longNote +
-            "' style='color:" + Game.playerColors[i] + "'>" +
-            p.info.name + "</span>";
+          s += cultName(i, p.info);
 
           // wars
           var w = '';
@@ -614,6 +686,22 @@ class UI
             s += ' wars: ' + w;
           s += '<br>';
 
+          // debug info
+          if (Game.isDebug)
+            {
+              s += "<span style='font-size: 10px'>";
+              for (i in 0...p.power.length)
+                {
+                  s += powerName(i) + ": " + p.power[i] + " (";
+                  if (i < 3)
+                    s += p.getResourceChance() + "%) ";
+                  else s += (p.neophytes / 4 - 0.5) + ") ";
+                }
+              s += "Awareness: " + p.awareness + "% ";
+              s += "ROS: " + p.getUpgradeChance(2) + "% ";
+              s += "</span><br>";
+            }
+
           // ritual
           if (p.isRitual == true)
             {
@@ -621,8 +709,6 @@ class UI
                 "' id='info.ritual" + i +
                 "' style='color:#ffaaaa'>" + p.ritual.name +
                 "</span>, " + p.ritualTurns + " turns left<br>";
-//              new JQuery('info.ritual' + i).tooltip();
-//              updateTip("info.ritual" + i, p.ritual.note);
             }
 
           // followers
@@ -630,16 +716,56 @@ class UI
             p.neophytes + ' neophytes, ' + p.adepts + ' adepts, ' +
             p.priests + ' priests)';
           s += '<br>';
-          s += '<br>';
 
           // description
-          s += p.info.note + '<br>';
+          s += "<span id='info.toggleNote" + i +
+            "' style='height:10; width:10; font-size:12px; border: 1px solid #777'>+</span>";
+          s += '<br>';
+          s += "<span id='info.note" + i + "'>" + p.info.note + "</span>";
+          s += "<span id='info.longnote" + i + "'>" + p.info.longNote + "</span>";
           s += '</div><hr>';
           i++;
         }
 
-      untyped JQDialog.makeCenter();
-      JQDialog.alert(s);
+      infoText.innerHTML = s;
+      infoWindow.style.visibility = 'visible';
+
+      for (i in 0...Game.numPlayers)
+        {
+          e("info.longnote" + i).style.display = 'none';
+          var c:Dynamic = e("info.toggleNote" + i);
+          c.style.cursor = 'pointer';
+          c.noteID = i;
+          c.onclick =
+            function(event) 
+              {
+                var t: Dynamic = event.target;
+                if (t.innerHTML == '+')
+                  {
+                    t.innerHTML = '&mdash;';
+                    e("info.longnote" + t.noteID).style.display = 'block';
+                    e("info.note" + t.noteID).style.display = 'none';
+                  }
+                else
+                  {
+                    t.innerHTML = '+';
+                    e("info.longnote" + t.noteID).style.display = 'none';
+                    e("info.note" + t.noteID).style.display = 'block';
+                  }
+              };
+        }
+
+/*
+      // update tooltips
+      i = 0;
+      for (p in game.players)
+        {
+          updateTip("info.name" + i, p.info.longNote);
+          if (p.isRitual == true)
+            updateTip("info.ritual" + i, p.ritual.note);
+          i++;
+        }
+*/      
     }
 
 
@@ -667,6 +793,30 @@ class UI
     }
 
 
+// add message to log
+  var logPrevTurn: Int;
+  public function log(s: String, ?show: Bool)
+    {
+//      if (logPrevTurn != game.turns)
+//        logText.innerHTML += "<center style='font-size:10px'>...</center><br>";
+      logText.innerHTML += 
+        "<span style='color:#888888'>" +
+        DateTools.format(Date.now(), "%H:%M:%S") +
+        "</span>" +
+        " Turn " + (game.turns + 1) + ": " + s + "<br>";
+      if (show == null || show == true)
+        onStatusLog(null);
+      logPrevTurn = game.turns;
+    }
+
+
+// clear log
+  public function clearLog()
+    {
+      logText.innerHTML = "";
+    }
+
+
 // get element shortcut
   public static inline function e(s)
     {
@@ -683,4 +833,43 @@ class UI
         value = 0;
       untyped pageTracker._trackEvent('Evil Cult', action, label, value);
     }
+
+
+// ===================== tips ===============
+
+  static var tipPowers: Array<String> =
+    [ powerName(0) + " is needed to gain new followers.",
+      powerName(1) + " is needed to gain new followers.",
+      powerName(2) + " is needed to gain new followers.", 
+      powerName(3) + " are gathered by your neophytes.<br>" +
+      "They are needed for rituals to upgrade your<br>followers " +
+      "and also for the final ritual of summoning." ];
+  static var tipConvert = "Cost to convert to ";
+  static var tipUpgrade: Array<String> =
+    [ "To gain an adept you need " + Game.upgradeCost +
+      " neophytes and 1 virgin.",
+      "To gain a priest you need " + Game.upgradeCost +
+      " adepts and 2 virgins.",
+      "For the ritual of summoning you need " + Game.upgradeCost +
+      " priests and " + Game.numSummonVirgins + " virgins.<br>" +
+      "<li>The more society is aware of the cult the harder it is to " +
+      "summon Elder God."];
+  static var tipFollowers: Array<String> =
+    [ "Neophytes can find some virgins if they're lucky.",
+      "Adepts can lower society awareness.",
+      "3 priests and " + Game.numSummonVirgins + 
+      " virgins are needed to summon the Elder God." ];
+  static var tipTurns = "Shows the number of turns passed from the start.";
+  static var tipAwareness =
+    "Shows how much human society is aware of the cult.<br>" +
+    "<li>The greater awareness is the harder it is to do anything:<br>" +
+    "gain new followers, resources or make rituals.<br> " +
+    "<li>Adepts can lower the society awareness using resources.<br>" +
+    "<li>The more adepts you have the more you can lower awareness each turn.";
+  static var tipLowerAwareness =
+    "Your adepts can use resources to lower society awareness.";
+  static var tipEndTurn = "Click to end current turn.";
+  static var tipInfo = "Click to view cults information.";
+  static var tipRestart = "Click to restart a game.";
+  static var tipLog = "Click to view message log.";
 }

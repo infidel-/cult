@@ -45,7 +45,7 @@ class Static
       {
         id: "summoning",
         name: "Ritual of Summoning",
-        turns: 9,
+        turns: 3,
         note: "Upon completion this cult will reign this world."
       }
     ];

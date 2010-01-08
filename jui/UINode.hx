@@ -16,7 +16,6 @@ class UINode
       marker = js.Lib.document.createElement("map.node" + node.id);
       marker.id = "map.node" + node.id;
 	  marker.node = node;
-	  marker.style.innerHTML = ' ';
 	  marker.style.background = '#222';
 	  marker.style.border = '1px solid #777';
 	  marker.style.width = UI.markerWidth;
