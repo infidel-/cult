@@ -173,7 +173,7 @@ class Player
 // lower awareness
   public function lowerAwareness(pwr)
     {
-      if (awareness == 0 || adeptsUsed >= adepts)
+      if (awareness == 0 || adeptsUsed >= adepts || pwr == 3)
         return;
 
       awareness -= 2;
@@ -271,7 +271,7 @@ class Player
       
       // notify player
       if (this != game.player && priests >= 2)
-        ui.alert(UI.cultName(id, info) + " has " + priests + " priests. Be careful.");
+        ui.log(UI.cultName(id, info) + " has " + priests + " priests. Be careful.");
     }
 
 
@@ -290,16 +290,17 @@ class Player
       ritual = Static.rituals[0];
       ritualTurns = ritual.turns;
 
-      // wars
+      // everybody starts war with this player
       for (p in game.players)
-        if (p != game.player)
+        if (p != this)
           {
-            p.wars[game.player.id] = true;
-            game.player.wars[p.id] = true;
+            p.wars[id] = true;
+            wars[p.id] = true;
           }
 
       ui.alert(UI.cultName(id, info) + " has started the " + ritual.name + ".<br><br>" +
         Static.cults[id].summonStart);
+      ui.log(UI.cultName(id, info) + " has started the " + ritual.name + ".");
       if (!isAI)
         ui.updateStatus();
     }
@@ -333,15 +334,22 @@ class Player
           if (!isAI)
             {
               ui.alert("The stars were not right. The high priest goes insane.");
+              ui.log(UI.cultName(id, info) + " has failed the Ritual of Summoning.");
               ui.updateStatus();
             }
-          else ui.alert(UI.cultName(id, info) +
-            " tried to summon Elder God but failed.<br><br>" +
-            info.summonFail);
+          else
+            {
+              ui.alert(UI.cultName(id, info) +
+                " has failed the Ritual of Summoning.<br><br>" +
+                info.summonFail);
+              ui.log(UI.cultName(id, info) + " has failed the Ritual of Summoning.");
+            }
           return;
         }
 
+      game.isFinished = true;
       ui.finish(this, "summon");
+      ui.log("Game over.");
     }
 
 
@@ -472,7 +480,7 @@ class Player
           wars[prevOwner.id] = true;
           prevOwner.wars[id] = true;
 
-          ui.alert(UI.cultName(id, info) + " has declared a war against " +
+          ui.log(UI.cultName(id, info) + " has declared a war against " +
             UI.cultName(prevOwner.id, prevOwner.info) + ".");
         }
 
@@ -480,7 +488,7 @@ class Player
       if (prevOwner != null && prevOwner.isRitual && prevOwner.startNode == node)
         {
           prevOwner.isRitual = false;
-          ui.alert("The Origin of " + UI.cultName(prevOwner.id, prevOwner.info) +
+          ui.log("The Origin of " + UI.cultName(prevOwner.id, prevOwner.info) +
             " is converted. Casting of " + prevOwner.ritual.name + " is stopped.");
         }
 
@@ -515,7 +523,7 @@ class Player
         return;
 
       // owner dead
-      ui.alert(UI.cultName(id, info) + " was wiped completely from the world.");
+      ui.log(UI.cultName(id, info) + " was wiped completely from the world.");
 
       isDead = true;
 

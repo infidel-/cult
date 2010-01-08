@@ -15,7 +15,10 @@ class AI extends Player
       // try to upgrade followers
       aiUpgradeFollowers();
 
-      // try to lower awareness
+      // if in summoning, try to lower awareness even using virgins
+      aiLowerAwarenessSummon();
+
+      // try to lower awareness (without using virgins)
       aiLowerAwareness();
 
       // try to summon
@@ -31,7 +34,9 @@ class AI extends Player
       var list = new Array<Dynamic>();
       for (node in game.nodes)
         {
-          if (node.owner == this || !node.isVisible(this))
+          if (node.owner == this || !node.isVisible(this) ||
+              // debug: player nodes are invisible
+              (Game.debugInvisible && node.owner == game.player))
             continue;
 
           var item = { node: node, priority: 0 };
@@ -133,10 +138,31 @@ class AI extends Player
     }
 
 
-// try to lower awareness
+// try to lower awareness during summoning with virgins
+  function aiLowerAwarenessSummon()
+    {
+      if (awareness == 0 || adepts == 0 || !isRitual ||
+          (isRitual && ritual.id != "summoning"))
+        return;
+  
+      var prevAwareness = awareness;
+
+      // spend all adepts we have
+      while (virgins > 0 && adeptsUsed < adepts && awareness >= 0)
+        {
+          convert(3, 0);
+          lowerAwareness(0);
+        }
+
+      if (Game.debugAI && awareness != prevAwareness)
+        trace(name + " virgin awareness " + prevAwareness + "% -> " + awareness + "%");
+    }
+
+
+// try to lower awareness (virgins are not used)
   function aiLowerAwareness()
     {
-      if (awareness < 10 || adepts == 0)
+      if (awareness < 10 || adepts == 0 || adeptsUsed >= adepts)
         return;
   
       var prevAwareness = awareness;
@@ -154,7 +180,7 @@ class AI extends Player
 // try to summon elder god
   public function aiSummon()
     {
-      if (priests < 3 || virgins < 9 || getUpgradeChance(2) < 60 || isRitual)
+      if (priests < 3 || virgins < 9 || getUpgradeChance(2) < 50 || isRitual)
         return;
 
       if (Game.debugAI)

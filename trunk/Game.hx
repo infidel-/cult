@@ -36,19 +36,21 @@ class Game
     [ "#005500", "#010955", "#560053", "#565300" ];
   public static var playerColors: Array<String> =
     [ "#00B400", "#2F43FD", "#B400AE", "#B4AE00" ];
- 
+
+  public static var version = 2; // game version
   public static var followerLevels = 3;
   public static var numPowers = 3;
   public static var numPlayers = 4;
   public static var numSummonVirgins = 9;
   static var nodesCount = 100;
   public static var upgradeCost = 3;
-  public static var isDebug = true;
-  public static var debugTime = false;
-  public static var debugVis = false;
-  public static var debugNear = false;
-  public static var debugAI = true;
-  public static var mapVisible = false;
+  public static var isDebug = true; // debug mode (debug button + extended info window)
+  public static var debugTime = false; // show execution time of various parts
+  public static var debugVis = false; // show visibility of nodes to players
+  public static var debugNear = false; // show "nearness" of all nodes
+  public static var debugAI = false; // show AI debug messages
+  public static var debugInvisible = true; // human player nodes are invisible
+  public static var mapVisible = false; // all map is visible at start
 
 
 // constructor
@@ -68,6 +70,8 @@ class Game
       startTimer("restart");
       this.isFinished = false;
       ui.clearMap();
+      ui.clearLog();
+      ui.log("Game started.", false);
 
       this.lines = new List<Line>();
       this.nodes = new Array<Node>();
