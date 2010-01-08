@@ -1,0 +1,12 @@
+#summary About Evil Cult
+#labels About
+
+= About Evil Cult =
+
+Evil Cult is copyright 2009-2010 Max McCracken and Phil Bordelon.  It is released under
+the ~~Not sure what license the code is under ... ???~~; further details, including
+source, are available at:
+
+  <a href="http://code.google.com/p/cult/">http://code.google.com/p/cult</a>
+
+~~Licensing information required by any libraries the code uses should go here.~~
