@@ -49,7 +49,7 @@ class Game
   public static var debugVis = false; // show visibility of nodes to players
   public static var debugNear = false; // show "nearness" of all nodes
   public static var debugAI = false; // show AI debug messages
-  public static var debugInvisible = true; // human player nodes are invisible
+  public static var debugInvisible = false; // human player nodes are invisible
   public static var mapVisible = false; // all map is visible at start
 
 
