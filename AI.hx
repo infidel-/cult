@@ -41,6 +41,11 @@ class AI extends Player
 
           var item = { node: node, priority: 0 };
 
+          // priests are first priority when they are performing the final ritual
+          if (node.owner != null && node.level == 2 &&
+              node.owner.isRitual && node.owner.ritual.id == "summoning")
+            item.priority += 3;
+
           // free node
           if (node.owner == null)
             item.priority++;
@@ -48,6 +53,12 @@ class AI extends Player
           // enemy node
           if (node.owner != null && wars[node.owner.id])
             item.priority++;
+
+          // enemy node + enemy is in final ritual
+          else if (node.owner != null && 
+                   node.owner.isRitual && node.owner.ritual.id == "summoning")
+            item.priority += 2;
+
           // owned node
           else if (node.owner != null)
             item.priority--;

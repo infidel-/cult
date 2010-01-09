@@ -22,6 +22,8 @@ class UI
   var logText: Dynamic; // log text element
   var infoWindow: Dynamic; // info window element
   var infoText: Dynamic; // info text element
+  var alertWindow: Dynamic; // alert window element
+  var alertText: Dynamic; // alert text element
 
   public static var mapWidth = 800;
   public static var mapHeight = 580;
@@ -52,7 +54,7 @@ class UI
       logWindow.style.top = 50;
       logWindow.style.width = 800;
       logWindow.style.height = 500;
-      logWindow.style.background = '#222';
+      logWindow.style.background = '#333333';
 	  logWindow.style.border = '4px double #ffffff';
       Lib.document.body.appendChild(logWindow);
 
@@ -64,13 +66,42 @@ class UI
       logText.style.top = 10;
       logText.style.width = 780;
       logText.style.height = 450;
-      logText.style.background = '#111';
+      logText.style.background = '#0b0b0b';
 	  logText.style.border = '1px solid #777';
       logWindow.appendChild(logText);
 
       // log close button
       var logClose = createCloseButton(logWindow, 360, 465, 'logClose');
 	  logClose.onclick = onLogCloseClick;
+
+      // alert window
+      alertWindow = Lib.document.createElement("alertWindow");
+      alertWindow.style.visibility = 'hidden';
+      alertWindow.style.position = 'absolute';
+      alertWindow.style.zIndex = 20;
+      alertWindow.style.width = 600;
+      alertWindow.style.height = 450;
+      alertWindow.style.left = 200; 
+      alertWindow.style.top = 50;
+      alertWindow.style.background = '#222';
+	  alertWindow.style.border = '4px double #ffffff';
+      Lib.document.body.appendChild(alertWindow);
+
+      // alert text
+      alertText = Lib.document.createElement("alertText");
+      alertText.style.overflow = 'auto';
+      alertText.style.position = 'absolute';
+      alertText.style.left = 10;
+      alertText.style.top = 10;
+      alertText.style.width = 580;
+      alertText.style.height = 400;
+      alertText.style.background = '#111';
+	  alertText.style.border = '1px solid #777';
+      alertWindow.appendChild(alertText);
+
+      // alert close button
+      var alertClose = createCloseButton(alertWindow, 260, 415, 'alertClose');
+	  alertClose.onclick = onAlertCloseClick;
 
       // info window
       infoWindow = Lib.document.createElement("infoWindow");
@@ -115,18 +146,18 @@ class UI
       status.style.fontSize = '12px';
       status.style.overflow = 'hidden';
 
-      var s = "<div style='padding:5 5 5 5; " +
+      var s = "<div style='padding:0 5 5 5; background: #111; height: 20; " +
         "font-weight: bold; font-size:20px;'>Evil Cult v" +
-        Game.version + "</div><br>";
+        Game.version + "</div>";
 
       s += "<fieldset>";
       s += "<legend>FOLLOWERS</legend>";
-      s += "<table width=100% style='font-size:14px'>";
+      s += "<table width=100% cellpadding=0 cellspacing=2 style='font-size:14px'>";
 
       // followers
       for (i in 0...Game.followerNames.length)
         {
-          s += "<tr><td id='status.follower" + i + "'>" +
+          s += "<tr style='height:10;'><td id='status.follower" + i + "'>" +
             Game.followerNames[i] + "s";
 
           // icon
@@ -201,7 +232,7 @@ class UI
 
       s += "<fieldset>";
       s += "<legend>STATS</legend>";
-      s += "<table width=100% style='font-size:14px'>";
+      s += "<table cellpadding=0 cellspacing=2 width=100% style='font-size:14px'>";
 
       // awareness
 	  s += "<tr id='status.awRow' title='" + tipAwareness +
@@ -214,34 +245,36 @@ class UI
 
       s += "</table></fieldset>";
 
-      // end turn button
-	  s += "<center style='padding-top:10px'>" +
-        "<button title='" + tipEndTurn +
-        "' id='status.endTurn'>T</button> ";
-	 
-      // info screen button
-	  s += "<button title='" + tipInfo +
-        "' id='status.info'>I</button> ";
+	  s += "<center style='padding:15 0 2 0'>";
 
-      s += "<button title='" + tipLog + "' id='status.log'>L</button> ";
+      // buttons
+      s += "<span title='" + tipEndTurn +
+        "' id='status.endTurn' class=button>END TURN</span> ";
+	  s += "<span title='" + tipInfo +
+        "' id='status.info' class=button>INFO</span> ";
+      s += "<span class=button title='" + tipLog + "' id='status.log'>LOG</span> ";
       if (Game.isDebug)
-        s += "<button width=10 height=10 id='status.debug'>D</button> ";
+        s += "<span class=button width=10 height=10 id='status.debug'>D</span> ";
+      s += "</center>";
 
-      // restart button
-      s += "<button title='" + tipRestart +
-        "' id='status.restart'>!R!</button></center>";
-      
-      s += "<fieldset style='bottom: 5px; margin-top: 10px; width: 175px; padding:0 5 0 5'>";
+      // music player
+      s += "<fieldset style='bottom: 5px; margin-top: 10px; height: 60px; padding:0 5 0 5'>";
       s += "<legend>MUSIC</legend>";
       s += "<div id='status.track' " + 
         "style='background: #222; cursor:pointer; font-size:10px; color: #00ff00'> - </div>";
-      s += "<table width=100% cellpadding=0 cellspacing=2>";
-      s += "<tr><td><button title='Play' id='status.play'>|></button>";
-      s += "<td><button title='Pause' id='status.pause'>||</button>";
-      s += "<td><button title='Stop' id='status.stop'>[]</button>";
-      s += "<td><button title='Random track' id='status.random'>RND</button>";
-      s += "</table></fieldset>";
+      s += "<center style='padding-top:10px'>";
+      s += "<span class=button title='Play' id='status.play'>|></span>&nbsp;&nbsp;";
+      s += "<span class=button title='Pause' id='status.pause'>||</span>&nbsp;&nbsp;";
+      s += "<span class=button title='Stop' id='status.stop'>[]</span>&nbsp;&nbsp;";
+      s += "<span class=button title='Random track' id='status.random'>RANDOM</span>";
+      s += "</center></fieldset>";
 
+      // buttons 2
+      s += "<center style='padding-top:8px;'><span class=button title='" + tipRestart +
+        "' id='status.restart'>RESTART GAME</span>&nbsp;&nbsp;";
+      s += "<span class=button title='" + tipAbout +
+        "' id='status.about'>ABOUT</span></center>";
+      
       status.innerHTML = s;
 
 	  // setting events and tooltips
@@ -276,14 +309,16 @@ class UI
 	  e("status.info").onclick = onStatusInfo;
 	  e("status.log").onclick = onStatusLog;
 	  e("status.restart").onclick = onStatusRestart;
-      e("status.debug").onclick = onStatusDebug;
+	  e("status.about").onclick = onStatusAbout;
+      if (Game.isDebug)
+        e("status.debug").onclick = onStatusDebug;
       e("status.play").onclick = onStatusPlay;
       e("status.pause").onclick = onStatusPause;
       e("status.stop").onclick = onStatusStop;
       e("status.random").onclick = onStatusRandom;
       e("status.track").onclick = onStatusTrack;
-      if (!Game.isDebug)
-        e("status.debug").style.visibility = 'hidden';
+//      if (!Game.isDebug)
+//        e("status.debug").style.visibility = 'hidden';
 
       // map display
       map = e("map");
@@ -372,6 +407,13 @@ class UI
     }
 
 
+// hide alert
+  function onAlertCloseClick(event)
+    {
+      alertWindow.style.visibility = 'hidden';
+    }
+
+
 // hide info
   function onInfoCloseClick(event)
     {
@@ -425,13 +467,16 @@ class UI
       game.players[1].ritual = Static.rituals[0];
       game.players[1].ritualTurns = 3;
 */
-
+//    for (p in game.players)
+//      p.isDead = true;
+/*
     for (p in game.players)
       {
         p.isRitual = true;
         p.ritual = Static.rituals[0];
         p.ritualTurns = 3;
       }
+*/    
 /*
       for (p in game.players)
         for (i in 0...4)
@@ -489,6 +534,13 @@ class UI
   function onStatusRestart(event: Dynamic)
     {
       game.restart();
+    }
+
+
+// about game button
+  function onStatusAbout(event: Dynamic)
+    {
+      Lib.window.open("http://code.google.com/p/cult/wiki/About"); 
     }
 
 
@@ -596,12 +648,10 @@ class UI
     }
 
 
-// finish game window
+// finish game window (ffin)
   public function finish(player, state)
     {
-      e('jqDialog_close').style.visibility = 'hidden';
-      e('jqDialog_content').style.textAlign = 'center';
-      var msg = "<h2>Game over</h2>";
+      var msg = "<div style='text-size: 20px'><b>Game over</b></div><br>";
 
       if (state == "summon" && !player.isAI)
         {
@@ -613,7 +663,7 @@ class UI
       else if (state == "summon" && player.isAI)
         {
           msg += cultName(player.id, player.info) +
-            " has completed the Ritual of Summoning.<br><br>" +
+            " has completed the " + Static.rituals[0].name + ".<br><br>" +
             untyped player.info.summonFinish;
           track("loseGame", "summon", game.turns);
         }
@@ -638,8 +688,7 @@ class UI
           track("loseGame", "wiped", game.turns);
         }
 
-      JQDialog.alert(msg);//, onStatusRestart);
-      untyped JQDialog.makeCenter();
+      alert(msg);
     }
 
 
@@ -655,7 +704,7 @@ class UI
       b.style.left = x;
       b.style.top = y;
       b.style.background = '#111';
-	  b.style.border = '1px solid #777';
+	  b.style.border = '1px outset #777';
 	  b.style.cursor = 'pointer';
       b.style.textAlign = 'center';
       container.appendChild(b);
@@ -675,15 +724,22 @@ class UI
           s += '<div style="' + (i == 0 ? 'background:#333333' : 
             '') +
             '">';
+          if (p.isDead)
+            s += '<s>';
           s += cultName(i, p.info);
+          if (p.isDead)
+            s += '</s> Forgotten';
 
           // wars
-          var w = '';
-          for (i in 0...p.wars.length)
-            if (p.wars[i])
-              w += cultName(i, game.players[i].info) + ' ';
-          if (w != '')
-            s += ' wars: ' + w;
+          if (!p.isDead)
+            {
+              var w = '';
+              for (i in 0...p.wars.length)
+                if (p.wars[i])
+                  w += cultName(i, game.players[i].info) + ' ';
+              if (w != '')
+                s += ' wars: ' + w;
+            }
           s += '<br>';
 
           // debug info
@@ -708,7 +764,10 @@ class UI
               s += "Casting <span title='" + p.ritual.note +
                 "' id='info.ritual" + i +
                 "' style='color:#ffaaaa'>" + p.ritual.name +
-                "</span>, " + p.ritualTurns + " turns left<br>";
+                "</span>, " + (p.ritual.points - p.ritualPoints) + "/" +
+                p.ritual.points + " points, " +
+                Std.int(p.ritualPoints / p.priests) +
+                " turns left<br>";
             }
 
           // followers
@@ -754,18 +813,6 @@ class UI
                   }
               };
         }
-
-/*
-      // update tooltips
-      i = 0;
-      for (p in game.players)
-        {
-          updateTip("info.name" + i, p.info.longNote);
-          if (p.isRitual == true)
-            updateTip("info.ritual" + i, p.ritual.note);
-          i++;
-        }
-*/      
     }
 
 
@@ -788,8 +835,8 @@ class UI
 // message with confirmation
   public function alert(s)
     {
-      e('jqDialog_content').style.textAlign = 'center';
-      JQDialog.alert(s);
+      alertText.innerHTML = '<center>' + s + '</center>';
+      alertWindow.style.visibility = 'visible';
     }
 
 
@@ -850,7 +897,8 @@ class UI
       " neophytes and 1 virgin.",
       "To gain a priest you need " + Game.upgradeCost +
       " adepts and 2 virgins.",
-      "For the ritual of summoning you need " + Game.upgradeCost +
+      "To perform the " + Static.rituals[0].name +
+      " you need " + Game.upgradeCost +
       " priests and " + Game.numSummonVirgins + " virgins.<br>" +
       "<li>The more society is aware of the cult the harder it is to " +
       "summon Elder God."];
@@ -872,4 +920,5 @@ class UI
   static var tipInfo = "Click to view cults information.";
   static var tipRestart = "Click to restart a game.";
   static var tipLog = "Click to view message log.";
+  static var tipAbout = "Click to go to About page.";
 }

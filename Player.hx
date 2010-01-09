@@ -17,7 +17,7 @@ class Player
   // ritual stuff
   public var isRitual: Bool; // player is in ritual?
   public var ritual: Dynamic; // which ritual is in progress
-  public var ritualTurns: Int; // amount of turns until ritual is finished
+  public var ritualPoints: Int; // amount of ritual points needed
 
   // public awareness
   public var awareness(default, setAwareness): Int;
@@ -32,8 +32,8 @@ class Player
   // power that will be generated next turn (cache variable)
   public var powerMod: Array<Int>;
 
-  // starting node
-  public var startNode: Node;
+  // origin 
+  public var origin: Node;
 
   // followers number cache
   public var neophytes(getNeophytes, null): Int;
@@ -65,7 +65,7 @@ class Player
 
 
 // setup random starting node
-  public function setStartNode()
+  public function setOrigin()
     {
       // find appropriate node
       var index = -1;
@@ -80,8 +80,8 @@ class Player
           // check for close nodes
           var ok = 1;
           for (p in game.players)
-            if (p.startNode != null &&
-                node.distance(p.startNode) < UI.nodeVisibility + 50)
+            if (p.origin != null &&
+                node.distance(p.origin) < UI.nodeVisibility + 50)
               {
                 ok = 0;
                 break;
@@ -91,32 +91,32 @@ class Player
 
           break;
         }
-	  startNode = game.nodes[index];
-      startNode.setOwner(this);
+	  origin = game.nodes[index];
+      origin.setOwner(this);
 
       // make starting node generator
 	  for (i in 0...Game.numPowers)
-	    if (startNode.power[i] > 0)
+	    if (origin.power[i] > 0)
 		  {
-		    startNode.powerGenerated[i] = 1;
+		    origin.powerGenerated[i] = 1;
 			powerMod[i] += 1;
 		  }
       neophytes++;
-	  startNode.setGenerator(true);
+	  origin.setGenerator(true);
 
-      startNode.setVisible(this, true);
-      startNode.showLinks();
+      origin.setVisible(this, true);
+      origin.showLinks();
 
       // give initial power from starting node
 	  for (i in 0...Game.numPowers)
         {
-	      power[i] += Math.round(startNode.powerGenerated[i]);
+	      power[i] += Math.round(origin.powerGenerated[i]);
 
           // 50% chance of raising the conquer difficulty
           if (Math.random() < 0.5)
-            startNode.power[i]++;
+            origin.power[i]++;
         }
-      startNode.update();
+      origin.update();
 	}
 
 
@@ -239,9 +239,9 @@ class Player
 
       // starting node upgrades first
       var ok = false;
-      if (startNode.level == level)
+      if (origin.level == level)
         {
-          startNode.upgrade();
+          origin.upgrade();
           ok = true;
         }
 
@@ -288,7 +288,7 @@ class Player
       virgins -= Game.numSummonVirgins;
       isRitual = true;
       ritual = Static.rituals[0];
-      ritualTurns = ritual.turns;
+      ritualPoints = ritual.points;
 
       // everybody starts war with this player
       for (p in game.players)
@@ -334,15 +334,17 @@ class Player
           if (!isAI)
             {
               ui.alert("The stars were not right. The high priest goes insane.");
-              ui.log(UI.cultName(id, info) + " has failed the Ritual of Summoning.");
+              ui.log(UI.cultName(id, info) + " has failed to perform the " + 
+                Static.rituals[0].name + ".");
               ui.updateStatus();
             }
           else
             {
               ui.alert(UI.cultName(id, info) +
-                " has failed the Ritual of Summoning.<br><br>" +
+                " has failed to perform the " + Static.rituals[0].name + ".<br><br>" +
                 info.summonFail);
-              ui.log(UI.cultName(id, info) + " has failed the Ritual of Summoning.");
+              ui.log(UI.cultName(id, info) + " has failed the " +
+                Static.rituals[0].name + ".");
             }
           return;
         }
@@ -359,8 +361,8 @@ class Player
       // finish a ritual if there is one
       if (isRitual)
         {
-          ritualTurns--;
-          if (ritualTurns == 0)
+          ritualPoints -= priests;
+          if (ritualPoints <= 0)
             ritualFinish();
         }
 
@@ -485,7 +487,7 @@ class Player
         }
 
       // stop a ritual
-      if (prevOwner != null && prevOwner.isRitual && prevOwner.startNode == node)
+      if (prevOwner != null && prevOwner.isRitual && prevOwner.origin == node)
         {
           prevOwner.isRitual = false;
           ui.log("The Origin of " + UI.cultName(prevOwner.id, prevOwner.info) +
@@ -523,13 +525,16 @@ class Player
         return;
 
       // owner dead
-      ui.log(UI.cultName(id, info) + " was wiped completely from the world.");
+      ui.log(UI.cultName(id, info) + " was wiped completely and forgotten.");
 
       isDead = true;
 
       // player dead
       if (!isAI)
-        ui.finish(this, "wiped");
+        {
+          game.isFinished = true;
+          ui.finish(this, "wiped");
+        }
     }
 
 

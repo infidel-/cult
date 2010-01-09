@@ -55,7 +55,7 @@ class UINode
       if (node.owner != null)
         s += "<span style='color:" + Game.playerColors[node.owner.id] + "'>" +
           node.owner.name + "</span><br>";
-      if (node.owner != null && node.owner.startNode == node)
+      if (node.owner != null && node.owner.origin == node)
         s += "<span style='color:" + Game.playerColors[node.owner.id] +
           "'>The Origin</span><br>";
       s += node.name + "<br>";
@@ -90,9 +90,21 @@ class UINode
 
 	  if (node.isGenerator)
 		{
-		  marker.style.border = '3px solid #777';
+          var w = '3px';
+          var col = '#777';
+          var type = 'solid';
+
           if (node.isProtected)
-            marker.style.border = '3px solid #ffffff';
+            col = '#ffffff';
+          for (p in game.players)
+            if (p.origin == node)
+              {
+                w = '5px';
+                type = 'double';
+                break;
+              }
+
+		  marker.style.border = w + ' ' + type + ' ' + col;
 
 		  s += "<br>Generates:<br>";
 	      for (i in 0...Game.numPowers)

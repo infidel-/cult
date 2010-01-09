@@ -44,9 +44,9 @@ class Static
       // the first one is reserved for ritual of summoning!
       {
         id: "summoning",
-        name: "Ritual of Summoning",
-        turns: 3,
-        note: "Upon completion this cult will reign this world."
+        name: "Final Ritual",
+        points: 9,
+        note: "Upon completion this cult will reign over the world unchallenged."
       }
     ];
 }
