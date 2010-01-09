@@ -44,7 +44,7 @@ class Game
   public static var numSummonVirgins = 9;
   static var nodesCount = 100;
   public static var upgradeCost = 3;
-  public static var isDebug = true; // debug mode (debug button + extended info window)
+  public static var isDebug = false; // debug mode (debug button + extended info window)
   public static var debugTime = false; // show execution time of various parts
   public static var debugVis = false; // show visibility of nodes to players
   public static var debugNear = false; // show "nearness" of all nodes
@@ -60,6 +60,13 @@ class Game
 	  ui.init();
       restart();
       ui.updateStatus();
+
+      var hasPlayed = ui.getVar('hasPlayed');
+
+      if (hasPlayed == null)
+        ui.alert("Welcome.<br><br>If it is your first time playing, please take your time to " +
+          "read the <a target=_blank href='http://code.google.com/p/cult/wiki/Tutorial'>Tutorial</a> before playing. Or you might die horribly while trying.");
+      ui.setVar('hasPlayed', '1');
     }
 
 

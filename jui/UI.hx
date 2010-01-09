@@ -776,6 +776,8 @@ class UI
           s += p.nodes.length + ' followers (' +
             p.neophytes + ' neophytes, ' + p.adepts + ' adepts, ' +
             p.priests + ' priests)';
+          if (p.isParalyzed)
+            s += " Paralyzed";
           s += '<br>';
 
           // description
@@ -881,6 +883,21 @@ class UI
       if (value == null)
         value = 0;
       untyped pageTracker._trackEvent('Evil Cult', action, label, value);
+    }
+
+
+// get a stored variable (cookie)
+  public inline function getVar(name: String)
+    {
+      return untyped getCookie(name);
+    }
+
+
+// get a stored variable (cookie)
+  public inline function setVar(name: String, val: String)
+    {
+      return untyped setCookie(name, val,
+        untyped __js__("new Date(2015, 0, 0, 0, 0, 0, 0)"));
     }
 
 
