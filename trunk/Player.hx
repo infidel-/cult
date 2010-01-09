@@ -8,11 +8,9 @@ class Player
   public var name: String;
   public var info: Dynamic;
 
-  // player or AI?
-  public var isAI: Bool;
-
-  // player is dead
-  public var isDead: Bool;
+  public var isAI: Bool; // player or AI?
+  public var isDead: Bool; // player is dead
+  public var isParalyzed: Bool; // player is paralyzed
 
   // ritual stuff
   public var isRitual: Bool; // player is in ritual?
@@ -239,9 +237,11 @@ class Player
 
       // starting node upgrades first
       var ok = false;
+      var upNode = null;
       if (origin.level == level)
         {
           origin.upgrade();
+          upNode = origin;
           ok = true;
         }
 
@@ -251,6 +251,7 @@ class Player
           if (n.level == level && n.isGenerator)
             {
               n.upgrade();
+              upNode = n;
               ok = true;
               break;
             }
@@ -262,6 +263,7 @@ class Player
           if (n.level == level)
             {
               n.upgrade();
+              upNode = n;
               ok = true;
               break;
             }
@@ -272,6 +274,15 @@ class Player
       // notify player
       if (this != game.player && priests >= 2)
         ui.log(UI.cultName(id, info) + " has " + priests + " priests. Be careful.");
+
+      // 
+      if (isParalyzed && priests >= 1)
+        {
+          isParalyzed = false;
+          origin = upNode;
+          origin.update();
+          ui.log(UI.cultName(id, info) + " gains a priest and is no longer paralyzed.");
+        }
     }
 
 
@@ -399,6 +410,8 @@ class Player
 // activate node (fact) (returns result for AI stuff)
   public function activate(node: Node): String
     {
+      if (isParalyzed) return "";
+
 	  if (node.owner == this)
 		return "isOwner";
 
@@ -486,12 +499,44 @@ class Player
             UI.cultName(prevOwner.id, prevOwner.info) + ".");
         }
 
-      // stop a ritual
-      if (prevOwner != null && prevOwner.isRitual && prevOwner.origin == node)
+      // converting the origin
+      if (prevOwner != null && prevOwner.origin == node)
         {
-          prevOwner.isRitual = false;
-          ui.log("The Origin of " + UI.cultName(prevOwner.id, prevOwner.info) +
-            " is converted. Casting of " + prevOwner.ritual.name + " is stopped.");
+          ui.log(UI.cultName(prevOwner.id, prevOwner.info) + " has lost its origin.");
+
+          // stop a ritual
+          if (prevOwner.isRitual)
+            {
+              prevOwner.isRitual = false;
+              ui.log("Performing of " + prevOwner.ritual.name + " is stopped.");
+            }
+
+          // find a new origin, starting with priests
+          var ok = false;
+          for (node in prevOwner.nodes)
+            {
+              if (node.level == 2)
+                {
+                  prevOwner.origin = node;
+                  ok = true;
+                  break;
+                }
+            }
+
+          // if not found, cult is in big trouble
+          if (!ok)
+            {
+              ui.log("With no priests left " + UI.cultName(prevOwner.id, prevOwner.info) +
+                " is completely paralyzed.");
+              prevOwner.isParalyzed = true;
+            }
+          else
+            {
+              ui.log("Another priest becomes the origin of " +
+                UI.cultName(prevOwner.id, prevOwner.info) + ".");
+              prevOwner.origin.update();
+              node.update();
+            }
         }
 
       // check for victory

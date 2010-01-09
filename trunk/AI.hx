@@ -15,6 +15,8 @@ class AI extends Player
       // try to upgrade followers
       aiUpgradeFollowers();
 
+      if (isParalyzed) return;
+
       // if in summoning, try to lower awareness even using virgins
       aiLowerAwarenessSummon();
 
