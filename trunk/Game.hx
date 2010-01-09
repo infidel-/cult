@@ -33,7 +33,7 @@ class Game
   public static var lineColors: Array<String> =
     [ "#55dd55", "#2727D7", "#E052CA", "#D8E151" ];
   public static var nodeColors: Array<String> =
-    [ "#005500", "#010955", "#560053", "#565300" ];
+    [ "#005500", "#010955", "#560053", "#505000" ];
   public static var playerColors: Array<String> =
     [ "#00B400", "#2F43FD", "#B400AE", "#B4AE00" ];
 
@@ -135,7 +135,7 @@ class Game
 
       // choose and setup starting nodes
       for (p in players)
-	    p.setStartNode();
+	    p.setOrigin();
 
       ui.updateStatus();
       endTimer("restart"); 
