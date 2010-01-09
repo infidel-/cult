@@ -8,11 +8,11 @@ Evil Cult is copyright 2009-2010 [http://www.starinfidel.co.cc StarInfidel] and 
   http://code.google.com/p/cult
 
 The project is written using [http://haxe.org Haxe] language and compiled into Javascript. The music you can hear is from [http://kahvi.org Kahvi] netlabel.
- * Introspective - Occlusion - [http://www.kahvi.org/releases.php?release_number=051 album page]
- * Introspective - Analogy - [http://www.kahvi.org/releases.php?release_number=080 album page]
- * Introspective - Black Mesa Winds - [http://www.kahvi.org/releases.php?release_number=236 album page]
- * Introspective - Gewesen - [http://www.kahvi.org/releases.php?release_number=176 album page]
- * Curious Inversions - Whom - [http://www.kahvi.org/releases.php?release_number=254 album page]
+ * [http://www.kahvi.org/artist_info.php?nickname=Introspective Introspective] - [http://www.kahvi.org/releases.php?release_number=051 Occlusion]
+ * [http://www.kahvi.org/artist_info.php?nickname=Introspective Introspective] - [http://www.kahvi.org/releases.php?release_number=080 Analogy]
+ * [http://www.kahvi.org/artist_info.php?nickname=Introspective Introspective] - [http://www.kahvi.org/releases.php?release_number=236 Black Mesa Winds]
+ * [http://www.kahvi.org/artist_info.php?nickname=Introspective Introspective] - [http://www.kahvi.org/releases.php?release_number=176 Gewesen]
+ * [http://www.kahvi.org/artist_info.php?nickname=Curious%20Inversions Curious Inversions] - [http://www.kahvi.org/releases.php?release_number=254 Whom]
 
 The following libraries are used:
 
