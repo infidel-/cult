@@ -513,11 +513,11 @@ class Player
 
           // find a new origin, starting with priests
           var ok = false;
-          for (node in prevOwner.nodes)
+          for (n in prevOwner.nodes)
             {
-              if (node.level == 2)
+              if (n.level == 2)
                 {
-                  prevOwner.origin = node;
+                  prevOwner.origin = n;
                   ok = true;
                   break;
                 }
