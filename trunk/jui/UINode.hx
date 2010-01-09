@@ -97,7 +97,7 @@ class UINode
           if (node.isProtected)
             col = '#ffffff';
           for (p in game.players)
-            if (p.origin == node)
+            if (p.origin == node && !p.isDead)
               {
                 w = '5px';
                 type = 'double';
