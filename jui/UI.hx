@@ -761,12 +761,14 @@ class UI
           // ritual
           if (p.isRitual == true)
             {
+              var turns = Std.int(p.ritualPoints / p.priests);
+              if (p.ritualPoints % p.priests > 0)
+                turns += 1;
               s += "Casting <span title='" + p.ritual.note +
                 "' id='info.ritual" + i +
                 "' style='color:#ffaaaa'>" + p.ritual.name +
                 "</span>, " + (p.ritual.points - p.ritualPoints) + "/" +
-                p.ritual.points + " points, " +
-                Std.int(p.ritualPoints / p.priests) +
+                p.ritual.points + " points, " + turns +
                 " turns left<br>";
             }
 
