@@ -8,67 +8,56 @@ the GPL v3; further details, including source, are available at:
 
   <a href="http://code.google.com/p/cult/">http://code.google.com/p/cult</a>
 
+The project is written using [http://haxe.org Haxe] language and compiled into Javascript.
+
 The following libraries are used:
 
-/*
-   SoundManager 2: Javascript Sound for the Web
-   --------------------------------------------
-   http://schillmania.com/projects/soundmanager2/
+{{{
+SoundManager 2: Javascript Sound for the Web
+--------------------------------------------
+http://schillmania.com/projects/soundmanager2/
 
-   Copyright (c) 2008, Scott Schiller. All rights reserved.
-   Code licensed under the BSD License:
-   http://schillmania.com/projects/soundmanager2/license.txt
+Copyright (c) 2008, Scott Schiller. All rights reserved.
+Code licensed under the BSD License:
+http://schillmania.com/projects/soundmanager2/license.txt
+V2.95a.20090717
+}}}
 
-   V2.95a.20090717
-*/
+{{{
+jQuery JavaScript Library v1.3.2
+http://jquery.com/
 
-/*
- * jQuery JavaScript Library v1.3.2
- * http://jquery.com/
- *
- * Copyright (c) 2009 John Resig
- * Dual licensed under the MIT and GPL licenses.
- * http://docs.jquery.com/License
- *
- * Date: 2009-02-19 17:34:21 -0500 (Thu, 19 Feb 2009)
- * Revision: 6246
- */
+Copyright (c) 2009 John Resig
+Dual licensed under the MIT and GPL licenses.
+http://docs.jquery.com/License
+Date: 2009-02-19 17:34:21 -0500 (Thu, 19 Feb 2009)
+Revision: 6246
+}}}
 
+{{{
 jqDialog:
-/**
-	Kailash Nadh,	http://kailashnadh.name
-	August 2009
-	Smooth popup dialog for jQuery
+Kailash Nadh,	http://kailashnadh.name
+August 2009
+Smooth popup dialog for jQuery
+License:	GNU Public License: http://www.fsf.org/copyleft/gpl.html
+v1.2.1	September 5 2009
+}}}
 
-	License:	GNU Public License: http://www.fsf.org/copyleft/gpl.html
-	
-	v1.2.1	September 5 2009
-**/
-
+{{{
 jQuery Dimensions:
-/* Copyright (c) 2007 Paul Bakaus (paul.bakaus@googlemail.com) and Brandon Aaron (brandon.aaron@gmail.com || http://brandonaaron.net)
- * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
- * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
- *
- * $LastChangedDate: 2007-12-20 08:43:48 -0600 (Thu, 20 Dec 2007) $
- * $Rev: 4257 $
- *
- * Version: 1.2
- *
- * Requires: jQuery 1.2+
- */
+Copyright (c) 2007 Paul Bakaus (paul.bakaus@googlemail.com) and Brandon Aaron (brandon.aaron@gmail.com || http://brandonaaron.net)
+Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
+and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
+Version: 1.2
+}}}
 
-/*
- * jQuery Tooltip plugin 1.3
- *
- * http://bassistance.de/jquery-plugins/jquery-plugin-tooltip/
- * http://docs.jquery.com/Plugins/Tooltip
- *
- * Copyright (c) 2006 - 2008 JÃ¶rn Zaefferer
- *
- * $Id: jquery.tooltip.js 5741 2008-06-21 15:22:16Z joern.zaefferer $
- * 
- * Dual licensed under the MIT and GPL licenses:
- *   http://www.opensource.org/licenses/mit-license.php
- *   http://www.gnu.org/licenses/gpl.html
- */
+{{{
+jQuery Tooltip plugin 1.3
+http://bassistance.de/jquery-plugins/jquery-plugin-tooltip/
+http://docs.jquery.com/Plugins/Tooltip
+Copyright (c) 2006 - 2008 JÃ¶rn Zaefferer
+$Id: jquery.tooltip.js 5741 2008-06-21 15:22:16Z joern.zaefferer $
+Dual licensed under the MIT and GPL licenses:
+http://www.opensource.org/licenses/mit-license.php
+http://www.gnu.org/licenses/gpl.html
+}}}
