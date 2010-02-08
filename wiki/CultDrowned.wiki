@@ -1,0 +1,49 @@
+#summary Information about the Drowned
+
+= Name =
+
+Drowned
+
+= Short Description =
+
+Vengeful spirits determined to drown the rest of the world.
+
+= Long Description =
+
+Over the millennia, hundreds of thousands of people have drowned in the
+oceans, lakes, and rivers of the world.  Most of them pass peacefully
+into oblivion, but some linger, warped by the experience of their death.
+Over time, those who remain have gathered together in an undead cabal.
+They want the rest of the world to join them in their watery graves, and
+will stop at nothing to make it happen.
+
+= Ritual Start =
+
+It begins to rain.  A slow drizzle at first, the entire world is soon
+enveloped in an unending thunderstorm, water pouring from the heavens
+without an end in sight.  Low-lying regions begin to flood, and it is
+only a matter of time before even the highest ground is inundated.
+
+= Ritual Success =
+
+The heavy rains turn torrential.  The sea level rises inexorably as
+humanity crowds further and further up into the mountains.  Still the
+rains come, still the waters climb.  Every death in the water adds to
+the power of the Drowned, the force of the neverending rain.  Many take
+to boats in an attempt to survive on the surface of the sea, only to
+find that no ship remains seaworthy; leaks spring up in unlikely places,
+and soon every vessel succumbs to the inexorable pull of the dark depths
+below.  The last gasp of humanity is a man standing on the peak of
+Everest, rain-drenched and angry, and then he goes under once.  Twice.
+He is gone.
+
+= Ritual Failure =
+
+The rains slacken, first to a light patter, then a drizzle, then nothing
+but the usual patterns of storms and showers.  Commentators argue that
+the excess water had to come from somewhere, but within days everything
+seems to have returned to an equilibrium, the ghost rains drying up into
+nothing.  Scientists are at a loss to explain the phenomenon, but the
+rest of the world returns to its standard routine, although many
+compulsively glance at the sky whenever a cloud darkens the day, worried
+that it might once again begin to rain forever.
