@@ -1,4 +1,4 @@
-#summary Information about the Drowned
+#summary Information about the Drowned.
 
 = Name =
 
