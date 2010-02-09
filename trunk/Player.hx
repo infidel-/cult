@@ -344,7 +344,7 @@ class Player
 
           if (!isAI)
             {
-              ui.alert("The stars were not right. The high priest goes insane.");
+              ui.alert("The stars were not proerly aligned. The high priest goes insane.");
               ui.log(UI.cultName(id, info) + " has failed to perform the " + 
                 Static.rituals[0].name + ".");
               ui.updateStatus();
@@ -495,20 +495,20 @@ class Player
           wars[prevOwner.id] = true;
           prevOwner.wars[id] = true;
 
-          ui.log(UI.cultName(id, info) + " has declared a war against " +
+          ui.log(UI.cultName(id, info) + " has declared war against " +
             UI.cultName(prevOwner.id, prevOwner.info) + ".");
         }
 
       // converting the origin
       if (prevOwner != null && prevOwner.origin == node)
         {
-          ui.log(UI.cultName(prevOwner.id, prevOwner.info) + " has lost its origin.");
+          ui.log(UI.cultName(prevOwner.id, prevOwner.info) + " has lost its Origin.");
 
           // stop a ritual
           if (prevOwner.isRitual)
             {
               prevOwner.isRitual = false;
-              ui.log("Performing of " + prevOwner.ritual.name + " is stopped.");
+              ui.log("The execution of " + prevOwner.ritual.name + " has been stopped.");
             }
 
           // find a new origin, starting with priests
@@ -532,7 +532,7 @@ class Player
             }
           else
             {
-              ui.log("Another priest becomes the origin of " +
+              ui.log("Another priest becomes the Origin of " +
                 UI.cultName(prevOwner.id, prevOwner.info) + ".");
               prevOwner.origin.update();
               node.update();
@@ -570,7 +570,7 @@ class Player
         return;
 
       // owner dead
-      ui.log(UI.cultName(id, info) + " was wiped completely and forgotten.");
+      ui.log(UI.cultName(id, info) + " has been destroyed, forgotten by time.");
 
       isDead = true;
 

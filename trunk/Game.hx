@@ -64,8 +64,10 @@ class Game
       var hasPlayed = ui.getVar('hasPlayed');
 
       if (hasPlayed == null)
-        ui.alert("Welcome.<br><br>If it is your first time playing, please take your time to " +
-          "read the <a target=_blank href='http://code.google.com/p/cult/wiki/Tutorial'>Tutorial</a> before playing. Or you might die horribly while trying.");
+        ui.alert("Welcome.<br><br>If this is your first time playing, please take the time to " +
+          "read the <a target=_blank href='http://code.google.com/p/cult/wiki/Tutorial'>Tutorial</a> " +
+          "before playing.  We are not responsible for horrific deaths caused by not reading the " +
+          "Tutorial.  You have been warned.");
       ui.setVar('hasPlayed', '1');
     }
 

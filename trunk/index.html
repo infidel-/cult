@@ -89,12 +89,12 @@ pageTracker._trackPageview();
   soundManager.url = "lib/soundmanager2.swf";
   soundManager.onload = Game.instance.ui.music.init;
   soundManager.onerror = function() {
-    window.alert("No music! Either you don't have Flash or it's blocked.");
+    window.alert("No music! Either you don't have Flash installed or are running a Flash blocker.");
     }
 
   if (jQuery.browser.msie == true)
     window.alert("You seem to be using Internet Explorer. " +
-      "Unfortunately, the game cannot be finished in it due to bugs.");
+      "Unfortunately, the game does not work properly in IE due to bugs in the browser.");
 </script>
 
 

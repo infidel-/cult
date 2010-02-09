@@ -9,7 +9,7 @@ class Static
       // your cult
       { name: "Cult of Elder God",
         note: "The cult still lives.",
-        longNote: "At the dawn of humanity the great old ones tolds their secrets in dreams to the first men, who formed a cult which had never died... Hidden in distant and dark places of the world, waiting for the day when the stars will be right again and the mighty Elder God will rise from his slumber under the deep waters to bring the earth beneath his sway once more.",
+        longNote: "At the dawn of humanity the great old ones told their secrets in dreams to the first men, who formed a cult which had never died... Hidden in distant and dark places of the world, waiting for the day when the stars will be right again and the mighty Elder God will rise from his slumber under the deep waters to bring the earth beneath his sway once more.",
         summonStart: "",
         summonFinish: "",
         summonFail: "" },
