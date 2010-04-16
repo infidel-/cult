@@ -9,7 +9,7 @@ class Line
   public var startNode: Dynamic;
   public var endNode: Dynamic;
   public var pixels: Array<Dynamic>;
-  public var owner: Player;
+  public var owner: Cult;
   public var isVisible: Bool;
 
 

@@ -1,48 +1,43 @@
-// game player
+// cult (game player)
 
-class Player
+class Cult
 {
   var game: Game;
   var ui: UI;
   public var id: Int;
   public var name: String;
+  public var fullName(getFullName, null): String;
   public var info: Dynamic;
 
   public var isAI: Bool; // player or AI?
-  public var isDead: Bool; // player is dead
-  public var isParalyzed: Bool; // player is paralyzed
+  public var isDead: Bool; // cult is dead
+  public var isParalyzed: Bool; // cult is paralyzed
 
   // ritual stuff
-  public var isRitual: Bool; // player is in ritual?
+  public var isRitual: Bool; // cult is performing ritual?
   public var ritual: Dynamic; // which ritual is in progress
   public var ritualPoints: Int; // amount of ritual points needed
 
-  // public awareness
-  public var awareness(default, setAwareness): Int;
+  public var awareness(default, setAwareness): Int; // public awareness
 
-  // power reserve
+  // power reserves
   public var power: Array<Int>; // intimidation, persuasion, bribe, virgins
   public var virgins(getVirgins, setVirgins): Int;
  
-  // wars
-  public var wars: Array<Bool>;
-
-  // power that will be generated next turn (cache variable)
-  public var powerMod: Array<Int>;
-
-  // origin 
-  public var origin: Node;
+  public var wars: Array<Bool>; // wars
+  public var powerMod: Array<Int>; // power that will be generated next turn (cache)
+  public var origin: Node; // origin 
 
   // followers number cache
   public var neophytes(getNeophytes, null): Int;
   public var adepts(getAdepts, null): Int;
   public var priests(getPriests, null): Int;
 
-  // cache of owned nodes
-  public var nodes: List<Node>;
+  public var nodes: List<Node>; // cache of owned nodes
+  public var adeptsUsed: Int; // how many adepts were used this turn
 
-  // how many adepts were used this turn
-  public var adeptsUsed: Int;
+  public var hasInvestigator: Bool; // does this cult has investigator on its back?
+  public var investigator: Investigator; // investigator
 
 
   public function new(gvar, uivar, id, infoID)
@@ -77,7 +72,7 @@ class Player
 
           // check for close nodes
           var ok = 1;
-          for (p in game.players)
+          for (p in game.cults)
             if (p.origin != null &&
                 node.distance(p.origin) < UI.nodeVisibility + 50)
               {
@@ -90,7 +85,10 @@ class Player
           break;
         }
 	  origin = game.nodes[index];
-      origin.setOwner(this);
+      origin.owner = this;
+      nodes.add(origin);
+      origin.update();
+//      origin.setOwner(this);
 
       // make starting node generator
 	  for (i in 0...Game.numPowers)
@@ -185,6 +183,38 @@ class Player
     }
 
 
+// lower investigator willpower
+  public function lowerWillpower(pwr)
+    {
+      if (!hasInvestigator || adeptsUsed >= adepts || pwr == 3 ||
+          power[pwr] < Game.willPowerCost || investigator.will >= 9)
+        return;
+
+      power[pwr] -= Game.willPowerCost;
+
+      // chance of failure
+      if (100 * Math.random() < 30)
+        {
+          if (!isAI)
+            ui.alert("You have failed to shatter the will of the investigator.");
+          return;
+        }
+
+      investigator.will -= 1;
+      if (investigator.will <= 0)
+        {
+          investigator = null;
+          hasInvestigator = false;
+          ui.log("The investigator of the " + fullName +
+            " has disappeared.");
+        }
+      adeptsUsed++;
+
+      if (!isAI)
+        ui.updateStatus();
+    }
+
+
 // convert resources
   public function convert(from: Int, to: Int)
     {
@@ -238,7 +268,7 @@ class Player
       // starting node upgrades first
       var ok = false;
       var upNode = null;
-      if (origin.level == level)
+      if (origin != null && origin.level == level)
         {
           origin.upgrade();
           upNode = origin;
@@ -273,16 +303,27 @@ class Player
       
       // notify player
       if (this != game.player && priests >= 2)
-        ui.log(UI.cultName(id, info) + " has " + priests + " priests. Be careful.");
+        ui.log(fullName + " has " + priests + " priests. Be careful.");
 
-      // 
+      // cult un-paralyzed 
       if (isParalyzed && priests >= 1)
         {
           isParalyzed = false;
           origin = upNode;
           origin.update();
-          ui.log(UI.cultName(id, info) + " gains a priest and is no longer paralyzed.");
+          ui.log(fullName + " gains a priest and is no longer paralyzed.");
         }
+    }
+
+
+// chance of gaining investigator
+  public function getInvestigatorChance(): Int
+    {
+      if (priests == 1)
+        return 50;
+      else if (priests == 2)
+        return 65;
+      else return 80;
     }
 
 
@@ -301,17 +342,17 @@ class Player
       ritual = Static.rituals[0];
       ritualPoints = ritual.points;
 
-      // everybody starts war with this player
-      for (p in game.players)
+      // every cult starts war with this one
+      for (p in game.cults)
         if (p != this)
           {
             p.wars[id] = true;
             wars[p.id] = true;
           }
 
-      ui.alert(UI.cultName(id, info) + " has started the " + ritual.name + ".<br><br>" +
+      ui.alert(fullName + " has started the " + ritual.name + ".<br><br>" +
         Static.cults[id].summonStart);
-      ui.log(UI.cultName(id, info) + " has started the " + ritual.name + ".");
+      ui.log(fullName + " has started the " + ritual.name + ".");
       if (!isAI)
         ui.updateStatus();
     }
@@ -345,16 +386,16 @@ class Player
           if (!isAI)
             {
               ui.alert("The stars were not proerly aligned. The high priest goes insane.");
-              ui.log(UI.cultName(id, info) + " has failed to perform the " + 
+              ui.log(fullName + " has failed to perform the " + 
                 Static.rituals[0].name + ".");
               ui.updateStatus();
             }
           else
             {
-              ui.alert(UI.cultName(id, info) +
+              ui.alert(fullName +
                 " has failed to perform the " + Static.rituals[0].name + ".<br><br>" +
                 info.summonFail);
-              ui.log(UI.cultName(id, info) + " has failed the " +
+              ui.log(fullName + " has failed the " +
                 Static.rituals[0].name + ".");
             }
           return;
@@ -366,15 +407,31 @@ class Player
     }
 
 
-// make turn (fturn) - gain resources, finish rituals
+// end of turn for this cult (fturn) - gain resources, finish rituals
   public function turn()
     {
+      // if a cult has any priests, each turn it has a 
+      // big chance of an investigator finding out about it
+      if (priests > 0 && !hasInvestigator && 100 * Math.random() < getInvestigatorChance())
+        {
+          hasInvestigator = true;
+          ui.log("An investigator has found out about " + fullName + ".");
+          investigator = new Investigator(this, ui);
+
+          if (!isAI)
+            ui.updateStatus();
+        }
+
       // finish a ritual if there is one
       if (isRitual)
         {
           ritualPoints -= priests;
           if (ritualPoints <= 0)
             ritualFinish();
+
+          // summon finished
+          if (game.isFinished)
+            return;
         }
 
 	  // give power and recalculate power mod cache
@@ -393,6 +450,10 @@ class Player
       var value = Std.int(Math.random() * (neophytes / 4 - 0.5));
       virgins += value;
       adeptsUsed = 0;
+
+      // investigator acts
+      if (hasInvestigator)
+        investigator.turn();
     }
 
 
@@ -410,7 +471,12 @@ class Player
 // activate node (fact) (returns result for AI stuff)
   public function activate(node: Node): String
     {
-      if (isParalyzed) return "";
+      if (isParalyzed)
+        {
+          if (!isAI)
+            ui.alert("Cult is paralyzed without the Origin.");
+          return "";
+        }
 
 	  if (node.owner == this)
 		return "isOwner";
@@ -457,87 +523,7 @@ class Player
         }
 
       // save prev owner
-      var prevOwner = node.owner;
-      // update power mod cache
-	  if (node.isGenerator)
-	    for (i in 0...Game.numPowers)
-		  powerMod[i] += Math.round(node.powerGenerated[i]);
-      node.clearLines();
       node.setOwner(this);
-      node.showLinks();
-
-      // update previous owner's visibility of the links for this node
-      if (prevOwner != null)
-        node.updateLinkVisibility(prevOwner);
-
-      // raise public awareness
-      if (node.isGenerator)
-        awareness += 2;
-      else awareness++;
-
-      if (!isAI)
-        ui.updateStatus();
-
-      // paint lines to this node from adjacent nodes owned by node owner
-      node.paintLines();
-
-      // update display
-      for (n in node.links)
-        n.update();
-
-      // check for prev owner's death
-      if (prevOwner != null)
-        prevOwner.checkDeath();
-
-      // declare war
-      if (prevOwner != null && !prevOwner.isDead && !wars[prevOwner.id])
-        {
-          wars[prevOwner.id] = true;
-          prevOwner.wars[id] = true;
-
-          ui.log(UI.cultName(id, info) + " has declared war against " +
-            UI.cultName(prevOwner.id, prevOwner.info) + ".");
-        }
-
-      // converting the origin
-      if (prevOwner != null && prevOwner.origin == node)
-        {
-          ui.log(UI.cultName(prevOwner.id, prevOwner.info) + " has lost its Origin.");
-
-          // stop a ritual
-          if (prevOwner.isRitual)
-            {
-              prevOwner.isRitual = false;
-              ui.log("The execution of " + prevOwner.ritual.name + " has been stopped.");
-            }
-
-          // find a new origin, starting with priests
-          var ok = false;
-          for (n in prevOwner.nodes)
-            {
-              if (n.level == 2)
-                {
-                  prevOwner.origin = n;
-                  ok = true;
-                  break;
-                }
-            }
-
-          // if not found, cult is in big trouble
-          if (!ok)
-            {
-              ui.log("With no priests left " + UI.cultName(prevOwner.id, prevOwner.info) +
-                " is completely paralyzed.");
-              prevOwner.isParalyzed = true;
-            }
-          else
-            {
-              ui.log("Another priest becomes the Origin of " +
-                UI.cultName(prevOwner.id, prevOwner.info) + ".");
-              prevOwner.origin.update();
-              node.update();
-            }
-        }
 
       // check for victory
       checkVictory();
@@ -546,16 +532,95 @@ class Player
     }
 
 
-// check for player victory
+// declare war to this cult
+  public function declareWar(cult: Cult)
+    {
+      if (cult.wars[id])
+        return;
+
+      cult.wars[id] = true;
+      wars[cult.id] = true;
+
+      ui.log(fullName + " has declared war against " +
+        UI.cultName(cult.id, cult.info) + ".");
+    }
+
+
+// lose node to new owner (who is null in the case of losing)
+  public function loseNode(node: Node, ?cult: Cult)
+    {
+      // check for death
+      checkDeath();
+      if (isDead) return;
+
+      // raise public awareness
+      awareness++;
+      if (!isAI)
+        ui.updateStatus();
+
+      // declare war
+      if (cult != null)
+        cult.declareWar(this);
+
+      // converting the origin
+      if (origin == node)
+        loseOrigin();
+
+      node.update();
+    }
+
+
+// lose origin
+  public function loseOrigin()
+    {
+      ui.log(fullName + " has lost its Origin.");
+
+      // stop a ritual
+      if (isRitual)
+        {
+          isRitual = false;
+          ui.log("The execution of " + ritual.name + " has been stopped.");
+        }
+
+      // find a new origin, starting with priests
+      var ok = false;
+      origin = null;
+      for (n in nodes)
+        {
+          if (n.level == 2)
+            {
+              origin = n;
+              ok = true;
+              break;
+            }
+        }
+
+      // if not found, cult is in big trouble
+      if (!ok)
+        {
+          ui.log("With no priests left " + fullName +
+            " is completely paralyzed.");
+          isParalyzed = true;
+        }
+      else
+        {
+          ui.log("Another priest becomes the Origin of " +
+            fullName + ".");
+          origin.update();
+        }
+    }
+
+
+// check for victory for this cult
   function checkVictory()
     {
       // check for finish
       var ok = true;
-      for (p in game.players)
+      for (p in game.cults)
         if (p != this && !p.isDead)
           ok = false;
 
-      // there are live players left
+      // there are active cults left
       if (!ok)
         return;
 
@@ -563,18 +628,18 @@ class Player
     }
 
 
-// check if player still has any nodes
-  function checkDeath()
+// check if cult still has any nodes
+  public function checkDeath()
     {
       if (this.nodes.length > 0)
         return;
 
       // owner dead
-      ui.log(UI.cultName(id, info) + " has been destroyed, forgotten by time.");
+      ui.log(fullName + " has been destroyed, forgotten by time.");
 
       isDead = true;
 
-      // player dead
+      // player cult is dead
       if (!isAI)
         {
           game.isFinished = true;
@@ -625,5 +690,10 @@ class Player
   function getPriests()
     {
       return getNumFollowers(2);
+    }
+
+  function getFullName()
+    {
+      return UI.cultName(id, info);
     }
 }

@@ -1,6 +1,6 @@
 // ai class
 
-class AI extends Player
+class AI extends Cult
 {
   public function new(gvar, uivar, id, infoID)
     {
@@ -16,6 +16,9 @@ class AI extends Player
       aiUpgradeFollowers();
 
       if (isParalyzed) return;
+
+      // if has investigator, he becomes the first priority
+      aiLowerWillpower();
 
       // if in summoning, try to lower awareness even using virgins
       aiLowerAwarenessSummon();
@@ -147,6 +150,20 @@ class AI extends Player
                 trace("!!! " + name + " upgrade adept, priests: " + priests);
             }
           return;
+        }
+    }
+
+
+// lower investigator's willpower
+  function aiLowerWillpower()
+    {
+      if (!hasInvestigator)
+        return;
+
+      for (i in 0...Game.numPowers)
+        {
+          lowerWillpower(i);
+          lowerWillpower(i);
         }
     }
 

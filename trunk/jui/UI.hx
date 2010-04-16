@@ -33,6 +33,7 @@ class UI
   public static var markerHeight = 15;
   public static var nodeVisibility = 101;
   static var colAwareness = "#ff9999";
+  static var colWillpower = "#bbbbbb";
 
   public function new(g)
     {
@@ -220,12 +221,20 @@ class UI
 		    	"text-align:center; font-size: 10px; font-weight: bold; '>" +
 		        Game.powerShortNames[ii] + "</div>";
 
+          // not for virgins
           if (i != 3)
-	        s += "<td><div id='status.lowerAwareness" + i + "' " +
-			  "style='cursor: pointer; width:12; height:12; " +
-		      "background:#222; border:1px solid #777; " +
-              "color:" + colAwareness + "; " +
-		      "text-align:center; font-size: 10px; font-weight: bold; '>A</div>";
+            {
+	          s += "<td><div id='status.lowerAwareness" + i + "' " +
+			    "style='cursor: pointer; width:12; height:12; " +
+		        "background:#222; border:1px solid #777; " +
+                "color:" + colAwareness + "; " +
+		        "text-align:center; font-size: 10px; font-weight: bold; '>A</div>";
+	          s += "<td halign=right><div id='status.lowerWillpower" + i + "' " +
+			    "style='cursor: pointer; width:12; height:12; " +
+		        "background:#222; border:1px solid #777; " +
+                "color:" + colWillpower + "; " +
+		        "text-align:center; font-size: 10px; font-weight: bold; '>W</div>";
+            }
           s += "</table>";
 		}
       s += "</table></fieldset>";
@@ -260,13 +269,13 @@ class UI
       // music player
       s += "<fieldset style='bottom: 5px; margin-top: 10px; height: 60px; padding:0 5 0 5'>";
       s += "<legend>MUSIC</legend>";
-      s += "<div id='status.track' " + 
+      s += "<div title='Click to go to album page.' id='status.track' " + 
         "style='background: #222; cursor:pointer; font-size:10px; color: #00ff00'> - </div>";
-      s += "<center style='padding-top:10px'>";
-      s += "<span class=button title='Play' id='status.play'>|></span>&nbsp;&nbsp;";
-      s += "<span class=button title='Pause' id='status.pause'>||</span>&nbsp;&nbsp;";
-      s += "<span class=button title='Stop' id='status.stop'>[]</span>&nbsp;&nbsp;";
-      s += "<span class=button title='Random track' id='status.random'>RANDOM</span>";
+      s += "<center style='padding-top:0px'>";
+      s += "<span class=button2 title='Play' id='status.play'>PLAY</span>&nbsp;&nbsp;";
+      s += "<span class=button2 title='Pause' id='status.pause'>PAUSE</span>&nbsp;&nbsp;";
+      s += "<span class=button2 title='Stop' id='status.stop'>STOP</span>&nbsp;&nbsp;";
+      s += "<span class=button2 title='Random track' id='status.random'>RANDOM</span>";
       s += "</center></fieldset>";
 
       // buttons 2
@@ -303,6 +312,9 @@ class UI
               var c = e("status.lowerAwareness" + i);
 		      c.onclick = onStatusLowerAwareness;
               c.title = tipLowerAwareness;
+              var c = e("status.lowerWillpower" + i);
+		      c.onclick = onStatusLowerWillpower;
+              c.title = tipLowerWillpower + Game.willPowerCost;
             }
         }
 	  e("status.endTurn").onclick = onStatusEndTurn;
@@ -432,6 +444,17 @@ class UI
     }
 
 
+// try to lower willpower
+  public function onStatusLowerWillpower(event: Dynamic)
+    {
+      if (game.isFinished)
+        return;
+
+	  var power = Std.parseInt(getTarget(event).id.substr(21, 1));
+      game.player.lowerWillpower(power);
+    }
+
+
 // clear map
   public function clearMap()
     {
@@ -456,7 +479,10 @@ class UI
 
       for (i in 0...4)
         game.player.power[i] += 100;
-      updateStatus();
+
+      for (n in game.player.nodes)
+        if (n.level < 2)
+          n.upgrade();
 
 /*
       game.player.isRitual = true;
@@ -491,7 +517,15 @@ class UI
       for (n in game.nodes)
         n.setVisible(game.player, true);
 
+      for (c in game.cults)
+        if (c == game.player)
+        {
+          c.hasInvestigator = true;
+          c.investigator = new Investigator(c, this);
+        }
+
 //      game.players[2].summonFinish();
+      updateStatus();
     }
 
 
@@ -626,6 +660,15 @@ class UI
           if (game.player.power[i] > 0)
             e("status.lowerAwareness" + i).style.visibility = 'visible';
 
+      // lower willpower buttons visibility
+      for (i in 0...Game.numPowers)
+        e("status.lowerWillpower" + i).style.visibility = 'hidden';
+      if (game.player.hasInvestigator && game.player.investigator.will < 9 &&
+          game.player.adeptsUsed < game.player.adepts && game.player.adepts > 0)
+        for (i in 0...Game.numPowers)
+          if (game.player.power[i] >= Game.willPowerCost)
+            e("status.lowerWillpower" + i).style.visibility = 'visible';
+
       // upgrade buttons visibility
       for (i in 0...(Game.followerNames.length - 1))
           e("status.upgrade" + i).style.visibility =
@@ -649,41 +692,41 @@ class UI
 
 
 // finish game window (ffin)
-  public function finish(player, state)
+  public function finish(cult: Cult, state)
     {
       var msg = "<div style='text-size: 20px'><b>Game over</b></div><br>";
 
-      if (state == "summon" && !player.isAI)
+      if (state == "summon" && !cult.isAI)
         {
           msg += "The stars were right. The Elder God was summoned in " +
             game.turns + " turns.";
           track("winGame", "summon", game.turns);
         }
 
-      else if (state == "summon" && player.isAI)
+      else if (state == "summon" && cult.isAI)
         {
-          msg += cultName(player.id, player.info) +
+          msg += cult.fullName +
             " has completed the " + Static.rituals[0].name + ".<br><br>" +
-            untyped player.info.summonFinish;
+            untyped cult.info.summonFinish;
           track("loseGame", "summon", game.turns);
         }
 
-      else if (state == "conquer" && !player.isAI)
+      else if (state == "conquer" && !cult.isAI)
         {
-          msg += cultName(player.id, player.info) + " has taken over the world in " +
+          msg += cult.fullName + " has taken over the world in " +
             game.turns + " turns. The Elder Gods are pleased.";
           track("winGame", "conquer", game.turns);
         }
 
-      else if (state == "conquer" && player.isAI)
+      else if (state == "conquer" && cult.isAI)
         {
-          msg += cultName(player.id, player.info) + " has taken over the world. You fail.";
+          msg += cult.fullName + " has taken over the world. You fail.";
           track("loseGame", "conquer", game.turns);
         }
 
       else if (state == "wiped")
         {
-          msg += cultName(player.id, player.info) + " was wiped away completely. " +
+          msg += cult.fullName + " was wiped away completely. " +
             "The Elder God lies dormant beneath the sea, waiting.";
           track("loseGame", "wiped", game.turns);
         }
@@ -718,7 +761,7 @@ class UI
       var s = '';
 
       var i = 0;
-      for (p in game.players)
+      for (p in game.cults)
         {
           // name
           s += '<div style="' + (i == 0 ? 'background:#333333' : 
@@ -736,11 +779,20 @@ class UI
               var w = '';
               for (i in 0...p.wars.length)
                 if (p.wars[i])
-                  w += cultName(i, game.players[i].info) + ' ';
+                  w += cultName(i, game.cults[i].info) + ' ';
               if (w != '')
                 s += ' wars: ' + w;
             }
           s += '<br>';
+
+          // investigator info
+          if (p.hasInvestigator)
+            {
+              s += "<span style='font-size: 12px; color: #999999'>Investigator: Level " +
+                (p.investigator.level + 1) +
+                ', Willpower ' + p.investigator.will + '</span>';
+              s += '<br>';
+            }
 
           // debug info
           if (Game.isDebug)
@@ -793,7 +845,7 @@ class UI
       infoText.innerHTML = s;
       infoWindow.style.visibility = 'visible';
 
-      for (i in 0...Game.numPlayers)
+      for (i in 0...Game.numCults)
         {
           e("info.longnote" + i).style.display = 'none';
           var c:Dynamic = e("info.toggleNote" + i);
@@ -831,7 +883,7 @@ class UI
 // show colored cult name
   public static function cultName(i, info)
     {
-      return "<span style='color:" + Game.playerColors[i] + "'>" +
+      return "<span style='color:" + Game.cultColors[i] + "'>" +
         info.name + "</span>";
     }
 
@@ -935,6 +987,8 @@ class UI
     "<li>The more adepts you have the more you can lower awareness each turn.";
   static var tipLowerAwareness =
     "Your adepts can use resources to lower society awareness.";
+  static var tipLowerWillpower =
+    "Your adepts can use resources to lower investigator willpower.<br>Cost: ";
   static var tipEndTurn = "Click to end current turn.";
   static var tipInfo = "Click to view cults information.";
   static var tipRestart = "Click to restart a game.";

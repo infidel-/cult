@@ -5,16 +5,16 @@ class Game
 {
   var ui: UI;
 
-  // players list and link to player
-  public var players: Array<Player>;
-  public var player: Player;
+  // cults list and link to player
+  public var cults: Array<Cult>;
+  public var player: Cult;
 
   public var turns: Int; // turns passed
   public var isFinished: Bool; // game finished?
 
-  // index of the last node/player (for id generation)
+  // index of the last node/cult (for id generation)
   var lastNodeIndex: Int;
-  var lastPlayerID: Int;
+  var lastCultID: Int;
 
   // nodes and lines arrays
   public var nodes: Array<Node>;
@@ -30,26 +30,27 @@ class Game
   public static var followerNames: Array<String> =
     [ "Neophyte", "Adept", "Priest" ];
   public static var powerConversionCost: Array<Int> = [2, 2, 2, 1];
+  public static var willPowerCost: Int = 2;
   public static var lineColors: Array<String> =
     [ "#55dd55", "#2727D7", "#E052CA", "#D8E151" ];
   public static var nodeColors: Array<String> =
     [ "#005500", "#010955", "#560053", "#505000" ];
-  public static var playerColors: Array<String> =
+  public static var cultColors: Array<String> =
     [ "#00B400", "#2F43FD", "#B400AE", "#B4AE00" ];
 
   public static var version = 2; // game version
   public static var followerLevels = 3;
   public static var numPowers = 3;
-  public static var numPlayers = 4;
+  public static var numCults = 4;
   public static var numSummonVirgins = 9;
   static var nodesCount = 100;
   public static var upgradeCost = 3;
-  public static var isDebug = false; // debug mode (debug button + extended info window)
+  public static var isDebug = true; // debug mode (debug button + extended info window)
   public static var debugTime = false; // show execution time of various parts
-  public static var debugVis = false; // show visibility of nodes to players
+  public static var debugVis = false; // show node visibility for all cults
   public static var debugNear = false; // show "nearness" of all nodes
   public static var debugAI = false; // show AI debug messages
-  public static var debugInvisible = false; // human player nodes are invisible
+  public static var debugInvisible = false; // human player cult nodes are invisible
   public static var mapVisible = false; // all map is visible at start
 
 
@@ -85,20 +86,20 @@ class Game
       this.lines = new List<Line>();
       this.nodes = new Array<Node>();
 
-      this.players = new Array<Player>();
-      this.lastPlayerID = 0;
+      this.cults = new Array<Cult>();
+      this.lastCultID = 0;
 
-      // clear players
-      for (i in 0...numPlayers)
+      // clear cults
+      for (i in 0...numCults)
         {
           var p = null;
-          var id = this.lastPlayerID++;
+          var id = this.lastCultID++;
           if (i == 0)
-            p = new Player(this, ui, id, id);
+            p = new Cult(this, ui, id, id);
           else p = new AI(this, ui, id, id);
-          players.push(p);
+          cults.push(p);
         }
-      player = players[0];
+      player = cults[0];
 	  this.turns = 0;
 	  this.lastNodeIndex = 0;
 
@@ -143,7 +144,7 @@ class Game
             }
 
       // choose and setup starting nodes
-      for (p in players)
+      for (p in cults)
 	    p.setOrigin();
 
       ui.updateStatus();
@@ -155,17 +156,17 @@ class Game
   public function endTurn()
     {
       // ensure player goes last
-      for (p in players)
-        if (p.isAI && !p.isDead)
+      for (c in cults)
+        if (c.isAI && !c.isDead)
           {
-            p.turn();
+            c.turn();
 
             // game could be finished on summoning success
             if (isFinished)
               return;
 
             startTimer("ai");
-            untyped p.aiTurn();
+            untyped c.aiTurn();
             endTimer("ai");
           }
       player.turn();

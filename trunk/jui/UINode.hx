@@ -48,15 +48,15 @@ class UINode
       if (Game.debugVis)
         {
           s += "Node " + node.id + "<br>";
-          for (i in 0...Game.numPlayers)
+          for (i in 0...Game.numCults)
             s += node.visibility[i] + "<br>";
         }
 
       if (node.owner != null)
-        s += "<span style='color:" + Game.playerColors[node.owner.id] + "'>" +
+        s += "<span style='color:" + Game.cultColors[node.owner.id] + "'>" +
           node.owner.name + "</span><br>";
       if (node.owner != null && node.owner.origin == node)
-        s += "<span style='color:" + Game.playerColors[node.owner.id] +
+        s += "<span style='color:" + Game.cultColors[node.owner.id] +
           "'>The Origin</span><br>";
       s += node.name + "<br>";
 
@@ -96,7 +96,7 @@ class UINode
 
           if (node.isProtected)
             col = '#ffffff';
-          for (p in game.players)
+          for (p in game.cults)
             if (p.origin == node && !p.isDead)
               {
                 w = '5px';
@@ -121,9 +121,9 @@ class UINode
 
 
 // update node visibility
-  public function setVisible(player: Player, v: Bool)
+  public function setVisible(c: Cult, v: Bool)
     {
-      if (player.isAI)
+      if (c.isAI)
         return;
       if (Game.mapVisible)
         v = true;
