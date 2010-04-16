@@ -8,8 +8,8 @@ class Node
 
   public var id: Int;
   public var name: String;
-  public var power: Array<Dynamic>; // intimidation, persuasion, bribe
-  public var powerGenerated: Array<Dynamic>;
+  public var power: Array<Dynamic>; // power to conquer: intimidation, persuasion, bribe
+  public var powerGenerated: Array<Dynamic>; // power generated each turn
   public var x: Int;
   public var y: Int;
   public var centerX: Int;
@@ -18,7 +18,7 @@ class Node
   public var isGenerator: Bool;
   public var isProtected: Bool;
   public var level: Int;
-  public var owner: Player;
+  public var owner: Cult;
 
   public var lines: List<Line>;
   public var links: List<Node>;
@@ -31,7 +31,7 @@ class Node
       lines = new List<Line>();
       links = new List<Node>();
       visibility = new Array<Bool>();
-      for (i in 0...Game.numPlayers)
+      for (i in 0...Game.numCults)
         visibility.push(false);
 
 	  isGenerator = false;
@@ -88,8 +88,18 @@ class Node
 
 
 // set owned flag
-  public function setOwner(p: Player)
+  public function setOwner(c: Cult)
     {
+      var prevOwner = owner;
+
+      // update power mod cache
+	  if (isGenerator)
+	    for (i in 0...Game.numPowers)
+		  c.powerMod[i] += Math.round(powerGenerated[i]);
+
+      // clear lines leading to this node
+      clearLines();
+
       // +1 to hardness on first gain
       if (owner == null)
         for (i in 0...Game.numPowers)
@@ -99,17 +109,75 @@ class Node
       // update caches
       if (owner != null)
         owner.nodes.remove(this);
-      owner = p;
+      owner = c;
       owner.nodes.add(this);
       update();
+
+      // show nearby nodes to new owner
+      showLinks();
+
+      // update previous owner's visibility of the links for this node
+      if (prevOwner != null)
+        updateLinkVisibility(prevOwner);
+
+      // raise public awareness for new owner
+      if (isGenerator)
+        owner.awareness += 2;
+      else owner.awareness++;
+
+      if (!owner.isAI)
+        ui.updateStatus();
+
+      // paint lines to this node from adjacent nodes owned by new node owner
+      paintLines();
+
+      // update display
+      for (n in links)
+        n.update();
+
+      // do all cult stuff with losing a node
+      if (prevOwner != null)
+        prevOwner.loseNode(this, owner);
     }
 
-// set visible flag
-  public function setVisible(player: Player, v: Bool)
+
+// clear this node of ownership, updating all stuff
+  public function removeOwner()
     {
-      visibility[player.id] = v;
-      uiNode.setVisible(player, v);
-      if (!player.isAI)
+      if (owner == null)
+        return;
+
+      var prevOwner = owner;
+      clearLines();
+      owner.nodes.remove(this);
+      owner = null;
+      level = 0;
+      update();
+
+      // update previous owner's visibility of the links for this node
+      updateLinkVisibility(prevOwner);
+
+      // update display
+      for (n in links)
+        n.update();  
+
+      // lower all power to 2 max
+      for (i in 0...Game.numPowers)
+        if (power[i] > 2)
+          power[i] = 2;
+
+      // do all cult stuff with losing a node
+      if (prevOwner != null)
+        prevOwner.loseNode(this);
+    }
+
+
+// set visible flag
+  public function setVisible(cult: Cult, v: Bool)
+    {
+      visibility[cult.id] = v;
+      uiNode.setVisible(cult, v);
+      if (!cult.isAI)
         {
           if (Game.mapVisible)
             v = true;
@@ -120,9 +188,9 @@ class Node
 
 
 // is visible?
-  public inline function isVisible(player: Player)
+  public inline function isVisible(c: Cult)
     {
-      return visibility[player.id];
+      return visibility[c.id];
     }
 
 
@@ -142,23 +210,23 @@ class Node
     }
 
 
-// update link visibility for given player
-  public function updateLinkVisibility(player)
+// update link visibility for given cult
+  public function updateLinkVisibility(cult: Cult)
     {
       // update nodes visibility for previous owner in a radius
       for (n in links)
-        if (n.isVisible(player) && n.owner != player)
+        if (n.isVisible(cult) && n.owner != cult)
           {
             var vis = false;
-            // try to find any adjacent node of this player
+            // try to find any adjacent node of this cult
             for (n2 in n.links)
-              if (n2.owner == player)
+              if (n2.owner == cult)
                 {
                   vis = true;
                   break;
                 }
 
-            n.setVisible(player, vis);
+            n.setVisible(cult, vis);
             n.update();
           }
     }
@@ -205,7 +273,7 @@ class Node
     }
 
 
-// show nodes around to the current owner
+// show nodes around this one to the current owner
   public function showLinks()
     {
       for (n in links)
@@ -227,6 +295,7 @@ class Node
           l.endNode.lines.remove(l);
         }
     }
+
 
   static var names: Array<String> = 
     [
