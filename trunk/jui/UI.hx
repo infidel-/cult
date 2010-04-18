@@ -148,7 +148,7 @@ class UI
       status.style.overflow = 'hidden';
 
       var s = "<div style='padding:0 5 5 5; background: #111; height: 20; " +
-        "font-weight: bold; font-size:20px;'>Evil Cult v" +
+        "font-weight: bold; font-size:20px;'>Evil Cult " +
         Game.version + "</div>";
 
       s += "<fieldset>";
@@ -663,7 +663,7 @@ class UI
       // lower willpower buttons visibility
       for (i in 0...Game.numPowers)
         e("status.lowerWillpower" + i).style.visibility = 'hidden';
-      if (game.player.hasInvestigator && game.player.investigator.will < 9 &&
+      if (game.player.hasInvestigator && !game.player.investigator.isInvincible &&
           game.player.adeptsUsed < game.player.adepts && game.player.adepts > 0)
         for (i in 0...Game.numPowers)
           if (game.player.power[i] >= Game.willPowerCost)
@@ -679,7 +679,7 @@ class UI
       // summon button visibility
       e("status.upgrade2").style.visibility = 
         ((game.player.priests >= Game.upgradeCost &&
-          game.player.virgins >= Game.numSummonVirgins) ?
+          game.player.virgins >= Game.numSummonVirgins && !game.player.isRitual) ?
           'visible' : 'hidden');
     }
 
@@ -791,8 +791,12 @@ class UI
               s += "<span style='font-size: 12px; color: #999999'>Investigator: Level " +
                 (p.investigator.level + 1) +
                 ', Willpower ' + p.investigator.will + '</span>';
+              if (Game.isDebug && p.investigator.isInvincible)
+                s += " Invincible";
               s += '<br>';
             }
+          if (Game.isDebug && p.investigatorTimeout > 0)
+            s += " Investigator timeout: " + p.investigatorTimeout;
 
           // debug info
           if (Game.isDebug)
@@ -805,8 +809,13 @@ class UI
                     s += p.getResourceChance() + "%) ";
                   else s += (p.neophytes / 4 - 0.5) + ") ";
                 }
-              s += "Awareness: " + p.awareness + "% ";
-              s += "ROS: " + p.getUpgradeChance(2) + "% ";
+              s += "<span title='Awareness'>A: " + p.awareness + "%</span> ";
+              s += "<span title='Chance of summoning'>ROS: " + p.getUpgradeChance(2) + "%</span> ";
+              s += "<span title='Chance of investigator appearing'>IC: " +
+                p.getInvestigatorChance() + "%</span> ";
+              if (p.hasInvestigator)
+                s += "<span title='Chance of investigator reveal'>RC: " +
+                  p.investigator.getKillChance() + "%</span> ";
               s += "</span><br>";
             }
 
@@ -825,12 +834,15 @@ class UI
             }
 
           // followers
-          s += p.nodes.length + ' followers (' +
-            p.neophytes + ' neophytes, ' + p.adepts + ' adepts, ' +
-            p.priests + ' priests)';
-          if (p.isParalyzed)
-            s += " Paralyzed";
-          s += '<br>';
+          if (!p.isDead)
+            {
+              s += p.nodes.length + ' followers (' +
+                p.neophytes + ' neophytes, ' + p.adepts + ' adepts, ' +
+                p.priests + ' priests)';
+              if (p.isParalyzed)
+                s += " Paralyzed";
+              s += '<br>';
+            }
 
           // description
           s += "<span id='info.toggleNote" + i +
@@ -930,6 +942,7 @@ class UI
 // track stuff through google analytics
   public inline function track(action: String, ?label: String, ?value: Int)
     {
+      action += " " + Game.version;
       if (label == null)
         label = '';
       if (value == null)

@@ -157,7 +157,8 @@ class AI extends Cult
 // lower investigator's willpower
   function aiLowerWillpower()
     {
-      if (!hasInvestigator)
+      // no need to kill him yet
+      if (!hasInvestigator || (awareness < 5 && !isRitual) || investigator.isInvincible)
         return;
 
       for (i in 0...Game.numPowers)
