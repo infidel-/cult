@@ -3,7 +3,7 @@
 
 _v3pre1 is a development version with everything subject to change_
 
-New stuff: [Tutorial_v3pre1#Investigators Investigators], 2 more cults
+New stuff: Investigators, 2 more AI cults
 
 Evil Cult is a turn-based strategy of global conquest. You play as the leader of one of four cults whose goal is either to destroy the other cults completely or to summon your own Elder God. To do so, you must both recruit _priests_ and abduct _virgins_. You can try to summon your Elder God when you have 3 priests and 9 virgins. The success of this endeavor is greatly dependent on society's _awareness_ of your actions. While you work on your goals, the other three cults are doing the same, gathering priests and virgins for their own nefarious goals.
 
