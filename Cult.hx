@@ -38,7 +38,7 @@ class Cult
 
   public var hasInvestigator: Bool; // does this cult has investigator on its back?
   public var investigator: Investigator; // investigator
-
+  public var investigatorTimeout: Int; // timeout before next investigator may appear
 
   public function new(gvar, uivar, id, infoID)
     {
@@ -54,6 +54,7 @@ class Cult
       this.adeptsUsed = 0;
       this.awareness = 0;
       this.nodes = new List<Node>();
+      this.investigatorTimeout = 0;
     }
 
 
@@ -187,7 +188,7 @@ class Cult
   public function lowerWillpower(pwr)
     {
       if (!hasInvestigator || adeptsUsed >= adepts || pwr == 3 ||
-          power[pwr] < Game.willPowerCost || investigator.will >= 9)
+          power[pwr] < Game.willPowerCost || investigator.isInvincible)
         return;
 
       power[pwr] -= Game.willPowerCost;
@@ -196,17 +197,24 @@ class Cult
       if (100 * Math.random() < 30)
         {
           if (!isAI)
-            ui.alert("You have failed to shatter the will of the investigator.");
+            {
+              ui.alert("You have failed to shatter the will of the investigator.");
+              ui.updateStatus();
+            }
           return;
         }
 
       investigator.will -= 1;
+
+      // kill investigator
       if (investigator.will <= 0)
         {
           investigator = null;
           hasInvestigator = false;
           ui.log("The investigator of the " + fullName +
             " has disappeared.");
+
+          investigatorTimeout = 6;
         }
       adeptsUsed++;
 
@@ -323,7 +331,17 @@ class Cult
         return 50;
       else if (priests == 2)
         return 65;
-      else return 80;
+      else if (priests > 2) 
+        return 80;
+
+      else if (adepts == 1)
+        return 2;
+      else if (adepts == 2)
+        return 5;
+      else if (adepts > 2)
+        return 5 + awareness;
+
+      else return 0;
     }
 
 
@@ -344,7 +362,7 @@ class Cult
 
       // every cult starts war with this one
       for (p in game.cults)
-        if (p != this)
+        if (p != this && !p.isDead)
           {
             p.wars[id] = true;
             wars[p.id] = true;
@@ -385,7 +403,7 @@ class Cult
 
           if (!isAI)
             {
-              ui.alert("The stars were not proerly aligned. The high priest goes insane.");
+              ui.alert("The stars were not properly aligned. The high priest goes insane.");
               ui.log(fullName + " has failed to perform the " + 
                 Static.rituals[0].name + ".");
               ui.updateStatus();
@@ -410,9 +428,11 @@ class Cult
 // end of turn for this cult (fturn) - gain resources, finish rituals
   public function turn()
     {
-      // if a cult has any priests, each turn it has a 
-      // big chance of an investigator finding out about it
-      if (priests > 0 && !hasInvestigator && 100 * Math.random() < getInvestigatorChance())
+      // if a cult has any adepts, each turn it has a 
+      // chance of an investigator finding out about it
+      if ((priests > 0 || adepts > 0) &&
+          !hasInvestigator && 100 * Math.random() < getInvestigatorChance() &&
+          investigatorTimeout == 0)
         {
           hasInvestigator = true;
           ui.log("An investigator has found out about " + fullName + ".");
@@ -421,6 +441,9 @@ class Cult
           if (!isAI)
             ui.updateStatus();
         }
+
+      if (investigatorTimeout > 0)
+        investigatorTimeout--;
 
       // finish a ritual if there is one
       if (isRitual)
@@ -521,6 +544,10 @@ class Cult
             }
           return "failure";
         }
+
+      // lose 1 level
+      if (node.level > 0)
+        node.level--;
 
       // save prev owner
       node.setOwner(this);
@@ -628,7 +655,7 @@ class Cult
     }
 
 
-// check if cult still has any nodes
+// check if cult still has any nodes (fdea)
   public function checkDeath()
     {
       if (this.nodes.length > 0)
@@ -638,6 +665,14 @@ class Cult
       ui.log(fullName + " has been destroyed, forgotten by time.");
 
       isDead = true;
+
+      // clean wars
+      for (c in game.cults)
+        c.wars[id] = false;
+      for (i in 0...wars.length)
+        wars[i] = false;
+      hasInvestigator = false;
+      investigator = null;
 
       // player cult is dead
       if (!isAI)

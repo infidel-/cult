@@ -8,6 +8,7 @@ class Investigator
 
   public var will: Int; // willpower
   public var level: Int; // investigator level
+  public var isInvincible: Bool; // is invincible?
 
   public function new(c: Cult, ui: UI)
     {
@@ -16,6 +17,7 @@ class Investigator
       level = 0;
       will = 1;
       numTurn = 0;
+      isInvincible = true;
     }
 
 
@@ -24,27 +26,47 @@ class Investigator
     {
       // stalls on the first turn, horrified by his revelation
       if (numTurn == 0)
+        {
+          numTurn++;
+          return;
+        }
+
+      // invincible for one more turn, cult cannot find him yet
+      if (numTurn > 0)
+        isInvincible = false;
+      if (will >= 9)
+        isInvincible = true;
+
+      numTurn++;
+
+      // destroy random followers
+      for (i in 0...(level + 1))
+        killFollower();
+
+      // low awareness and no ritual, investigator cannot find out about members
+      if (cult.awareness < 5 && !cult.isRitual)
         return;
 
       // gain willpower
       gainWill();
 
-      // destroy random follower
-      killFollower();
-
-      numTurn++;
+      // during the summoning investigator can gain 1 more willpower
+      if (cult.isRitual && 100 * Math.random() < 30)
+        gainWill();
     }
 
 
 // each turn I has a chance of gaining will
   function gainWill()
     {
-      if (100 * Math.random() > 80)
+      if (100 * Math.random() > 70)
         return;
 
       var oldLevel = level;
       will += 1;
       level = Std.int(will / 3);
+      if (level > 2)
+        level = 2;
       
       if (level > oldLevel && !cult.isAI)
         ui.log("The investigator of " + cult.fullName +
@@ -55,26 +77,50 @@ class Investigator
 // each turn I has a chance of destroying a follower of the same or lower level
   function killFollower()
     {
-      if (100 * Math.random() > 80)
+      if (100 * Math.random() > getKillChance())
         return;
 
       // find a node
-      var node = null;
-      for (n in cult.nodes)
-        {
-          if (n.level > level || n.isProtected)
-            continue;
+      var node: Node = null;
+      // get highest level follower
+      if (cult.isRitual)
+        for (n in cult.nodes)
+          {
+            if (n.level > level || n.isProtected)
+              continue;
 
-          node = n;
+            if (node != null && n.level <= node.level)
+              continue;
 
-          if (Math.random() > 0.5)
-            break;
-        }
+            node = n;
+          }
+      else
+      // get random follower
+        for (n in cult.nodes)
+          {
+            if (n.level > level || n.isProtected)
+              continue;
 
+            node = n;
+
+            if (Math.random() > 0.5)
+              break;
+          }
       if (node == null)
         return;
 
       ui.log("The investigator revealed the " + cult.fullName + " follower.");
       node.removeOwner();
+    }
+
+
+// chance of killing follower
+  public function getKillChance()
+    {
+      if (cult.awareness <= 10)
+        return 65;
+      else if (cult.awareness <= 5)
+        return 20;
+      else return 70;
     }
 }

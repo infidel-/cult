@@ -38,7 +38,7 @@ class Game
   public static var cultColors: Array<String> =
     [ "#00B400", "#2F43FD", "#B400AE", "#B4AE00" ];
 
-  public static var version = 2; // game version
+  public static var version = "v3pre1"; // game version
   public static var followerLevels = 3;
   public static var numPowers = 3;
   public static var numCults = 4;
@@ -66,7 +66,8 @@ class Game
 
       if (hasPlayed == null)
         ui.alert("Welcome.<br><br>If this is your first time playing, please take the time to " +
-          "read the <a target=_blank href='http://code.google.com/p/cult/wiki/Tutorial'>Tutorial</a> " +
+          "read the <a target=_blank href='http://code.google.com/p/cult/wiki/Tutorial_" + version +
+          "'>Tutorial</a> " +
           "before playing.  We are not responsible for horrific deaths caused by not reading the " +
           "Tutorial.  You have been warned.");
       ui.setVar('hasPlayed', '1');
@@ -90,14 +91,32 @@ class Game
       this.lastCultID = 0;
 
       // clear cults
+      var cultInfo = new Array<Int>();
       for (i in 0...numCults)
         {
           var p = null;
           var id = this.lastCultID++;
+          var infoID = 0;
+          if (i > 0)
+            while (true)
+              {
+                infoID = 1 + Std.int(Math.random() * (Static.cults.length - 1));
+                var ok = true;
+                for (ii in cultInfo)
+                  if (infoID == ii)
+                    {
+                      ok = false;
+                      break;
+                    }
+
+                if (ok) break;
+              }
+
           if (i == 0)
-            p = new Cult(this, ui, id, id);
-          else p = new AI(this, ui, id, id);
+            p = new Cult(this, ui, id, infoID);
+          else p = new AI(this, ui, id, infoID);
           cults.push(p);
+          cultInfo.push(infoID);
         }
       player = cults[0];
 	  this.turns = 0;
