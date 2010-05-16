@@ -71,3 +71,17 @@ Be aware that at the time of performing the Final Ritual the investigator will t
 ===How does a cult destroy an investigator?===
 
 The cult should start dealing with investigator immediately after his appearance - while he has low will power. Unfortunately the cult cannot do that in the first turn since investigator appearance because its followers have not found him yet. But after that each adept can spend two BIP points per turn to try to lower the will power of an investigator by one point. After his will power is lowered to a zero, the investigator succumbs and is destroyed. After the destruction of the investigator the cult is granted some "investigator-free" turns as a reward.
+
+==Difficulty settings==
+
+Before the start of each new game you can select a different gameplay difficulty. Changing the difficulty changes the following variables:
+
+ * Chance of gaining resources from generators each turn
+ * Chance of successfully upgrading your followers
+ * Chance of success performing Final Ritual
+ * Chance of gaining new followers
+ * Chance of investigator appearing
+ * Chance of investigator revealing a follower
+ * Chance of success in lowering investigator's willpower using adepts
+
+Apart from setting these variables for your cult, the game also sets them in opposite for cults controlled by AI. So for example, when player sets Hard, AI plays on Easy.
