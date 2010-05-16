@@ -117,10 +117,10 @@ class Investigator
 // chance of killing follower
   public function getKillChance()
     {
-      if (cult.awareness <= 10)
-        return 65;
-      else if (cult.awareness <= 5)
-        return 20;
-      else return 70;
+      if (cult.awareness <= 5)
+        return Std.int(20 * cult.difficulty.investigatorKill);
+      else if (cult.awareness <= 10)
+        return Std.int(65 * cult.difficulty.investigatorKill);
+      else return Std.int(70 * cult.difficulty.investigatorKill);
     }
 }

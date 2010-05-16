@@ -11,6 +11,8 @@ class Game
 
   public var turns: Int; // turns passed
   public var isFinished: Bool; // game finished?
+  public var difficultyLevel: Int; // game difficulty (0: easy, 1: normal, 2: hard)
+  public var difficulty: Dynamic; // link to difficulty info
 
   // index of the last node/cult (for id generation)
   var lastNodeIndex: Int;
@@ -38,14 +40,14 @@ class Game
   public static var cultColors: Array<String> =
     [ "#00B400", "#2F43FD", "#B400AE", "#B4AE00" ];
 
-  public static var version = "v3pre1"; // game version
+  public static var version = "v3pre2"; // game version
   public static var followerLevels = 3;
   public static var numPowers = 3;
   public static var numCults = 4;
   public static var numSummonVirgins = 9;
   static var nodesCount = 100;
   public static var upgradeCost = 3;
-  public static var isDebug = true; // debug mode (debug button + extended info window)
+  public static var isDebug = false; // debug mode (debug button + extended info window)
   public static var debugTime = false; // show execution time of various parts
   public static var debugVis = false; // show node visibility for all cults
   public static var debugNear = false; // show "nearness" of all nodes
@@ -57,28 +59,32 @@ class Game
 // constructor
   function new()
     {
+      isFinished = true;
 	  ui = new UI(this);
 	  ui.init();
-      restart();
-      ui.updateStatus();
-
-      var hasPlayed = ui.getVar('hasPlayed');
-
-      if (hasPlayed == null)
-        ui.alert("Welcome.<br><br>If this is your first time playing, please take the time to " +
-          "read the <a target=_blank href='http://code.google.com/p/cult/wiki/Tutorial_" + version +
-          "'>Tutorial</a> " +
-          "before playing.  We are not responsible for horrific deaths caused by not reading the " +
-          "Tutorial.  You have been warned.");
-      ui.setVar('hasPlayed', '1');
+      ui.mainMenu.show();
     }
 
 
 // restart a game
-  public function restart()
+  public function restart(newDifficulty: Int)
     {
+      // show starting message
+      var hasPlayed = ui.getVar('hasPlayed');
+
+      if (hasPlayed == null)
+        ui.alert("Welcome.<br><br>If this is your first time playing, please take the time to " +
+          "read the <a target=_blank href='http://code.google.com/p/cult/wiki/Manual_" + version +
+          "'>Manual</a> " +
+          "before playing. We are not responsible for horrific deaths caused by not reading the " +
+          "Manual. You have been warned.");
+      ui.setVar('hasPlayed', '1');
+
       ui.track("startGame");
       startTimer("restart");
+
+      difficultyLevel = newDifficulty;
+      difficulty = Static.difficulty[difficultyLevel];
       this.isFinished = false;
       ui.clearMap();
       ui.clearLog();
