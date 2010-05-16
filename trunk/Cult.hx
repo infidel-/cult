@@ -8,6 +8,7 @@ class Cult
   public var name: String;
   public var fullName(getFullName, null): String;
   public var info: Dynamic;
+  public var difficulty: Dynamic; // difficulty info link
 
   public var isAI: Bool; // player or AI?
   public var isDead: Bool; // cult is dead
@@ -55,6 +56,7 @@ class Cult
       this.awareness = 0;
       this.nodes = new List<Node>();
       this.investigatorTimeout = 0;
+      this.difficulty = game.difficulty;
     }
 
 
@@ -131,7 +133,7 @@ class Cult
 // get resource chance
   public function getResourceChance()
     {
-      var ch = Std.int(99 - 1.5 * awareness);
+      var ch = 99 - Std.int(difficulty.awarenessResource * awareness);
       if (ch < 1)
         ch = 1;
       return ch;
@@ -143,13 +145,18 @@ class Cult
     {
       var ch = 0;
       if (level == 0)
-        ch = 99 - awareness;
+        ch = Std.int(99 * difficulty.upgradeChance -
+          awareness * difficulty.awarenessUpgrade);
       else if (level == 1)
-        ch = 80 - Std.int(awareness * 1.5);
+        ch = Std.int(80 * difficulty.upgradeChance -
+          awareness * 1.5 * difficulty.awarenessUpgrade);
       else if (level == 2)
-        ch = 75 - awareness * 2;
+        ch = Std.int(75 * difficulty.upgradeChance -
+          awareness * 2 * difficulty.awarenessUpgrade);
       if (ch < 1)
         ch = 1;
+      if (ch > 99)
+        ch = 99;
       return ch;
     }
 
@@ -159,8 +166,8 @@ class Cult
     {
       var ch = 0;
       if (!node.isGenerator)
-        ch = 99 - awareness;
-      else ch = 99 - awareness * 2;
+        ch = 99 - Std.int(awareness * difficulty.awarenessGain);
+      else ch = 99 - Std.int(awareness * 2 * difficulty.awarenessGain);
       if (ch < 1)
         ch = 1;
       return ch;
@@ -194,7 +201,7 @@ class Cult
       power[pwr] -= Game.willPowerCost;
 
       // chance of failure
-      if (100 * Math.random() < 30)
+      if (100 * Math.random() < 30 * difficulty.investigatorWillpower)
         {
           if (!isAI)
             {
@@ -214,7 +221,7 @@ class Cult
           ui.log("The investigator of the " + fullName +
             " has disappeared.");
 
-          investigatorTimeout = 6;
+          investigatorTimeout = 3;
         }
       adeptsUsed++;
 
@@ -265,7 +272,7 @@ class Cult
         {
           if (!isAI)
             {
-              ui.alert("Ritual failed.");
+              ui.msg("Ritual failed.");
               ui.updateStatus();
             }
           return;
@@ -327,21 +334,8 @@ class Cult
 // chance of gaining investigator
   public function getInvestigatorChance(): Int
     {
-      if (priests == 1)
-        return 50;
-      else if (priests == 2)
-        return 65;
-      else if (priests > 2) 
-        return 80;
-
-      else if (adepts == 1)
-        return 2;
-      else if (adepts == 2)
-        return 5;
-      else if (adepts > 2)
-        return 5 + awareness;
-
-      else return 0;
+      return Std.int((20 * priests + 5 * adepts + 0.5 * neophytes) *
+        difficulty.investigatorChance);
     }
 
 
@@ -539,7 +533,7 @@ class Cult
         {
           if (!isAI)
             {
-              ui.alert("Could not gain a follower.");
+              ui.msg("Could not gain a follower.");
               ui.updateStatus();
             }
           return "failure";
@@ -651,6 +645,7 @@ class Cult
       if (!ok)
         return;
 
+      game.isFinished = true;
       ui.finish(this, "conquer");
     }
 
@@ -680,6 +675,7 @@ class Cult
           game.isFinished = true;
           ui.finish(this, "wiped");
         }
+      else checkVictory();
     }
 
 

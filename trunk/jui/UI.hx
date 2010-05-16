@@ -18,13 +18,15 @@ class UI
 
   public var map: Dynamic; // map element
   var status: Dynamic; // status element
-  var logWindow: Dynamic; // log window element
-  var logText: Dynamic; // log text element
-  var infoWindow: Dynamic; // info window element
-  var infoText: Dynamic; // info text element
-  var alertWindow: Dynamic; // alert window element
-  var alertText: Dynamic; // alert text element
 
+  // ui blocks
+  public var mainMenu: MainMenu; // main menu block
+  public var info: Info; // cult info block
+  public var logWindow: Log; // log block
+  public var alertWindow: Alert; // alert block
+
+  public static var winWidth = 1024;
+  public static var winHeight = 600;
   public static var mapWidth = 800;
   public static var mapHeight = 580;
   public static var tooltipWidth = 100;
@@ -46,94 +48,10 @@ class UI
 // init game screen
   public function init()
     {
-      // log window
-      logWindow = Lib.document.createElement("logWindow");
-      logWindow.style.visibility = 'hidden';
-      logWindow.style.position = 'absolute';
-      logWindow.style.zIndex = 20;
-      logWindow.style.left = 100;
-      logWindow.style.top = 50;
-      logWindow.style.width = 800;
-      logWindow.style.height = 500;
-      logWindow.style.background = '#333333';
-	  logWindow.style.border = '4px double #ffffff';
-      Lib.document.body.appendChild(logWindow);
+      logWindow = new Log(this, game);
+      alertWindow = new Alert(this, game);
 
-      // log text
-      logText = Lib.document.createElement("logText");
-      logText.style.overflow = 'auto';
-      logText.style.position = 'absolute';
-      logText.style.left = 10;
-      logText.style.top = 10;
-      logText.style.width = 780;
-      logText.style.height = 450;
-      logText.style.background = '#0b0b0b';
-	  logText.style.border = '1px solid #777';
-      logWindow.appendChild(logText);
-
-      // log close button
-      var logClose = createCloseButton(logWindow, 360, 465, 'logClose');
-	  logClose.onclick = onLogCloseClick;
-
-      // alert window
-      alertWindow = Lib.document.createElement("alertWindow");
-      alertWindow.style.visibility = 'hidden';
-      alertWindow.style.position = 'absolute';
-      alertWindow.style.zIndex = 20;
-      alertWindow.style.width = 600;
-      alertWindow.style.height = 450;
-      alertWindow.style.left = 200; 
-      alertWindow.style.top = 50;
-      alertWindow.style.background = '#222';
-	  alertWindow.style.border = '4px double #ffffff';
-      Lib.document.body.appendChild(alertWindow);
-
-      // alert text
-      alertText = Lib.document.createElement("alertText");
-      alertText.style.overflow = 'auto';
-      alertText.style.position = 'absolute';
-      alertText.style.left = 10;
-      alertText.style.top = 10;
-      alertText.style.width = 580;
-      alertText.style.height = 400;
-      alertText.style.background = '#111';
-	  alertText.style.border = '1px solid #777';
-      alertWindow.appendChild(alertText);
-
-      // alert close button
-      var alertClose = createCloseButton(alertWindow, 260, 415, 'alertClose');
-	  alertClose.onclick = onAlertCloseClick;
-
-      // info window
-      infoWindow = Lib.document.createElement("infoWindow");
-      infoWindow.style.fontSize = 16;
-      infoWindow.style.fontWeight = 'bold';
-      infoWindow.style.visibility = 'hidden';
-      infoWindow.style.position = 'absolute';
-      infoWindow.style.zIndex = 20;
-      infoWindow.style.left = 100;
-      infoWindow.style.top = 45;
-      infoWindow.style.width = 800;
-      infoWindow.style.height = 520;
-      infoWindow.style.background = '#111';
-      infoWindow.style.padding = '5 5 5 5';
-	  infoWindow.style.border = '4px double #ffffff';
-      Lib.document.body.appendChild(infoWindow);
-
-      // info text
-      infoText = Lib.document.createElement("logText");
-      infoText.style.overflow = 'auto';
-      infoText.style.position = 'absolute';
-      infoText.style.left = 10;
-      infoText.style.top = 10;
-      infoText.style.width = 780;
-      infoText.style.height = 480;
-      infoText.style.background = '#111';
-      infoWindow.appendChild(infoText);
-
-      // info close button
-      var infoClose = createCloseButton(infoWindow, 365, 490, 'infoClose');
-	  infoClose.onclick = onInfoCloseClick;
+      info = new Info(this, game);
 
 	  // status screen
       status = e("status");
@@ -279,8 +197,8 @@ class UI
       s += "</center></fieldset>";
 
       // buttons 2
-      s += "<center style='padding-top:8px;'><span class=button title='" + tipRestart +
-        "' id='status.restart'>RESTART GAME</span>&nbsp;&nbsp;";
+      s += "<center style='padding-top:8px;'><span class=button title='" + tipMainMenu +
+        "' id='status.mainMenu'>MAIN MENU</span>&nbsp;&nbsp;";
       s += "<span class=button title='" + tipAbout +
         "' id='status.about'>ABOUT</span></center>";
       
@@ -293,6 +211,7 @@ class UI
           var c = e("status.upgrade" + i);
           c.onclick = onStatusUpgrade;
           c.title = tipUpgrade[i];
+          c.style.visibility = 'hidden';
         }
 	  for (i in 0...(Game.numPowers + 1))
         {
@@ -320,7 +239,7 @@ class UI
 	  e("status.endTurn").onclick = onStatusEndTurn;
 	  e("status.info").onclick = onStatusInfo;
 	  e("status.log").onclick = onStatusLog;
-	  e("status.restart").onclick = onStatusRestart;
+	  e("status.mainMenu").onclick = onStatusMainMenu;
 	  e("status.about").onclick = onStatusAbout;
       if (Game.isDebug)
         e("status.debug").onclick = onStatusDebug;
@@ -341,22 +260,10 @@ class UI
       map.style.left = 220;
       map.style.top = 5;
       map.style.overflow = 'hidden';
-/*
-      new JQuery('map').css({
-        border: 'double green 4px',
-        width: mapWidth,
-        height: mapHeight});
-*/
   
       new JQuery('#status *').tooltip({ delay: 0 });
-/*
-//          JQDialog.alert("NO IE!", function() { });
-      new JQuery().ready(function()
-        {
-          untyped JQDialog.init();
-          JQDialog.alert("NO IE!", function() { });
-        });
-*/
+
+      mainMenu = new MainMenu(this, game);
     }
 
 
@@ -407,29 +314,7 @@ class UI
 // show log
   function onStatusLog(event: Dynamic)
     {
-      logText.scrollTop = 10000;
-      logWindow.style.visibility = 'visible';
-    }
-
-
-// hide log
-  function onLogCloseClick(event)
-    {
-      logWindow.style.visibility = 'hidden';
-    }
-
-
-// hide alert
-  function onAlertCloseClick(event)
-    {
-      alertWindow.style.visibility = 'hidden';
-    }
-
-
-// hide info
-  function onInfoCloseClick(event)
-    {
-      infoWindow.style.visibility = 'hidden';
+      logWindow.show();
     }
 
 
@@ -516,14 +401,14 @@ class UI
 */
       for (n in game.nodes)
         n.setVisible(game.player, true);
-
+/*
       for (c in game.cults)
         if (c == game.player)
         {
           c.hasInvestigator = true;
           c.investigator = new Investigator(c, this);
         }
-
+*/
 //      game.players[2].summonFinish();
       updateStatus();
     }
@@ -564,10 +449,10 @@ class UI
 	}
 
 
-// restart game button
-  function onStatusRestart(event: Dynamic)
+// main menu button
+  function onStatusMainMenu(event: Dynamic)
     {
-      game.restart();
+      mainMenu.show();
     }
 
 
@@ -594,7 +479,7 @@ class UI
     {
       if (game.isFinished)
         return;
-
+  
       game.player.activate(getTarget(event).node);
     }
 
@@ -735,157 +620,15 @@ class UI
     }
 
 
-// create close button
-  function createCloseButton(container: Dynamic, x: Int, y: Int, name: String)
-    {
-      var b: Dynamic = Lib.document.createElement(name);
-      b.innerHTML = '<b>Close</b>';
-      b.style.fontSize = 20;
-      b.style.position = 'absolute';
-      b.style.width = 80;
-      b.style.height = 25;
-      b.style.left = x;
-      b.style.top = y;
-      b.style.background = '#111';
-	  b.style.border = '1px outset #777';
-	  b.style.cursor = 'pointer';
-      b.style.textAlign = 'center';
-      container.appendChild(b);
-      return b;
-    }
-
-
 // show info screen (finf)
   function onStatusInfo(event: Dynamic)
     {
-      var s = '';
-
-      var i = 0;
-      for (p in game.cults)
-        {
-          // name
-          s += '<div style="' + (i == 0 ? 'background:#333333' : 
-            '') +
-            '">';
-          if (p.isDead)
-            s += '<s>';
-          s += cultName(i, p.info);
-          if (p.isDead)
-            s += '</s> Forgotten';
-
-          // wars
-          if (!p.isDead)
-            {
-              var w = '';
-              for (i in 0...p.wars.length)
-                if (p.wars[i])
-                  w += cultName(i, game.cults[i].info) + ' ';
-              if (w != '')
-                s += ' wars: ' + w;
-            }
-          s += '<br>';
-
-          // investigator info
-          if (p.hasInvestigator)
-            {
-              s += "<span style='font-size: 12px; color: #999999'>Investigator: Level " +
-                (p.investigator.level + 1) +
-                ', Willpower ' + p.investigator.will + '</span>';
-              if (Game.isDebug && p.investigator.isInvincible)
-                s += " Invincible";
-              s += '<br>';
-            }
-          if (Game.isDebug && p.investigatorTimeout > 0)
-            s += " Investigator timeout: " + p.investigatorTimeout;
-
-          // debug info
-          if (Game.isDebug)
-            {
-              s += "<span style='font-size: 10px'>";
-              for (i in 0...p.power.length)
-                {
-                  s += powerName(i) + ": " + p.power[i] + " (";
-                  if (i < 3)
-                    s += p.getResourceChance() + "%) ";
-                  else s += (p.neophytes / 4 - 0.5) + ") ";
-                }
-              s += "<span title='Awareness'>A: " + p.awareness + "%</span> ";
-              s += "<span title='Chance of summoning'>ROS: " + p.getUpgradeChance(2) + "%</span> ";
-              s += "<span title='Chance of investigator appearing'>IC: " +
-                p.getInvestigatorChance() + "%</span> ";
-              if (p.hasInvestigator)
-                s += "<span title='Chance of investigator reveal'>RC: " +
-                  p.investigator.getKillChance() + "%</span> ";
-              s += "</span><br>";
-            }
-
-          // ritual
-          if (p.isRitual == true)
-            {
-              var turns = Std.int(p.ritualPoints / p.priests);
-              if (p.ritualPoints % p.priests > 0)
-                turns += 1;
-              s += "Casting <span title='" + p.ritual.note +
-                "' id='info.ritual" + i +
-                "' style='color:#ffaaaa'>" + p.ritual.name +
-                "</span>, " + (p.ritual.points - p.ritualPoints) + "/" +
-                p.ritual.points + " points, " + turns +
-                " turns left<br>";
-            }
-
-          // followers
-          if (!p.isDead)
-            {
-              s += p.nodes.length + ' followers (' +
-                p.neophytes + ' neophytes, ' + p.adepts + ' adepts, ' +
-                p.priests + ' priests)';
-              if (p.isParalyzed)
-                s += " Paralyzed";
-              s += '<br>';
-            }
-
-          // description
-          s += "<span id='info.toggleNote" + i +
-            "' style='height:10; width:10; font-size:12px; border: 1px solid #777'>+</span>";
-          s += '<br>';
-          s += "<span id='info.note" + i + "'>" + p.info.note + "</span>";
-          s += "<span id='info.longnote" + i + "'>" + p.info.longNote + "</span>";
-          s += '</div><hr>';
-          i++;
-        }
-
-      infoText.innerHTML = s;
-      infoWindow.style.visibility = 'visible';
-
-      for (i in 0...Game.numCults)
-        {
-          e("info.longnote" + i).style.display = 'none';
-          var c:Dynamic = e("info.toggleNote" + i);
-          c.style.cursor = 'pointer';
-          c.noteID = i;
-          c.onclick =
-            function(event) 
-              {
-                var t: Dynamic = event.target;
-                if (t.innerHTML == '+')
-                  {
-                    t.innerHTML = '&mdash;';
-                    e("info.longnote" + t.noteID).style.display = 'block';
-                    e("info.note" + t.noteID).style.display = 'none';
-                  }
-                else
-                  {
-                    t.innerHTML = '+';
-                    e("info.longnote" + t.noteID).style.display = 'none';
-                    e("info.note" + t.noteID).style.display = 'block';
-                  }
-              };
-        }
+      info.show();
     }
 
 
 // show colored power name
-  static function powerName(i)
+  public static function powerName(i)
     {
       return "<span style='color:" + Game.powerColors[i] + "'>" +
         Game.powerNames[i] + "</span>";
@@ -903,32 +646,21 @@ class UI
 // message with confirmation
   public function alert(s)
     {
-      alertText.innerHTML = '<center>' + s + '</center>';
-      alertWindow.style.visibility = 'visible';
+      alertWindow.show(s);
     }
 
 
 // add message to log
-  var logPrevTurn: Int;
   public function log(s: String, ?show: Bool)
     {
-//      if (logPrevTurn != game.turns)
-//        logText.innerHTML += "<center style='font-size:10px'>...</center><br>";
-      logText.innerHTML += 
-        "<span style='color:#888888'>" +
-        DateTools.format(Date.now(), "%H:%M:%S") +
-        "</span>" +
-        " Turn " + (game.turns + 1) + ": " + s + "<br>";
-      if (show == null || show == true)
-        onStatusLog(null);
-      logPrevTurn = game.turns;
+      logWindow.add(s, show);
     }
 
 
 // clear log
   public function clearLog()
     {
-      logText.innerHTML = "";
+      logWindow.clear();
     }
 
 
@@ -942,7 +674,7 @@ class UI
 // track stuff through google analytics
   public inline function track(action: String, ?label: String, ?value: Int)
     {
-      action += " " + Game.version;
+      action = "cult " + action +  " " + Game.version;
       if (label == null)
         label = '';
       if (value == null)
@@ -1004,7 +736,7 @@ class UI
     "Your adepts can use resources to lower investigator willpower.<br>Cost: ";
   static var tipEndTurn = "Click to end current turn.";
   static var tipInfo = "Click to view cults information.";
-  static var tipRestart = "Click to restart a game.";
+  static var tipMainMenu = "Click to open main menu.";
   static var tipLog = "Click to view message log.";
   static var tipAbout = "Click to go to About page.";
 }

@@ -6,22 +6,71 @@ class AI extends Cult
     {
       super(gvar, uivar, id, infoID);
       isAI = true;
+
+      // AI difficulty is the opposite of player difficulty
+      if (game.difficulty == 0)
+        difficulty = Static.difficulty[2];
+      else if (game.difficulty == 2)
+        difficulty = Static.difficulty[0];
+      else
+        difficulty = Static.difficulty[1];
     }
 
 
 // ai entry point
   function aiTurn()
     {
-      // try to upgrade followers
-      aiUpgradeFollowers();
+      // cult is paralyzed and has investigator, it's dead but doesn't know it yet
+      if (isParalyzed && hasInvestigator)
+        {
+          // try to lower awareness even using virgins
+          aiLowerAwarenessHard();
 
-      if (isParalyzed) return;
+          // if has investigator, he becomes the first priority
+          aiLowerWillpower();
+
+          return;
+        }
+
+      // cult is paralyzed - try upgrading
+      if (isParalyzed)
+        {
+          // if has investigator, he becomes the first priority
+          aiLowerWillpower();
+
+          // try to upgrade followers
+          aiUpgradeFollowers();
+
+          return;
+        }
+
+      // has investigator
+      if (hasInvestigator)
+        {
+          if (adepts > 0)
+            {
+              // try to lower awareness (without using virgins)
+              aiLowerAwareness();
+
+              // try to destroy investigator
+              aiLowerWillpower();
+            }
+
+          // try to destroy investigator
+          else aiLowerWillpower();
+
+          return;
+        }
 
       // if has investigator, he becomes the first priority
       aiLowerWillpower();
 
+      // try to upgrade followers
+      aiUpgradeFollowers();
+
       // if in summoning, try to lower awareness even using virgins
-      aiLowerAwarenessSummon();
+      if (isRitual && ritual.id == "summoning")
+        aiLowerAwarenessHard();
 
       // try to lower awareness (without using virgins)
       aiLowerAwareness();
@@ -158,7 +207,8 @@ class AI extends Cult
   function aiLowerWillpower()
     {
       // no need to kill him yet
-      if (!hasInvestigator || (awareness < 5 && !isRitual) || investigator.isInvincible)
+      if (!hasInvestigator || (awareness < 5 && !isRitual) || investigator.isInvincible ||
+          adepts == 0)
         return;
 
       for (i in 0...Game.numPowers)
@@ -169,11 +219,10 @@ class AI extends Cult
     }
 
 
-// try to lower awareness during summoning with virgins
-  function aiLowerAwarenessSummon()
+// try to lower awareness with virgins
+  function aiLowerAwarenessHard()
     {
-      if (awareness == 0 || adepts == 0 || !isRitual ||
-          (isRitual && ritual.id != "summoning"))
+      if (awareness == 0 || adepts == 0)
         return;
   
       var prevAwareness = awareness;
@@ -193,7 +242,8 @@ class AI extends Cult
 // try to lower awareness (virgins are not used)
   function aiLowerAwareness()
     {
-      if (awareness < 10 || adepts == 0 || adeptsUsed >= adepts)
+      if ((awareness < 10 && !hasInvestigator) || (awareness < 5 && hasInvestigator) ||
+          adepts == 0 || adeptsUsed >= adepts)
         return;
   
       var prevAwareness = awareness;

@@ -2,6 +2,53 @@
 
 class Static
 {
+  // ======================= Difficulty settings =======================
+  public static var difficulty: Array<Dynamic> = 
+    [
+      // upgradeChance - higher value raises max upgrade chance
+      // awarenessResource - higher value lowers chance of getting resources each turn
+      // awarenessUpgrade - higher value lowers chance of upgrading followers
+      // awarenessGain - higher value lowers chance of gaining new followers
+      // investigatorChance - higher value raises chance of investigator appearing
+      // investigatorKill - higher value raises chance of investigator killing a follower
+      // investigatorWillpower - higher value lowers chance of success in lowering 
+      //   investigator willpower using adepts
+
+      // easy
+      {
+        upgradeChance: 1.10,
+        awarenessResource: 1.25,
+        awarenessUpgrade: 0.75,
+        awarenessGain: 0.75,
+        investigatorChance: 0.50,
+        investigatorKill: 0.75,
+        investigatorWillpower: 0.75,
+      },
+
+      // normal
+      {
+        upgradeChance: 1.0,
+        awarenessResource: 1.5,
+        awarenessUpgrade: 1.0,
+        awarenessGain: 1.0,
+        investigatorChance: 1.0,
+        investigatorKill: 1.0,
+        investigatorWillpower: 1.0,
+      },
+
+      // hard
+      {
+        upgradeChance: 0.90,
+        awarenessResource: 1.75, 
+        awarenessUpgrade: 1.25,
+        awarenessGain: 1.25,
+        investigatorChance: 1.25,
+        investigatorKill: 1.25,
+        investigatorWillpower: 1.25,
+      },
+    ];
+
+
   // ======================= Cults ============================
 
   public static var cults: Array<Dynamic> =
