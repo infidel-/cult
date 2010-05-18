@@ -89,8 +89,7 @@ class AI extends Cult
       for (node in game.nodes)
         {
           if (node.owner == this || !node.isVisible(this) ||
-              // debug: player nodes are invisible
-              (Game.debugInvisible && node.owner == game.player))
+              (node.owner != null && node.owner.isDebugInvisible))
             continue;
 
           var item = { node: node, priority: 0 };

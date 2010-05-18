@@ -4,14 +4,31 @@ import js.Lib;
 
 class Tools
 {
+// compatibility crap - get a target element from event
+  public static function getTarget(event): Dynamic
+    {
+      if (event == null)
+        event = untyped __js__("window.event");
+      var t = event.target;
+      if (t == null)
+        t = event.srcElement;
+      return t;
+    }
+
+
 // create a button
   public static function button(params: Dynamic): Dynamic
     {
       var b: Dynamic = Lib.document.createElement("div");
       b.id = params.id;
       b.innerHTML = params.text;
-      b.style.fontWeight = "bold";
-      b.style.fontSize = 20;
+      if (params.bold == null)
+        params.bold = true;
+      if (params.bold)
+        b.style.fontWeight = "bold";
+      if (params.fontSize == null)
+        params.fontSize = 20;
+      b.style.fontSize = params.fontSize;
       b.style.position = 'absolute';
       b.style.width = params.w;
       b.style.height = params.h;

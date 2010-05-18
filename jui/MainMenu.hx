@@ -72,7 +72,7 @@ class MainMenu
 // start new game
   function onNewGame(event: Dynamic)
     {
-      var id = ui.getTarget(event).id;
+      var id = Tools.getTarget(event).id;
       var dif = 0;
       if (id == "newGameEasy")
         dif = 0;
@@ -80,6 +80,7 @@ class MainMenu
         dif = 1;
       else dif = 2;
       window.style.visibility = 'hidden';
+      UI.e("haxe:trace").innerHTML = "";
       game.restart(dif);
     }
 
