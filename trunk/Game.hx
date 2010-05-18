@@ -47,13 +47,7 @@ class Game
   public static var numSummonVirgins = 9;
   static var nodesCount = 100;
   public static var upgradeCost = 3;
-  public static var isDebug = false; // debug mode (debug button + extended info window)
-  public static var debugTime = false; // show execution time of various parts
-  public static var debugVis = false; // show node visibility for all cults
-  public static var debugNear = false; // show "nearness" of all nodes
-  public static var debugAI = false; // show AI debug messages
-  public static var debugInvisible = false; // human player cult nodes are invisible
-  public static var mapVisible = false; // all map is visible at start
+  public static var isDebug = true; // debug mode (debug button + extended info window)
 
 
 // constructor
@@ -190,9 +184,9 @@ class Game
             if (isFinished)
               return;
 
-            startTimer("ai");
+            startTimer("ai " + c.name);
             untyped c.aiTurn();
-            endTimer("ai");
+            endTimer("ai " + c.name);
           }
       player.turn();
 
@@ -265,4 +259,14 @@ class Game
     {
       instance = new Game();
     }
+
+
+// =========================================
+
+  // these are changed from debug menu
+  public static var debugTime = false; // show execution time of various parts
+  public static var debugVis = false; // show node visibility for all cults
+  public static var debugNear = false; // show "nearness" of all nodes
+  public static var debugAI = false; // show AI debug messages
+  public static var mapVisible = false; // all map is visible at start
 }

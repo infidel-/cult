@@ -13,7 +13,7 @@ class UINode
       ui = uivar;
       node = nvar;
       
-      marker = js.Lib.document.createElement("map.node" + node.id);
+      marker = js.Lib.document.createElement("div");
       marker.id = "map.node" + node.id;
 	  marker.node = node;
 	  marker.style.background = '#222';
@@ -29,8 +29,8 @@ class UINode
       marker.style.fontSize = '12px';
 	  marker.style.zIndex = 20;
 	  marker.style.cursor = 'pointer';
-	  marker.onclick = ui.onNodeClick;
-	  ui.map.appendChild(marker);
+	  marker.onclick = ui.map.onNodeClick;
+	  ui.map.screen.appendChild(marker);
     }
 
 

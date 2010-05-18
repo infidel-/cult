@@ -13,6 +13,7 @@ class Cult
   public var isAI: Bool; // player or AI?
   public var isDead: Bool; // cult is dead
   public var isParalyzed: Bool; // cult is paralyzed
+  public var isDebugInvisible: Bool; // debug: cult nodes are invisible
 
   // ritual stuff
   public var isRitual: Bool; // cult is performing ritual?
@@ -570,17 +571,13 @@ class Cult
 // lose node to new owner (who is null in the case of losing)
   public function loseNode(node: Node, ?cult: Cult)
     {
-      // check for death
-      checkDeath();
-      if (isDead) return;
-
       // raise public awareness
       awareness++;
       if (!isAI)
         ui.updateStatus();
 
       // declare war
-      if (cult != null)
+      if (cult != null && nodes.length > 0)
         cult.declareWar(this);
 
       // converting the origin
@@ -588,6 +585,9 @@ class Cult
         loseOrigin();
 
       node.update();
+
+      // check for death
+      checkDeath();
     }
 
 
@@ -653,7 +653,7 @@ class Cult
 // check if cult still has any nodes (fdea)
   public function checkDeath()
     {
-      if (this.nodes.length > 0)
+      if (this.nodes.length > 0 || isDead)
         return;
 
       // owner dead

@@ -21,9 +21,10 @@ class Line
 
 
 // make a new line on screen
-  public static function paint(screen, player,
+  public static function paint(map: Map, player,
       startNode: Node, endNode: Node): Dynamic
 	{
+      var screen = map.screen;
 	  var line = new Line(screen);
       line.owner = player;
 	  line.startNode = startNode;
