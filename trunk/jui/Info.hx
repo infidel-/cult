@@ -91,8 +91,8 @@ class Info
               s += "<span style='font-size: 12px; color: #999999'>Investigator: Level " +
                 (p.investigator.level + 1) +
                 ', Willpower ' + p.investigator.will + '</span>';
-              if (Game.isDebug && p.investigator.isInvincible)
-                s += " Invincible";
+              if (Game.isDebug && p.investigator.isHidden)
+                s += " Hidden";
               s += '<br>';
             }
           if (Game.isDebug && p.investigatorTimeout > 0)

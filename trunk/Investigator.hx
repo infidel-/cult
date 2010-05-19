@@ -8,7 +8,7 @@ class Investigator
 
   public var will: Int; // willpower
   public var level: Int; // investigator level
-  public var isInvincible: Bool; // is invincible?
+  public var isHidden: Bool; // is hidden?
 
   public function new(c: Cult, ui: UI)
     {
@@ -17,25 +17,28 @@ class Investigator
       level = 0;
       will = 1;
       numTurn = 0;
-      isInvincible = true;
+      isHidden = true;
     }
 
 
 // investigator's turn
   public function turn()
     {
-      // stalls on the first turn, horrified by his revelation
-      if (numTurn == 0)
+      // on easy stalls on the first turn, horrified by his revelation
+      if (numTurn == 0 && cult.difficulty.level == 0)
         {
           numTurn++;
           return;
         }
 
-      // invincible for one more turn, cult cannot find him yet
-      if (numTurn > 0)
-        isInvincible = false;
+      // hidden for X turns after appearance
+      if (isHidden && numTurn > cult.difficulty.investigatorTurnVisible)
+        {
+          ui.log(cult.fullName + " has found out the investigator's location.");
+          isHidden = false;
+        }
       if (will >= 9)
-        isInvincible = true;
+        isHidden = true;
 
       numTurn++;
 

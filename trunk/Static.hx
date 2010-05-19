@@ -13,9 +13,11 @@ class Static
       // investigatorKill - higher value raises chance of investigator killing a follower
       // investigatorWillpower - higher value lowers chance of success in lowering 
       //   investigator willpower using adepts
+      // investigatorTurnVisible - number of turn on which new investigator becomes visible
 
       // easy
       {
+        level: 0,
         upgradeChance: 1.10,
         awarenessResource: 1.25,
         awarenessUpgrade: 0.75,
@@ -23,10 +25,12 @@ class Static
         investigatorChance: 0.50,
         investigatorKill: 0.75,
         investigatorWillpower: 0.75,
+        investigatorTurnVisible: 0,
       },
 
       // normal
       {
+        level: 1,
         upgradeChance: 1.0,
         awarenessResource: 1.5,
         awarenessUpgrade: 1.0,
@@ -34,10 +38,12 @@ class Static
         investigatorChance: 1.0,
         investigatorKill: 1.0,
         investigatorWillpower: 1.0,
+        investigatorTurnVisible: 1,
       },
 
       // hard
       {
+        level: 2,
         upgradeChance: 0.90,
         awarenessResource: 1.75, 
         awarenessUpgrade: 1.25,
@@ -45,6 +51,7 @@ class Static
         investigatorChance: 1.25,
         investigatorKill: 1.25,
         investigatorWillpower: 1.25,
+        investigatorTurnVisible: 2,
       },
     ];
 

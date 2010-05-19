@@ -8,9 +8,9 @@ class AI extends Cult
       isAI = true;
 
       // AI difficulty is the opposite of player difficulty
-      if (game.difficulty == 0)
+      if (game.difficultyLevel == 0)
         difficulty = Static.difficulty[2];
-      else if (game.difficulty == 2)
+      else if (game.difficultyLevel == 2)
         difficulty = Static.difficulty[0];
       else
         difficulty = Static.difficulty[1];
@@ -206,7 +206,7 @@ class AI extends Cult
   function aiLowerWillpower()
     {
       // no need to kill him yet
-      if (!hasInvestigator || (awareness < 5 && !isRitual) || investigator.isInvincible ||
+      if (!hasInvestigator || (awareness < 5 && !isRitual) || investigator.isHidden ||
           adepts == 0)
         return;
 

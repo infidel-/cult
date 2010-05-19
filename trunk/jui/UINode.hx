@@ -87,7 +87,8 @@ class UINode
           marker.style.color = '#ffffff';
           marker.style.background = Game.nodeColors[node.owner.id];
         }
-
+  
+	  marker.style.border = '1px solid #777';
 	  if (node.isGenerator)
 		{
           var w = '3px';
