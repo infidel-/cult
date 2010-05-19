@@ -117,7 +117,26 @@ class Cult
             origin.power[i]++;
         }
       origin.update();
+
+      // remove close generators on hard for player
+      if (!isAI && game.difficultyLevel == 2)
+        removeCloseGenerators();
 	}
+
+
+// remove close node generators
+  function removeCloseGenerators()
+    {
+      for (n in origin.links)
+        {
+          for (n2 in n.links)
+            if (n2.owner == null && n2.isGenerator)
+              n2.setGenerator(false);
+
+          if (n.owner == null && n.isGenerator)
+            n.setGenerator(false);
+        }
+    }
 
 
 // setter for awareness
@@ -196,7 +215,7 @@ class Cult
   public function lowerWillpower(pwr)
     {
       if (!hasInvestigator || adeptsUsed >= adepts || pwr == 3 ||
-          power[pwr] < Game.willPowerCost || investigator.isInvincible)
+          power[pwr] < Game.willPowerCost || investigator.isHidden)
         return;
 
       power[pwr] -= Game.willPowerCost;
@@ -563,8 +582,7 @@ class Cult
       cult.wars[id] = true;
       wars[cult.id] = true;
 
-      ui.log(fullName + " has declared war against " +
-        UI.cultName(cult.id, cult.info) + ".");
+      ui.log(fullName + " has declared war against " + cult.fullName + ".");
     }
 
 

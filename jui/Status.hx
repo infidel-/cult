@@ -416,7 +416,7 @@ class Status
       // lower willpower buttons visibility
       for (i in 0...Game.numPowers)
         e("status.lowerWillpower" + i).style.visibility = 'hidden';
-      if (game.player.hasInvestigator && !game.player.investigator.isInvincible &&
+      if (game.player.hasInvestigator && !game.player.investigator.isHidden &&
           game.player.adeptsUsed < game.player.adepts && game.player.adepts > 0)
         for (i in 0...Game.numPowers)
           if (game.player.power[i] >= Game.willPowerCost)
