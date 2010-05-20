@@ -573,7 +573,7 @@ class Cult
     }
 
 
-// declare war to this cult
+// declare war to a cult
   public function declareWar(cult: Cult)
     {
       if (cult.wars[id])
@@ -583,6 +583,19 @@ class Cult
       wars[cult.id] = true;
 
       ui.log(fullName + " has declared war against " + cult.fullName + ".");
+    }
+
+
+// make peace to a cult
+  public function makePeace(cult: Cult)
+    {
+      if (!cult.wars[id])
+        return;
+
+      cult.wars[id] = false;
+      wars[cult.id] = false;
+
+      ui.log(fullName + " has made peace with " + cult.fullName + ".");
     }
 
 
