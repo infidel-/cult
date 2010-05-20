@@ -157,6 +157,37 @@ class AI extends Cult
           else if (ret == "hasLinks")
             1;
         }
+
+      // during the final ritual AIs will try to make peace
+      aiTryPeace();
+    }
+
+
+// try to make peace with any not in ritual cults
+  function aiTryPeace()
+    {
+      if (isRitual) return;
+
+      // check if any cult is in ritual
+      var ok = false;
+      for (c in game.cults)
+        if (c.isRitual)
+          {
+            ok = true;
+            break;
+          }
+      // noone is casting ritual, no peace
+      if (!ok) return;
+
+      for (i in 0...3)
+        if (wars[i] && !game.cults[i].isRitual)
+          {
+            // 30% chance of success
+            if (Math.random() * 100 > 30)
+              continue;
+
+            makePeace(game.cults[i]);
+          }
     }
 
 

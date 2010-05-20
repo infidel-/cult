@@ -47,7 +47,7 @@ class Game
   public static var numSummonVirgins = 9;
   static var nodesCount = 100;
   public static var upgradeCost = 3;
-  public static var isDebug = true; // debug mode (debug button + extended info window)
+  public static var isDebug = false; // debug mode (debug button + extended info window)
 
 
 // constructor
@@ -74,7 +74,7 @@ class Game
           "Manual. You have been warned.");
       ui.setVar('hasPlayed', '1');
 
-      ui.track("startGame");
+      ui.track("startGame diff:" + newDifficulty);
       startTimer("restart");
 
       difficultyLevel = newDifficulty;

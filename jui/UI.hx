@@ -78,7 +78,7 @@ class UI
         {
           msg += "The stars were right. The Elder God was summoned in " +
             game.turns + " turns.";
-          track("winGame", "summon", game.turns);
+          track("winGame diff:" + game.difficultyLevel, "summon", game.turns);
         }
 
       else if (state == "summon" && cult.isAI)
@@ -86,27 +86,27 @@ class UI
           msg += cult.fullName +
             " has completed the " + Static.rituals[0].name + ".<br><br>" +
             untyped cult.info.summonFinish;
-          track("loseGame", "summon", game.turns);
+          track("loseGame diff:" + game.difficultyLevel, "summon", game.turns);
         }
 
       else if (state == "conquer" && !cult.isAI)
         {
           msg += cult.fullName + " has taken over the world in " +
             game.turns + " turns. The Elder Gods are pleased.";
-          track("winGame", "conquer", game.turns);
+          track("winGame diff:" + game.difficultyLevel, "conquer", game.turns);
         }
 
       else if (state == "conquer" && cult.isAI)
         {
           msg += cult.fullName + " has taken over the world. You fail.";
-          track("loseGame", "conquer", game.turns);
+          track("loseGame diff:" + game.difficultyLevel, "conquer", game.turns);
         }
 
       else if (state == "wiped")
         {
           msg += cult.fullName + " was wiped away completely. " +
             "The Elder God lies dormant beneath the sea, waiting.";
-          track("loseGame", "wiped", game.turns);
+          track("loseGame diff:" + game.difficultyLevel, "wiped", game.turns);
         }
 
       alert(msg);
