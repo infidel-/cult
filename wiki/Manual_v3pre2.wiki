@@ -2,25 +2,23 @@
 
 _v3pre2 is a development version with everything subject to change_
 
-New stuff: difficulty settings, investigator and ai tweaks, 
+_New stuff_: difficulty settings, investigator and AI tweaks
 
 <wiki:toc max_depth="3" />
 
-
 ==Introduction==
 
-Evil Cult is a turn-based strategy of global conquest. You play as the leader of one of four cults whose goal is either to destroy the other cults completely or to summon your own Elder God. To do so, you must both recruit _priests_ and abduct _virgins_. You can try to summon your Elder God when you have 3 priests and 9 virgins. The success of this endeavor is greatly dependent on society's _awareness_ of your actions. While you work on your goals, the other three cults are doing the same, gathering priests and virgins for their own nefarious goals.
-
+Evil Cult is a turn-based strategy of global conquest. You play as the leader of one of four cults whose goal is to summon the Elder God you worship or, barring that, to eliminate the other three cults' influence on the world. To do so, you must both recruit _priests_ and abduct _virgins_. You can try to summon your Elder God when you have 3 priests and 9 virgins. The success of this endeavor is greatly dependent on society's _awareness_ of your actions. While you work on your goals, the other three cults are doing the same, gathering priests and virgins for their own nefarious goals.
 
 ==Cults==
 
 ===Basics===
 
-At the start of the game you have one follower, a _neophyte_. As this neophyte is the _Origin_ of your cult, each turn he generates a point of one of the three resources, determined randomly at the start of the game: _Intimidation_, _Persuasion_, or _Bribery_. You will need these resources to gain more followers or to convert the followers of other cults. You can convert between these three resources at a 2-to-1 ratio. _Virgins_ are another resource that you collect, and they can be converted to any other resource at a 1-to-1 ratio.
+At the start of the game you have one follower, a _neophyte_. As this neophyte is the _Origin_ of your cult, each turn he generates a point of one of the three _core resources_: *Intimidation*, *Persuasion*, or *Bribery*. Which resource the neophyte generates is determined randomly at the start of the game. You will need these resources to gain more followers or to convert the followers of other cults. You can convert between these three resources at a 2-to-1 ratio. _Virgins_ are another resource that you collect, and they can be converted to any other resource at a 1-to-1 ratio.
 
 ===Nodes===
 
-The squares with letters on the map screen represent individual people, and therefore your potential followers. The letter represents the resource you need to sway that follower to your cause. If a follower already belongs to another cult, the letter is replaced by a number showing the _level_ of that follower.  The higher the level, the harder the conversion process becomes. Pick a node that needs a resource which you have and click on it. That action will trigger an attempt to gain the follower represented by that node. The chance of success, along with other information about the node, is displayed in a tooltip that appears if you hover your mouse pointer over the node. If you do not have resources which are needed to gain any adjacent nodes, don't worry; you can convert the resources you have to the ones you need.
+The squares with letters on the map screen represent individual people, and therefore your potential followers. The letter represents the resource you need to sway that follower to your cause. If a follower already belongs to another cult, the letter is replaced by a number showing the _level_ of that follower.  The higher the level, the harder the conversion process becomes. Pick a node that needs a resource which you have and click on it. That action will trigger an attempt to gain the follower represented by that node. The chance of success, along with other information about the node, is displayed in a tooltip that appears if you hover your mouse pointer over the node. If you do not have the resources which necessary to gain any adjacent nodes, don't worry; you can convert the resources you have to the ones you need.
 
 Note that trying to convert a follower from another cult will start a war with that cult.  Wars only end with the complete destruction of one of the sides involved, so think hard before converting followers of another cult!
 
@@ -50,40 +48,47 @@ Priests are required to complete the Final Ritual.  While performing the Ritual,
 
 Note that upon starting the Final Ritual, all other cults automatically declare war on your cult.  In addition, successful conversion of the _Origin_ of any cult working on their Final Ritual brings the Ritual to a halt and empties the pool of Ritual Points, forcing the cult to start over.
 
-===Opposing cults===
+===Opposing Cults===
 
 Don't forget that all of these rules also apply to the other three cults in play; you may find as you work to complete your goals another cult beats you to their goal. Make sure that doesn't happen!
 
 ==Investigators==
 
-===What are they?===
+===What are They?===
 
-_From that point on your primary resources (Bribery, Intimidation, Persuasion) are called BIP points to shorten the text._
+After a cult gains its first adept, there is a small chance each turn that an _investigator_ will become aware of its existence.  Having three or more adepts will add the current society awareness level to that chance, and having any priests in the cult will raise the chance even further.  Once an investigator is aware of a particular cult, he focuses on that one to the exclusion of all others.  His goal is simple: the destruction of the cult.
 
-After the cult gains its first adept, each turn there's a small chance of an investigator to become aware of it. (Note that having 3 or more adepts will add society awareness to that chance. And having any priests in the cult will raise it significantly) An investigator is a cult nemesis. He knows (or cares) only about one cult and has some will to destroy it. Initially his will power is low, he has not gained enough knowledge about the cult yet to become resolved in his mission. Each turn after his initial revelation an investigator has a big chance of getting a point of will power. Upon receiving every three points he gains a new level. When an investigator gains a 3rd level and 9 will power points, he becomes unstoppable. At this point the cult cannot hope to destroy him, only to try to repair the damage he causes and delay the inevitable. The adepts cannot spend BIP points to lower his will power anymore, it is locked. However the cult can still keep a low profile hiding in the dark (lowering its society awareness) so that investigator is tricked into believing the cult is almost destroyed. If the society awareness of the cult is below 5% and no ritual is being cast, the investigator has a hard time finding followers and does not gain will power.
+When an investigator first becomes aware of a cult, his _willpower_ is low; he has not gained enough knowledge about the cult to be completely resolved in his mission.  Every turn afterwards the investigator is likely to gain a point of willpower, and with every 3 points he gains a new _level_.  If he reaches 3rd level, with 9 willpower points, he becomes unstoppable.  The cult cannot destroy him, only repair the damage he wreaks.
 
-===What does an investigator do to a cult?===
+===The Investigator's Blight===
 
-Each turn the investigator unravels the dark secret of a number of random followers equal to his level who have the same or lower level as he. The followers are destroyed (forced to commit suicide) and replaced with a fresh members of society. Also the society awareness raises for this cult.
+Every turn an investigator unravels the dark secrets of random followers.  They must be the same level or lower than he, and he can only discover a number equal to his level as well.  Those followers are killed or forced to commit suicide, replaced with new members of normal society.  In addition, the society awareness level of this cult is boosted due to the rash of deaths and murders.
 
-Be aware that at the time of performing the Final Ritual the investigator will try to go for the highest level followers that are available to him instead of random ones. Also he will have a chance of gaining two will power points each turns instead of one. Basically you should avoid having live investigator on your back while performing the Final Ritual.
+Once a Final Ritual begins, any investigator of that cult will focus on the highest-level followers available to him rather than random cultists.  He also has a chance of gaining two willpower points each turn due to the desperate situation caused by the Final Ritual.
 
-===How does a cult destroy an investigator?===
+===Destroying an Investigator===
 
-The cult should start dealing with investigator immediately after his appearance - while he has low will power. Unfortunately the cult cannot do that for some turns (depending on the difficulty level) since investigator appearance because its followers have not found him yet. But after that each adept can spend two BIP points per turn to try to lower the will power of an investigator by one point. After his will power is lowered to a zero, the investigator succumbs and is destroyed. After the destruction of the investigator the cult is granted some "investigator-free" turns as a reward.
+Once an investigator becomes active, a cult must first find out just who he is.  This takes time dependent on the difficulty level of the game.  Once his identity is uncovered, adepts can spend two core resource points per turn to try and lower his willpower by a single point.  If an investigator's willpower is lowered to zero, they succumb to the overwhelming darkness and futility of their situation and are destroyed.  The elimination of an investigator gives a cult some breathing room, as it takes time before another picks up the scent of the cult.
 
-==Difficulty settings==
+===Hiding from an Investigator===
 
-Before the start of each new game you can select a different gameplay difficulty. Changing the difficulty changes the following variables:
+If the society awareness level of a cult is below 5%, investigators have a difficult time finding information about the cult, and do not gain willpower.
 
- * Chance of gaining resources from generators each turn
+Once an investigator has reached level 3, they can no longer be destroyed.  However, with a low society awareness level, the investigator may be fooled into thinking the cult is already almost destroyed and not work with the diligence they may otherwise bring to bear.
+
+==Difficulty Settings==
+
+Before the start of each new game you can select a difficulty level.  Changing this level alters the following aspects of gameplay: 
+
+ * Chance of gaining core resources from generators each turn
  * Chance of successfully upgrading your followers
- * Chance of success performing Final Ritual
+ * Chance of successfully performing the Final Ritual
  * Chance of gaining new followers
- * Chance of investigator appearing
- * Chance of investigator revealing a follower
- * Chance of success in lowering investigator's willpower using adepts
- * Amount of turns needed to find investigator
- * On hard difficulty generator nodes around the origin of player's cult are removed
+ * Chance of an investigator appearing
+ * Chance of an investigator revealing a follower
+ * Chance of success in lowering an investigator's willpower using adepts
+ * Number of turns needed to uncover an investigator
 
-Apart from setting these variables for your cult, the game also sets them in opposite for cults controlled by AI. So for example, when player sets Hard, AI plays on Easy.
+In addition, on the Hard difficulty a number of nodes around the Origin of the player's cult are removed.
+
+The AI cults play with the opposite difficulty of the player.  So, for example, if you choose the Hard difficulty level, the three AI cults operate under the rules of the Easy difficulty level.  Be forewarned!
