@@ -18,7 +18,7 @@ At the start of the game you have one follower, a _neophyte_. As this neophyte i
 
 ===Nodes===
 
-The squares with letters on the map screen represent individual people, and therefore your potential followers. The letter represents the resource you need to sway that follower to your cause. If a follower already belongs to another cult, the letter is replaced by a number showing the _level_ of that follower.  The higher the level, the harder the conversion process becomes. Pick a node that needs a resource which you have and click on it. That action will trigger an attempt to gain the follower represented by that node. The chance of success, along with other information about the node, is displayed in a tooltip that appears if you hover your mouse pointer over the node. If you do not have the resources which necessary to gain any adjacent nodes, don't worry; you can convert the resources you have to the ones you need.
+The squares with letters on the map screen represent individual people, and therefore your potential followers. The letter represents the resource you need to sway that follower to your cause. If a follower already belongs to another cult, the letter is replaced by a number showing the _level_ of that follower.  The higher the level, the harder the conversion process becomes. Pick a node that needs a resource which you have and click on it. That action will trigger an attempt to gain the follower represented by that node. The chance of success, along with other information about the node, is displayed in a tooltip that appears if you hover your mouse pointer over the node. If you do not have the resources which are necessary to gain any adjacent nodes, don't worry; you can convert the resources you have to the ones you need.
 
 Note that trying to convert a follower from another cult will start a war with that cult.  Wars only end with the complete destruction of one of the sides involved, so think hard before converting followers of another cult!
 
@@ -89,6 +89,6 @@ Before the start of each new game you can select a difficulty level.  Changing t
  * Chance of success in lowering an investigator's willpower using adepts
  * Number of turns needed to uncover an investigator
 
-In addition, on the Hard difficulty a number of nodes around the Origin of the player's cult are removed.
+In addition, on the Hard difficulty all generator nodes around the Origin of the player's cult are removed.
 
-The AI cults play with the opposite difficulty of the player.  So, for example, if you choose the Hard difficulty level, the three AI cults operate under the rules of the Easy difficulty level.  Be forewarned!
+The AI cults play with the opposite difficulty of the player. So, for example, if you choose the Hard difficulty level, the three AI cults operate under the rules of the Easy difficulty level. Be forewarned!
