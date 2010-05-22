@@ -6,6 +6,7 @@ class UINode
   var ui: UI;
   var node: Node;
   public var marker: Dynamic;
+  var markerHL: Dynamic;
 
   public function new(gvar, uivar, nvar)
     {
@@ -27,10 +28,30 @@ class UINode
 	  marker.style.textAlign = 'center';
 	  marker.style.fontWeight = 'bold';
       marker.style.fontSize = '12px';
-	  marker.style.zIndex = 20;
+	  marker.style.zIndex = 10;
 	  marker.style.cursor = 'pointer';
 	  marker.onclick = ui.map.onNodeClick;
 	  ui.map.screen.appendChild(marker);
+
+      markerHL = js.Lib.document.createElement("div");
+      markerHL.style.visibility = 'hidden';
+	  markerHL.style.background = '#111';
+	  markerHL.style.border = '1px solid #333';
+	  markerHL.style.width = UI.markerWidth + 20;
+	  markerHL.style.height = UI.markerHeight + 20;
+	  markerHL.style.position = 'absolute';
+      markerHL.style.opacity = 0.5;
+      markerHL.style.left = node.centerX - (UI.markerWidth + 21) / 2;
+      markerHL.style.top = node.centerY - (UI.markerHeight + 21) / 2;
+	  markerHL.style.zIndex = 8;
+	  ui.map.screen.appendChild(markerHL);
+    }
+
+
+// set node highlight
+  public function setHighlighted()
+    {
+      update();
     }
 
 
@@ -64,7 +85,7 @@ class UINode
         s += "<b>" + Game.followerNames[node.level] + 
           "</b> <span style='color:white'>L" +
           (node.level + 1) + "</span><br>";
-      if (node.owner == null || node.owner.isAI)
+//      if (node.owner == null || node.owner.isAI)
         {
           s += "<br>";
           // amount of generated power
@@ -76,8 +97,9 @@ class UINode
 			    marker.innerHTML = Game.powerShortNames[i];
                 marker.style.color = Game.powerColors[i];
 		      }
-          s += "Chance of success: <span style='color:white'>" +
-            game.player.getGainChance(node) + "%</span><br>";
+          if (node.owner == null || node.owner.isAI)
+            s += "Chance of success: <span style='color:white'>" +
+              game.player.getGainChance(node) + "%</span><br>";
         }
 
 	  marker.style.background = '#111';
@@ -89,9 +111,10 @@ class UINode
         }
   
 	  marker.style.border = '1px solid #777';
+      var borderWidth = 1;
 	  if (node.isGenerator)
 		{
-          var w = '3px';
+          borderWidth = 3;
           var col = '#777';
           var type = 'solid';
 
@@ -100,12 +123,12 @@ class UINode
           for (p in game.cults)
             if (p.origin == node && !p.isDead)
               {
-                w = '5px';
+                borderWidth = 5;
                 type = 'double';
                 break;
               }
 
-		  marker.style.border = w + ' ' + type + ' ' + col;
+		  marker.style.border = borderWidth + 'px ' + type + ' ' + col;
 
 		  s += "<br>Generates:<br>";
 	      for (i in 0...Game.numPowers)
@@ -117,6 +140,16 @@ class UINode
 
       marker.title = s;
       new JQuery("#map\\.node" + node.id).tooltip({ delay: 0 });
+
+      // node highlight
+      markerHL.style.visibility = (node.isHighlighted ? "visible" : "hidden");
+      if (node.isHighlighted)
+        {
+  	      markerHL.style.width = UI.markerWidth + borderWidth + 19;
+	      markerHL.style.height = UI.markerHeight + borderWidth + 19;
+          markerHL.style.left = node.centerX - (UI.markerWidth - borderWidth + 22) / 2;
+          markerHL.style.top = node.centerY - (UI.markerHeight - borderWidth + 22) / 2;
+        }
     }
 
 

@@ -6,6 +6,7 @@ class MainMenu
   var game: Game;
 
   var window: Dynamic; // window element
+  var bg: Dynamic; // background element
 
 
   public function new(uivar: UI, gvar: Game)
@@ -56,7 +57,19 @@ class MainMenu
         container: window,
         func: onNewGame
         });
-        
+
+      bg = js.Lib.document.createElement("div");
+      bg.style.visibility = 'hidden';
+      bg.style.position = 'absolute';
+      bg.style.zIndex = 15;
+      bg.style.width = UI.winWidth + 20;
+      bg.style.height = UI.winHeight;
+      bg.style.left = 0; 
+      bg.style.top = 0;
+      bg.style.opacity = 0.8;
+      bg.style.background = '#000';
+      js.Lib.document.body.appendChild(bg);
+
       var close = Tools.closeButton(window, 160, 160, 'mainMenuClose');
 	  close.onclick = onClose;
     }
@@ -66,6 +79,7 @@ class MainMenu
   public function show()
     {
       window.style.visibility = 'visible';
+      bg.style.visibility = 'visible';
     }
 
 
@@ -80,6 +94,7 @@ class MainMenu
         dif = 1;
       else dif = 2;
       window.style.visibility = 'hidden';
+      bg.style.visibility = 'hidden';
       UI.e("haxe:trace").innerHTML = "";
       game.restart(dif);
     }
@@ -91,5 +106,6 @@ class MainMenu
       if (game.isFinished)
         return;
       window.style.visibility = 'hidden';
+      bg.style.visibility = 'hidden';
     }
 }
