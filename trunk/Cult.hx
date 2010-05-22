@@ -129,10 +129,11 @@ class Cult
     {
       for (n in origin.links)
         {
+/*        
           for (n2 in n.links)
             if (n2.owner == null && n2.isGenerator)
               n2.setGenerator(false);
-
+*/
           if (n.owner == null && n.isGenerator)
             n.setGenerator(false);
         }
@@ -568,6 +569,10 @@ class Cult
 
       // check for victory
       checkVictory();
+
+      // set highlight
+      if (isAI && node.visibility[0])
+        node.setHighlighted(true);
 
       return "ok";
     }

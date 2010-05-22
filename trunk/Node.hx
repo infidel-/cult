@@ -17,6 +17,7 @@ class Node
   public var visibility: Array<Bool>;
   public var isGenerator: Bool;
   public var isProtected: Bool;
+  public var isHighlighted: Bool;
   public var level: Int;
   public var owner: Cult;
 
@@ -183,6 +184,8 @@ class Node
             v = true;
           for (l in lines)
             l.setVisible(v);
+          if (isHighlighted)
+            setHighlighted(v);
         }
     }
 
@@ -294,6 +297,14 @@ class Node
           l.startNode.lines.remove(l);
           l.endNode.lines.remove(l);
         }
+    }
+
+
+// set node highlight
+  public function setHighlighted(isHL: Bool)
+    {
+      isHighlighted = isHL;
+      uiNode.setHighlighted();
     }
 
 

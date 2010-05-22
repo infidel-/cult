@@ -40,7 +40,7 @@ class Game
   public static var cultColors: Array<String> =
     [ "#00B400", "#2F43FD", "#B400AE", "#B4AE00" ];
 
-  public static var version = "v3pre2"; // game version
+  public static var version = "v3pre3"; // game version
   public static var followerLevels = 3;
   public static var numPowers = 3;
   public static var numCults = 4;
@@ -174,6 +174,11 @@ class Game
 // on clicking end turn button
   public function endTurn()
     {
+      // clear node highlight
+      for (n in nodes)
+        if (n.isHighlighted)
+          n.setHighlighted(false);
+
       // ensure player goes last
       for (c in cults)
         if (c.isAI && !c.isDead)

@@ -45,14 +45,14 @@ class Line
 		  x += modx;
 		  y += mody;
 
-          var pixel = js.Lib.document.createElement("pixel");
+          var pixel = js.Lib.document.createElement("div");
 		  pixel.style.position = 'absolute';
 		  pixel.style.left = Math.round(x) + 'px';
 		  pixel.style.top = Math.round(y) + 'px';
 		  pixel.style.width = '2';
 		  pixel.style.height = '2';
 		  pixel.style.background = Game.lineColors[player.id];
-          pixel.style.zIndex = 10;
+          pixel.style.zIndex = 5;
           pixel.style.visibility = 'hidden';
 		  screen.appendChild(pixel);
 

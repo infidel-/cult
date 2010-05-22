@@ -27,7 +27,7 @@ class Status
       status.style.overflow = 'hidden';
 
       var s = "<div style='padding:0 5 5 5; background: #111; height: 20; " +
-        "font-weight: bold; font-size:20px;'>Evil Cult " +
+        "font-weight: bold; font-size:19px;'>Evil Cult " +
         Game.version + "</div>";
 
       s += "<fieldset>";
@@ -385,8 +385,18 @@ class Status
           }
 
       for (i in 0...Game.followerLevels)
-        e("status.followers" + i).innerHTML = "" +
-          game.player.getNumFollowers(i);
+        {
+          var s = "" + game.player.getNumFollowers(i);
+
+          // adepts used
+          if (i == 1 && game.player.adepts > 0)
+            {
+              s = "<span style='color:#55dd55'>" +
+                (game.player.adepts - game.player.adeptsUsed) +
+                "</span>";
+            }
+          e("status.followers" + i).innerHTML = s; 
+        }
 
       // update powers
 	  for (i in 0...(Game.numPowers + 1))
@@ -473,7 +483,7 @@ class Status
       "summon Elder God."];
   static var tipFollowers: Array<String> =
     [ "Neophytes can find some virgins if they're lucky.",
-      "Adepts can lower society awareness.",
+      "Adepts can lower society awareness and investigator's willpower.",
       "3 priests and " + Game.numSummonVirgins + 
       " virgins are needed to summon the Elder God." ];
   static var tipTurns = "Shows the number of turns passed from the start.";
@@ -486,7 +496,7 @@ class Status
   static var tipLowerAwareness =
     "Your adepts can use resources to lower society awareness.";
   static var tipLowerWillpower =
-    "Your adepts can use resources to lower investigator willpower.<br>Cost: ";
+    "Your adepts can use resources to lower willpower of an investigator.<br>Cost: ";
   static var tipEndTurn = "Click to end current turn.";
   static var tipInfo = "Click to view cults information.";
   static var tipMainMenu = "Click to open main menu.";
