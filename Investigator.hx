@@ -114,6 +114,8 @@ class Investigator
 
       ui.log("The investigator revealed the " + cult.fullName + " follower.");
       node.removeOwner();
+      if (node.visibility[0])
+        node.setHighlighted(true);
     }
 
 

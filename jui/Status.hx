@@ -371,6 +371,8 @@ class Status
             "<br>Chance of success: <span style='color:white'>" +
             game.player.getUpgradeChance(i) + "%</span>");
         }
+      updateTip("status.followers1",
+        game.player.adeptsUsed + " used of " + game.player.adepts);
 
       // convert buttons
 	  for (i in 0...(Game.numPowers + 1))

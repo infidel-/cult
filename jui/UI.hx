@@ -78,6 +78,7 @@ class UI
         {
           msg += "The stars were right. The Elder God was summoned in " +
             game.turns + " turns.";
+          msg += "<br><br><center><b>YOU WON</b></center>";
           track("winGame diff:" + game.difficultyLevel, "summon", game.turns);
         }
 
@@ -86,6 +87,7 @@ class UI
           msg += cult.fullName +
             " has completed the " + Static.rituals[0].name + ".<br><br>" +
             untyped cult.info.summonFinish;
+          msg += "<br><br><center><b>YOU LOSE</b></center>";
           track("loseGame diff:" + game.difficultyLevel, "summon", game.turns);
         }
 
@@ -93,12 +95,14 @@ class UI
         {
           msg += cult.fullName + " has taken over the world in " +
             game.turns + " turns. The Elder Gods are pleased.";
+          msg += "<br><br><center><b>YOU WON</b></center>";
           track("winGame diff:" + game.difficultyLevel, "conquer", game.turns);
         }
 
       else if (state == "conquer" && cult.isAI)
         {
           msg += cult.fullName + " has taken over the world. You fail.";
+          msg += "<br><br><center><b>YOU LOSE</b></center>";
           track("loseGame diff:" + game.difficultyLevel, "conquer", game.turns);
         }
 
@@ -106,10 +110,15 @@ class UI
         {
           msg += cult.fullName + " was wiped away completely. " +
             "The Elder God lies dormant beneath the sea, waiting.";
+          msg += "<br><br><center><b>YOU LOSE</b></center>";
           track("loseGame diff:" + game.difficultyLevel, "wiped", game.turns);
         }
+  
+      // open map
+      for (n in game.nodes)
+        n.setVisible(game.player, true);
 
-      alert(msg);
+      alert(msg, true);
     }
 
 
@@ -130,9 +139,9 @@ class UI
 
 
 // message with confirmation
-  public function alert(s)
+  public function alert(s, ?shadow: Bool)
     {
-      alertWindow.show(s);
+      alertWindow.show(s, shadow);
     }
 
 

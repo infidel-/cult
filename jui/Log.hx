@@ -25,7 +25,7 @@ class Log
           fontSize: 18,
           w: 800,
           h: 500,
-          z: 20
+          z: 14
         });
       window.style.visibility = 'hidden';
       window.style.background = '#333333';

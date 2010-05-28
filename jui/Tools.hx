@@ -16,6 +16,27 @@ class Tools
     }
 
 
+// background shadow
+  public static function bg(params: Dynamic): Dynamic
+    {
+      if (params.z == null)
+        params.z = 15;
+
+      var bg: Dynamic = js.Lib.document.createElement("div");
+      bg.style.visibility = 'hidden';
+      bg.style.position = 'absolute';
+      bg.style.zIndex = params.z;
+      bg.style.width = params.w;
+      bg.style.height = params.h;
+      bg.style.left = 0; 
+      bg.style.top = 0;
+      bg.style.opacity = 0.8;
+      bg.style.background = '#000';
+      js.Lib.document.body.appendChild(bg);
+      return bg;
+    }
+
+
 // create a button
   public static function button(params: Dynamic): Dynamic
     {
@@ -69,6 +90,8 @@ class Tools
         params.x = (params.winW - params.w) / 2;
       if (params.winH != null)
         params.y = (params.winH - params.h) / 2;
+      if (params.z == null)
+        params.z = 10;
 
       var w = Lib.document.createElement("div");
       w.id = params.id;
