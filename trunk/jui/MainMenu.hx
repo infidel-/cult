@@ -7,6 +7,7 @@ class MainMenu
 
   var window: Dynamic; // window element
   var bg: Dynamic; // background element
+  var close: Dynamic; // close button element
 
 
   public function new(uivar: UI, gvar: Game)
@@ -58,19 +59,8 @@ class MainMenu
         func: onNewGame
         });
 
-      bg = js.Lib.document.createElement("div");
-      bg.style.visibility = 'hidden';
-      bg.style.position = 'absolute';
-      bg.style.zIndex = 15;
-      bg.style.width = UI.winWidth + 20;
-      bg.style.height = UI.winHeight;
-      bg.style.left = 0; 
-      bg.style.top = 0;
-      bg.style.opacity = 0.8;
-      bg.style.background = '#000';
-      js.Lib.document.body.appendChild(bg);
-
-      var close = Tools.closeButton(window, 160, 160, 'mainMenuClose');
+      bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
+      close = Tools.closeButton(window, 160, 160, 'mainMenuClose');
 	  close.onclick = onClose;
     }
 
@@ -80,6 +70,8 @@ class MainMenu
     {
       window.style.visibility = 'visible';
       bg.style.visibility = 'visible';
+      close.style.visibility = 
+        (game.isFinished ? 'hidden' : 'visible');
     }
 
 
@@ -93,10 +85,9 @@ class MainMenu
       else if (id == "newGameNormal")
         dif = 1;
       else dif = 2;
-      window.style.visibility = 'hidden';
-      bg.style.visibility = 'hidden';
       UI.e("haxe:trace").innerHTML = "";
       game.restart(dif);
+      onClose(null);
     }
 
 
@@ -107,5 +98,6 @@ class MainMenu
         return;
       window.style.visibility = 'hidden';
       bg.style.visibility = 'hidden';
+      close.style.visibility = 'hidden';
     }
 }
