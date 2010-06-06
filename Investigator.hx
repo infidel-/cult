@@ -62,7 +62,7 @@ class Investigator
 // each turn I has a chance of gaining will
   function gainWill()
     {
-      if (100 * Math.random() > 70)
+      if (100 * Math.random() > 70 * cult.difficulty.investigatorGainWill)
         return;
 
       var oldLevel = level;

@@ -47,23 +47,26 @@ class AI extends Cult
       // has investigator
       if (hasInvestigator)
         {
+/*
           if (adepts > 0)
             {
-              // try to lower awareness (without using virgins)
-              aiLowerAwareness();
+              // try to lower awareness even using virgins
+              if (awareness >= 5)
+                aiLowerAwarenessHard();
 
               // try to destroy investigator
-              aiLowerWillpower();
+              else aiLowerWillpower();
             }
 
           // try to destroy investigator
-          else aiLowerWillpower();
+          else*/ 
+          aiLowerWillpower();
 
           return;
         }
 
       // if has investigator, he becomes the first priority
-      aiLowerWillpower();
+//      aiLowerWillpower();
 
       // try to upgrade followers
       aiUpgradeFollowers();
@@ -77,6 +80,10 @@ class AI extends Cult
 
       // try to summon
       aiSummon();
+
+      // if awareness is too high, stop here
+      if (awareness > difficulty.maxAwareness && adepts > 0)
+        return;
 
       // TODO: point-based weighted prioritization raises some thoughts
       // about current AI
@@ -237,7 +244,8 @@ class AI extends Cult
   function aiLowerWillpower()
     {
       // no need to kill him yet
-      if (!hasInvestigator || (awareness < 5 && !isRitual) || investigator.isHidden ||
+      if (!hasInvestigator || //(awareness < 5 && !isRitual) ||
+          investigator.isHidden ||
           adepts == 0)
         return;
 
@@ -272,7 +280,8 @@ class AI extends Cult
 // try to lower awareness (virgins are not used)
   function aiLowerAwareness()
     {
-      if ((awareness < 10 && !hasInvestigator) || (awareness < 5 && hasInvestigator) ||
+      if ((awareness < difficulty.maxAwareness && !hasInvestigator) ||
+          (awareness < 5 && hasInvestigator) ||
           adepts == 0 || adeptsUsed >= adepts)
         return;
   
@@ -280,7 +289,8 @@ class AI extends Cult
 
       // spend all we have
       for (i in 0...Game.numPowers)
-        while (power[i] > 0 && adeptsUsed < adepts && awareness >= 10)
+        while (power[i] > 0 && adeptsUsed < adepts &&
+               awareness >= difficulty.maxAwareness)
           lowerAwareness(i);
 
       if (Game.debugAI && awareness != prevAwareness)

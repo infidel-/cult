@@ -13,7 +13,9 @@ class Static
       // investigatorKill - higher value raises chance of investigator killing a follower
       // investigatorWillpower - higher value lowers chance of success in lowering 
       //   investigator willpower using adepts
-      // investigatorTurnVisible - number of turn on which new investigator becomes visible
+      // investigatorTurnVisible - turn on which new investigator becomes visible
+      // investigatorGainWill - higher value raises chance of investigator gaining will
+      // maxAwareness - max awareness for AI to have without using adepts
 
       // easy
       {
@@ -26,6 +28,8 @@ class Static
         investigatorKill: 0.75,
         investigatorWillpower: 0.75,
         investigatorTurnVisible: 0,
+        investigatorGainWill: 0.50,
+        maxAwareness: 10,
       },
 
       // normal
@@ -39,6 +43,8 @@ class Static
         investigatorKill: 1.0,
         investigatorWillpower: 1.0,
         investigatorTurnVisible: 1,
+        investigatorGainWill: 0.75,
+        maxAwareness: 5,
       },
 
       // hard
@@ -52,6 +58,8 @@ class Static
         investigatorKill: 1.25,
         investigatorWillpower: 1.25,
         investigatorTurnVisible: 2,
+        investigatorGainWill: 1.0,
+        maxAwareness: 5,
       },
     ];
 
