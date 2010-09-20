@@ -82,6 +82,28 @@ class Tools
     }
 
 
+// create a label
+  public static function label(params: Dynamic): Dynamic
+    {
+      var b: Dynamic = Lib.document.createElement("div");
+      b.id = params.id;
+      b.innerHTML = params.text;
+      if (params.bold == null)
+        params.bold = true;
+      if (params.bold)
+        b.style.fontWeight = "bold";
+      if (params.fontSize == null)
+        params.fontSize = 20;
+      b.style.fontSize = params.fontSize;
+      b.style.position = 'absolute';
+      b.style.width = params.w;
+      b.style.height = params.h;
+      b.style.left = params.x;
+      b.style.top = params.y;
+//      b.style.textAlign = 'center';
+      params.container.appendChild(b);
+      return b;
+    }
 // create a window
   public static function window(params: Dynamic): Dynamic
     {
@@ -111,6 +133,32 @@ class Tools
       Lib.document.body.appendChild(w);
 
       return w;
+    }
+
+
+// create a textfield
+  public static function textfield(params: Dynamic): Dynamic
+    {
+      var t: Dynamic = Lib.document.createElement("input");
+      t.id = params.id;
+      t.value = params.text;
+      if (params.bold == null)
+        params.bold = false;
+      if (params.bold)
+        t.style.fontWeight = "bold";
+      if (params.fontSize == null)
+        params.fontSize = 20;
+      t.style.fontSize = params.fontSize;
+      t.style.position = 'absolute';
+      t.style.width = params.w;
+      t.style.height = params.h;
+      t.style.left = params.x;
+      t.style.top = params.y;
+      t.style.background = '#111';
+      t.style.paddingLeft = '5px';
+	  t.style.border = '1px outset #777';
+      params.container.appendChild(t);
+      return t;
     }
 }
 

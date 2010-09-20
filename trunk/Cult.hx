@@ -5,6 +5,7 @@ class Cult
   var game: Game;
   var ui: UI;
   public var id: Int;
+  public var infoID: Int;
   public var name: String;
   public var fullName(getFullName, null): String;
   public var info: Dynamic;
@@ -42,11 +43,13 @@ class Cult
   public var investigator: Investigator; // investigator
   public var investigatorTimeout: Int; // timeout before next investigator may appear
 
+
   public function new(gvar, uivar, id, infoID)
     {
       game = gvar;
       ui = uivar;
       this.id = id;
+      this.infoID = infoID;
       this.info = Static.cults[infoID];
       this.name = this.info.name;
       this.isAI = false;
@@ -58,6 +61,78 @@ class Cult
       this.nodes = new List<Node>();
       this.investigatorTimeout = 0;
       this.difficulty = game.difficulty;
+    }
+
+
+// load node info from json-object
+  public function load(c:Dynamic)
+    {
+      difficulty = Static.difficulty[c.dif];
+      isDead = (c.ide ? true : false);
+      isParalyzed = (c.ip ? true : false);
+      power = c.p;
+      adeptsUsed = c.au;
+      investigatorTimeout = c.it;
+      if (c.inv != null)
+        {
+          hasInvestigator = true;
+          investigator = new Investigator(this, ui);
+          investigator.load(c.inv);
+        }
+      if (c.r != null)
+        {
+          isRitual = true;
+          ritualPoints = c.rp;
+          for (r in Static.rituals)
+            if (r.id == c.r)
+              ritual = r;
+        }
+      awareness = c.aw;
+      if (c.w != null)
+        {
+          var wlist:Array<Int> = c.w;
+          wars = [];
+          for (w in wlist)
+            wars.push(w == 1 ? true : false);
+        }
+    }
+
+
+// dump cult info for saving
+  public function save(): Dynamic
+    {
+      var obj:Dynamic = {
+        id: id,
+        iid: infoID,
+        dif: difficulty.level,
+        ia: (isAI ? 1 : 0),
+        ide: (isDead ? 1 : 0),
+        ip: (isParalyzed ? 1 : 0),
+        p: power,
+        or: (origin != null ? origin.id : 0),
+        au: adeptsUsed,
+        it: investigatorTimeout
+        };
+      if (hasInvestigator)
+        obj.inv = investigator.save();
+      if (isRitual)
+        {
+          obj.r = ritual.id; 
+          obj.rp = ritualPoints;
+        }
+      obj.aw = awareness;
+      var ww = [];
+      var savewars = false;
+      for (w in wars)
+        {
+          ww.push(w ? 1 : 0);
+          if (w)
+            savewars = true;
+        }
+      if (savewars)
+        obj.w = wars;
+
+      return obj;
     }
 
 
@@ -101,7 +176,6 @@ class Cult
 		    origin.powerGenerated[i] = 1;
 			powerMod[i] += 1;
 		  }
-      neophytes++;
 	  origin.setGenerator(true);
 
       origin.setVisible(this, true);
@@ -222,7 +296,10 @@ class Cult
       power[pwr] -= Game.willPowerCost;
 
       // chance of failure
-      if (100 * Math.random() < 30 * difficulty.investigatorWillpower)
+      var failChance = 30 * difficulty.investigatorWillpower;
+      if (investigator.name == "Randolph Carter") // wink-wink
+        failChance += 10;
+      if (100 * Math.random() < failChance)
         {
           if (!isAI)
             {
@@ -268,9 +345,23 @@ class Cult
 	}
 
 
+// cult can upgrade?
+  public function canUpgrade(level: Int):Bool
+    {
+      if (level < 2)
+        return (getNumFollowers(level) >= Game.upgradeCost &&
+          virgins >= level + 1);
+      else return
+        (priests >= Game.upgradeCost && virgins >= Game.numSummonVirgins &&
+         !isRitual);
+    }
+
+
 // upgrade nodes (fupgr)
   public function upgrade(level)
     {
+      if (!canUpgrade(level)) return; // cannot upgrade
+
       if ((level == 2 && virgins < Game.numSummonVirgins) ||
           (level < 2 && virgins < level + 1))
         {
@@ -759,7 +850,7 @@ class Cult
       return getNumFollowers(2);
     }
 
-  function getFullName()
+  function getFullName(): String
     {
       return UI.cultName(id, info);
     }

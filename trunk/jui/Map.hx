@@ -20,7 +20,7 @@ class Map
       screen.style.width = UI.mapWidth;
       screen.style.height = UI.mapHeight;
       screen.style.position = 'absolute';
-      screen.style.left = 220;
+      screen.style.left = 240;
       screen.style.top = 5;
       screen.style.overflow = 'hidden';
     }

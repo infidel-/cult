@@ -1,4 +1,5 @@
 // ui class for cult
+// js version
 
 import js.Lib;
 import js.Dom;
@@ -19,16 +20,21 @@ class UI
   // ui blocks
   public var status: Status; // status block
   public var mainMenu: MainMenu; // main menu block
+  public var loadMenu: LoadMenu; // load menu block
+  public var saveMenu: SaveMenu; // save menu block
   public var info: Info; // cult info block
   public var logWindow: Log; // log block
   public var alertWindow: Alert; // alert block
   public var debug: Debug; // debug menu block
   public var map: Map; // map block
+  public var config: Config; // configuration
+  public var logPanel: LogPanel; // log panel
 
 
   public function new(g)
     {
 	  game = g;
+      config = new Config();
 	}
 
 
@@ -36,6 +42,7 @@ class UI
   public function init()
     {
       logWindow = new Log(this, game);
+      logPanel = new LogPanel(this, game);
       alertWindow = new Alert(this, game);
       info = new Info(this, game);
       debug = new Debug(this, game);
@@ -43,7 +50,78 @@ class UI
       map = new Map(this, game); 
       music = new Music();
       mainMenu = new MainMenu(this, game);
+      loadMenu = new LoadMenu(this, game);
+      saveMenu = new SaveMenu(this, game);
       music.onRandom = status.updateTrack;
+
+      Lib.document.onkeyup = onKey;
+    }
+
+
+// on key press
+  function onKey(e: Dynamic)
+    {
+//      var key = (Lib.window.event) ? Lib.window.event.keyCode : event.keyCode;
+      var key = e.keyCode;
+//      trace(key);
+
+      if (loadMenu.isVisible) // load menu keys
+        loadMenu.onKey(e);
+
+      else if (saveMenu.isVisible) // save menu keys
+        saveMenu.onKey(e);
+
+      else if (mainMenu.isVisible) // main menu keys
+        mainMenu.onKey(e);
+        
+      else if (debug.isVisible) // debug menu keys
+        debug.onKey(e);
+
+      // end turn
+      else if (e.keyCode == 69) // E
+        status.onEndTurn(null);
+
+      // info
+      else if (e.keyCode == 73) // I
+        status.onInfo(null);
+
+      // log
+      else if (e.keyCode == 76) // L
+        status.onLog(null);
+
+      // debug
+      else if (e.keyCode == 68) // D
+        status.onDebug(null);
+
+      // close current window
+      else if (e.keyCode == 27 || // ESC
+               e.keyCode == 13 || // Enter
+               e.keyCode == 32) // Space
+        {
+          if (alertWindow.isVisible)
+            alertWindow.onClose(null);
+
+          else if (logWindow.isVisible)
+            logWindow.onClose(null);
+
+          else if (info.isVisible)
+            info.onClose(null);
+
+          // open main menu
+          else mainMenu.show();
+        }
+
+      // upgrade neophytes
+      else if (e.keyCode == 49) // 1
+        game.player.upgrade(0);
+
+      // upgrade adepts 
+      else if (e.keyCode == 50) // 2
+        game.player.upgrade(1);
+
+      // summon
+      else if (e.keyCode == 51) // 3
+        game.player.upgrade(2);
     }
 
 
@@ -125,7 +203,7 @@ class UI
 // show colored power name
   public static function powerName(i)
     {
-      return "<span style='color:" + Game.powerColors[i] + "'>" +
+      return "<span style='color:" + powerColors[i] + "'>" +
         Game.powerNames[i] + "</span>";
     }
 
@@ -148,7 +226,9 @@ class UI
 // add message to log
   public function log(s: String, ?show: Bool)
     {
-      logWindow.add(s, show);
+      logWindow.add(s, false);
+      if (show == true || show == null)
+        logPanel.add(s);
     }
 
 
@@ -156,6 +236,7 @@ class UI
   public function clearLog()
     {
       logWindow.clear();
+      logPanel.clear();
     }
 
 
@@ -178,27 +259,20 @@ class UI
     }
 
 
-// get a stored variable (cookie)
-  public inline function getVar(name: String)
-    {
-      return untyped getCookie(name);
-    }
-
-
-// get a stored variable (cookie)
-  public inline function setVar(name: String, val: String)
-    {
-      return untyped setCookie(name, val,
-        untyped __js__("new Date(2015, 0, 0, 0, 0, 0, 0)"));
-    }
-
-
 
 // =========================== ui vars ================================
 
+  public static var powerColors: Array<String> =
+    [ "#ff0000", "#00ffff", "#00ff00", "#ffff00" ];
+  public static var nodeColors: Array<String> =
+    [ "#005500", "#010955", "#560053", "#505000" ];
+  public static var lineColors: Array<String> =
+    [ "#55dd55", "#2727D7", "#E052CA", "#D8E151" ];
+
+
   public static var winWidth = 1024;
   public static var winHeight = 600;
-  public static var mapWidth = 800;
+  public static var mapWidth = 780;
   public static var mapHeight = 580;
   public static var tooltipWidth = 100;
   public static var tooltipHeight = 80;
@@ -207,4 +281,6 @@ class UI
   public static var nodeVisibility = 101;
   public static var colAwareness = "#ff9999";
   public static var colWillpower = "#bbbbbb";
+
+  public static var maxSaves:Int = 5; // max number of saves displayed
 }

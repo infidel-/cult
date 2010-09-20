@@ -8,12 +8,15 @@ class MainMenu
   var window: Dynamic; // window element
   var bg: Dynamic; // background element
   var close: Dynamic; // close button element
+  var saveButton: Dynamic; // save button element
+  public var isVisible: Bool;
 
 
   public function new(uivar: UI, gvar: Game)
     {
       ui = uivar;
       game = gvar;
+      isVisible = false;
 
       // main menu window
       window = Tools.window(
@@ -23,7 +26,7 @@ class MainMenu
           winW: UI.winWidth,
           winH: UI.winHeight,
           w: 420,
-          h: 200,
+          h: 280,
           z: 20
         });
 
@@ -59,8 +62,29 @@ class MainMenu
         func: onNewGame
         });
 
+      Tools.button({
+        id: 'loadGame',
+        text: "LOAD GAME",
+        w: 350,
+        h: 30,
+        x: 35,
+        y: 150,
+        container: window,
+        func: onLoadGame
+        });
+      saveButton = Tools.button({
+        id: 'saveGame',
+        text: "SAVE GAME",
+        w: 350,
+        h: 30,
+        x: 35,
+        y: 190,
+        container: window,
+        func: onSaveGame
+        });
+
       bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
-      close = Tools.closeButton(window, 160, 160, 'mainMenuClose');
+      close = Tools.closeButton(window, 160, 240, 'mainMenuClose');
 	  close.onclick = onClose;
     }
 
@@ -72,6 +96,25 @@ class MainMenu
       bg.style.visibility = 'visible';
       close.style.visibility = 
         (game.isFinished ? 'hidden' : 'visible');
+      saveButton.style.visibility = 
+        (game.isFinished ? 'hidden' : 'visible');
+      isVisible = true;
+    }
+
+
+// load game menu
+  function onLoadGame(event: Dynamic)
+    {
+      ui.loadMenu.show();
+      onClose(null);
+    }
+
+
+// save game menu
+  function onSaveGame(event: Dynamic)
+    {
+      ui.saveMenu.show();
+      onClose(null);
     }
 
 
@@ -85,19 +128,57 @@ class MainMenu
       else if (id == "newGameNormal")
         dif = 1;
       else dif = 2;
+      onNewGameReal(dif);
+    }
+
+
+// start for real
+  function onNewGameReal(dif: Int)
+    {
       UI.e("haxe:trace").innerHTML = "";
       game.restart(dif);
       onClose(null);
     }
 
 
+// key press
+  public function onKey(e: Dynamic)
+    {
+      // new game - easy
+      if (e.keyCode == 49) // 1
+        onNewGameReal(0);
+
+      // new game - normal
+      else if (e.keyCode == 50) // 2
+        onNewGameReal(1);
+
+      // new game - hard
+      else if (e.keyCode == 51) // 3
+        onNewGameReal(2);
+
+      // load game
+      else if (e.keyCode == 52) // 4
+        onLoadGame(null);
+
+      // save game
+      else if (e.keyCode == 53) // 5
+        onSaveGame(null);
+
+      // exit menu
+      else if (e.keyCode == 27 && !game.isFinished) // ESC
+        onClose(null);
+    }
+
+
 // hide main menu
   function onClose(event: Dynamic)
     {
-      if (game.isFinished)
-        return;
+//      if (game.isFinished)
+//        return;
       window.style.visibility = 'hidden';
       bg.style.visibility = 'hidden';
       close.style.visibility = 'hidden';
+      saveButton.style.visibility = 'hidden'; 
+      isVisible = false;
     }
 }

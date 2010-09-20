@@ -7,12 +7,14 @@ class Info
 
   public var window: Dynamic; // window element
   public var text: Dynamic; // text element
+  public var isVisible: Bool;
 
 
   public function new(uivar: UI, gvar: Game)
     {
       ui = uivar;
       game = gvar;
+      isVisible = false;
   
       // window
       window = Tools.window(
@@ -49,9 +51,10 @@ class Info
 
 
 // hide info
-  function onClose(event)
+  public function onClose(event)
     {
       window.style.visibility = 'hidden';
+      isVisible = false;
     }
 
 
@@ -88,7 +91,8 @@ class Info
           // investigator info
           if (p.hasInvestigator)
             {
-              s += "<span style='font-size: 12px; color: #999999'>Investigator: Level " +
+              s += "<span style='font-size: 12px; color: #999999'>Investigator <span style='color: white'>" +
+                p.investigator.name + "</span>: Level " +
                 (p.investigator.level + 1) +
                 ', Willpower ' + p.investigator.will + '</span>';
               if (Game.isDebug && p.investigator.isHidden)
@@ -156,6 +160,7 @@ class Info
 
       text.innerHTML = s;
       window.style.visibility = 'visible';
+      isVisible = true;
 
       for (i in 0...Game.numCults)
         {

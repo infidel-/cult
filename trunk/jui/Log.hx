@@ -7,6 +7,7 @@ class Log
 
   public var window: Dynamic; // window element
   public var text: Dynamic; // text element
+  public var isVisible: Bool;
 
   var logPrevTurn: Int; // number of previous turn
 
@@ -14,6 +15,7 @@ class Log
     {
       ui = uivar;
       game = gvar;
+      isVisible = false;
 
       // window
       window = Tools.window(
@@ -50,9 +52,10 @@ class Log
 
 
 // hide log
-  function onClose(event)
+  public function onClose(event)
     {
       window.style.visibility = 'hidden';
+      isVisible = false;
     }
 
 
@@ -84,5 +87,6 @@ class Log
     {
       text.scrollTop = 10000;
       window.style.visibility = 'visible';
+      isVisible = true;
     }
 }

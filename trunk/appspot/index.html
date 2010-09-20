@@ -1,0 +1,18 @@
+<html>
+<head>
+<link type="text/css" rel="stylesheet" href="/css/main.css" />
+</head>
+      
+<body>
+    <form action="/save.save" method="post">
+      <div>Owner: <input type=text name=owner></div>
+      <div>Name: <input type=text name=name></div>
+      <div>Version: <input type=text name=version></div>
+      <div>Content: <textarea name="content" rows="3" cols="60"></textarea></div>
+      <div><input type="submit" value="Save"></div>
+    </form>
+
+    <a href="{{ url }}">{{ url_linktext }}</a>
+
+</body>
+</html>

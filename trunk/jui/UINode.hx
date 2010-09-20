@@ -74,12 +74,17 @@ class UINode
         }
 
       if (node.owner != null)
-        s += "<span style='color:" + Game.cultColors[node.owner.id] + "'>" +
-          node.owner.name + "</span><br>";
-      if (node.owner != null && node.owner.origin == node)
-        s += "<span style='color:" + Game.cultColors[node.owner.id] +
-          "'>The Origin</span><br>";
-      s += node.name + "<br>";
+        {
+          s += "<span style='color:" + Game.cultColors[node.owner.id] + "'>" +
+            node.owner.name + "</span><br>";
+          if (node.owner.origin == node)
+            s += "<span style='color:" + Game.cultColors[node.owner.id] +
+              "'>The Origin</span><br>";
+          s += "<br>";
+        }
+
+      s += "<span style='color:white'>" + node.name + "</span><br>";
+      s += node.job + "<br>";
 
       if (node.owner != null)
         s += "<b>" + Game.followerNames[node.level] + 
@@ -92,10 +97,10 @@ class UINode
           for (i in 0...Game.numPowers)
             if (node.power[i] > 0)
 		      {
-                s += "<b style='color:" + Game.powerColors[i] + "'>" +
+                s += "<b style='color:" + UI.powerColors[i] + "'>" +
                   Game.powerNames[i] + "</b> " + node.power[i] + "<br>";
 			    marker.innerHTML = Game.powerShortNames[i];
-                marker.style.color = Game.powerColors[i];
+                marker.style.color = UI.powerColors[i];
 		      }
           if (node.owner == null || node.owner.isAI)
             s += "Chance of success: <span style='color:white'>" +
@@ -107,7 +112,7 @@ class UINode
         {
           marker.innerHTML = "" + (node.level + 1);
           marker.style.color = '#ffffff';
-          marker.style.background = Game.nodeColors[node.owner.id];
+          marker.style.background = UI.nodeColors[node.owner.id];
         }
   
 	  marker.style.border = '1px solid #777';
@@ -133,7 +138,7 @@ class UINode
 		  s += "<br>Generates:<br>";
 	      for (i in 0...Game.numPowers)
      	    if (node.powerGenerated[i] > 0)
-          	  s += "<b style='color:" + Game.powerColors[i] + "'>" +
+          	  s += "<b style='color:" + UI.powerColors[i] + "'>" +
                 Game.powerNames[i] + "</b> " +
 			    node.powerGenerated[i] + "<br>";
 		}
