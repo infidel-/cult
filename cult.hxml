@@ -1,2 +1,3 @@
 -main Game
+-cp ./jui/
 -js cult.js

@@ -4,12 +4,13 @@ class Node
 {
   var ui: UI;
   var game: Game;
-  var uiNode: UINode;
+  public var uiNode: UINode;
 
   public var id: Int;
   public var name: String;
-  public var power: Array<Dynamic>; // power to conquer: intimidation, persuasion, bribe
-  public var powerGenerated: Array<Dynamic>; // power generated each turn
+  public var job: String;
+  public var power: Array<Int>; // power to conquer: intimidation, persuasion, bribe
+  public var powerGenerated: Array<Int>; // power generated each turn
   public var x: Int;
   public var y: Int;
   public var centerX: Int;
@@ -21,8 +22,9 @@ class Node
   public var level: Int;
   public var owner: Cult;
 
-  public var lines: List<Line>;
-  public var links: List<Node>;
+  public var lines: List<Line>; // lines drawn to this node
+  public var links: List<Node>; // adjacent nodes buffer
+
 
   public function new(gvar, uivar, newx, newy, index: Int)
     {
@@ -41,7 +43,8 @@ class Node
       level = 0;
       owner = null;
 
-      name = names[Std.int(Math.random() * (names.length - 1))];
+      name = GenName.generate();
+      job = jobs[Std.int(Math.random() * (jobs.length - 1))];
       
 	  x = newx;
       y = newy;
@@ -49,6 +52,77 @@ class Node
       centerY = y + Math.round(UI.markerHeight / 2);
 
       uiNode = new UINode(game, ui, this);
+    }
+
+
+// load node info from json-object
+  public function load(n:Dynamic)
+    {
+      power = n.p;
+      if (n.l != null)
+        level = n.l;
+      if (n.vis != null) // visibility
+        {
+          var vis:Array<Int> = n.vis;
+          visibility = [];
+          var i = 0;
+          for (v in vis)
+            {
+              visibility.push(v == 1 ? true : false);
+              if (v == 1)
+                uiNode.setVisible(game.cults[i], true);
+              i++;
+            }
+        }
+
+      if (n.o != null)
+        {
+          owner = game.cults[n.o];
+          owner.nodes.add(this);
+        }
+
+      if (n.pg != null)
+        {
+          isGenerator = true;
+          powerGenerated = n.pg;
+          
+          // update power mod cache
+          if (owner != null)
+            for (i in 0...Game.numPowers)
+              owner.powerMod[i] += Math.round(powerGenerated[i]);
+        }
+    }
+
+
+// dump node info for saving (skip everything that's default)
+  public function save(): Dynamic
+    {
+      var obj:Dynamic = {
+        id: id,
+//        nm: name,
+//        j: job,
+        p: power,
+        x: x,
+        y: y,
+        };
+      if (owner != null)
+        obj.o = owner.id;
+      if (level > 0)
+        obj.l = level;
+      var vis = [];
+      var savevis = false;
+      for (v in visibility)
+        {
+          vis.push(v ? 1 : 0);
+          if (v)
+            savevis = true;
+        }
+      if (savevis)
+        obj.vis = vis;
+      if (isGenerator)
+        obj.pg = powerGenerated;
+
+      return obj;
     }
 
 
@@ -308,7 +382,7 @@ class Node
     }
 
 
-  static var names: Array<String> = 
+  static var jobs: Array<String> = 
     [
       "Government official",
       "Corporate worker",

@@ -6,6 +6,7 @@ class Investigator
   var ui: UI;
   var numTurn: Int;
 
+  public var name: String;
   public var will: Int; // willpower
   public var level: Int; // investigator level
   public var isHidden: Bool; // is hidden?
@@ -16,8 +17,31 @@ class Investigator
       this.ui = ui;
       level = 0;
       will = 1;
+      name = GenName.generate();
       numTurn = 0;
       isHidden = true;
+    }
+
+
+// load info
+  public function load(obj: Dynamic)
+    {
+      name = obj.n;
+      will = obj.w;
+      level = obj.l;
+      isHidden = (obj.h == 1 ? true : false);
+    }
+
+
+// save info
+  public function save(): Dynamic
+    {
+      return {
+        n: name,
+        w: will,
+        l: level,
+        h: (isHidden ? 1 : 0)
+        };
     }
 
 

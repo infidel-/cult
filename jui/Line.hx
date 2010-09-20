@@ -6,8 +6,8 @@ class Line
 {
   var screen: Dynamic;
 
-  public var startNode: Dynamic;
-  public var endNode: Dynamic;
+  public var startNode: Node;
+  public var endNode: Node;
   public var pixels: Array<Dynamic>;
   public var owner: Cult;
   public var isVisible: Bool;
@@ -21,8 +21,8 @@ class Line
 
 
 // make a new line on screen
-  public static function paint(map: Map, player,
-      startNode: Node, endNode: Node): Dynamic
+  public static function paint(map: Map, player: Cult,
+      startNode: Node, endNode: Node): Line
 	{
       var screen = map.screen;
 	  var line = new Line(screen);
@@ -51,7 +51,7 @@ class Line
 		  pixel.style.top = Math.round(y) + 'px';
 		  pixel.style.width = '2';
 		  pixel.style.height = '2';
-		  pixel.style.background = Game.lineColors[player.id];
+		  pixel.style.background = UI.lineColors[player.id];
           pixel.style.zIndex = 5;
           pixel.style.visibility = 'hidden';
 		  screen.appendChild(pixel);

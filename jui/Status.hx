@@ -74,7 +74,7 @@ class Status
 		    "; height: " + UI.markerHeight +
             "; font-size: 12px; " +
 		    "; background:#222; border:1px solid #777; color: " +
-            Game.powerColors[i] + ";'>" + 
+            UI.powerColors[i] + ";'>" + 
 		    "<center><b>" + Game.powerShortNames[i] +
 		    "</b></center></div>" +
 		  // name
@@ -96,7 +96,7 @@ class Status
 	      	  s += "<td><div id='status.convert" + i + ii + "' " +
 			    "style='cursor: pointer; width:12; height:12; " +
 		        "background:#222; border:1px solid #777; " +
-                "color:" + Game.powerColors[ii] + "; " +
+                "color:" + UI.powerColors[ii] + "; " +
 		    	"text-align:center; font-size: 10px; font-weight: bold; '>" +
 		        Game.powerShortNames[ii] + "</div>";
 
@@ -244,7 +244,7 @@ class Status
 
 
 // show log
-  function onLog(event: Dynamic)
+  public function onLog(event: Dynamic)
     {
       ui.logWindow.show();
     }
@@ -298,7 +298,7 @@ class Status
 
 
 // end turn button
-  function onEndTurn(event: Dynamic)
+  public function onEndTurn(event: Dynamic)
     {
       if (game.isFinished)
         return;
@@ -322,7 +322,7 @@ class Status
 
 
 // debug info button
-  function onDebug(event)
+  public function onDebug(event)
     {
       if (game.isFinished)
         return;
@@ -332,7 +332,7 @@ class Status
 
 
 // show info screen
-  function onInfo(event: Dynamic)
+  public function onInfo(event: Dynamic)
     {
       ui.info.show();
     }
@@ -437,15 +437,7 @@ class Status
       // upgrade buttons visibility
       for (i in 0...(Game.followerNames.length - 1))
           e("status.upgrade" + i).style.visibility =
-            ((game.player.getNumFollowers(i) >= Game.upgradeCost &&
-              game.player.virgins >= i + 1) ?
-             'visible' : 'hidden');
-
-      // summon button visibility
-      e("status.upgrade2").style.visibility = 
-        ((game.player.priests >= Game.upgradeCost &&
-          game.player.virgins >= Game.numSummonVirgins && !game.player.isRitual) ?
-          'visible' : 'hidden');
+            (game.player.canUpgrade(i) ? 'visible' : 'hidden');
     }
 
 
@@ -499,9 +491,9 @@ class Status
     "Your adepts can use resources to lower society awareness.";
   static var tipLowerWillpower =
     "Your adepts can use resources to lower willpower of an investigator.<br>Cost: ";
-  static var tipEndTurn = "Click to end current turn.";
-  static var tipInfo = "Click to view cults information.";
-  static var tipMainMenu = "Click to open main menu.";
-  static var tipLog = "Click to view message log.";
+  static var tipEndTurn = "Click to end current turn (or press <span style=\"color:white\">E</span>).";
+  static var tipInfo = "Click to view cults information (or press <span style=\"color:white\">I</span>).";
+  static var tipMainMenu = "Click to open main menu (or press <span style=\"color:white\">ESC</span>).";
+  static var tipLog = "Click to view message log (or press <span style=\"color:white\">L</span>).";
   static var tipAbout = "Click to go to About page.";
 }
