@@ -14,7 +14,7 @@ class MainPage(webapp.RequestHandler):
 
 application = webapp.WSGIApplication(
   [
-    ('/', MainPage),
+#    ('/', MainPage),
     ('/save.list', Save),
     ('/save.delete', Save),
     ('/save.load', Save),

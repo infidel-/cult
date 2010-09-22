@@ -121,7 +121,7 @@ class SaveMenu
         b.style.visibility = 'hidden';
 
       // load list of saved games
-      if (ui.config.get("owner") != '')
+      if (ui.config.get("owner") != '' && ui.config.get("owner") != null)
         {
           var req = new js.XMLHttpRequest();
           req.open("GET", "/save.list?owner=" +
