@@ -76,9 +76,9 @@ If the society awareness level of a cult is below 5%, investigators have a diffi
 
 Once an investigator has reached level 3, they can no longer be destroyed.  However, with a low society awareness level, the investigator may be fooled into thinking the cult is already almost destroyed and not work with the diligence they may otherwise bring to bear.
 
-= Miscellaneous information =
+== Miscellaneous information ==
 
-==Difficulty Settings==
+===Difficulty Settings===
 
 Before the start of each new game you can select a difficulty level.  Changing this level alters the following aspects of gameplay: 
 
@@ -96,11 +96,11 @@ In addition, on the Hard difficulty all generator nodes around the Origin of the
 
 The AI cults play with the opposite difficulty of the player. So, for example, if you choose the Hard difficulty level, the three AI cults operate under the rules of the Easy difficulty level. Be forewarned!
 
-== Save/Load ==
+=== Save/Load ===
 
 You can save and load your game at any point. The amount of saves is limited to 5 at the moment. You can also delete saved games you don't need. Before doing any of that you will have to enter a key that the games will be saved under. A key is something between a login and a password - if you know the key, you can load games on a different computer. After entering the key, press the Refresh button. You'll be able to see any games you might have saved under that key. Keep in mind that anyone knowing you key might be able to save, load or delete your saved games.
 
-==Keyboard shortcuts==
+===Keyboard shortcuts===
 
 The game allows using keyboard shortcuts to do most often used actions. Here is the complete list:
 
