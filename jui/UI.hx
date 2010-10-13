@@ -232,6 +232,14 @@ class UI
     }
 
 
+// add message to log (more info)
+  public function log2(type: String, obj: Dynamic, s: String)
+    {
+      logWindow.add(s, false);
+      logPanel.add(s, type, obj);
+    }
+
+
 // clear log
   public function clearLog()
     {

@@ -34,7 +34,7 @@ class Game
   public static var cultColors: Array<String> =
     [ "#00B400", "#2F43FD", "#B400AE", "#B4AE00" ];
 
-  public static var version = "v4pre1"; // game version
+  public static var version = "v4pre2"; // game version
   public static var followerLevels = 3; // number of follower levels
   public static var numPowers = 3; // number of basic powers
   public static var numCults = 4; // number of cults in game
@@ -274,6 +274,8 @@ class Game
           if (l[3] == 1)
             line.setVisible(true);
           lines.add(line);
+          startNode.lines.add(line);
+          endNode.lines.add(line);
         }
 
       difficultyLevel = save.dif;
@@ -319,6 +321,8 @@ class Game
 // on clicking end turn button
   public function endTurn()
     {
+      ui.logPanel.endTurn(); // darken older messages
+
       // clear node highlight
       for (n in nodes)
         if (n.isHighlighted)

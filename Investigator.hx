@@ -58,7 +58,7 @@ class Investigator
       // hidden for X turns after appearance
       if (isHidden && numTurn > cult.difficulty.investigatorTurnVisible)
         {
-          ui.log(cult.fullName + " has found out the investigator's location.");
+          ui.log2('cult', cult, cult.fullName + " has found out the investigator's location.");
           isHidden = false;
         }
       if (will >= 9)
@@ -96,7 +96,7 @@ class Investigator
         level = 2;
       
       if (level > oldLevel && !cult.isAI)
-        ui.log("The investigator of " + cult.fullName +
+        ui.log2('cult', cult, "The investigator of " + cult.fullName +
           " has gained level " + (level + 1) + ".");
     }
 
@@ -136,7 +136,7 @@ class Investigator
       if (node == null)
         return;
 
-      ui.log("The investigator revealed the " + cult.fullName + " follower.");
+      ui.log2('cult', cult, "The investigator revealed the " + cult.fullName + " follower.");
       node.removeOwner();
       if (node.visibility[0])
         node.setHighlighted(true);
