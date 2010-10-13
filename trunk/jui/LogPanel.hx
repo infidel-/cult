@@ -25,17 +25,41 @@ class LogPanel
       panel.style.height = (UI.mapHeight + 8);
       panel.style.left = 217;
       panel.style.top = 5;
-      panel.style.background = '#111';
+      panel.style.background = '#090909';
       Lib.document.body.appendChild(panel);
     }
 
 
+// darken older messages on end turn
+  public function endTurn()
+    {
+      for (e in list)
+        e.style.background = '#050505';
+    }
+
+
 // add item to log
-  public function add(text: String)
+  public function add(text: String, ?type: String, ?obj: Dynamic)
     {
       // clear log if too many items
       if (list.length >= 24)
         clear();
+
+      // choose symbol/color pair
+      var sym = '!';
+      var col = 'white';
+      if (type == 'cult') // cult-related message
+        {
+          var cult: Cult = obj;
+          col = UI.lineColors[cult.id]; 
+        }
+      else if (type == 'cults') // messages relating to 2 cults
+        {
+          var cult: Cult = obj.c1;
+          var cult2: Cult = obj.c2;
+          sym = "<span style='color:" + UI.lineColors[cult.id] + "'>!</span>" +
+            "<span style='color:" + UI.lineColors[cult2.id] + "'>!</span>";
+        }
 
       // create element
       var e = Lib.document.createElement("div");
@@ -45,14 +69,14 @@ class LogPanel
       e.style.height = '20';
       e.style.left = '0';
       e.style.top = '' + (list.length * 24);
-      e.style.background = '#222';
+      e.style.background = '#151515';
 	  e.style.border = '1px solid #999';
 	  e.style.cursor = 'pointer';
       e.style.fontSize = 15;
-      e.style.color = 'white';
+      e.style.color = col;
       e.style.fontWeight = 'bold';
       e.style.textAlign = 'center';
-      e.innerHTML = '!';
+      e.innerHTML = sym;
       panel.appendChild(e);
 
 	  e.onclick = onClick;

@@ -7,7 +7,7 @@ import logging
 
 class Save(webapp.RequestHandler):
     MaxSaves = 5 # max number of saves per user
-    MaxSize = 10000 # max size of save file
+    MaxSize = 15000 # max size of save file
 
     # get query
     def get(self):
@@ -104,7 +104,7 @@ class Save(webapp.RequestHandler):
             data.delete()
         
         # too big to be save
-        if (len(self.request.body) > 10000):
+        if (len(self.request.body) > self.MaxSize):
           logging.error("Length:" + str(len(self.request.body)))
           self.response.out.write("TooBig")
           return

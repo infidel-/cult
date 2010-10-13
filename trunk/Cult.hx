@@ -303,7 +303,7 @@ class Cult
         {
           if (!isAI)
             {
-              ui.alert("You have failed to shatter the will of the investigator.");
+              ui.msg("You have failed to shatter the will of the investigator.");
               ui.updateStatus();
             }
           return;
@@ -316,7 +316,7 @@ class Cult
         {
           investigator = null;
           hasInvestigator = false;
-          ui.log("The investigator of the " + fullName +
+          ui.log2('cult', this, "The investigator of the " + fullName +
             " has disappeared.");
 
           investigatorTimeout = 3;
@@ -430,7 +430,7 @@ class Cult
       
       // notify player
       if (this != game.player && priests >= 2)
-        ui.log(fullName + " has " + priests + " priests. Be careful.");
+        ui.log2('cult', this, fullName + " has " + priests + " priests. Be careful.");
 
       // cult un-paralyzed 
       if (isParalyzed && priests >= 1)
@@ -438,7 +438,7 @@ class Cult
           isParalyzed = false;
           origin = upNode;
           origin.update();
-          ui.log(fullName + " gains a priest and is no longer paralyzed.");
+          ui.log2('cult', this, fullName + " gains a priest and is no longer paralyzed.");
         }
     }
 
@@ -476,7 +476,7 @@ class Cult
 
       ui.alert(fullName + " has started the " + ritual.name + ".<br><br>" +
         Static.cults[id].summonStart);
-      ui.log(fullName + " has started the " + ritual.name + ".");
+      ui.log2('cult', this, fullName + " has started the " + ritual.name + ".");
       if (!isAI)
         ui.updateStatus();
     }
@@ -510,7 +510,7 @@ class Cult
           if (!isAI)
             {
               ui.alert("The stars were not properly aligned. The high priest goes insane.");
-              ui.log(fullName + " has failed to perform the " + 
+              ui.log2('cult', this, fullName + " has failed to perform the " + 
                 Static.rituals[0].name + ".");
               ui.updateStatus();
             }
@@ -519,7 +519,7 @@ class Cult
               ui.alert(fullName +
                 " has failed to perform the " + Static.rituals[0].name + ".<br><br>" +
                 info.summonFail);
-              ui.log(fullName + " has failed the " +
+              ui.log2('cult', this, fullName + " has failed the " +
                 Static.rituals[0].name + ".");
             }
           return;
@@ -527,7 +527,7 @@ class Cult
 
       game.isFinished = true;
       ui.finish(this, "summon");
-      ui.log("Game over.");
+      ui.log2('cult', this, "Game over.");
     }
 
 
@@ -541,7 +541,7 @@ class Cult
           investigatorTimeout == 0)
         {
           hasInvestigator = true;
-          ui.log("An investigator has found out about " + fullName + ".");
+          ui.log2('cult', this, "An investigator has found out about " + fullName + ".");
           investigator = new Investigator(this, ui);
 
           if (!isAI)
@@ -678,7 +678,8 @@ class Cult
       cult.wars[id] = true;
       wars[cult.id] = true;
 
-      ui.log(fullName + " has declared war against " + cult.fullName + ".");
+      ui.log2('cults', { c1: this, c2: cult },
+        fullName + " has declared war against " + cult.fullName + ".");
     }
 
 
@@ -691,7 +692,8 @@ class Cult
       cult.wars[id] = false;
       wars[cult.id] = false;
 
-      ui.log(fullName + " has made peace with " + cult.fullName + ".");
+      ui.log2('cults', { c1: this, c2: cult },
+        fullName + " has made peace with " + cult.fullName + ".");
     }
 
 
@@ -721,13 +723,13 @@ class Cult
 // lose origin
   public function loseOrigin()
     {
-      ui.log(fullName + " has lost its Origin.");
+      ui.log2('cult', this, fullName + " has lost its Origin.");
 
       // stop a ritual
       if (isRitual)
         {
           isRitual = false;
-          ui.log("The execution of " + ritual.name + " has been stopped.");
+          ui.log2('cult', this, "The execution of " + ritual.name + " has been stopped.");
         }
 
       // find a new origin, starting with priests
@@ -746,13 +748,13 @@ class Cult
       // if not found, cult is in big trouble
       if (!ok)
         {
-          ui.log("With no priests left " + fullName +
+          ui.log2('cult', this, "With no priests left " + fullName +
             " is completely paralyzed.");
           isParalyzed = true;
         }
       else
         {
-          ui.log("Another priest becomes the Origin of " +
+          ui.log2('cult', this, "Another priest becomes the Origin of " +
             fullName + ".");
           origin.update();
         }
@@ -784,7 +786,7 @@ class Cult
         return;
 
       // owner dead
-      ui.log(fullName + " has been destroyed, forgotten by time.");
+      ui.log2('cult', this, fullName + " has been destroyed, forgotten by time.");
 
       isDead = true;
 

@@ -324,7 +324,7 @@ class Status
 // debug info button
   public function onDebug(event)
     {
-      if (game.isFinished)
+      if (game.isFinished || !Game.isDebug)
         return;
 
       ui.debug.show();
@@ -435,9 +435,9 @@ class Status
             e("status.lowerWillpower" + i).style.visibility = 'visible';
 
       // upgrade buttons visibility
-      for (i in 0...(Game.followerNames.length - 1))
-          e("status.upgrade" + i).style.visibility =
-            (game.player.canUpgrade(i) ? 'visible' : 'hidden');
+      for (i in 0...Game.followerNames.length)
+        e("status.upgrade" + i).style.visibility =
+          (game.player.canUpgrade(i) ? 'visible' : 'hidden');
     }
 
 

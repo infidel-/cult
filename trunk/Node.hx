@@ -363,7 +363,7 @@ class Node
     {
       if (owner == null)
         return;
-   
+
       for (l in lines)
         {
           l.clear();
