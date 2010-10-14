@@ -34,14 +34,14 @@ class Game
   public static var cultColors: Array<String> =
     [ "#00B400", "#2F43FD", "#B400AE", "#B4AE00" ];
 
-  public static var version = "v4pre2"; // game version
+  public static var version = "v4pre3"; // game version
   public static var followerLevels = 3; // number of follower levels
   public static var numPowers = 3; // number of basic powers
   public static var numCults = 4; // number of cults in game
   public static var numSummonVirgins = 9; // number of virgins needed for summoning
   static var nodesCount = 100; // amount of nodes on map
   public static var upgradeCost = 3; // cost to upgrade follower
-  public static var isDebug = false; // debug mode (debug button + extended info window)
+  public static var isDebug = true; // debug mode (debug button + extended info window)
 
 
 // constructor
@@ -309,7 +309,7 @@ class Game
 
 
 // get node by id
-  function getNode(id: Int): Node
+  public function getNode(id: Int): Node
     {
       for (n in nodes)
         if (n.id == id)

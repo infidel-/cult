@@ -21,7 +21,7 @@ class Map
       screen.style.height = UI.mapHeight;
       screen.style.position = 'absolute';
       screen.style.left = 240;
-      screen.style.top = 5;
+      screen.style.top = 5 + UI.topHeight;
       screen.style.overflow = 'hidden';
     }
 

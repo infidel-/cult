@@ -14,6 +14,9 @@ class AI extends Cult
         difficulty = Static.difficulty[0];
       else
         difficulty = Static.difficulty[1];
+
+      isInfoKnown = difficulty.isInfoKnown;
+      isDiscovered = difficulty.isDiscovered;
     }
 
 
