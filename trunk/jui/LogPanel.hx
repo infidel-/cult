@@ -22,7 +22,7 @@ class LogPanel
       panel.id = 'logPanel';
       panel.style.position = 'absolute';
       panel.style.width = 20;
-      panel.style.height = (UI.mapHeight + 8);
+      panel.style.height = (UI.mapHeight + UI.topHeight + 8);
       panel.style.left = 217;
       panel.style.top = 5;
       panel.style.background = '#090909';
@@ -65,10 +65,10 @@ class LogPanel
       var e = Lib.document.createElement("div");
       e.id = 'log.id' + list.length;
       e.style.position = 'absolute';
-      e.style.width = '20';
-      e.style.height = '20';
+      e.style.width = '18';
+      e.style.height = '18';
       e.style.left = '0';
-      e.style.top = '' + (list.length * 24);
+      e.style.top = '' + (list.length * 22);
       e.style.background = '#151515';
 	  e.style.border = '1px solid #999';
 	  e.style.cursor = 'pointer';
@@ -91,7 +91,9 @@ class LogPanel
   public function onClick(event: Dynamic)
     {
       // remove item
-	  var e = Tools.getTarget(event);
+	  var e:Dynamic = Tools.getTarget(event);
+      if (e.parentNode != panel) // hack for !! items
+        e = e.parentNode;
       panel.removeChild(e);
       list.remove(e);
 

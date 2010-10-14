@@ -29,6 +29,8 @@ class UI
   public var map: Map; // map block
   public var config: Config; // configuration
   public var logPanel: LogPanel; // log panel
+  public var top: TopMenu; // top menu block
+  public var sects: SectsInfo; // sects info block
 
 
   public function new(g)
@@ -52,6 +54,8 @@ class UI
       mainMenu = new MainMenu(this, game);
       loadMenu = new LoadMenu(this, game);
       saveMenu = new SaveMenu(this, game);
+      top = new TopMenu(this, game);
+      sects = new SectsInfo(this, game);
       music.onRandom = status.updateTrack;
 
       Lib.document.onkeyup = onKey;
@@ -65,6 +69,10 @@ class UI
       var key = e.keyCode;
 //      trace(key);
 
+      var windowOpen = (loadMenu.isVisible || saveMenu.isVisible ||
+        mainMenu.isVisible || debug.isVisible || alertWindow.isVisible ||
+        logWindow.isVisible || info.isVisible || sects.isVisible);
+
       if (loadMenu.isVisible) // load menu keys
         loadMenu.onKey(e);
 
@@ -77,21 +85,8 @@ class UI
       else if (debug.isVisible) // debug menu keys
         debug.onKey(e);
 
-      // end turn
-      else if (e.keyCode == 69) // E
-        status.onEndTurn(null);
-
-      // info
-      else if (e.keyCode == 73) // I
-        status.onInfo(null);
-
-      // log
-      else if (e.keyCode == 76) // L
-        status.onLog(null);
-
-      // debug
-      else if (e.keyCode == 68) // D
-        status.onDebug(null);
+      else if (sects.isVisible) // sects keys
+        sects.onKey(e);
 
       // close current window
       else if (e.keyCode == 27 || // ESC
@@ -106,22 +101,49 @@ class UI
 
           else if (info.isVisible)
             info.onClose(null);
+          
+          else if (sects.isVisible)
+            sects.onClose(null);
 
           // open main menu
           else mainMenu.show();
         }
 
-      // upgrade neophytes
-      else if (e.keyCode == 49) // 1
-        game.player.upgrade(0);
 
-      // upgrade adepts 
-      else if (e.keyCode == 50) // 2
-        game.player.upgrade(1);
+      else if (!windowOpen) // these work only without windows open
+        {
+          // end turn
+          if (e.keyCode == 69) // E
+            status.onEndTurn(null);
 
-      // summon
-      else if (e.keyCode == 51) // 3
-        game.player.upgrade(2);
+          // info
+          else if (e.keyCode == 73) // I
+            status.onInfo(null);
+
+          // log
+          else if (e.keyCode == 76) // L
+            status.onLog(null);
+
+          // debug
+          else if (e.keyCode == 68) // D
+            status.onDebug(null);
+
+          // sects
+          else if (e.keyCode == 83) // S
+            top.onSects(null);
+
+          // upgrade neophytes
+          else if (e.keyCode == 49) // 1
+            game.player.upgrade(0);
+
+          // upgrade adepts 
+          else if (e.keyCode == 50) // 2
+            game.player.upgrade(1);
+
+          // summon
+          else if (e.keyCode == 51) // 3
+            game.player.upgrade(2);
+        }
     }
 
 
@@ -279,13 +301,15 @@ class UI
 
 
   public static var winWidth = 1024;
-  public static var winHeight = 600;
+  public static var winHeight = 630;
   public static var mapWidth = 780;
   public static var mapHeight = 580;
   public static var tooltipWidth = 100;
   public static var tooltipHeight = 80;
   public static var markerWidth = 15;
   public static var markerHeight = 15;
+  public static var topHeight = 30;
+
   public static var nodeVisibility = 101;
   public static var colAwareness = "#ff9999";
   public static var colWillpower = "#bbbbbb";

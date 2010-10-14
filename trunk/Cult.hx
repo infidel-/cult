@@ -1,5 +1,7 @@
 // cult (game player)
 
+import Static;
+
 class Cult
 {
   var game: Game;
@@ -8,9 +10,11 @@ class Cult
   public var infoID: Int;
   public var name: String;
   public var fullName(getFullName, null): String;
-  public var info: Dynamic;
-  public var difficulty: Dynamic; // difficulty info link
+  public var info: CultInfo;
+  public var difficulty: DifficultyInfo; // difficulty info link
 
+  public var isInfoKnown: Bool; // info known?
+  public var isDiscovered: Bool; // is met by player?
   public var isAI: Bool; // player or AI?
   public var isDead: Bool; // cult is dead
   public var isParalyzed: Bool; // cult is paralyzed
@@ -18,7 +22,7 @@ class Cult
 
   // ritual stuff
   public var isRitual: Bool; // cult is performing ritual?
-  public var ritual: Dynamic; // which ritual is in progress
+  public var ritual: RitualInfo; // which ritual is in progress
   public var ritualPoints: Int; // amount of ritual points needed
 
   public var awareness(default, setAwareness): Int; // public awareness
@@ -38,13 +42,14 @@ class Cult
 
   public var nodes: List<Node>; // cache of owned nodes
   public var adeptsUsed: Int; // how many adepts were used this turn
+  public var sects: List<Sect>; // list of controlled sects
 
   public var hasInvestigator: Bool; // does this cult has investigator on its back?
   public var investigator: Investigator; // investigator
   public var investigatorTimeout: Int; // timeout before next investigator may appear
 
 
-  public function new(gvar, uivar, id, infoID)
+  public function new(gvar: Game, uivar: UI, id: Int, infoID: Int)
     {
       game = gvar;
       ui = uivar;
@@ -53,12 +58,15 @@ class Cult
       this.info = Static.cults[infoID];
       this.name = this.info.name;
       this.isAI = false;
+      isDiscovered = true;
+      this.isInfoKnown = true;
       this.power = [0, 0, 0, 0];
       this.powerMod = [0, 0, 0, 0];
       this.wars = [false, false, false, false];
       this.adeptsUsed = 0;
       this.awareness = 0;
       this.nodes = new List<Node>();
+      this.sects = new List<Sect>();
       this.investigatorTimeout = 0;
       this.difficulty = game.difficulty;
     }
@@ -133,6 +141,15 @@ class Cult
         obj.w = wars;
 
       return obj;
+    }
+
+
+// create a new sect
+  public function createSect(node: Node)
+    {
+      var sect = new Sect(node, this);
+      sects.add(sect);
+      node.sect = sect;
     }
 
 
@@ -805,6 +822,14 @@ class Cult
           ui.finish(this, "wiped");
         }
       else checkVictory();
+    }
+
+
+// discover another cult
+  public function discover(cult: Cult)
+    {
+      cult.isDiscovered = true;
+      ui.log2('cult', this, fullName + " has discovered the existence of " + cult.fullName + ".");
     }
 
 

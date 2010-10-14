@@ -66,13 +66,16 @@ class Info
       var i = 0;
       for (p in game.cults)
         {
+          if (!p.isDiscovered) // cult not discovered yet
+            continue;
+
           // name
           s += '<div style="' + (i == 0 ? 'background:#333333' : 
             '') +
             '">';
           if (p.isDead)
             s += '<s>';
-          s += UI.cultName(i, p.info);
+          s += p.fullName; //UI.cultName(i, p.info);
           if (p.isDead)
             s += '</s> Forgotten';
 
@@ -89,7 +92,7 @@ class Info
           s += '<br>';
 
           // investigator info
-          if (p.hasInvestigator)
+          if (p.hasInvestigator && p.isInfoKnown)
             {
               s += "<span style='font-size: 12px; color: #999999'>Investigator <span style='color: white'>" +
                 p.investigator.name + "</span>: Level " +
@@ -99,7 +102,7 @@ class Info
                 s += " Hidden";
               s += '<br>';
             }
-          if (Game.isDebug && p.investigatorTimeout > 0)
+          if (Game.isDebug && p.investigatorTimeout > 0 && p.isInfoKnown)
             s += " Investigator timeout: " + p.investigatorTimeout + "<br>";
 
           // debug info
@@ -124,7 +127,7 @@ class Info
             }
 
           // ritual
-          if (p.isRitual == true)
+          if (p.isRitual && p.isInfoKnown)
             {
               var turns = Std.int(p.ritualPoints / p.priests);
               if (p.ritualPoints % p.priests > 0)
@@ -138,7 +141,7 @@ class Info
             }
 
           // followers
-          if (!p.isDead)
+          if (!p.isDead && p.isInfoKnown)
             {
               s += p.nodes.length + ' followers (' +
                 p.neophytes + ' neophytes, ' + p.adepts + ' adepts, ' +
@@ -149,11 +152,14 @@ class Info
             }
 
           // description
-          s += "<span id='info.toggleNote" + i +
-            "' style='height:10; width:10; font-size:12px; border: 1px solid #777'>+</span>";
-          s += '<br>';
-          s += "<span id='info.note" + i + "'>" + p.info.note + "</span>";
-          s += "<span id='info.longnote" + i + "'>" + p.info.longNote + "</span>";
+          if (p.isInfoKnown)
+            {
+              s += "<span id='info.toggleNote" + i +
+                "' style='height:10; width:10; font-size:12px; border: 1px solid #777'>+</span>";
+              s += '<br>';
+              s += "<span id='info.note" + i + "'>" + p.info.note + "</span>";
+              s += "<span id='info.longnote" + i + "'>" + p.info.longNote + "</span>";
+            }
           s += '</div><hr>';
           i++;
         }
@@ -164,6 +170,9 @@ class Info
 
       for (i in 0...Game.numCults)
         {
+          if (!game.cults[i].isInfoKnown)
+            continue;
+
           e("info.longnote" + i).style.display = 'none';
           var c:Dynamic = e("info.toggleNote" + i);
           c.style.cursor = 'pointer';

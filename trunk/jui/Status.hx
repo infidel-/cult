@@ -18,7 +18,7 @@ class Status
       status = UI.e("status");
       status.style.border = 'double white 4px';
       status.style.width = 191;
-      status.style.height = UI.mapHeight - 10;
+      status.style.height = UI.mapHeight + UI.topHeight - 10;
       status.style.position = 'absolute';
       status.style.left = 5;
       status.style.top = 5;

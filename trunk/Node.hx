@@ -21,6 +21,7 @@ class Node
   public var isHighlighted: Bool;
   public var level: Int;
   public var owner: Cult;
+  public var sect: Sect; // sect link
 
   public var lines: List<Line>; // lines drawn to this node
   public var links: List<Node>; // adjacent nodes buffer
@@ -213,6 +214,9 @@ class Node
       // do all cult stuff with losing a node
       if (prevOwner != null)
         prevOwner.loseNode(this, owner);
+
+      if (isVisible(game.player) && !owner.isDiscovered) // discover cult
+        game.player.discover(owner);
     }
 
 
@@ -254,12 +258,14 @@ class Node
       uiNode.setVisible(cult, v);
       if (!cult.isAI)
         {
-          if (Game.mapVisible)
+          if (Game.mapVisible) // debug: everything is visible
             v = true;
-          for (l in lines)
+          for (l in lines) // show lines leading to this node
             l.setVisible(v);
-          if (isHighlighted)
+          if (isHighlighted) // highlight node
             setHighlighted(v);
+          if (owner != null && !owner.isDiscovered) // discover cult
+            cult.discover(owner);
         }
     }
 

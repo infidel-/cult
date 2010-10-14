@@ -1,22 +1,29 @@
 // static stuff
 
+// difficulty info
+typedef DifficultyInfo = {
+  var level: Int;
+  var upgradeChance: Float; // higher value raises max upgrade chance
+  var awarenessResource: Float; // higher value lowers chance of getting resources each turn
+  var awarenessUpgrade: Float; // higher value lowers chance of upgrading followers
+  var awarenessGain: Float; // higher value lowers chance of gaining new followers
+  var investigatorChance: Float; // higher value raises chance of investigator appearing
+  var investigatorKill: Float; // higher value raises chance of investigator killing a follower
+  var investigatorWillpower: Float; // higher value lowers chance of success in lowering 
+      // investigator willpower using adepts
+  var investigatorTurnVisible: Int; // turn on which new investigator becomes visible
+  var investigatorGainWill: Float; // higher value raises chance of investigator gaining will
+  var maxAwareness: Int; // max awareness for AI to have without using adepts
+  var isInfoKnown: Bool; // is cult info for all cults known at start?
+  var isDiscovered: Bool; // are cults marked as discovered on start?
+  };
+
+
 class Static
 {
   // ======================= Difficulty settings =======================
-  public static var difficulty: Array<Dynamic> = 
+  public static var difficulty: Array<DifficultyInfo> = 
     [
-      // upgradeChance - higher value raises max upgrade chance
-      // awarenessResource - higher value lowers chance of getting resources each turn
-      // awarenessUpgrade - higher value lowers chance of upgrading followers
-      // awarenessGain - higher value lowers chance of gaining new followers
-      // investigatorChance - higher value raises chance of investigator appearing
-      // investigatorKill - higher value raises chance of investigator killing a follower
-      // investigatorWillpower - higher value lowers chance of success in lowering 
-      //   investigator willpower using adepts
-      // investigatorTurnVisible - turn on which new investigator becomes visible
-      // investigatorGainWill - higher value raises chance of investigator gaining will
-      // maxAwareness - max awareness for AI to have without using adepts
-
       // easy
       {
         level: 0,
@@ -30,6 +37,8 @@ class Static
         investigatorTurnVisible: 0,
         investigatorGainWill: 0.50,
         maxAwareness: 10,
+        isInfoKnown: true,
+        isDiscovered: true,
       },
 
       // normal
@@ -45,6 +54,8 @@ class Static
         investigatorTurnVisible: 1,
         investigatorGainWill: 0.75,
         maxAwareness: 5,
+        isInfoKnown: false,
+        isDiscovered: false,
       },
 
       // hard
@@ -60,13 +71,15 @@ class Static
         investigatorTurnVisible: 2,
         investigatorGainWill: 1.0,
         maxAwareness: 5,
+        isInfoKnown: false,
+        isDiscovered: false,
       },
     ];
 
 
   // ======================= Cults ============================
 
-  public static var cults: Array<Dynamic> =
+  public static var cults: Array<CultInfo> =
     [
       // your cult
       { name: "Cult of Elder God",
@@ -129,7 +142,7 @@ class Static
 
 // ======================== Rituals ==========================
 
-  public static var rituals: Array<Dynamic> =
+  public static var rituals: Array<RitualInfo> =
     [
       // the first one is reserved for ritual of summoning!
       {
@@ -139,4 +152,53 @@ class Static
         note: "Upon completion this cult will reign over the world unchallenged."
       }
     ];
+
+
+// ======================= Sect Tasks ============================
+
+  public static var sectTasks: Array<SectTaskInfo> =
+    [
+      {
+        id: 'gatherCultInfo',
+        name: 'Gather cult information',
+        target: 'cult'
+      },
+
+      {
+        id: 'searchInv',
+        name: 'Search for investigator',
+        target: 'investigator'
+      }
+    ];
 }
+
+
+// ritual info
+typedef RitualInfo =
+  {
+    var id: String; // string id of ritual (for use in code)
+    var name: String; // ritual name
+    var note: String; // ritual description
+    var points: Int; // points for completion
+  };
+
+// cult info
+typedef CultInfo =
+  {
+    var name: String; // cult name
+    var note: String; // short description
+    var longNote: String; // long description
+    var summonStart: String; // text on summoning start
+    var summonFinish: String; // text on summoning finish
+    var summonFail: String; // text on summoning failure
+  };
+
+
+// sect task info
+typedef SectTaskInfo =
+  {
+    var id: String; // task string id
+    var target: String; // task target (for ui)
+    var name: String; // task name
+  };
+
