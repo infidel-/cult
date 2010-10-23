@@ -66,8 +66,8 @@ class Info
       var i = 0;
       for (p in game.cults)
         {
-          if (!p.isDiscovered) // cult not discovered yet
-            continue;
+//          if (!p.isDiscovered) // cult not discovered yet
+//            continue;
 
           // name
           s += '<div style="' + (i == 0 ? 'background:#333333' : 
@@ -75,7 +75,7 @@ class Info
             '">';
           if (p.isDead)
             s += '<s>';
-          s += p.fullName; //UI.cultName(i, p.info);
+          s += (p.isDiscovered ? p.fullName : '?');
           if (p.isDead)
             s += '</s> Forgotten';
 
@@ -118,11 +118,16 @@ class Info
                 }
               s += "<span title='Awareness'>A: " + p.awareness + "%</span> ";
               s += "<span title='Chance of summoning'>ROS: " + p.getUpgradeChance(2) + "%</span> ";
-              s += "<span title='Chance of investigator appearing'>IC: " +
-                p.getInvestigatorChance() + "%</span> ";
+              if (!p.hasInvestigator)
+                s += "<span title='Chance of investigator appearing'>IAC: " +
+                  p.getInvestigatorChance() + "%</span> ";
               if (p.hasInvestigator)
-                s += "<span title='Chance of investigator reveal'>RC: " +
-                  p.investigator.getKillChance() + "%</span> ";
+                {
+                  s += "<span title='Chance of investigator reveal'>IRC: " +
+                    p.investigator.getKillChance() + "%</span> ";
+                  s += "<span title='Chance of investigator willpower raise'>IWC: " +
+                    p.investigator.getGainWillChance() + "%</span> ";
+                }
               s += "</span><br>";
             }
 
@@ -152,13 +157,15 @@ class Info
             }
 
           // description
-          if (p.isInfoKnown)
+//          if (p.isInfoKnown)
             {
               s += "<span id='info.toggleNote" + i +
                 "' style='height:10; width:10; font-size:12px; border: 1px solid #777'>+</span>";
               s += '<br>';
-              s += "<span id='info.note" + i + "'>" + p.info.note + "</span>";
-              s += "<span id='info.longnote" + i + "'>" + p.info.longNote + "</span>";
+              s += "<span id='info.note" + i + "'>" +
+                (p.isInfoKnown ? p.info.note : 'No information.') + "</span>";
+              s += "<span id='info.longnote" + i + "'>" +
+                (p.isInfoKnown ? p.info.longNote : 'No information.') + "</span>";
             }
           s += '</div><hr>';
           i++;
@@ -170,9 +177,12 @@ class Info
 
       for (i in 0...Game.numCults)
         {
-          if (!game.cults[i].isInfoKnown)
+/*        
+          if (!game.cults[i].isDiscovered || !game.cults[i].isInfoKnown)
             continue;
-
+          if (e("info.longnote" + i) == null)
+            continue;
+*/
           e("info.longnote" + i).style.display = 'none';
           var c:Dynamic = e("info.toggleNote" + i);
           c.style.cursor = 'pointer';

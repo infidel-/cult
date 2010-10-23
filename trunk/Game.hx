@@ -1,5 +1,6 @@
 // game class for Cult
 
+import Static;
 
 class Game
 {
@@ -12,7 +13,7 @@ class Game
   public var turns: Int; // turns passed
   public var isFinished: Bool; // game finished?
   public var difficultyLevel: Int; // game difficulty (0: easy, 1: normal, 2: hard)
-  public var difficulty: Dynamic; // link to difficulty info
+  public var difficulty: DifficultyInfo; // link to difficulty info
 
   // index of the last node/cult (for id generation)
   var lastNodeIndex: Int;
@@ -260,7 +261,7 @@ class Game
                 cc.origin = n;
             }
 
-      for (n in nodes)
+      for (n in nodes) // update node display
         n.update();
 
       // load lines
