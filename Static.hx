@@ -51,7 +51,7 @@ class Static
         investigatorChance: 1.0,
         investigatorKill: 1.0,
         investigatorWillpower: 1.0,
-        investigatorTurnVisible: 1,
+        investigatorTurnVisible: 10,
         investigatorGainWill: 0.75,
         maxAwareness: 5,
         isInfoKnown: false,
@@ -68,7 +68,7 @@ class Static
         investigatorChance: 1.25,
         investigatorKill: 1.25,
         investigatorWillpower: 1.25,
-        investigatorTurnVisible: 2,
+        investigatorTurnVisible: 2000,
         investigatorGainWill: 1.0,
         maxAwareness: 5,
         isInfoKnown: false,
@@ -152,24 +152,6 @@ class Static
         note: "Upon completion this cult will reign over the world unchallenged."
       }
     ];
-
-
-// ======================= Sect Tasks ============================
-
-  public static var sectTasks: Array<SectTaskInfo> =
-    [
-      {
-        id: 'gatherCultInfo',
-        name: 'Gather cult information',
-        target: 'cult'
-      },
-
-      {
-        id: 'searchInv',
-        name: 'Search for investigator',
-        target: 'investigator'
-      }
-    ];
 }
 
 
@@ -191,14 +173,5 @@ typedef CultInfo =
     var summonStart: String; // text on summoning start
     var summonFinish: String; // text on summoning finish
     var summonFail: String; // text on summoning failure
-  };
-
-
-// sect task info
-typedef SectTaskInfo =
-  {
-    var id: String; // task string id
-    var target: String; // task target (for ui)
-    var name: String; // task name
   };
 

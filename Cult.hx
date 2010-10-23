@@ -78,6 +78,8 @@ class Cult
       difficulty = Static.difficulty[c.dif];
       isDead = (c.ide ? true : false);
       isParalyzed = (c.ip ? true : false);
+      isDiscovered = (c.idi ? true : false);
+      isInfoKnown = (c.iin ? true : false);
       power = c.p;
       adeptsUsed = c.au;
       investigatorTimeout = c.it;
@@ -116,6 +118,8 @@ class Cult
         ia: (isAI ? 1 : 0),
         ide: (isDead ? 1 : 0),
         ip: (isParalyzed ? 1 : 0),
+        idi: (isDiscovered ? 1 : 0),
+        iin: (isInfoKnown ? 1 : 0),
         p: power,
         or: (origin != null ? origin.id : 0),
         au: adeptsUsed,
@@ -147,9 +151,10 @@ class Cult
 // create a new sect
   public function createSect(node: Node)
     {
-      var sect = new Sect(node, this);
+      var sect = new Sect(game, ui, node, this);
       sects.add(sect);
       node.sect = sect;
+      node.update();
     }
 
 
@@ -548,7 +553,7 @@ class Cult
     }
 
 
-// end of turn for this cult (fturn) - gain resources, finish rituals
+// start new turn for this cult (fturn) - gain resources, finish rituals, etc
   public function turn()
     {
       // if a cult has any adepts, each turn it has a 
@@ -600,6 +605,9 @@ class Cult
       // investigator acts
       if (hasInvestigator)
         investigator.turn();
+
+      for (s in sects) // sect tasks
+        s.turn();
     }
 
 

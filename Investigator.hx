@@ -61,7 +61,7 @@ class Investigator
           ui.log2('cult', cult, cult.fullName + " has found out the investigator's location.");
           isHidden = false;
         }
-      if (will >= 9)
+      if (will >= 9) // becomes hidden again on gaining enough willpower
         isHidden = true;
 
       numTurn++;
@@ -86,7 +86,7 @@ class Investigator
 // each turn I has a chance of gaining will
   function gainWill()
     {
-      if (100 * Math.random() > 70 * cult.difficulty.investigatorGainWill)
+      if (100 * Math.random() > getGainWillChance())
         return;
 
       var oldLevel = level;
@@ -143,13 +143,44 @@ class Investigator
     }
 
 
-// chance of killing follower
-  public function getKillChance()
+// chance of gaining willpower
+  public function getGainWillChance():Int
     {
+      var chance = Std.int(70 * cult.difficulty.investigatorGainWill);
+      for (sect in cult.sects) // decrease chance with each sect
+        if (sect.level == 0)
+          chance -= 1;
+        else if (sect.level == 1)
+          chance -= 2;
+        else if (sect.level == 2)
+          chance -= 5;
+      if (chance < 20)
+        chance = 20;
+  
+      return chance;
+    }
+
+
+// chance of killing follower
+  public function getKillChance():Int
+    {
+      var chance = 0;
       if (cult.awareness <= 5)
-        return Std.int(20 * cult.difficulty.investigatorKill);
+        chance = Std.int(20 * cult.difficulty.investigatorKill);
       else if (cult.awareness <= 10)
-        return Std.int(65 * cult.difficulty.investigatorKill);
-      else return Std.int(70 * cult.difficulty.investigatorKill);
+        chance = Std.int(65 * cult.difficulty.investigatorKill);
+      else chance = Std.int(70 * cult.difficulty.investigatorKill);
+
+      for (sect in cult.sects) // decrease chance with each sect
+        if (sect.level == 0)
+          chance -= 1;
+        else if (sect.level == 1)
+          chance -= 2;
+        else if (sect.level == 2)
+          chance -= 5;
+      if (chance < 5)
+        chance = 5;
+
+      return chance;
     }
 }

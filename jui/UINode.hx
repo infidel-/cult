@@ -86,31 +86,35 @@ class UINode
       s += "<span style='color:white'>" + node.name + "</span><br>";
       s += node.job + "<br>";
 
-      if (node.owner != null)
+      if (node.owner != null) // follower level
         s += "<b>" + Game.followerNames[node.level] + 
           "</b> <span style='color:white'>L" +
           (node.level + 1) + "</span><br>";
-//      if (node.owner == null || node.owner.isAI)
-        {
-          s += "<br>";
-          // amount of generated power
-          for (i in 0...Game.numPowers)
-            if (node.power[i] > 0)
-		      {
-                s += "<b style='color:" + UI.powerColors[i] + "'>" +
-                  Game.powerNames[i] + "</b> " + node.power[i] + "<br>";
-			    marker.innerHTML = Game.powerShortNames[i];
-                marker.style.color = UI.powerColors[i];
-		      }
-          if (node.owner == null || node.owner.isAI)
-            s += "Chance of success: <span style='color:white'>" +
-              game.player.getGainChance(node) + "%</span><br>";
-        }
+      s += "<br>";
 
+      if (node.sect != null) // sect name
+        s += node.sect.name + "<br><br>";
+
+
+      // amount of generated power
+      for (i in 0...Game.numPowers)
+        if (node.power[i] > 0)
+          {
+            s += "<b style='color:" + UI.powerColors[i] + "'>" +
+              Game.powerNames[i] + "</b> " + node.power[i] + "<br>";
+            marker.innerHTML = Game.powerShortNames[i];
+            marker.style.color = UI.powerColors[i];
+          }
+      if (node.owner == null || node.owner.isAI)
+        s += "Chance of success: <span style='color:white'>" +
+          game.player.getGainChance(node) + "%</span><br>";
+
+      // change marker style
 	  marker.style.background = '#111';
       if (node.owner != null)
         {
-          marker.innerHTML = "" + (node.level + 1);
+          marker.innerHTML =
+            (node.sect == null ? "" + (node.level + 1) : 'S');
           marker.style.color = '#ffffff';
           marker.style.background = UI.nodeColors[node.owner.id];
         }
