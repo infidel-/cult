@@ -7,20 +7,21 @@ class Node
   public var uiNode: UINode;
 
   public var id: Int;
-  public var name: String;
-  public var job: String;
+  public var name: String; // node name
+  public var job: String; // RL job
   public var power: Array<Int>; // power to conquer: intimidation, persuasion, bribe
   public var powerGenerated: Array<Int>; // power generated each turn
   public var x: Int;
   public var y: Int;
   public var centerX: Int;
   public var centerY: Int;
-  public var visibility: Array<Bool>;
-  public var isGenerator: Bool;
-  public var isProtected: Bool;
-  public var isHighlighted: Bool;
-  public var level: Int;
-  public var owner: Cult;
+  public var visibility: Array<Bool>; // node visibility to cults
+  public var isGenerator: Bool; // node is generating resources?
+  public var isProtected: Bool; // node protected by neighbours?
+  public var isHighlighted: Bool; // node highlighted in ui?
+  public var isKnown: Bool; // node info known to player?
+  public var level: Int; // node level
+  public var owner: Cult; // node owner
   public var sect: Sect; // sect link
 
   public var lines: List<Line>; // lines drawn to this node
@@ -39,6 +40,7 @@ class Node
         visibility.push(false);
 
 	  isGenerator = false;
+      isKnown = false;
       power = [0, 0, 0];
 	  powerGenerated = [0, 0, 0];
       level = 0;
@@ -187,6 +189,8 @@ class Node
         owner.nodes.remove(this);
       owner = c;
       owner.nodes.add(this);
+      if (owner != null && !owner.isAI)
+        isKnown = true;
       update();
 
       // show nearby nodes to new owner
