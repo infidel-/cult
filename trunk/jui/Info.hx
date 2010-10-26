@@ -79,8 +79,8 @@ class Info
           if (p.isDead)
             s += '</s> Forgotten';
 
-          // wars
-          if (!p.isDead)
+          // wars list
+          if (!p.isDead && p.isInfoKnown)
             {
               var w = '';
               for (i in 0...p.wars.length)

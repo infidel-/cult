@@ -257,6 +257,12 @@ class UI
 // add message to log (more info)
   public function log2(type: String, obj: Dynamic, s: String)
     {
+      if (type == 'cult') // no messages about unknown cults
+        {
+          var c:Cult = obj;
+          if (!c.isDiscovered)
+            return;
+        }
       logWindow.add(s, false);
       logPanel.add(s, type, obj);
     }
@@ -293,9 +299,9 @@ class UI
 // =========================== ui vars ================================
 
   public static var powerColors: Array<String> =
-    [ "#ff0000", "#00ffff", "#00ff00", "#ffff00" ];
+    [ "rgb(255, 0, 0)", "rgb(0, 255, 255)", "rgb(0, 255, 0)", "rgb(255, 255, 0)" ];
   public static var nodeColors: Array<String> =
-    [ "#005500", "#010955", "#560053", "#505000" ];
+    [ "rgb(0, 85, 0)", "rgb(1, 9, 85)", "rgb(86, 0, 83)", "rgb(80, 80, 0)" ];
   public static var lineColors: Array<String> =
     [ "#55dd55", "#2727D7", "#E052CA", "#D8E151" ];
 

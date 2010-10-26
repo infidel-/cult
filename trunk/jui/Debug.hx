@@ -62,6 +62,7 @@ class Debug
       addItem('Node vis toggle', onVis);
       addItem('Node near toggle', onNear);
       addItem('Give adepts', onGiveAdepts);
+      addItem('Give adepts', onGiveAdepts);
     }
 
 
@@ -186,6 +187,13 @@ class Debug
     {
       for (n in game.nodes)
         n.setVisible(game.player, true);
+
+      for (c in game.cults)
+        {
+          c.isInfoKnown = true;
+          for (n in c.nodes)
+            n.update();
+        }
    }
 
 

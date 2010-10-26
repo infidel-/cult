@@ -15,6 +15,7 @@ typedef DifficultyInfo = {
   var investigatorGainWill: Float; // higher value raises chance of investigator gaining will
   var maxAwareness: Int; // max awareness for AI to have without using adepts
   var isInfoKnown: Bool; // is cult info for all cults known at start?
+  var isOriginKnown: Bool; // is origin known for all cults at start?
   var isDiscovered: Bool; // are cults marked as discovered on start?
   };
 
@@ -38,6 +39,7 @@ class Static
         investigatorGainWill: 0.50,
         maxAwareness: 10,
         isInfoKnown: true,
+        isOriginKnown: true,
         isDiscovered: true,
       },
 
@@ -55,6 +57,7 @@ class Static
         investigatorGainWill: 0.75,
         maxAwareness: 5,
         isInfoKnown: false,
+        isOriginKnown: false,
         isDiscovered: false,
       },
 
@@ -72,6 +75,7 @@ class Static
         investigatorGainWill: 1.0,
         maxAwareness: 5,
         isInfoKnown: false,
+        isOriginKnown: false,
         isDiscovered: false,
       },
     ];

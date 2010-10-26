@@ -59,7 +59,7 @@ class Cult
       this.name = this.info.name;
       this.isAI = false;
       isDiscovered = true;
-      this.isInfoKnown = true;
+      isInfoKnown = true;
       this.power = [0, 0, 0, 0];
       this.powerMod = [0, 0, 0, 0];
       this.wars = [false, false, false, false];
@@ -187,6 +187,9 @@ class Cult
         }
 	  origin = game.nodes[index];
       origin.owner = this;
+      if (!isAI || game.difficulty.isOriginKnown)
+        origin.isKnown = true;
+
       nodes.add(origin);
       origin.update();
 //      origin.setOwner(this);
@@ -278,11 +281,12 @@ class Cult
     }
 
 
-// get gain chance
+// get gain chance (pl)
   public function getGainChance(node)
     {
       var ch = 0;
-      if (!node.isGenerator)
+
+      if (!node.isGenerator) // generators are harder to gain
         ch = 99 - Std.int(awareness * difficulty.awarenessGain);
       else ch = 99 - Std.int(awareness * 2 * difficulty.awarenessGain);
       if (ch < 1)
@@ -563,7 +567,8 @@ class Cult
           investigatorTimeout == 0)
         {
           hasInvestigator = true;
-          ui.log2('cult', this, "An investigator has found out about " + fullName + ".");
+          if (isInfoKnown)
+            ui.log2('cult', this, "An investigator has found out about " + fullName + ".");
           investigator = new Investigator(this, ui);
 
           if (!isAI)
@@ -630,6 +635,13 @@ class Cult
           if (!isAI)
             ui.alert("Cult is paralyzed without the Origin.");
           return "";
+        }
+
+      // player cannot gain AI nodes if cult info is not known
+      if (!isAI && node.owner != null && !node.owner.isInfoKnown)
+        {
+          ui.msg('Use sect to gather information first.');
+          return '';
         }
 
 	  if (node.owner == this)
@@ -703,8 +715,9 @@ class Cult
       cult.wars[id] = true;
       wars[cult.id] = true;
 
-      ui.log2('cults', { c1: this, c2: cult },
-        fullName + " has declared war against " + cult.fullName + ".");
+      if (this.isInfoKnown || cult.isInfoKnown)
+        ui.log2('cults', { c1: this, c2: cult },
+          fullName + " has declared war against " + cult.fullName + ".");
     }
 
 

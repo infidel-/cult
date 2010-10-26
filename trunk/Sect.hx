@@ -92,6 +92,10 @@ class Sect
 
       if (!cult.isAI)
         ui.log2('cult', cult, 'Task completed: Information about ' + c.fullName + ' gathered.');
+
+      for (n in c.nodes)
+        if (n.isVisible(c))
+          n.update();
     }
 
 
@@ -153,6 +157,10 @@ class Sect
         isInfinite: false,
         points: 30,
       },
+
+  // find cult origin - search through visible!
+  // find cult generators - search through visible!
+  // ? find cult follower levels - search through visible
 
       {
         id: 'searchInv',
