@@ -62,6 +62,11 @@ class Tools
       params.container.appendChild(b);
       if (params.func != null)
         b.onclick = params.func;
+      if (params.title != null)
+        {
+          b.title = params.title;
+          new JQuery("#" + params.id).tooltip({ delay: 0 });
+        }
       return b;
     }
 

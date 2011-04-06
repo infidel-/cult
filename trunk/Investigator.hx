@@ -56,7 +56,10 @@ class Investigator
         }
 
       // hidden for X turns after appearance
-      if (isHidden && numTurn > cult.difficulty.investigatorTurnVisible)
+      var turnVisible = cult.difficulty.investigatorTurnVisible;
+      if (cult.isAI && turnVisible > 0) // AI always find out on the 2rd turn
+        turnVisible = 2;
+      if (isHidden && numTurn > turnVisible)
         {
           ui.log2('cult', cult, cult.fullName + " has found out the investigator's location.");
           isHidden = false;

@@ -70,9 +70,7 @@ class Sect
       // call task finish handler
       var method = Reflect.field(this, task.id);
       if (method != null)
-        Reflect.callMethod(this, method, []);
-//      if (task.id == 'gatherCultInfo')
-//        gatherCultInfo();
+        Reflect.callMethod(this, method, [ taskPoints ]);
 
       // clean task on finish
       if (!task.isInfinite)
@@ -85,7 +83,7 @@ class Sect
 
 
 // act - gather cult information
-  function gatherCultInfo()
+  function gatherCultInfo(points: Int)
     {
       var c:Cult = taskTarget;
       c.isInfoKnown = true;
@@ -99,8 +97,28 @@ class Sect
     }
 
 
+// act - gather visible node information
+  function gatherNodeInfo(points: Int)
+    {
+      var c:Cult = taskTarget;
+
+      var cnt = 0;
+      for (n in c.nodes)
+        if (n.isVisible(cult) && !n.isKnown)
+          {
+            cnt += 10; // 10 points per node
+            if (cnt >= points)
+              break;
+
+            n.isKnown = true;
+            n.update();
+
+          }
+    }
+
+
 // act - search for investigator
-  function searchInv()
+  function searchInv(points: Int)
     {
       if (cult.investigator == null || !cult.investigator.isHidden)
         return;
@@ -158,9 +176,15 @@ class Sect
         points: 30,
       },
 
+      {
+        id: 'gatherNodeInfo',
+        name: 'Gather node information',
+        target: 'cult',
+        isInfinite: true,
+        points: 0,
+      },
   // find cult origin - search through visible!
   // find cult generators - search through visible!
-  // ? find cult follower levels - search through visible
 
       {
         id: 'searchInv',

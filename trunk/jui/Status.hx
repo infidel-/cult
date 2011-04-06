@@ -138,11 +138,6 @@ class Status
       // buttons
       s += "<span title='" + tipEndTurn +
         "' id='status.endTurn' class=button>END TURN</span> ";
-	  s += "<span title='" + tipInfo +
-        "' id='status.info' class=button>INFO</span> ";
-      s += "<span class=button title='" + tipLog + "' id='status.log'>LOG</span> ";
-      if (Game.isDebug)
-        s += "<span class=button width=10 height=10 id='status.debug'>D</span> ";
       s += "</center>";
 
       // music player
@@ -159,9 +154,7 @@ class Status
 
       // buttons 2
       s += "<center style='padding-top:8px;'><span class=button title='" + tipMainMenu +
-        "' id='status.mainMenu'>MAIN MENU</span>&nbsp;&nbsp;";
-      s += "<span class=button title='" + tipAbout +
-        "' id='status.about'>ABOUT</span></center>";
+        "' id='status.mainMenu'>MAIN MENU</span></center>";
       
       status.innerHTML = s;
 
@@ -198,12 +191,7 @@ class Status
             }
         }
 	  e("status.endTurn").onclick = onEndTurn;
-	  e("status.info").onclick = onInfo;
-	  e("status.log").onclick = onLog;
 	  e("status.mainMenu").onclick = onMainMenu;
-	  e("status.about").onclick = onAbout;
-      if (Game.isDebug)
-        e("status.debug").onclick = onDebug;
       e("status.play").onclick = onPlay;
       e("status.pause").onclick = onPause;
       e("status.stop").onclick = onStop;
@@ -240,13 +228,6 @@ class Status
   public function onTrack(event)
     {
       Lib.window.open(ui.music.getPage(), '');
-    }
-
-
-// show log
-  public function onLog(event: Dynamic)
-    {
-      ui.logWindow.show();
     }
 
 
@@ -311,30 +292,6 @@ class Status
   function onMainMenu(event: Dynamic)
     {
       ui.mainMenu.show();
-    }
-
-
-// about game button
-  function onAbout(event: Dynamic)
-    {
-      Lib.window.open("http://code.google.com/p/cult/wiki/About"); 
-    }
-
-
-// debug info button
-  public function onDebug(event)
-    {
-      if (game.isFinished || !Game.isDebug)
-        return;
-
-      ui.debug.show();
-    }
-
-
-// show info screen
-  public function onInfo(event: Dynamic)
-    {
-      ui.info.show();
     }
 
 
@@ -492,8 +449,5 @@ class Status
   static var tipLowerWillpower =
     "Your adepts can use resources to lower willpower of an investigator.<br>Cost: ";
   static var tipEndTurn = "Click to end current turn (or press <span style=\"color:white\">E</span>).";
-  static var tipInfo = "Click to view cults information (or press <span style=\"color:white\">I</span>).";
   static var tipMainMenu = "Click to open main menu (or press <span style=\"color:white\">ESC</span>).";
-  static var tipLog = "Click to view message log (or press <span style=\"color:white\">L</span>).";
-  static var tipAbout = "Click to go to About page.";
 }

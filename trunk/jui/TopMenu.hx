@@ -26,22 +26,104 @@ class TopMenu
       Lib.document.body.appendChild(panel);
 
       Tools.button({
-        id: 'sects',
-        text: "SECTS",
+        id: 'cults',
+        text: "CULTS",
         w: 70,
         h: buttonHeight,
         x: 20,
         y: 2,
         fontSize: 16,
         container: panel,
+        title: "Click to view cults information (or press <span style=\"color:white\">C</span>).",
+        func: onCults
+        });
+
+      Tools.button({
+        id: 'sects',
+        text: "SECTS",
+        w: 70,
+        h: buttonHeight,
+        x: 110,
+        y: 2,
+        fontSize: 16,
+        container: panel,
+        title: "Click to view sects of your cult (or press <span style=\"color:white\">S</span>).",
         func: onSects
         });
+
+      Tools.button({
+        id: 'log',
+        text: "LOG",
+        w: 70,
+        h: buttonHeight,
+        x: 200,
+        y: 2,
+        fontSize: 16,
+        container: panel,
+        title: "Click to view message log (or press <span style=\"color:white\">L</span>).",
+        func: onLog
+        });
+
+      if (Game.isDebug)
+        Tools.button({
+          id: 'debug',
+          text: "DEBUG",
+          w: 70,
+          h: buttonHeight,
+          x: 290,
+          y: 2,
+          fontSize: 16,
+          container: panel,
+          title: "Click to open debug menu (or press <span style=\"color:white\">D</span>).",
+          func: onDebug
+          });
+  
+      Tools.button({
+        id: 'about',
+        text: "ABOUT",
+        w: 70,
+        h: buttonHeight,
+        x: 700,
+        y: 2,
+        fontSize: 16,
+        container: panel,
+        title: "Click to go to About page.",
+        func: onAbout
+        });
+    }
+
+
+  public function onCults(event: Dynamic)
+    {
+      ui.info.show();
     }
 
 
   public function onSects(e: Dynamic)
     {
       ui.sects.show();
+    }
+
+
+  public function onLog(event: Dynamic)
+    {
+      ui.logWindow.show();
+    }
+
+
+  public function onDebug(event)
+    {
+      if (game.isFinished || !Game.isDebug)
+        return;
+
+      ui.debug.show();
+    }
+
+
+// about game button
+  function onAbout(event: Dynamic)
+    {
+      Lib.window.open("http://code.google.com/p/cult/wiki/About"); 
     }
 
 
