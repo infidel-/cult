@@ -35,7 +35,7 @@ class Game
   public static var cultColors: Array<String> =
     [ "#00B400", "#2F43FD", "#B400AE", "#B4AE00" ];
 
-  public static var version = "v4pre3"; // game version
+  public static var version = "v4pre2"; // game version
   public static var followerLevels = 3; // number of follower levels
   public static var numPowers = 3; // number of basic powers
   public static var numCults = 4; // number of cults in game
@@ -224,6 +224,10 @@ class Game
       this.nodes = new Array<Node>();
       this.cults = new Array<Cult>();
 
+      difficultyLevel = save.dif;
+      difficulty = Static.difficulty[difficultyLevel];
+      turns = save.turns;
+
       // load cults
       var savecults:Array<Dynamic> = save.cults;
       for (c in savecults)
@@ -249,6 +253,8 @@ class Game
           var node = new Node(this, ui, n.x, n.y, n.id);
           node.load(n);
           nodes.push(node);
+          if (node.owner == player)
+            node.isKnown = true;
         }
       updateLinks(); // update adjacent node links
 
@@ -278,10 +284,6 @@ class Game
           startNode.lines.add(line);
           endNode.lines.add(line);
         }
-
-      difficultyLevel = save.dif;
-      difficulty = Static.difficulty[difficultyLevel];
-      turns = save.turns;
 
       ui.updateStatus();
     }

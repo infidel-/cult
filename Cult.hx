@@ -289,6 +289,15 @@ class Cult
       if (!node.isGenerator) // generators are harder to gain
         ch = 99 - Std.int(awareness * difficulty.awarenessGain);
       else ch = 99 - Std.int(awareness * 2 * difficulty.awarenessGain);
+
+      // player penalty if cult info is not known
+      if (!isAI && node.owner != null && !node.owner.isInfoKnown)
+        ch -= 20;
+
+      // player penalty if node info is not known
+      if (!isAI && node.owner != null && !node.isKnown)
+        ch -= 10;
+
       if (ch < 1)
         ch = 1;
       return ch;
@@ -635,13 +644,6 @@ class Cult
           if (!isAI)
             ui.alert("Cult is paralyzed without the Origin.");
           return "";
-        }
-
-      // player cannot gain AI nodes if cult info is not known
-      if (!isAI && node.owner != null && !node.owner.isInfoKnown)
-        {
-          ui.msg('Use sect to gather information first.');
-          return '';
         }
 
 	  if (node.owner == this)

@@ -77,7 +77,7 @@ class UINode
           sym = "" + (node.level + 1);
           if (node.sect != null)
             sym = 'S';
-          if (node.owner != null && (!node.owner.isInfoKnown || !node.isKnown))
+          if (node.owner != null && !node.isKnown)
             sym = '?';
           col = 'rgb(255, 255, 255)';
           bg = UI.nodeColors[node.owner.id];
@@ -91,7 +91,7 @@ class UINode
           var type = 'solid';
 
           if (node.isProtected)
-            bcol = '(255, 255, 255)';
+            bcol = 'rgb(255, 255, 255)';
           for (p in game.cults)
             if (p.origin == node && !p.isDead && node.isKnown)
               {
@@ -137,6 +137,9 @@ class UINode
           s += "Node " + node.id + "<br>";
           for (n in node.links)
             s += n.id + "<br>";
+          if (node.isProtected)
+            s += "Protected<br>";
+          else s += "Unprotected<br>";
         }
 
       if (Game.debugVis)
@@ -146,10 +149,14 @@ class UINode
             s += node.visibility[i] + "<br>";
         }
 
-      if (node.owner != null && !node.owner.isInfoKnown)
+      if (node.owner != null && !node.owner.isInfoKnown && !node.isKnown)
         {
-          s += 'Use sect to gather information.';
+          s += 'Use sect to gather cult or node information.<br>';
+          if (node.owner == null || node.owner.isAI)
+            s += "<br>Chance of success: <span style='color:white'>" +
+              game.player.getGainChance(node) + "%</span><br>";
           marker.title = s;
+          new JQuery("#map\\.node" + node.id).tooltip({ delay: 0 });
           return;
         }
 
@@ -174,7 +181,7 @@ class UINode
       s += "<br>";
 
       if (node.sect != null) // sect name
-        s += node.sect.name + "<br><br>";
+        s += 'Leader of ' + node.sect.name + "<br><br>";
 
       // amount of power to conquer
       if (node.owner == null || node.isKnown)

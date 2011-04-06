@@ -116,17 +116,17 @@ class UI
           if (e.keyCode == 69) // E
             status.onEndTurn(null);
 
-          // info
-          else if (e.keyCode == 73) // I
-            status.onInfo(null);
+          // cults
+          else if (e.keyCode == 67) // C
+            top.onCults(null);
 
           // log
           else if (e.keyCode == 76) // L
-            status.onLog(null);
+            top.onLog(null);
 
           // debug
           else if (e.keyCode == 68) // D
-            status.onDebug(null);
+            top.onDebug(null);
 
           // sects
           else if (e.keyCode == 83) // S

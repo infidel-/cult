@@ -208,7 +208,7 @@ class SectsInfo
       s += '<br>';
       if (sect.task != null)
         {
-          if (sect.task.id == 'gatherCultInfo')
+          if (sect.task.target == 'cult')
             s += 'Target: ' + cast(sect.taskTarget, Cult).fullName + '<br>';
         }
       s += '<br>';
@@ -249,6 +249,8 @@ class SectsInfo
                   b2.style.border = '1px solid #777';
                   b2.style.cursor = 'pointer';
                   b2.style.marginLeft = '10px';
+                  b2.style.fontSize = '11px';
+                  b2.style.fontWeight = 'bold';
                   b2.onclick = onTaskSelect;
                   b2.innerHTML = '+';
                   
