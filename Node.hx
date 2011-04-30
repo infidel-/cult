@@ -39,22 +39,31 @@ class Node
       for (i in 0...Game.numCults)
         visibility.push(false);
 
+      owner = null;
+
+	  x = newx;
+      y = newy;
+      centerX = x + Math.round(UI.markerWidth / 2);
+      centerY = y + Math.round(UI.markerHeight / 2);
+      generateAttributes();
+
+      uiNode = new UINode(game, ui, this);
+    }
+
+
+// generate new attributes
+  public function generateAttributes()
+    {
+      name = GenName.generate();
+      job = jobs[Std.int(Math.random() * (jobs.length - 1))];
+     
 	  isGenerator = false;
       isKnown = false;
       power = [0, 0, 0];
 	  powerGenerated = [0, 0, 0];
       level = 0;
-      owner = null;
-
-      name = GenName.generate();
-      job = jobs[Std.int(Math.random() * (jobs.length - 1))];
-      
-	  x = newx;
-      y = newy;
-      centerX = x + Math.round(UI.markerWidth / 2);
-      centerY = y + Math.round(UI.markerHeight / 2);
-
-      uiNode = new UINode(game, ui, this);
+	  var index: Int = Math.round((Game.numPowers - 1) * Math.random());
+	  power[index] = 1;
     }
 
 

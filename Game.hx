@@ -200,8 +200,6 @@ class Game
 
       // node attributes
       var node = new Node(this, ui, x, y, lastNodeIndex++);
-	  var index: Int = Math.round((numPowers - 1) * Math.random());
-	  node.power[index] = 1;
 
       if (mapVisible)
         node.setVisible(player, true);

@@ -23,7 +23,7 @@ class Cult
   // ritual stuff
   public var isRitual: Bool; // cult is performing ritual?
   public var ritual: RitualInfo; // which ritual is in progress
-  public var ritualPoints: Int; // amount of ritual points needed
+  public var ritualPoints: Int; // amount of ritual points left 
 
   public var awareness(default, setAwareness): Int; // public awareness
 
@@ -148,12 +148,32 @@ class Cult
     }
 
 
+// max number of sects
+  public inline function getMaxSects(): Int
+    {
+      return Std.int(nodes.length / 4);
+    }
+
+
 // create a new sect
   public function createSect(node: Node)
     {
+      if (sects.length >= getMaxSects())
+        return;
+
       var sect = new Sect(game, ui, node, this);
       sects.add(sect);
       node.sect = sect;
+      node.update();
+    }
+
+
+// remove a sect
+  public function removeSect(node: Node)
+    {
+      ui.log2('cult', this, "Sect " + node.sect.name + " has been destroyed without leadership.");
+      sects.remove(node.sect);
+      node.sect = null;
       node.update();
     }
 
@@ -694,6 +714,10 @@ class Cult
       if (node.level > 0)
         node.level--;
 
+      // lose sect
+      if (node.sect != null)
+        node.owner.removeSect(node);
+
       // save prev owner
       node.setOwner(this);
 
@@ -807,7 +831,7 @@ class Cult
       // check for finish
       var ok = true;
       for (p in game.cults)
-        if (p != this && !p.isDead)
+        if (p != this && !p.isDead && !p.isParalyzed)
           ok = false;
 
       // there are active cults left
@@ -825,7 +849,6 @@ class Cult
       if (this.nodes.length > 0 || isDead)
         return;
 
-      // owner dead
       ui.log2('cult', this, fullName + " has been destroyed, forgotten by time.");
 
       isDead = true;
@@ -837,6 +860,11 @@ class Cult
         wars[i] = false;
       hasInvestigator = false;
       investigator = null;
+
+      // clean tasks on that cult
+      for (s in game.player.sects)
+        if (s.task.target == 'cult' && s.taskTarget == this)
+          s.clearTask();
 
       // player cult is dead
       if (!isAI)

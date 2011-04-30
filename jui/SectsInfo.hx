@@ -91,10 +91,12 @@ class SectsInfo
 
 
 // helper: add list entry
-  function listEntry(name: String, nodeid: Int, isMarked:Bool)
+  function listEntry(name: String, nodeid: Int, isMarked:Bool, isSelected: Bool)
     {
       var el = create(list, 'span');
       el.style.cursor = 'pointer';
+      if (isSelected)
+        el.style.backgroundColor = '#555555';
       el.innerHTML = (isMarked ? '! ' : '') + name;
       el.onclick = onClick;
       untyped el.nodeID = nodeid;
@@ -120,12 +122,13 @@ class SectsInfo
       list.innerHTML = '';
 
       var el = create(list, 'span');
-      el.innerHTML = '<center><u>Sects</u></center>';
+      el.innerHTML = '<center><u>Sects (' + game.player.sects.length + '/' +
+        game.player.getMaxSects() + ')</u></center>';
 
       // list of sects
       for (sect in game.player.sects)
         listEntry(sect.name, sect.leader.id, 
-          (sect.task != null));
+          (sect.task != null), (selectedNodeID == sect.leader.id));
 
       // list of adepts
       var el = create(list, 'span');
@@ -135,7 +138,7 @@ class SectsInfo
           if (n.level != 1 || n.sect != null)
             continue;
   
-          listEntry(n.name, n.id, false);
+          listEntry(n.name, n.id, false, (selectedNodeID == n.id));
         }
 
       // list of neophytes
@@ -146,7 +149,7 @@ class SectsInfo
           if (n.level != 0 || n.sect != null)
             continue;
 
-          listEntry(n.name, n.id, false);
+          listEntry(n.name, n.id, false, (selectedNodeID == n.id));
         }
 
       text.innerHTML = '<center>Select a follower or a sect</center>';
@@ -195,6 +198,7 @@ class SectsInfo
       s += 'Leader: ' + sect.leader.name + '<br>';
       s += 'Level: ' + (sect.level + 1) + '<br>';
       s += 'Size: ' + sect.size + '<br>';
+      s += 'Growth rate: ' + sect.getGrowth() + '<br>';
       s += '<br>';
       s += 'Current Task: ';
       if (sect.task == null)
@@ -241,7 +245,7 @@ class SectsInfo
                   if (c == game.player || !c.isDiscovered)
                     continue;
 
-                  if (t.id == 'gatherCultInfo' && c.isInfoKnown)
+                  if (t.id == 'cultGeneralInfo' && c.isInfoKnown)
                     continue;
 
                   var b2 = create(text, 'span');
@@ -286,6 +290,9 @@ class SectsInfo
         Game.followerNames[node.level];
       text.innerHTML = s;
 
+      if (game.player.sects.length >= game.player.getMaxSects())
+        return;
+
       var but = Tools.button({
         id: 'createSect',
         text: "CREATE SECT",
@@ -313,6 +320,7 @@ class SectsInfo
       if (node.sect != null)
         sectInfo(node);
       else nodeInfo(node);
+      show();
     }
 
 
@@ -325,6 +333,7 @@ class SectsInfo
       game.player.createSect(node);
       show();
     }
+
 
 // get element shortcut
   public static inline function e(s)

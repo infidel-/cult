@@ -186,7 +186,10 @@ class Debug
   function onOpenMap(event)
     {
       for (n in game.nodes)
-        n.setVisible(game.player, true);
+        {
+          n.setVisible(game.player, true);
+          n.isKnown = true;
+        }
 
       for (c in game.cults)
         {
