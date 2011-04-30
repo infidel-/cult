@@ -99,7 +99,7 @@ class Info
                 (p.investigator.level + 1) +
                 ', Willpower ' + p.investigator.will + '</span>';
               if (Game.isDebug && p.investigator.isHidden)
-                s += " Hidden";
+                s += " <span style='color:#ffffff'>--- Hidden ---</span>";
               s += '<br>';
             }
           if (Game.isDebug && p.investigatorTimeout > 0 && p.isInfoKnown)
@@ -152,7 +152,7 @@ class Info
                 p.neophytes + ' neophytes, ' + p.adepts + ' adepts, ' +
                 p.priests + ' priests)';
               if (p.isParalyzed)
-                s += " Paralyzed";
+                s += " --- Paralyzed ---";
               s += '<br>';
             }
 

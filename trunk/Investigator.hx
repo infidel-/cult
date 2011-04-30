@@ -140,8 +140,11 @@ class Investigator
         return;
 
       ui.log2('cult', cult, "The investigator revealed the " + cult.fullName + " follower.");
-      node.removeOwner();
-      if (node.visibility[0])
+      if (node.sect != null) // destroy sect
+        cult.removeSect(node);
+      node.generateAttributes(); // regen node
+      node.removeOwner(); // clean ownership
+      if (node.visibility[0]) // highlight node
         node.setHighlighted(true);
     }
 

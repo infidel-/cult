@@ -350,9 +350,10 @@ class Status
           // adepts used
           if (i == 1 && game.player.adepts > 0)
             {
-              s = "<span style='color:#55dd55'>" +
-                (game.player.adepts - game.player.adeptsUsed) +
-                "</span>";
+              var adepts = game.player.adepts - game.player.adeptsUsed;
+              if (adepts < 0)
+                adepts = 0;
+              s = "<span style='color:#55dd55'>" + adepts + "</span>";
             }
           e("status.followers" + i).innerHTML = s; 
         }

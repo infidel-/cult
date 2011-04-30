@@ -31,7 +31,14 @@ class Sect
       else if (l.level == 2)
         size = 90;
       level = 0;
-      name = leader.name + "' Sect";
+
+      // generate a silly name
+      var rnd = 4 + Std.int(Math.random() * 4);
+      var rnd2 = 3 + Std.int(Math.random() * 4);
+      var rnd3 = Std.int(Math.random() * names.length);
+      name = leader.name.substr(0, rnd) +
+        leader.name.substr(leader.name.indexOf(' '), rnd2) + ' ' +
+        names[rnd3];
     }
 
 
@@ -44,11 +51,26 @@ class Sect
     }
 
 
+// clear current task
+  public function clearTask()
+    {
+      task = null;
+      taskTarget = null;
+      taskPoints = 0;
+    }
+
+
+  public function getGrowth(): Int
+    {
+      return 1 + Std.int(size / 10);
+    }
+
+
 // act on current task - called on each new turn
   public function turn()
     {
       // sect growth
-      size++;
+      size += getGrowth();
       var oldlevel = level;
       if (size < 100)
         level = 0;
@@ -74,16 +96,12 @@ class Sect
 
       // clean task on finish
       if (!task.isInfinite)
-        {
-          task = null;
-          taskTarget = null;
-          taskPoints = 0;
-        }
+        clearTask();
     }
 
 
 // act - gather cult information
-  function gatherCultInfo(points: Int)
+  function cultGeneralInfo(points: Int)
     {
       var c:Cult = taskTarget;
       c.isInfoKnown = true;
@@ -94,6 +112,36 @@ class Sect
       for (n in c.nodes)
         if (n.isVisible(c))
           n.update();
+    }
+
+
+// act - cult resource information
+  function cultResourceInfo(points: Int)
+    {
+      var c:Cult = taskTarget;
+
+      if (!cult.isAI)
+        ui.log2('cult', cult,
+          'Task completed: ' + c.fullName + ' has ' +
+          c.power[0] + ' ' + UI.powerName(0) + ', ' +
+          c.power[1] + ' ' + UI.powerName(1) + ', ' +
+          c.power[2] + ' ' + UI.powerName(2) + ', ' +
+          c.power[3] + ' ' + UI.powerName(3) + '.');
+    }
+
+
+// act - cult resource gain information
+  function cultResourceGainInfo(points: Int)
+    {
+      var c:Cult = taskTarget;
+
+      if (!cult.isAI)
+        ui.log2('cult', cult,
+          'Task completed: ' + c.fullName + ' max production - ' +
+          c.powerMod[0] + ' ' + UI.powerName(0) + ', ' +
+          c.powerMod[1] + ' ' + UI.powerName(1) + ', ' +
+          c.powerMod[2] + ' ' + UI.powerName(2) + ', ' +
+          c.powerMod[3] + ' ' + UI.powerName(3) + '.');
     }
 
 
@@ -117,6 +165,35 @@ class Sect
     }
 
 
+// act - sabotage ritual
+  function cultSabotageRitual(points: Int)
+    {
+      var c:Cult = taskTarget;
+
+      if (!c.isRitual)
+        return;
+
+      var cnt = 0;
+      var pts = 0;
+      while (true)
+        {
+          cnt += 100; // 100 points per try
+          if (cnt >= points)
+            break;
+
+          if (Math.random() * 100 > 70) // chance of success
+            continue;
+
+          c.ritualPoints += 1;
+          pts += 1;
+        }
+
+      if (pts > 0 && !cult.isAI)
+        ui.log2('cult', cult, 'Ritual of ' + c.fullName + ' stalled for ' +
+          pts + ' points.');
+    }
+
+
 // act - search for investigator
   function searchInv(points: Int)
     {
@@ -136,7 +213,10 @@ class Sect
       if (t.target == 'investigator' && !cult.hasInvestigator)
         return false;
 
-      if (t.id == 'gatherCultInfo') // gather cult information
+      if (t.minLevel < level)
+        return false;
+
+      if (t.id == 'cultGeneralInfo') // gather cult information
         {
           var isEmpty = true;
           for (c in game.cults)
@@ -169,17 +249,37 @@ class Sect
   public static var availableTasks: Array<SectTaskInfo> =
     [
       {
-        id: 'gatherCultInfo',
-        name: 'Gather cult information',
+        id: 'cultGeneralInfo',
+        name: 'Cult information',
         target: 'cult',
+        minLevel: 0,
+        isInfinite: false,
+        points: 30,
+      },
+
+      {
+        id: 'cultResourceInfo',
+        name: 'Cult resources',
+        target: 'cult',
+        minLevel: 0,
+        isInfinite: false,
+        points: 30,
+      },
+
+      {
+        id: 'cultResourceGainInfo',
+        name: 'Cult resource gains',
+        target: 'cult',
+        minLevel: 0,
         isInfinite: false,
         points: 30,
       },
 
       {
         id: 'gatherNodeInfo',
-        name: 'Gather node information',
+        name: 'Cult nodes',
         target: 'cult',
+        minLevel: 0,
         isInfinite: true,
         points: 0,
       },
@@ -190,6 +290,7 @@ class Sect
         id: 'searchInv',
         name: 'Search for investigator',
         target: 'investigator',
+        minLevel: 0,
         isInfinite: false,
         points: 50,
       },
@@ -198,10 +299,27 @@ class Sect
         id: 'confuseInv',
         name: 'Confuse investigator',
         target: 'investigator',
+        minLevel: 0,
         isInfinite: true,
         points: 0,
       },
+
+// ================== level 2 =================
+
+      {
+        id: 'cultSabotageRitual',
+        name: 'Sabotage ritual',
+        target: 'cult',
+        minLevel: 1,
+        isInfinite: true,
+        points: 0,
+      },
+
     ];
+
+  static var names0 = [ 'Open', 'Free', 'Rising', 'Strong' ];
+  static var names = [ 'Way', 'Path', 'Society', 'Group', 'School', 'Faith', 'Mind', 
+    'Love', 'Care', 'Reform', 'State', 'Sun', 'Moon', 'Wisdom' ];
 }
 
 
@@ -211,6 +329,7 @@ typedef SectTaskInfo =
     var id: String; // task string id
     var target: String; // task target (for ui)
     var name: String; // task name
+    var minLevel: Int; // min level needed
     var points: Int; // amount of points needed to complete (0: complete on next turn)
     var isInfinite: Bool; // is task neverending?
   };
