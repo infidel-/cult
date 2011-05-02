@@ -9,6 +9,7 @@ class Game
   // cults list and link to player
   public var cults: Array<Cult>;
   public var player: Cult;
+  public var sectTasks: Array<sects.Task>; // available sect tasks
 
   public var turns: Int; // turns passed
   public var isFinished: Bool; // game finished?
@@ -53,6 +54,14 @@ class Game
 	  ui = new UI(this);
 	  ui.init();
       ui.mainMenu.show(); // needs to be moved into ui
+
+      // fill up tasks array
+      sectTasks = new Array<sects.Task>();
+      for (cl in sects.Sect.taskClasses)
+        {
+          var t = Type.createInstance(cl, []);
+          sectTasks.push(t);
+        }
     }
 
 

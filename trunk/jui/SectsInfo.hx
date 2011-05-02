@@ -1,5 +1,6 @@
 // sects information ui
 
+import sects.Sect;
 
 class SectsInfo
 {
@@ -180,10 +181,22 @@ class SectsInfo
     {
       var b = Tools.getTarget(e);
       var target = null;
-      if (Sect.availableTasks[b.taskID].target == 'cult')
+
+      var task = null;
+      for (t in game.sectTasks)
+        if (t.id == b.taskID)
+          {
+            task = t;
+            break;
+          }
+
+      if (task == null)
+        return;
+
+      if (task.type == 'cult')
         target = game.cults[b.cultID];
 
-      selectedNode.sect.setTask(b.taskID, target);
+      selectedNode.sect.setTask(task, target);
       show();
 //      sectInfo(selectedNode);
     }
@@ -212,7 +225,7 @@ class SectsInfo
       s += '<br>';
       if (sect.task != null)
         {
-          if (sect.task.target == 'cult')
+          if (sect.task.type == 'cult')
             s += 'Target: ' + cast(sect.taskTarget, Cult).fullName + '<br>';
         }
       s += '<br>';
@@ -221,31 +234,36 @@ class SectsInfo
   
       // task buttons
       var tasksAvailable = false;
-      for (i in 0...Sect.availableTasks.length)
+      for (t in game.sectTasks)
         {
-          var t = Sect.availableTasks[i];
-
-          if (!sect.taskAvailable(t)) // check if this task available
-            continue;
-
           var b = create(text, 'span');
           b.innerHTML = t.name;
-          untyped b.taskID = i;
-          if (t.target != 'cult')
+          untyped b.taskID = t.id;
+          if (t.type != 'cult')
             {
               b.style.cursor = 'pointer';
               b.onclick = onTaskSelect;
             }
 
-          if (t.target == 'cult') // draw cult buttons
+          if (t.type == 'investigator' && !game.player.hasInvestigator)
+            continue;
+
+          if (t.level < sect.level)
+            continue;
+
+          // check all other cults and draw cult buttons
+          if (t.type == 'cult')
             {
               var isEmpty = true;
+
               for (c in game.cults)
                 {
-                  if (c == game.player || !c.isDiscovered)
+                  if (c == game.player || !c.isDiscovered || c.isParalyzed)
                     continue;
 
-                  if (t.id == 'cultGeneralInfo' && c.isInfoKnown)
+                  // check start conditions
+                  var ok = t.check(game.player, sect, c);
+                  if (!ok)
                     continue;
 
                   var b2 = create(text, 'span');
@@ -258,7 +276,7 @@ class SectsInfo
                   b2.onclick = onTaskSelect;
                   b2.innerHTML = '+';
                   
-                  untyped b2.taskID = i;
+                  untyped b2.taskID = t.id;
                   untyped b2.cultID = c.id;
                   isEmpty = false;
                 }

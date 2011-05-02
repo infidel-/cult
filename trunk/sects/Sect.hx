@@ -1,5 +1,7 @@
 // sect class
 
+package sects;
+
 import Static;
 
 class Sect
@@ -14,7 +16,7 @@ class Sect
   public var level: Int; // sect level (0-2)
 
   // current task
-  public var task: SectTaskInfo; // task info id
+  public var task: Task; // task info id
   public var taskPoints: Int; // points to completion
   public var taskTarget: Dynamic; // task target
 
@@ -43,9 +45,9 @@ class Sect
 
 
 // set task
-  public function setTask(id: Int, target: Dynamic)
+  public function setTask(newTask: Task, target: Dynamic)
     {
-      task = Sect.availableTasks[id];
+      task = newTask;
       taskPoints = 0;
       taskTarget = target;
     }
@@ -74,9 +76,9 @@ class Sect
       var oldlevel = level;
       if (size < 100)
         level = 0;
-      else if (size < 500)
+      else if (size < 250)
         level = 1;
-      else if (size < 1000)
+      else if (size < 500)
         level = 2;
 
       if (level != oldlevel && !cult.isAI)
@@ -89,44 +91,11 @@ class Sect
       if (taskPoints < task.points)
         return;
 
-      // call task finish handler
-      var method = Reflect.field(this, task.id);
-      if (method != null)
-        Reflect.callMethod(this, method, [ taskPoints ]);
+      task.complete(game, ui, cult, this, taskPoints);
 
       // clean task on finish
       if (!task.isInfinite)
         clearTask();
-    }
-
-
-// act - gather cult information
-  function cultGeneralInfo(points: Int)
-    {
-      var c:Cult = taskTarget;
-      c.isInfoKnown = true;
-
-      if (!cult.isAI)
-        ui.log2('cult', cult, 'Task completed: Information about ' + c.fullName + ' gathered.');
-
-      for (n in c.nodes)
-        if (n.isVisible(c))
-          n.update();
-    }
-
-
-// act - cult resource information
-  function cultResourceInfo(points: Int)
-    {
-      var c:Cult = taskTarget;
-
-      if (!cult.isAI)
-        ui.log2('cult', cult,
-          'Task completed: ' + c.fullName + ' has ' +
-          c.power[0] + ' ' + UI.powerName(0) + ', ' +
-          c.power[1] + ' ' + UI.powerName(1) + ', ' +
-          c.power[2] + ' ' + UI.powerName(2) + ', ' +
-          c.power[3] + ' ' + UI.powerName(3) + '.');
     }
 
 
@@ -208,28 +177,9 @@ class Sect
 
 
 // is this task available?
-  public function taskAvailable(t: SectTaskInfo): Bool
+  public function taskAvailable(t: Task): Bool
     {
-      if (t.target == 'investigator' && !cult.hasInvestigator)
-        return false;
-
-      if (t.minLevel < level)
-        return false;
-
-      if (t.id == 'cultGeneralInfo') // gather cult information
-        {
-          var isEmpty = true;
-          for (c in game.cults)
-            {
-              if (c == game.player || !c.isDiscovered || c.isInfoKnown)
-                 continue;
-
-              isEmpty = false;
-            }
-
-          return !isEmpty;
-        }
-      else if (t.id == 'searchInv') // search for investigator
+      if (t.id == 'searchInv') // search for investigator
         {
           if (!cult.investigator.isHidden)
             return false;
@@ -245,26 +195,11 @@ class Sect
 
 
 // ======================= Sect Tasks ============================
+  public static var taskClasses: Array<Dynamic> = [ CultGeneralInfoTask, CultResourceInfoTask ];
 
+/*    
   public static var availableTasks: Array<SectTaskInfo> =
     [
-      {
-        id: 'cultGeneralInfo',
-        name: 'Cult information',
-        target: 'cult',
-        minLevel: 0,
-        isInfinite: false,
-        points: 30,
-      },
-
-      {
-        id: 'cultResourceInfo',
-        name: 'Cult resources',
-        target: 'cult',
-        minLevel: 0,
-        isInfinite: false,
-        points: 30,
-      },
 
       {
         id: 'cultResourceGainInfo',
@@ -314,23 +249,10 @@ class Sect
         isInfinite: true,
         points: 0,
       },
-
     ];
+*/
 
   static var names0 = [ 'Open', 'Free', 'Rising', 'Strong' ];
   static var names = [ 'Way', 'Path', 'Society', 'Group', 'School', 'Faith', 'Mind', 
     'Love', 'Care', 'Reform', 'State', 'Sun', 'Moon', 'Wisdom' ];
 }
-
-
-// sect task info
-typedef SectTaskInfo =
-  {
-    var id: String; // task string id
-    var target: String; // task target (for ui)
-    var name: String; // task name
-    var minLevel: Int; // min level needed
-    var points: Int; // amount of points needed to complete (0: complete on next turn)
-    var isInfinite: Bool; // is task neverending?
-  };
-
