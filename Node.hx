@@ -1,5 +1,7 @@
 // node class
 
+import sects.Sect;
+
 class Node
 {
   var ui: UI;

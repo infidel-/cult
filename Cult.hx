@@ -1,6 +1,7 @@
 // cult (game player)
 
 import Static;
+import sects.Sect;
 
 class Cult
 {
@@ -863,7 +864,7 @@ class Cult
 
       // clean tasks on that cult
       for (s in game.player.sects)
-        if (s.task.target == 'cult' && s.taskTarget == this)
+        if (s.task.type == 'cult' && s.taskTarget == this)
           s.clearTask();
 
       // player cult is dead
