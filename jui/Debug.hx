@@ -62,7 +62,15 @@ class Debug
       addItem('Node vis toggle', onVis);
       addItem('Node near toggle', onNear);
       addItem('Give adepts', onGiveAdepts);
-      addItem('Give adepts', onGiveAdepts);
+      addItem('Upgrade sects', onUpgradeSects);
+    }
+
+
+// upgrade sects
+  function onUpgradeSects(event)
+    {
+      for (s in game.player.sects)
+        s.size += 100;
     }
 
 

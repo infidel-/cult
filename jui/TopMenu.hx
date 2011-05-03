@@ -47,7 +47,7 @@ class TopMenu
         y: 2,
         fontSize: 16,
         container: panel,
-        title: "Click to view sects of your cult (or press <span style=\"color:white\">S</span>).",
+        title: "Click to view sects controlled by your cult (or press <span style=\"color:white\">S</span>).",
         func: onSects
         });
 

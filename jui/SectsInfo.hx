@@ -236,6 +236,14 @@ class SectsInfo
       var tasksAvailable = false;
       for (t in game.sectTasks)
         {
+          // no investigator
+          if (t.type == 'investigator' && !game.player.hasInvestigator)
+            continue;
+
+          // sect is too low-level
+          if (t.level > sect.level)
+            continue;
+
           var b = create(text, 'span');
           b.innerHTML = t.name;
           untyped b.taskID = t.id;
@@ -245,13 +253,7 @@ class SectsInfo
               b.onclick = onTaskSelect;
             }
 
-          if (t.type == 'investigator' && !game.player.hasInvestigator)
-            continue;
-
-          if (t.level < sect.level)
-            continue;
-
-          // check all other cults and draw cult buttons
+          // cult target task - check all other cults and draw cult buttons
           if (t.type == 'cult')
             {
               var isEmpty = true;
@@ -282,6 +284,17 @@ class SectsInfo
                 }
 
               if (isEmpty)
+                {
+                  text.removeChild(b);
+                  continue;
+                }
+            }
+
+          // investigator type task
+          else if (t.type == 'investigator')
+            {
+              var ok = t.check(game.player, sect, null);
+              if (!ok)
                 {
                   text.removeChild(b);
                   continue;
