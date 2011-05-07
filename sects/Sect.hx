@@ -95,6 +95,7 @@ class Sect
         return;
 
       task.complete(game, ui, cult, this, taskPoints);
+      taskPoints = 0;
 
       // clean task on finish
       if (!task.isInfinite)
@@ -104,9 +105,9 @@ class Sect
 
 // ======================= Sect Tasks ============================
   public static var taskClasses: Array<Dynamic> =
-    [ CultGeneralInfoTask, CultResourceInfoTask, CultNodeInfoTask,
-      CultSabotageRitualTask,
-      InvSearchTask, InvConfuseTask ];
+    [ CultGeneralInfoTask, CultNodeInfoTask,
+      CultResourceInfoTask, CultSabotageRitualTask,
+      InvSearchTask, InvConfuseTask, DoNothingTask ];
 
 
   static var names0 = [ 'Open', 'Free', 'Rising', 'Strong' ];

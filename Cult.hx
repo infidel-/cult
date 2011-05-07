@@ -376,6 +376,11 @@ class Cult
             " has disappeared.");
 
           investigatorTimeout = 3;
+
+          // clean sect tasks for investigators
+          for (s in sects)
+            if (s.task != null && s.task.type == 'investigator')
+              s.clearTask();
         }
       adeptsUsed++;
 
@@ -457,7 +462,7 @@ class Cult
           upNode = origin;
           ok = true;
         }
-
+/*
       // generators upgrade 2nd
       if (!ok)
         for (n in nodes)
@@ -468,9 +473,24 @@ class Cult
               ok = true;
               break;
             }
- 
+ */
+      // find a node with maximum amount of links
+      if (!ok)
+        {
+          var upNode = null;
+          var nlinks = 0;
+          for (n in nodes)
+            if (n.level == level && n.links.length > nlinks)
+              upNode = n;
 
-      // usual nodes upgrade last
+          if (upNode != null)
+            {
+              upNode.upgrade();
+              ok = true;
+            }
+        }
+/*
+      // random nodes upgrade last
       if (!ok)
         for (n in nodes)
           if (n.level == level)
@@ -480,7 +500,7 @@ class Cult
               ok = true;
               break;
             }
-
+*/
       if (!isAI)
         ui.updateStatus();
       
@@ -519,6 +539,7 @@ class Cult
 
       virgins -= Game.numSummonVirgins;
       isRitual = true;
+      isInfoKnown = true;
       ritual = Static.rituals[0];
       ritualPoints = ritual.points;
 

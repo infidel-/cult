@@ -15,11 +15,17 @@ class Investigator
     {
       cult = c;
       this.ui = ui;
-      level = 0;
-      will = 1;
       name = GenName.generate();
       numTurn = 0;
       isHidden = true;
+
+      // starting willpower and level
+      will = 1 + Std.int(c.nodes.length * c.difficulty.investigatorCultSize);
+      if (will > 9)
+        will = 9;
+      level = Std.int(will / 3);
+      if (level > 2)
+        level = 2;
     }
 
 
@@ -48,8 +54,8 @@ class Investigator
 // investigator's turn
   public function turn()
     {
-      // on easy stalls on the first turn, horrified by his revelation
-      if (numTurn == 0 && cult.difficulty.level == 0)
+      // stalls on the first turn, horrified by his revelation
+      if (numTurn == 0) // && cult.difficulty.level == 0)
         {
           numTurn++;
           return;
@@ -153,13 +159,19 @@ class Investigator
   public function getGainWillChance():Int
     {
       var chance = Std.int(70 * cult.difficulty.investigatorGainWill);
+
       for (sect in cult.sects) // decrease chance with each sect
-        if (sect.level == 0)
-          chance -= 1;
-        else if (sect.level == 1)
-          chance -= 2;
-        else if (sect.level == 2)
-          chance -= 5;
+        {
+          if (sect.task == null || sect.task.id != 'invConfuse')
+            continue;
+
+          if (sect.level == 0)
+            chance -= 2;
+          else if (sect.level == 1)
+            chance -= 5;
+          else if (sect.level == 2)
+            chance -= 10;
+        }
       if (chance < 20)
         chance = 20;
   
@@ -178,12 +190,17 @@ class Investigator
       else chance = Std.int(70 * cult.difficulty.investigatorKill);
 
       for (sect in cult.sects) // decrease chance with each sect
-        if (sect.level == 0)
-          chance -= 1;
-        else if (sect.level == 1)
-          chance -= 2;
-        else if (sect.level == 2)
-          chance -= 5;
+        {
+          if (sect.task == null || sect.task.id != 'invConfuse')
+            continue;
+
+          if (sect.level == 0)
+            chance -= 2;
+          else if (sect.level == 1)
+            chance -= 5;
+          else if (sect.level == 2)
+            chance -= 10;
+        }
       if (chance < 5)
         chance = 5;
 

@@ -7,12 +7,15 @@ typedef DifficultyInfo = {
   var awarenessResource: Float; // higher value lowers chance of getting resources each turn
   var awarenessUpgrade: Float; // higher value lowers chance of upgrading followers
   var awarenessGain: Float; // higher value lowers chance of gaining new followers
+
   var investigatorChance: Float; // higher value raises chance of investigator appearing
   var investigatorKill: Float; // higher value raises chance of investigator killing a follower
   var investigatorWillpower: Float; // higher value lowers chance of success in lowering 
       // investigator willpower using adepts
   var investigatorTurnVisible: Int; // turn on which new investigator becomes visible
   var investigatorGainWill: Float; // higher value raises chance of investigator gaining will
+  var investigatorCultSize: Float; // starting investigator willpower - cult size multiplier (less - easier)
+
   var maxAwareness: Int; // max awareness for AI to have without using adepts
   var isInfoKnown: Bool; // is cult info for all cults known at start?
   var isOriginKnown: Bool; // is origin known for all cults at start?
@@ -37,6 +40,7 @@ class Static
         investigatorWillpower: 0.75,
         investigatorTurnVisible: 0,
         investigatorGainWill: 0.50,
+        investigatorCultSize: 0.05,
         maxAwareness: 10,
         isInfoKnown: true,
         isOriginKnown: true,
@@ -55,6 +59,7 @@ class Static
         investigatorWillpower: 1.0,
         investigatorTurnVisible: 10,
         investigatorGainWill: 0.75,
+        investigatorCultSize: 0.1,
         maxAwareness: 5,
         isInfoKnown: false,
         isOriginKnown: false,
@@ -73,6 +78,7 @@ class Static
         investigatorWillpower: 1.25,
         investigatorTurnVisible: 2000,
         investigatorGainWill: 1.0,
+        investigatorCultSize: 0.15,
         maxAwareness: 5,
         isInfoKnown: false,
         isOriginKnown: false,

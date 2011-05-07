@@ -48,22 +48,14 @@ class AI extends Cult
         }
 
       // has investigator
-      if (hasInvestigator)
+      if (hasInvestigator && adepts > 0) 
         {
-/*
-          if (adepts > 0)
-            {
-              // try to lower awareness even using virgins
-              if (awareness >= 5)
-                aiLowerAwarenessHard();
-
-              // try to destroy investigator
-              else aiLowerWillpower();
-            }
+          // try to lower awareness even using virgins
+          if (awareness >= difficulty.maxAwareness)
+            aiLowerAwarenessHard();
 
           // try to destroy investigator
-          else*/ 
-          aiLowerWillpower();
+          else aiLowerWillpower();
 
           return;
         }
@@ -125,6 +117,10 @@ class AI extends Cult
           // owned node
           else if (node.owner != null)
             item.priority--;
+
+          // lower priority more when having investigator
+          if (node.owner != null && hasInvestigator)
+             item.priority--;
 
           // unprotected generators are always yummy
           if (node.isGenerator && !node.isProtected)
