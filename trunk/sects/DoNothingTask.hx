@@ -1,15 +1,15 @@
-// confuse investigator
+// do nothing task - dummy
 
 package sects;
 
-class InvConfuseTask extends Task
+class DoNothingTask extends Task
 {
   public function new()
     {
       super();
-      id = 'invConfuse';
-      name = 'Confuse investigator';
-      type = 'investigator';
+      id = 'doNothing';
+      name = 'Do Nothing';
+      type = '';
       isInfinite = true;
       points = 0;
     }
@@ -18,9 +18,6 @@ class InvConfuseTask extends Task
 // check if this task is available for this target
   public override function check(cult: Cult, sect: Sect, target: Dynamic): Bool
     {
-      if (cult.investigator.isHidden)
-        return false;
-
       return true;
     }
 
@@ -28,9 +25,5 @@ class InvConfuseTask extends Task
 // on task complete
   public override function complete(game: Game, ui: UI, cult: Cult, sect: Sect, points: Int)
     {
-      if (cult.investigator == null)
-        return;
-    
-      // all modifiers are in Investigator.hx
     }
 }

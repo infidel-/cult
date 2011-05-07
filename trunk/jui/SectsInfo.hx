@@ -182,6 +182,14 @@ class SectsInfo
       var b = Tools.getTarget(e);
       var target = null;
 
+      // clear task
+      if (b.taskID == 'doNothing')
+        {
+          selectedNode.sect.clearTask();
+          show();
+          return;
+        }
+
       var task = null;
       for (t in game.sectTasks)
         if (t.id == b.taskID)
@@ -210,8 +218,8 @@ class SectsInfo
       s += sect.name + '<br>';
       s += 'Leader: ' + sect.leader.name + '<br>';
       s += 'Level: ' + (sect.level + 1) + '<br>';
-      s += 'Size: ' + sect.size + '<br>';
-      s += 'Growth rate: ' + sect.getGrowth() + '<br>';
+      s += 'Size: ' + sect.size + ' (+' + sect.getGrowth() + ')<br>';
+//      s += 'Growth rate: ' + sect.getGrowth() + '<br>';
       s += '<br>';
       s += 'Current Task: ';
       if (sect.task == null)
@@ -260,7 +268,7 @@ class SectsInfo
 
               for (c in game.cults)
                 {
-                  if (c == game.player || !c.isDiscovered || c.isParalyzed)
+                  if (c == game.player || !c.isDiscovered)// || c.isParalyzed)
                     continue;
 
                   // check start conditions

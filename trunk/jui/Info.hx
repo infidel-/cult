@@ -95,10 +95,12 @@ class Info
           if (p.hasInvestigator && p.isInfoKnown)
             {
               s += "<span style='font-size: 12px; color: #999999'>Investigator <span style='color: white'>" +
-                p.investigator.name + "</span>: Level " +
-                (p.investigator.level + 1) +
-                ', Willpower ' + p.investigator.will + '</span>';
-              if (Game.isDebug && p.investigator.isHidden)
+                p.investigator.name + "</span>";
+              if (!p.investigator.isHidden)
+                s += ": Level " + (p.investigator.level + 1) +
+                ', Willpower ' + p.investigator.will;
+              s += '</span>';
+              if (p.investigator.isHidden)
                 s += " <span style='color:#ffffff'>--- Hidden ---</span>";
               s += '<br>';
             }
