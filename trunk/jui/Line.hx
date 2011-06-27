@@ -2,30 +2,33 @@
 
 import js.Lib;
 
+
+typedef Pixel =
+{
+  var x: Int;
+  var y: Int;
+};
+
 class Line
 {
-  var screen: Dynamic;
-
   public var startNode: Node;
   public var endNode: Node;
-  public var pixels: Array<Dynamic>;
+  public var pixels: Array<Pixel>;
   public var owner: Cult;
   public var isVisible: Bool;
 
 
-  function new(screen)
+  function new()
 	{
-      this.screen = screen;
-	  this.pixels = new Array<Dynamic>();
+	  this.pixels = new Array<Pixel>();
 	}
 
 
 // make a new line on screen
-  public static function paint(map: Map, player: Cult,
+  public static function create(map: Map, player: Cult,
       startNode: Node, endNode: Node): Line
 	{
-      var screen = map.screen;
-	  var line = new Line(screen);
+	  var line = new Line();
       line.owner = player;
 	  line.startNode = startNode;
 	  line.endNode = endNode;
@@ -45,29 +48,30 @@ class Line
 		  x += modx;
 		  y += mody;
 
-          var pixel = js.Lib.document.createElement("div");
-		  pixel.style.position = 'absolute';
-		  pixel.style.left = Math.round(x) + 'px';
-		  pixel.style.top = Math.round(y) + 'px';
-		  pixel.style.width = '2';
-		  pixel.style.height = '2';
-		  pixel.style.background = UI.lineColors[player.id];
-          pixel.style.zIndex = 5;
-          pixel.style.visibility = 'hidden';
-		  screen.appendChild(pixel);
-
-		  line.pixels.push(pixel);
+		  line.pixels.push({ x: Math.round(x), y: Math.round(y) });
         }
 
       return line;
 	}
 
 
+// paint a line
+  public function paint(ctx: Dynamic, map: Map)
+    {
+      if (!isVisible)
+        return;
+
+      for (p in pixels)
+        {
+          var img = map.images.get('pixel' + owner.id);
+          ctx.drawImage(img, p.x, p.y);
+        }
+    }
+
+
 // set line visibility
   public function setVisible(vis)
     {
-      for (p in pixels)
-        p.style.visibility = (vis ? 'visible' : 'hidden');
       isVisible = vis;
     }
 
@@ -75,8 +79,6 @@ class Line
 // clear a line
   public function clear()
     {
-      for (p in pixels)
-        screen.removeChild(p);
       pixels = null;
     }
 }

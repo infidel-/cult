@@ -5,46 +5,14 @@ class UINode
   var game: Game;
   var ui: UI;
   var node: Node;
-  public var marker: Dynamic;
-  var markerHL: Dynamic;
+  var imageName: String; // image name
+
 
   public function new(gvar, uivar, nvar)
     {
       game = gvar;
       ui = uivar;
       node = nvar;
-      
-      marker = js.Lib.document.createElement("div");
-      marker.id = "map.node" + node.id;
-	  marker.node = node;
-	  marker.style.background = '#222';
-	  marker.style.border = '1px solid #777';
-	  marker.style.width = UI.markerWidth;
-	  marker.style.height = UI.markerHeight;
-	  marker.style.position = 'absolute';
-	  marker.style.left = node.x;
-	  marker.style.top = node.y;
-	  marker.style.visibility = 'hidden';
-	  marker.style.textAlign = 'center';
-	  marker.style.fontWeight = 'bold';
-      marker.style.fontSize = '12px';
-	  marker.style.zIndex = 10;
-	  marker.style.cursor = 'pointer';
-	  marker.onclick = ui.map.onNodeClick;
-	  ui.map.screen.appendChild(marker);
-
-      markerHL = js.Lib.document.createElement("div");
-      markerHL.style.visibility = 'hidden';
-	  markerHL.style.background = '#111';
-	  markerHL.style.border = '1px solid #333';
-	  markerHL.style.width = UI.markerWidth + 20;
-	  markerHL.style.height = UI.markerHeight + 20;
-	  markerHL.style.position = 'absolute';
-      markerHL.style.opacity = 0.5;
-      markerHL.style.left = node.centerX - (UI.markerWidth + 21) / 2;
-      markerHL.style.top = node.centerY - (UI.markerHeight + 21) / 2;
-	  markerHL.style.zIndex = 8;
-	  ui.map.screen.appendChild(markerHL);
     }
 
 
@@ -55,81 +23,103 @@ class UINode
     }
 
 
+  public function paint(ctx: Dynamic)
+    {
+      if (!node.isVisible(game.player))
+        return;
+
+      var key = '';
+      var xx = node.x, yy = node.y,
+        hlx = node.x - 10, hly = node.y - 10,
+        tx = node.x + 4, ty = node.y + 14;
+      var text = '';
+      var textColor = 'white';
+
+      // get power char
+      var isI = false, is1 = false;
+      for (i in 0...Game.numPowers)
+        if (node.power[i] > 0)
+          {
+            text = Game.powerShortNames[i];
+            textColor = UI.powerColors[i];
+            isI = false;
+            if (Game.powerShortNames[i] == "I")
+              isI = true;
+          }
+
+      // get bg and node char
+      if (node.owner != null)
+        {
+          key = "cult" + node.owner.id;
+          text = "" + (node.level + 1);
+//          if (node.level == 0)
+//            is1 = true;
+          textColor = 'white';
+        }
+      else
+        {
+          key = "neutral";
+        }
+
+      // different borders
+      var dd = 0;
+	  if (node.isGenerator)
+		{
+          key += "g";
+          dd = 2;
+
+          for (p in game.cults)
+            if (p.origin == node && !p.isDead)
+              {
+                key = "origin" + p.id;
+                dd = 4;
+                break;
+              }
+          if (node.isProtected)
+            key += "p";
+          xx -= dd;
+          yy -= dd;
+//          tx += dd;
+//          ty += dd;
+//          hlx += dd;
+//          hly += dd;
+        }
+      if (isI) // "I" symbol needs to be centered
+        tx += 2;
+
+      // paint node highlight
+      if (node.isHighlighted)
+        {
+          var img = ui.map.images.get('hl');
+          ctx.drawImage(img, hlx, hly);
+        }
+
+      // paint node image
+      var img = ui.map.images.get(key);
+      if (img == null)
+        {
+          trace('img bug: ' + key);
+          return;
+        }
+      ctx.drawImage(img, xx, yy);
+
+      // paint node symbol
+      ctx.fillStyle = textColor;
+      ctx.fillText(text, tx, ty);
+    }
+
+
 // update node display
   public function update()
     {
-      updateTooltip();
-      var sym = '';
-      var col = '';
-      var bg = 'rgb(17, 17, 17)';
-      var brd = '1px solid rgb(119, 119, 119)';
-
-      // change marker style
-      if (node.owner == null || node.isKnown)
-        for (i in 0...Game.numPowers)
-          if (node.power[i] > 0)
-            {
-              sym = Game.powerShortNames[i];
-              col = UI.powerColors[i];
-            }
-      if (node.owner != null)
-        {
-          sym = "" + (node.level + 1);
-          if (node.sect != null)
-            sym = 'S';
-          if (node.owner != null && !node.isKnown)
-            sym = '?';
-          col = 'rgb(255, 255, 255)';
-          bg = UI.nodeColors[node.owner.id];
-        }
-  
-      var borderWidth = 1;
-	  if (node.isGenerator && (node.owner == null || node.isKnown))
-		{
-          borderWidth = 3;
-          var bcol = 'rgb(119, 119, 119)';
-          var type = 'solid';
-
-          if (node.isProtected)
-            bcol = 'rgb(255, 255, 255)';
-          for (p in game.cults)
-            if (p.origin == node && !p.isDead && node.isKnown)
-              {
-                borderWidth = 5;
-                type = 'double';
-                break;
-              }
-
-		  brd = borderWidth + 'px ' + type + ' ' + bcol;
-		}
-
-      // update elements only when actual parameters change
-      if (sym != marker.innerHTML)
-        marker.innerHTML = sym;
-      if (col != marker.style.color)
-        marker.style.color = col;
-      if (bg != marker.style.backgroundColor)
-        marker.style.backgroundColor = bg;
-      if (brd != marker.style.border)
-        marker.style.border = brd;
-
-      // node highlight
-      markerHL.style.visibility = (node.isHighlighted ? "visible" : "hidden");
-      if (node.isHighlighted)
-        {
-  	      markerHL.style.width = UI.markerWidth + borderWidth + 19;
-	      markerHL.style.height = UI.markerHeight + borderWidth + 19;
-          markerHL.style.left = node.centerX - (UI.markerWidth - borderWidth + 22) / 2;
-          markerHL.style.top = node.centerY - (UI.markerHeight - borderWidth + 22) / 2;
-        }
     }
 
 
 // update tooltip text
-  public function updateTooltip()
+  public function getTooltip(): String
     {
       if (!node.isVisible(game.player))
-        return;
+        return '';
 
       var s = "";
       if (Game.debugNear)
@@ -155,9 +145,7 @@ class UINode
           if (node.owner == null || node.owner.isAI)
             s += "<br>Chance of success: <span style='color:white'>" +
               game.player.getGainChance(node) + "%</span><br>";
-          marker.title = s;
-          new JQuery("#map\\.node" + node.id).tooltip({ delay: 0 });
-          return;
+          return s;
         }
 
       if (node.owner != null) // cult info
@@ -205,8 +193,7 @@ class UINode
 			    node.powerGenerated[i] + "<br>";
         }
 
-      marker.title = s;
-      new JQuery("#map\\.node" + node.id).tooltip({ delay: 0 });
+      return s;
     }
 
 
@@ -217,10 +204,5 @@ class UINode
         return;
       if (Game.mapVisible)
         v = true;
-      // if node is made visible, update tooltip
-      if (v && marker.style.visibility == 'hidden')
-        updateTooltip();
-      marker.style.visibility = 
-        (v ? 'visible' : 'hidden');
     }
 }

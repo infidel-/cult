@@ -172,6 +172,7 @@ class UI
 // finish game window (ffin)
   public function finish(cult: Cult, state)
     {
+      map.paint(); // final map repaint
       var msg = "<div style='text-size: 20px'><b>Game over</b></div><br>";
 
       if (state == "summon" && !cult.isAI)
