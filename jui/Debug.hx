@@ -205,6 +205,7 @@ class Debug
           for (n in c.nodes)
             n.update();
         }
+      ui.map.paint();
    }
 
 

@@ -161,6 +161,7 @@ class Game
       for (p in cults)
 	    p.setOrigin();
 
+      ui.map.paint();
       ui.updateStatus();
       endTimer("restart"); 
     }
@@ -284,7 +285,7 @@ class Game
           var startNode = getNode(l[0]);
           var endNode = getNode(l[1]);
           var cult = cults[l[2]];
-          var line = Line.paint(ui.map, cult, startNode, endNode);
+          var line = Line.create(ui.map, cult, startNode, endNode);
           if (l[3] == 1)
             line.setVisible(true);
           lines.add(line);
@@ -355,6 +356,7 @@ class Game
       player.turn();
 
 	  turns++;
+      ui.map.paint();
 	  ui.updateStatus();
 	}
 
