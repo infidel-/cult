@@ -394,8 +394,8 @@ class Cult
     {
 	  if (power[from] < Game.powerConversionCost[from])
 	    {
-          if (!isAI)
-	        ui.msg("Not enough " + Game.powerNames[from]);
+//          if (!isAI)
+//	        ui.msg("Not enough " + Game.powerNames[from]);
 		  return;
 		}
 	
@@ -426,8 +426,8 @@ class Cult
       if ((level == 2 && virgins < Game.numSummonVirgins) ||
           (level < 2 && virgins < level + 1))
         {
-          if (!isAI)
-            ui.msg("Not enough virgins");
+//          if (!isAI)
+//            ui.msg("Not enough virgins");
           return;
         }
 
@@ -702,8 +702,8 @@ class Cult
 
           if (cnt >= 3)
             {
-              if (!isAI)
-                ui.msg("Generator has " + cnt + " links.");
+//              if (!isAI)
+//                ui.msg("Generator has " + cnt + " links.");
               return "hasLinks";
             }
         }
@@ -712,8 +712,8 @@ class Cult
 	  for (i in 0...Game.numPowers)
 		if (power[i] < node.power[i])
 		  {
-            if (!isAI)
-		 	  ui.msg("Not enough " + Game.powerNames[i]);
+//            if (!isAI)
+//		 	  ui.msg("Not enough " + Game.powerNames[i]);
 			return "notEnoughPower";
 		  }
 
@@ -848,8 +848,11 @@ class Cult
 
 
 // check for victory for this cult
-  function checkVictory()
+  public function checkVictory()
     {
+      if (isDead || isParalyzed)
+        return;
+
       // check for finish
       var ok = true;
       for (p in game.cults)

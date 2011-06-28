@@ -141,7 +141,8 @@ class UINode
 
       if (node.owner != null && !node.owner.isInfoKnown && !node.isKnown)
         {
-          s += 'Use sect to gather cult or node information.<br>';
+          s += "<span style='color:#ff8888'>Use sect to gather cult<br>or node information.</span><br>";
+//          s += 'Use sects to gather cult<br>or node information.<br>';
           if (node.owner == null || node.owner.isAI)
             s += "<br>Chance of success: <span style='color:white'>" +
               game.player.getGainChance(node) + "%</span><br>";
@@ -169,7 +170,36 @@ class UINode
       s += "<br>";
 
       if (node.sect != null) // sect name
-        s += 'Leader of ' + node.sect.name + "<br><br>";
+        s += 'Leader of<br>' + node.sect.name + "<br><br>";
+
+      if (node.owner != game.player)
+        {
+          var br = false;
+
+	      // check for power
+          for (i in 0...Game.numPowers)
+            if (game.player.power[i] < node.power[i])
+              {
+                s += "<span style='color:#ff8888'>Not enough " + Game.powerNames[i] + "</span><br>";
+                br = true;
+              }
+              
+          // check for links
+          if (node.isGenerator && node.owner != null)
+            {
+              // count links with same owner
+              var cnt = 0;
+              for (n in node.links)
+                if (n.owner == node.owner)
+                  cnt++;
+
+              if (cnt >= 3)
+                s += "<span style='color:#ff8888'>Generator has " + cnt + " links</span><br>";
+            }
+
+          if (br)
+            s += '<br>';
+        }
 
       // amount of power to conquer
       if (node.owner == null || node.isKnown)

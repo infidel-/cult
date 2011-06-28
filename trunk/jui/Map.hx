@@ -131,6 +131,11 @@ class Map
       var x = event.clientX - el.offsetLeft - 4;
       var y = event.clientY - el.offsetTop - 6;
 
+      if (x + 250 > js.Lib.window.innerWidth)
+        x = js.Lib.window.innerWidth - 250;
+      if (y + cnt * 20 + 50 > js.Lib.window.innerHeight)
+        y = js.Lib.window.innerHeight - cnt * 20 - 50;
+
       tooltip.style.left = x;
       tooltip.style.top = y;
 
