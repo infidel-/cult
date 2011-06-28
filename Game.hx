@@ -354,6 +354,8 @@ class Game
             endTimer("ai " + c.name);
           }
       player.turn();
+      for (c in cults)
+        c.checkVictory();
 
 	  turns++;
       ui.map.paint();
