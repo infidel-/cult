@@ -28,6 +28,13 @@ class UINode
       if (!node.isVisible(game.player))
         return;
 
+      // node out of view rectangle
+      if (node.x < ui.map.viewRect.x - 20 ||
+          node.y < ui.map.viewRect.y - 20 ||
+          node.x > ui.map.viewRect.x + ui.map.viewRect.w ||
+          node.y > ui.map.viewRect.y + ui.map.viewRect.h)
+        return;
+
       var key = '';
       var xx = node.x, yy = node.y,
         hlx = node.x - 10, hly = node.y - 10,
@@ -86,6 +93,13 @@ class UINode
         }
       if (isI) // "I" symbol needs to be centered
         tx += 2;
+
+      xx -= ui.map.viewRect.x;
+      yy -= ui.map.viewRect.y;
+      tx -= ui.map.viewRect.x;
+      ty -= ui.map.viewRect.y;
+      hlx -= ui.map.viewRect.x;
+      hly -= ui.map.viewRect.y;
 
       // paint node highlight
       if (node.isHighlighted)

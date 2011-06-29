@@ -2,6 +2,15 @@
 
 import js.Lib;
 
+typedef Rect =
+{ 
+  var x: Int;
+  var y: Int;
+  var w: Int;
+  var h: Int;
+};
+
+
 class Map
 {
   var ui: UI;
@@ -10,11 +19,14 @@ class Map
   public var images: Hash<Dynamic>; // images array
   public var tooltip: Dynamic;
 //  public var screen: Dynamic; // map element
+  public var viewRect: Rect; // viewport x,y
+  var isDrag: Bool; // is viewport being dragged?
 
   public function new(uivar: UI, gvar: Game)
     {
       ui = uivar;
       game = gvar;
+      viewRect = { x:0, y:0, w:UI.mapWidth, h:UI.mapHeight };
 
       // map display
       var screen:Dynamic = UI.e("map");
@@ -29,8 +41,10 @@ class Map
         Lib.window.alert("No canvas available. Please use a canvas-compatible browser like Mozilla Firefox 3.5+ or Google Chrome.");
 
       screen.onclick = onClick;
-      screen.onmousemove = onMove; 
-      
+      screen.onmousemove = onMove;
+      screen.onmousedown = onMouseDown; 
+      screen.onmouseup = onMouseUp;
+      screen.onmouseout = onMouseUp;
       
       // main menu window
       tooltip = Tools.window(
@@ -100,12 +114,41 @@ class Map
       // paint visible nodes
       for (n in game.nodes)
         n.uiNode.paint(ctx);
+
+      paintMinimap(); // paint minimap
+    }
+
+
+// paint minimap
+  function paintMinimap()
+    {
+/*    
+      for (n in nodes)
+        if (n.isVisible(game.player))
+          {
+            
+          }
+*/          
     }
 
 
 // on moving over map
   public function onMove(event: Dynamic)
     {
+      if (isDrag)
+        {
+          viewRect.x -= Std.int(event.clientX - dragEventX);
+          viewRect.y -= Std.int(event.clientY - dragEventY);
+
+          dragEventX = event.clientX;
+          dragEventY = event.clientY;
+
+          rectBounds(); // put rect into map bounds
+
+          paint();
+          return;
+        }
+
       var node = getEventNode(event);
       if (node == null)
         {
@@ -145,6 +188,22 @@ class Map
     }
 
 
+  var dragEventX: Int;
+  var dragEventY: Int;
+  public function onMouseDown(event: Dynamic)
+    {
+      isDrag = true;
+      dragEventX = event.clientX;
+      dragEventY = event.clientY;
+    }
+
+
+  public function onMouseUp(event: Dynamic)
+    {
+      isDrag = false;
+    }
+
+
 // on clicking map
   public function onClick(event: Dynamic)
     {
@@ -160,12 +219,37 @@ class Map
     }
 
 
+// put view rectangle into map bounds
+  function rectBounds()
+    {
+      if (viewRect.x < 0)
+        viewRect.x = 0;
+      if (viewRect.y < 0)
+        viewRect.y = 0;
+      if (viewRect.x + viewRect.w > Game.mapWidth)
+        viewRect.x = Game.mapWidth - viewRect.w;
+      if (viewRect.y + viewRect.h > Game.mapHeight)
+        viewRect.y = Game.mapHeight - viewRect.h;
+    }
+
+
+// center on x,y
+  public function center(x: Int, y: Int)
+    {
+      viewRect.x = Std.int(x - viewRect.w / 2);
+      viewRect.y = Std.int(y - viewRect.h / 2);
+
+      rectBounds();
+      paint();
+    }
+
+
 // get node from mouse event
   function getEventNode(event: Dynamic): Node
     {
       var el = untyped UI.e("map");
-      var x = event.clientX - el.offsetLeft - 4;
-      var y = event.clientY - el.offsetTop - 6;
+      var x = event.clientX - el.offsetLeft - 4 + viewRect.x;
+      var y = event.clientY - el.offsetTop - 6 + viewRect.y;
 
       // find which node the click was on
       var node = null;
