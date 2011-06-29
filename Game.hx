@@ -41,7 +41,10 @@ class Game
   public static var numPowers = 3; // number of basic powers
   public static var numCults = 4; // number of cults in game
   public static var numSummonVirgins = 9; // number of virgins needed for summoning
-  static var nodesCount = 100; // amount of nodes on map
+//  static var nodesCount = 100; // amount of nodes on map
+  static var nodesCount = 400; // amount of nodes on map
+  public static var mapWidth = 2000;
+  public static var mapHeight = 2000;
   public static var upgradeCost = 3; // cost to upgrade follower
   public static var isDebug = true; // debug mode (debug button + extended info window)
 
@@ -161,7 +164,8 @@ class Game
       for (p in cults)
 	    p.setOrigin();
 
-      ui.map.paint();
+//      ui.map.paint();
+      ui.map.center(player.origin.x, player.origin.y);
       ui.updateStatus();
       endTimer("restart"); 
     }
@@ -189,9 +193,9 @@ class Game
       while (true)
         {
 		  x = Math.round(20 + Math.random() * 
-		    (UI.mapWidth - UI.markerWidth - 40));
+		    (mapWidth - UI.markerWidth - 40));
 		  y = Math.round(20 + Math.random() * 
-		    (UI.mapHeight - UI.markerHeight - 40));
+		    (mapHeight - UI.markerHeight - 40));
 
 		  cnt++;
 		  if (cnt > 100)

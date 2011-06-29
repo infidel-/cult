@@ -63,8 +63,15 @@ class Line
 
       for (p in pixels)
         {
+          // pixel out of view rectangle
+          if (p.x < map.viewRect.x - 2 ||
+              p.y < map.viewRect.y - 2 ||
+              p.x > map.viewRect.x + map.viewRect.w ||
+              p.y > map.viewRect.y + map.viewRect.h)
+            continue;
+
           var img = map.images.get('pixel' + owner.id);
-          ctx.drawImage(img, p.x, p.y);
+          ctx.drawImage(img, p.x - map.viewRect.x, p.y - map.viewRect.y);
         }
     }
 
