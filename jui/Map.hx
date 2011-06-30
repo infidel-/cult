@@ -115,20 +115,52 @@ class Map
       for (n in game.nodes)
         n.uiNode.paint(ctx);
 
-      paintMinimap(); // paint minimap
+      paintMinimap(ctx); // paint minimap
     }
 
 
 // paint minimap
-  function paintMinimap()
+  function paintMinimap(ctx: Dynamic)
     {
-/*    
-      for (n in nodes)
+      var mw = 100, mh = 100,
+        mx = UI.mapWidth - mw, my = UI.mapHeight - mh;
+
+      var xscale:Float = 1.0 * Game.mapWidth / mw;
+      var yscale:Float = 1.0 * Game.mapHeight / mh;
+
+      // draw bg
+      ctx.fillStyle = 'rgba(20,20,20,0.5)';
+      ctx.fillRect(mx, my, mw, mh);
+
+      var imageData = ctx.getImageData(mx, my, mw, mh);
+      var pix: Array<Int> = imageData.data;
+
+      for (n in game.nodes)
         if (n.isVisible(game.player))
           {
-            
+            var x = Std.int(n.x / xscale);
+            var y = Std.int(n.y / yscale);
+
+            var index = (x + y * mw) * 4;
+            var color = UI.nodeNeutralPixelColors;
+            if (n.owner != null)
+              color = UI.nodePixelColors[n.owner.id];
+            pix[index] = color[0];
+            pix[index + 1] = color[1];
+            pix[index + 2] = color[2];
+
+            if (n.owner != null)
+              {
+              }
           }
-*/          
+
+      ctx.putImageData(imageData, mx, my);
+
+      // draw view frame
+      ctx.strokeStyle = 'rgb(100,100,100)';
+      ctx.lineWidth = 1.0;
+      ctx.strokeRect(mx + viewRect.x / xscale, my + viewRect.y / yscale,
+        UI.mapWidth / xscale, UI.mapHeight / yscale);
     }
 
 

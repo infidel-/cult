@@ -303,6 +303,9 @@ class UI
     [ "rgb(255, 0, 0)", "rgb(0, 255, 255)", "rgb(0, 255, 0)", "rgb(255, 255, 0)" ];
   public static var nodeColors: Array<String> =
     [ "rgb(0, 85, 0)", "rgb(1, 9, 85)", "rgb(86, 0, 83)", "rgb(80, 80, 0)" ];
+  public static var nodePixelColors: Array<Array<Int>> =
+    [ [ 85, 221, 85 ], [ 39, 39, 215 ], [ 224, 82, 202 ], [ 216, 225, 81 ] ];
+  public static var nodeNeutralPixelColors: Array<Int> = [ 120, 120, 120 ];
   public static var lineColors: Array<String> =
     [ "#55dd55", "#2727D7", "#E052CA", "#D8E151" ];
 
