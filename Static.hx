@@ -9,6 +9,7 @@ typedef DifficultyInfo = {
   var nodesCount: Int; // nodes count
   var nodeVisibilityRadius: Int; // node visibility radius
   var numCults: Int; // number of cults in game
+  var numSummonVirgins: Int; // number of virgins needed for summoning
 
   var upgradeChance: Float; // higher value raises max upgrade chance
   var awarenessResource: Float; // higher value lowers chance of getting resources each turn
@@ -44,6 +45,7 @@ class Static
         nodesCount: 100,
         nodeVisibilityRadius: 101,
         numCults: 3,
+        numSummonVirgins: 6,
 
         upgradeChance: 1.10,
         awarenessResource: 1.25,
@@ -70,6 +72,7 @@ class Static
         nodesCount: 100,
         nodeVisibilityRadius: 101, 
         numCults: 4,
+        numSummonVirgins: 9,
 
         upgradeChance: 1.0,
         awarenessResource: 1.5,
@@ -96,6 +99,7 @@ class Static
         nodesCount: 100,
         nodeVisibilityRadius: 101, 
         numCults: 4,
+        numSummonVirgins: 9,
 
         upgradeChance: 0.90,
         awarenessResource: 1.75, 

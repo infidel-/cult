@@ -413,7 +413,7 @@ class Cult
         return (getNumFollowers(level) >= Game.upgradeCost &&
           virgins >= level + 1);
       else return
-        (priests >= Game.upgradeCost && virgins >= Game.numSummonVirgins &&
+        (priests >= Game.upgradeCost && virgins >= game.difficulty.numSummonVirgins &&
          !isRitual);
     }
 
@@ -423,7 +423,7 @@ class Cult
     {
       if (!canUpgrade(level)) return; // cannot upgrade
 
-      if ((level == 2 && virgins < Game.numSummonVirgins) ||
+      if ((level == 2 && virgins < game.difficulty.numSummonVirgins) ||
           (level < 2 && virgins < level + 1))
         return;
 
@@ -513,7 +513,7 @@ class Cult
           return;
         }
 
-      virgins -= Game.numSummonVirgins;
+      virgins -= game.difficulty.numSummonVirgins;
       isRitual = true;
       isInfoKnown = true;
       ritual = Static.rituals[0];

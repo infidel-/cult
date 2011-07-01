@@ -397,6 +397,16 @@ class Status
       for (i in 0...Game.followerNames.length)
         e("status.upgrade" + i).style.visibility =
           (game.player.canUpgrade(i) ? 'visible' : 'hidden');
+
+      updateTip("status.follower2",
+        "3 priests and " + game.difficulty.numSummonVirgins + 
+          " virgins are needed to summon the Elder God.");
+      updateTip("status.upgrade2",
+        "To perform the " + Static.rituals[0].name +
+        " you need " + Game.upgradeCost +
+        " priests and " + game.difficulty.numSummonVirgins + " virgins.<br>" +
+        "<li>The more society is aware of the cult the harder it is to " +
+        "summon Elder God.");
     }
 
 
@@ -429,16 +439,13 @@ class Status
       " neophytes and 1 virgin.",
       "To gain a priest you need " + Game.upgradeCost +
       " adepts and 2 virgins.",
-      "To perform the " + Static.rituals[0].name +
-      " you need " + Game.upgradeCost +
-      " priests and " + Game.numSummonVirgins + " virgins.<br>" +
-      "<li>The more society is aware of the cult the harder it is to " +
-      "summon Elder God."];
+      '',
+      ];
   static var tipFollowers: Array<String> =
     [ "Neophytes can find some virgins if they're lucky.",
       "Adepts can lower society awareness and investigator's willpower.",
-      "3 priests and " + Game.numSummonVirgins + 
-      " virgins are needed to summon the Elder God." ];
+      ''
+      ];
   static var tipTurns = "Shows the number of turns passed from the start.";
   static var tipAwareness =
     "Shows how much human society is aware of the cult.<br>" +

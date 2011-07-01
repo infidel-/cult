@@ -29,6 +29,8 @@ class CustomMenu
       { name: 'nodeVisibilityRadius', type: 'int', title: 'Visibility radius',
         note: 'Node visibility radius (node is considered visible when in that radius)' },
       { name: 'numCults', type: 'int', title: 'Number of cults (2-6)', note: 'Number of cults in game' },
+      { name: 'numSummonVirgins', type: 'int', title: 'Number of virgins for the final ritual',
+        note: 'Number of virgins needed to perform final ritual' },
 
       { name: 'upgradeChance', type: 'float', title: 'Max upgrade chance',
         note: 'Higher value raises max upgrade chance' },
