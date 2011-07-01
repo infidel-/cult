@@ -38,7 +38,7 @@ class Node
       lines = new List<Line>();
       links = new List<Node>();
       visibility = new Array<Bool>();
-      for (i in 0...Game.numCults)
+      for (i in 0...game.difficulty.numCults)
         visibility.push(false);
 
       owner = null;
@@ -156,7 +156,7 @@ class Node
             isProtected = true;
         }
 
-      uiNode.update();
+//      uiNode.update();
     }
 
 
@@ -172,7 +172,7 @@ class Node
   public function setGenerator(isgen: Bool)
     {
 	  isGenerator = isgen;
-	  update();
+      update();
 	}
 
 
@@ -304,7 +304,7 @@ class Node
           power[i]++;
 
       level++;
-      update();
+//      update();
     }
 
 
@@ -325,7 +325,7 @@ class Node
                 }
 
             n.setVisible(cult, vis);
-            n.update();
+//            n.update();
           }
     }
 

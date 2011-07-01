@@ -177,7 +177,7 @@ class Info
       window.style.visibility = 'visible';
       isVisible = true;
 
-      for (i in 0...Game.numCults)
+      for (i in 0...game.difficulty.numCults)
         {
 /*        
           if (!game.cults[i].isDiscovered || !game.cults[i].isInfoKnown)

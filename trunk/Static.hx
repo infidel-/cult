@@ -3,6 +3,13 @@
 // difficulty info
 typedef DifficultyInfo = {
   var level: Int;
+
+  var mapWidth: Int; // map width
+  var mapHeight: Int; // map height
+  var nodesCount: Int; // nodes count
+  var nodeVisibilityRadius: Int; // node visibility radius
+  var numCults: Int; // number of cults in game
+
   var upgradeChance: Float; // higher value raises max upgrade chance
   var awarenessResource: Float; // higher value lowers chance of getting resources each turn
   var awarenessUpgrade: Float; // higher value lowers chance of upgrading followers
@@ -31,6 +38,13 @@ class Static
       // easy
       {
         level: 0,
+  
+        mapWidth: 780,
+        mapHeight: 580,
+        nodesCount: 100,
+        nodeVisibilityRadius: 101,
+        numCults: 3,
+
         upgradeChance: 1.10,
         awarenessResource: 1.25,
         awarenessUpgrade: 0.75,
@@ -50,6 +64,13 @@ class Static
       // normal
       {
         level: 1,
+
+        mapWidth: 780,
+        mapHeight: 580,
+        nodesCount: 100,
+        nodeVisibilityRadius: 101, 
+        numCults: 4,
+
         upgradeChance: 1.0,
         awarenessResource: 1.5,
         awarenessUpgrade: 1.0,
@@ -69,6 +90,13 @@ class Static
       // hard
       {
         level: 2,
+
+        mapWidth: 780,
+        mapHeight: 580,
+        nodesCount: 100,
+        nodeVisibilityRadius: 101, 
+        numCults: 4,
+
         upgradeChance: 0.90,
         awarenessResource: 1.75, 
         awarenessUpgrade: 1.25,

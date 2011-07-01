@@ -22,6 +22,7 @@ class UI
   public var mainMenu: MainMenu; // main menu block
   public var loadMenu: LoadMenu; // load menu block
   public var saveMenu: SaveMenu; // save menu block
+  public var customMenu: CustomMenu; // custom menu block
   public var info: Info; // cult info block
   public var logWindow: Log; // log block
   public var alertWindow: Alert; // alert block
@@ -54,6 +55,7 @@ class UI
       mainMenu = new MainMenu(this, game);
       loadMenu = new LoadMenu(this, game);
       saveMenu = new SaveMenu(this, game);
+      customMenu = new CustomMenu(this, game);
       top = new TopMenu(this, game);
       sects = new SectsInfo(this, game);
       music.onRandom = status.updateTrack;
@@ -69,9 +71,10 @@ class UI
       var key = e.keyCode;
 //      trace(key);
 
-      var windowOpen = (loadMenu.isVisible || saveMenu.isVisible ||
+      var windowOpen = ( loadMenu.isVisible || saveMenu.isVisible ||
         mainMenu.isVisible || debug.isVisible || alertWindow.isVisible ||
-        logWindow.isVisible || info.isVisible || sects.isVisible);
+        logWindow.isVisible || info.isVisible || sects.isVisible ||
+        customMenu.isVisible );
 
       if (loadMenu.isVisible) // load menu keys
         loadMenu.onKey(e);
@@ -81,6 +84,9 @@ class UI
 
       else if (mainMenu.isVisible) // main menu keys
         mainMenu.onKey(e);
+        
+      else if (customMenu.isVisible) // custom menu keys
+        customMenu.onKey(e);
         
       else if (debug.isVisible) // debug menu keys
         debug.onKey(e);
@@ -320,7 +326,7 @@ class UI
   public static var markerHeight = 15;
   public static var topHeight = 30;
 
-  public static var nodeVisibility = 101;
+//  public static var nodeVisibility = 101;
   public static var colAwareness = "#ff9999";
   public static var colWillpower = "#bbbbbb";
 

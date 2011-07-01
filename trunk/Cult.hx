@@ -196,7 +196,7 @@ class Cult
           var ok = 1;
           for (p in game.cults)
             if (p.origin != null &&
-                node.distance(p.origin) < UI.nodeVisibility + 50)
+                node.distance(p.origin) < difficulty.nodeVisibilityRadius + 50)
               {
                 ok = 0;
                 break;
@@ -425,11 +425,7 @@ class Cult
 
       if ((level == 2 && virgins < Game.numSummonVirgins) ||
           (level < 2 && virgins < level + 1))
-        {
-//          if (!isAI)
-//            ui.msg("Not enough virgins");
-          return;
-        }
+        return;
 
       // summon
       if (level == 2)
@@ -462,18 +458,7 @@ class Cult
           upNode = origin;
           ok = true;
         }
-/*
-      // generators upgrade 2nd
-      if (!ok)
-        for (n in nodes)
-          if (n.level == level && n.isGenerator)
-            {
-              n.upgrade();
-              upNode = n;
-              ok = true;
-              break;
-            }
- */
+
       // find a node with maximum amount of links
       if (!ok)
         {
@@ -489,18 +474,7 @@ class Cult
               ok = true;
             }
         }
-/*
-      // random nodes upgrade last
-      if (!ok)
-        for (n in nodes)
-          if (n.level == level)
-            {
-              n.upgrade();
-              upNode = n;
-              ok = true;
-              break;
-            }
-*/
+
       if (!isAI)
         ui.updateStatus();
       
@@ -513,9 +487,11 @@ class Cult
         {
           isParalyzed = false;
           origin = upNode;
-          origin.update();
+//          origin.update();
           ui.log2('cult', this, fullName + " gains a priest and is no longer paralyzed.");
         }
+
+      ui.map.paint();
     }
 
 
@@ -701,21 +677,13 @@ class Cult
               cnt++;
 
           if (cnt >= 3)
-            {
-//              if (!isAI)
-//                ui.msg("Generator has " + cnt + " links.");
-              return "hasLinks";
-            }
+            return "hasLinks";
         }
   
 	  // check for power
 	  for (i in 0...Game.numPowers)
 		if (power[i] < node.power[i])
-		  {
-//            if (!isAI)
-//		 	  ui.msg("Not enough " + Game.powerNames[i]);
-			return "notEnoughPower";
-		  }
+          return "notEnoughPower";
 
 	  // subtract power
 	  for (i in 0...Game.numPowers)
