@@ -39,7 +39,6 @@ class Game
   public static var version = "v4pre2"; // game version
   public static var followerLevels = 3; // number of follower levels
   public static var numPowers = 3; // number of basic powers
-  public static var numSummonVirgins = 9; // number of virgins needed for summoning
   public static var upgradeCost = 3; // cost to upgrade follower
   public static var isDebug = true; // debug mode (debug button + extended info window)
 
