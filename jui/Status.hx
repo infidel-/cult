@@ -26,9 +26,10 @@ class Status
       status.style.fontSize = '12px';
       status.style.overflow = 'hidden';
 
-      var s = "<div style='padding:0 5 5 5; background: #111; height: 20; " +
-        "font-weight: bold; font-size:19px;'>Evil Cult " +
-        Game.version + "</div>";
+      var s = '';
+//      "<div style='padding:0 5 5 5; background: #111; height: 20; " +
+//        "font-weight: bold; font-size:19px;'>Evil Cult " +
+//        Game.version + "</div>";
 
       s += "<fieldset>";
       s += "<legend>FOLLOWERS</legend>";

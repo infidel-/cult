@@ -98,7 +98,8 @@ class Map
 // paint all map
   public function paint()
     {
-      if (game.isFinished)
+//      trace('paint');
+      if (game.isFinished && game.turns == 0)
         return;
 
       var el = untyped UI.e("map");
@@ -115,7 +116,9 @@ class Map
       for (n in game.nodes)
         n.uiNode.paint(ctx);
 
-      paintMinimap(ctx); // paint minimap
+      if (game.difficulty.mapWidth > UI.mapWidth ||
+          game.difficulty.mapHeight > UI.mapHeight)
+        paintMinimap(ctx); // paint minimap
     }
 
 
@@ -125,8 +128,8 @@ class Map
       var mw = 100, mh = 100,
         mx = UI.mapWidth - mw, my = UI.mapHeight - mh;
 
-      var xscale:Float = 1.0 * Game.mapWidth / mw;
-      var yscale:Float = 1.0 * Game.mapHeight / mh;
+      var xscale:Float = 1.0 * game.difficulty.mapWidth / mw;
+      var yscale:Float = 1.0 * game.difficulty.mapHeight / mh;
 
       // draw bg
       ctx.fillStyle = 'rgba(20,20,20,0.5)';
@@ -148,10 +151,11 @@ class Map
             pix[index] = color[0];
             pix[index + 1] = color[1];
             pix[index + 2] = color[2];
-
+/*
             if (n.owner != null)
               {
               }
+*/              
           }
 
       ctx.putImageData(imageData, mx, my);
@@ -258,10 +262,10 @@ class Map
         viewRect.x = 0;
       if (viewRect.y < 0)
         viewRect.y = 0;
-      if (viewRect.x + viewRect.w > Game.mapWidth)
-        viewRect.x = Game.mapWidth - viewRect.w;
-      if (viewRect.y + viewRect.h > Game.mapHeight)
-        viewRect.y = Game.mapHeight - viewRect.h;
+      if (viewRect.x + viewRect.w > game.difficulty.mapWidth)
+        viewRect.x = game.difficulty.mapWidth - viewRect.w;
+      if (viewRect.y + viewRect.h > game.difficulty.mapHeight)
+        viewRect.y = game.difficulty.mapHeight - viewRect.h;
     }
 
 

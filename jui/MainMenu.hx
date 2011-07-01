@@ -30,6 +30,16 @@ class MainMenu
           z: 20
         });
 
+      Tools.label({
+        id: 'titleLabel',
+        text: 'Evil Cult ' + Game.version,
+        w: 200,
+        h: 30,
+        x: 120,
+        y: 10,
+        container: window
+        });
+
       // main menu contents
       Tools.button({
         id: 'newGameEasy',
@@ -37,7 +47,7 @@ class MainMenu
         w: 350,
         h: 30,
         x: 35,
-        y: 30,
+        y: 40,
         container: window,
         func: onNewGame
         });
@@ -47,7 +57,7 @@ class MainMenu
         w: 350,
         h: 30,
         x: 35,
-        y: 70,
+        y: 80,
         container: window,
         func: onNewGame
         });
@@ -57,18 +67,31 @@ class MainMenu
         w: 350,
         h: 30,
         x: 35,
-        y: 110,
+        y: 120,
         container: window,
         func: onNewGame
         });
 
+      Tools.button({
+        id: 'customGame',
+        text: "CUSTOM GAME",
+        w: 350,
+        h: 30,
+        x: 35,
+        y: 160,
+        container: window,
+        func: onCustomGame
+        });
+
+      saveButton = { style: {} };
+/*
       Tools.button({
         id: 'loadGame',
         text: "LOAD GAME",
         w: 350,
         h: 30,
         x: 35,
-        y: 150,
+        y: 160,
         container: window,
         func: onLoadGame
         });
@@ -78,11 +101,11 @@ class MainMenu
         w: 350,
         h: 30,
         x: 35,
-        y: 190,
+        y: 200,
         container: window,
         func: onSaveGame
         });
-
+*/
       bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
       close = Tools.closeButton(window, 160, 240, 'mainMenuClose');
 	  close.onclick = onClose;
@@ -99,6 +122,14 @@ class MainMenu
       saveButton.style.visibility = 
         (game.isFinished ? 'hidden' : 'visible');
       isVisible = true;
+    }
+
+
+// custom game menu
+  function onCustomGame(event: Dynamic)
+    {
+      ui.customMenu.show();
+      onClose(null);
     }
 
 
@@ -156,6 +187,10 @@ class MainMenu
       else if (e.keyCode == 51) // 3
         onNewGameReal(2);
 
+      // custom game
+      else if (e.keyCode == 52) // 4
+        onCustomGame(null);
+/*
       // load game
       else if (e.keyCode == 52) // 4
         onLoadGame(null);
@@ -163,7 +198,7 @@ class MainMenu
       // save game
       else if (e.keyCode == 53) // 5
         onSaveGame(null);
-
+*/
       // exit menu
       else if (e.keyCode == 27 && !game.isFinished) // ESC
         onClose(null);

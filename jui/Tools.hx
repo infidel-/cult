@@ -153,6 +153,35 @@ class Tools
         t.style.fontWeight = "bold";
       if (params.fontSize == null)
         params.fontSize = 20;
+      t.style.color = '#ffffff';
+      t.style.fontSize = params.fontSize;
+      t.style.position = 'absolute';
+      t.style.width = params.w;
+      t.style.height = params.h;
+      t.style.left = params.x;
+      t.style.top = params.y;
+      t.style.background = '#111';
+      t.style.paddingLeft = '5px';
+	  t.style.border = '1px outset #777';
+      params.container.appendChild(t);
+      return t;
+    }
+
+
+// create a checkbox
+  public static function checkbox(params: Dynamic): Dynamic
+    {
+      var t: Dynamic = Lib.document.createElement("input");
+      t.id = params.id;
+      t.value = params.text;
+      t.type = 'checkbox';
+      if (params.bold == null)
+        params.bold = false;
+      if (params.bold)
+        t.style.fontWeight = "bold";
+      if (params.fontSize == null)
+        params.fontSize = 20;
+      t.style.color = '#ffffff';
       t.style.fontSize = params.fontSize;
       t.style.position = 'absolute';
       t.style.width = params.w;

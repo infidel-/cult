@@ -149,7 +149,7 @@ class UINode
       if (Game.debugVis)
         {
           s += "Node " + node.id + "<br>";
-          for (i in 0...Game.numCults)
+          for (i in 0...game.difficulty.numCults)
             s += node.visibility[i] + "<br>";
         }
 

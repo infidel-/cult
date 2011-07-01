@@ -13,7 +13,7 @@ class Game
 
   public var turns: Int; // turns passed
   public var isFinished: Bool; // game finished?
-  public var difficultyLevel: Int; // game difficulty (0: easy, 1: normal, 2: hard)
+  public var difficultyLevel: Int; // game difficulty (0: easy, 1: normal, 2: hard, -1: custom)
   public var difficulty: DifficultyInfo; // link to difficulty info
 
   // index of the last node/cult (for id generation)
@@ -39,12 +39,7 @@ class Game
   public static var version = "v4pre2"; // game version
   public static var followerLevels = 3; // number of follower levels
   public static var numPowers = 3; // number of basic powers
-  public static var numCults = 4; // number of cults in game
   public static var numSummonVirgins = 9; // number of virgins needed for summoning
-//  static var nodesCount = 100; // amount of nodes on map
-  static var nodesCount = 400; // amount of nodes on map
-  public static var mapWidth = 2000;
-  public static var mapHeight = 2000;
   public static var upgradeCost = 3; // cost to upgrade follower
   public static var isDebug = true; // debug mode (debug button + extended info window)
 
@@ -69,7 +64,7 @@ class Game
 
 
 // restart a game
-  public function restart(newDifficulty: Int)
+  public function restart(newDifficulty: Int, ?newDif: DifficultyInfo)
     {
       // show starting message
       if (ui.config.get('hasPlayed') == null)
@@ -84,7 +79,10 @@ class Game
       startTimer("restart");
 
       difficultyLevel = newDifficulty;
-      difficulty = Static.difficulty[difficultyLevel];
+      if (difficultyLevel >= 0)
+        difficulty = Static.difficulty[difficultyLevel];
+      else
+        difficulty = newDif; // custom difficulty
       this.isFinished = false;
 	  this.turns = 0;
       ui.clearMap();
@@ -98,7 +96,7 @@ class Game
 
       // clear cults
       var cultInfo = new Array<Int>();
-      for (i in 0...numCults)
+      for (i in 0...difficulty.numCults)
         {
           var p = null;
           var id = this.lastCultID++;
@@ -128,14 +126,14 @@ class Game
 	  this.lastNodeIndex = 0;
 
       // spawn nodes
-      for (i in 1...(nodesCount + 1))
+      for (i in 1...(difficulty.nodesCount + 1))
         spawnNode();
 
       // make 15% of nodes generators
-      var cnt: Int = Std.int(0.15 * nodesCount);
+      var cnt: Int = Std.int(0.15 * difficulty.nodesCount);
       for (i in 0...cnt)
         {
-          var nodeIndex = Math.round((nodesCount - 1) * Math.random());
+          var nodeIndex = Math.round((difficulty.nodesCount - 1) * Math.random());
           var node = nodes[nodeIndex];
 
           var powerIndex = 0;
@@ -177,7 +175,7 @@ class Game
       // fill adjacent node lists
       for (n in nodes)
         for (n2 in nodes)
-          if (n != n2 && n.distance(n2) < UI.nodeVisibility)
+          if (n != n2 && n.distance(n2) < difficulty.nodeVisibilityRadius)
             {
               n.links.remove(n2);
               n.links.add(n2);
@@ -193,9 +191,9 @@ class Game
       while (true)
         {
 		  x = Math.round(20 + Math.random() * 
-		    (mapWidth - UI.markerWidth - 40));
+		    (difficulty.mapWidth - UI.markerWidth - 40));
 		  y = Math.round(20 + Math.random() * 
-		    (mapHeight - UI.markerHeight - 40));
+		    (difficulty.mapHeight - UI.markerHeight - 40));
 
 		  cnt++;
 		  if (cnt > 100)
