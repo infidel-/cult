@@ -14,8 +14,8 @@ class Cult
   public var info: CultInfo;
   public var difficulty: DifficultyInfo; // difficulty info link
 
-  public var isInfoKnown: Bool; // info known?
-  public var isDiscovered: Bool; // is met by player?
+  public var isInfoKnown: Array<Bool>; // info known to players?
+  public var isDiscovered: Array<Bool>; // is met by players?
   public var isAI: Bool; // player or AI?
   public var isDead: Bool; // cult is dead
   public var isParalyzed: Bool; // cult is paralyzed
@@ -49,6 +49,8 @@ class Cult
   public var investigator: Investigator; // investigator
   public var investigatorTimeout: Int; // timeout before next investigator may appear
 
+  public var logMessages: String; // log string
+
 
   public function new(gvar: Game, uivar: UI, id: Int, infoID: Int)
     {
@@ -59,8 +61,9 @@ class Cult
       this.info = Static.cults[infoID];
       this.name = this.info.name;
       this.isAI = false;
-      isDiscovered = true;
-      isInfoKnown = true;
+      this.isDiscovered = [ false, false, false, false ];
+      this.isDiscovered[id] = true;
+      this.isInfoKnown = [ true, true, true, true ];
       this.power = [0, 0, 0, 0];
       this.powerMod = [0, 0, 0, 0];
       this.wars = [false, false, false, false];
@@ -70,6 +73,7 @@ class Cult
       this.sects = new List<Sect>();
       this.investigatorTimeout = 0;
       this.difficulty = game.difficulty;
+      this.logMessages = '';
     }
 
 
@@ -79,8 +83,9 @@ class Cult
       difficulty = Static.difficulty[c.dif];
       isDead = (c.ide ? true : false);
       isParalyzed = (c.ip ? true : false);
-      isDiscovered = (c.idi ? true : false);
-      isInfoKnown = (c.iin ? true : false);
+      trace('TODO load isDiscovered isInfoKnown');
+//      isDiscovered = (c.idi ? true : false);
+//      isInfoKnown = (c.iin ? true : false);
       power = c.p;
       adeptsUsed = c.au;
       investigatorTimeout = c.it;
@@ -112,6 +117,7 @@ class Cult
 // dump cult info for saving
   public function save(): Dynamic
     {
+      trace('TODO save isDiscovered isInfoKnown');
       var obj:Dynamic = {
         id: id,
         iid: infoID,
@@ -119,8 +125,8 @@ class Cult
         ia: (isAI ? 1 : 0),
         ide: (isDead ? 1 : 0),
         ip: (isParalyzed ? 1 : 0),
-        idi: (isDiscovered ? 1 : 0),
-        iin: (isInfoKnown ? 1 : 0),
+//        idi: (isDiscovered ? 1 : 0),
+//        iin: (isInfoKnown ? 1 : 0),
         p: power,
         or: (origin != null ? origin.id : 0),
         au: adeptsUsed,
@@ -172,7 +178,7 @@ class Cult
 // remove a sect
   public function removeSect(node: Node)
     {
-      ui.log2('cult', this, "Sect " + node.sect.name + " has been destroyed without leadership.");
+      ui.log2(this, "Sect " + node.sect.name + " has been destroyed without leadership.");
       sects.remove(node.sect);
       node.sect = null;
       node.update();
@@ -303,7 +309,7 @@ class Cult
 
 
 // get gain chance (pl)
-  public function getGainChance(node)
+  public function getGainChance(node: Node)
     {
       var ch = 0;
 
@@ -312,7 +318,7 @@ class Cult
       else ch = 99 - Std.int(awareness * 2 * difficulty.awarenessGain);
 
       // player penalty if cult info is not known
-      if (!isAI && node.owner != null && !node.owner.isInfoKnown)
+      if (!isAI && node.owner != null && !node.owner.isInfoKnown[game.player.id])
         ch -= 20;
 
       // player penalty if node info is not known
@@ -372,7 +378,7 @@ class Cult
         {
           investigator = null;
           hasInvestigator = false;
-          ui.log2('cult', this, "The investigator of the " + fullName +
+          ui.log2(this, "The investigator of the " + fullName +
             " has disappeared.");
 
           investigatorTimeout = 3;
@@ -480,7 +486,7 @@ class Cult
       
       // notify player
       if (this != game.player && priests >= 2)
-        ui.log2('cult', this, fullName + " has " + priests + " priests. Be careful.");
+        ui.log2(this, fullName + " has " + priests + " priests. Be careful.");
 
       // cult un-paralyzed 
       if (isParalyzed && priests >= 1)
@@ -488,7 +494,7 @@ class Cult
           isParalyzed = false;
           origin = upNode;
 //          origin.update();
-          ui.log2('cult', this, fullName + " gains a priest and is no longer paralyzed.");
+          ui.log2(this, fullName + " gains a priest and is no longer paralyzed.");
         }
 
       ui.map.paint();
@@ -515,7 +521,8 @@ class Cult
 
       virgins -= game.difficulty.numSummonVirgins;
       isRitual = true;
-      isInfoKnown = true;
+      for (c in game.cults)
+        isInfoKnown[c.id] = true;
       ritual = Static.rituals[0];
       ritualPoints = ritual.points;
 
@@ -529,7 +536,7 @@ class Cult
 
       ui.alert(fullName + " has started the " + ritual.name + ".<br><br>" +
         info.summonStart);
-      ui.log2('cult', this, fullName + " has started the " + ritual.name + ".");
+      ui.log2(this, fullName + " has started the " + ritual.name + ".");
       if (!isAI)
         ui.updateStatus();
     }
@@ -563,7 +570,7 @@ class Cult
           if (!isAI)
             {
               ui.alert("The stars were not properly aligned. The high priest goes insane.");
-              ui.log2('cult', this, fullName + " has failed to perform the " + 
+              ui.log2(this, fullName + " has failed to perform the " + 
                 Static.rituals[0].name + ".");
               ui.updateStatus();
             }
@@ -572,7 +579,7 @@ class Cult
               ui.alert(fullName +
                 " has failed to perform the " + Static.rituals[0].name + ".<br><br>" +
                 info.summonFail);
-              ui.log2('cult', this, fullName + " has failed the " +
+              ui.log2(this, fullName + " has failed the " +
                 Static.rituals[0].name + ".");
             }
           return;
@@ -580,7 +587,7 @@ class Cult
 
       game.isFinished = true;
       ui.finish(this, "summon");
-      ui.log2('cult', this, "Game over.");
+      ui.log2(this, "Game over.");
     }
 
 
@@ -594,8 +601,7 @@ class Cult
           investigatorTimeout == 0)
         {
           hasInvestigator = true;
-          if (isInfoKnown)
-            ui.log2('cult', this, "An investigator has found out about " + fullName + ".");
+          ui.log2(this, "An investigator has found out about " + fullName + ".");
           investigator = new Investigator(this, ui);
 
           if (!isAI)
@@ -731,9 +737,14 @@ class Cult
       cult.wars[id] = true;
       wars[cult.id] = true;
 
-      if (this.isInfoKnown || cult.isInfoKnown)
-        ui.log2('cults', { c1: this, c2: cult },
-          fullName + " has declared war against " + cult.fullName + ".");
+      // log messages
+      trace('TODO war message');
+/*      
+      for (c in game.cults)
+        if (this.isInfoKnown[c.id] || cult.isInfoKnown[c.id])
+          ui.log2(c, 'cults', { c1: this, c2: cult },
+            fullName + " has declared war against " + cult.fullName + ".");
+*/            
     }
 
 
@@ -746,8 +757,9 @@ class Cult
       cult.wars[id] = false;
       wars[cult.id] = false;
 
-      ui.log2('cults', { c1: this, c2: cult },
-        fullName + " has made peace with " + cult.fullName + ".");
+      trace("TODO peace message");
+//      ui.log2('cults', { c1: this, c2: cult },
+//        fullName + " has made peace with " + cult.fullName + ".");
     }
 
 
@@ -777,13 +789,13 @@ class Cult
 // lose origin
   public function loseOrigin()
     {
-      ui.log2('cult', this, fullName + " has lost its Origin.");
+      ui.log2(this, fullName + " has lost its Origin.");
 
       // stop a ritual
       if (isRitual)
         {
           isRitual = false;
-          ui.log2('cult', this, "The execution of " + ritual.name + " has been stopped.");
+          ui.log2(this, "The execution of " + ritual.name + " has been stopped.");
         }
 
       // find a new origin, starting with priests
@@ -802,13 +814,13 @@ class Cult
       // if not found, cult is in big trouble
       if (!ok)
         {
-          ui.log2('cult', this, "With no priests left " + fullName +
+          ui.log2(this, "With no priests left " + fullName +
             " is completely paralyzed.");
           isParalyzed = true;
         }
       else
         {
-          ui.log2('cult', this, "Another priest becomes the Origin of " +
+          ui.log2(this, "Another priest becomes the Origin of " +
             fullName + ".");
           origin.update();
         }
@@ -842,7 +854,7 @@ class Cult
       if (this.nodes.length > 0 || isDead)
         return;
 
-      ui.log2('cult', this, fullName + " has been destroyed, forgotten by time.");
+      ui.log2(this, fullName + " has been destroyed, forgotten by time.");
 
       isDead = true;
 
@@ -872,8 +884,20 @@ class Cult
 // discover another cult
   public function discover(cult: Cult)
     {
-      cult.isDiscovered = true;
-      ui.log2('cult', this, fullName + " has discovered the existence of " + cult.fullName + ".");
+      cult.isDiscovered[this.id] = true;
+      this.isDiscovered[cult.id] = true;
+      ui.log2(this, fullName + " has discovered the existence of " + cult.fullName + ".");
+    }
+
+
+// add message to log
+  public function log(s: String)
+    {
+      if (isAI)
+        return;
+
+      var s2 = ui.logWindow.getRenderedMessage(s);
+      logMessages += s2;
     }
 
 

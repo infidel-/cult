@@ -230,7 +230,7 @@ class Node
       if (prevOwner != null)
         prevOwner.loseNode(this, owner);
 
-      if (isVisible(game.player) && !owner.isDiscovered) // discover cult
+      if (isVisible(game.player) && !owner.isDiscovered[game.player.id]) // discover cult
         game.player.discover(owner);
     }
 
@@ -276,10 +276,10 @@ class Node
           if (Game.mapVisible) // debug: everything is visible
             v = true;
           for (l in lines) // show lines leading to this node
-            l.setVisible(v);
+            l.setVisible(cult, v);
           if (isHighlighted) // highlight node
             setHighlighted(v);
-          if (owner != null && !owner.isDiscovered) // discover cult
+          if (owner != null && !owner.isDiscovered[cult.id]) // discover cult
             cult.discover(owner);
         }
     }
@@ -344,7 +344,7 @@ class Node
             this.lines.add(l);
             if (!owner.isAI ||
                 (n.isVisible(game.player) && this.isVisible(game.player)))
-              l.setVisible(true);
+              l.setVisible(game.player, true);
             hasLine = true;
           }
 
@@ -367,7 +367,7 @@ class Node
       this.lines.add(l);
       if (!owner.isAI ||
           (nc.isVisible(game.player) && this.isVisible(game.player)))
-        l.setVisible(true);
+        l.setVisible(game.player, true);
     }
 
 
@@ -409,6 +409,8 @@ class Node
       "Corporate worker",
       "University professor",
       "Army officer",
-      "Scientist"
+      "Scientist",
+      "Politician",
+      "Media Person"
     ];
 }

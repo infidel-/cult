@@ -75,12 +75,12 @@ class Info
             '">';
           if (p.isDead)
             s += '<s>';
-          s += (p.isDiscovered ? p.fullName : '?');
+          s += (p.isDiscovered[game.player.id] ? p.fullName : '?');
           if (p.isDead)
             s += '</s> Forgotten';
 
           // wars list
-          if (!p.isDead && p.isInfoKnown)
+          if (!p.isDead && p.isInfoKnown[game.player.id])
             {
               var w = '';
               for (i in 0...p.wars.length)
@@ -92,7 +92,7 @@ class Info
           s += '<br>';
 
           // investigator info
-          if (p.hasInvestigator && p.isInfoKnown)
+          if (p.hasInvestigator && p.isInfoKnown[game.player.id])
             {
               s += "<span style='font-size: 12px; color: #999999'>Investigator <span style='color: white'>" +
                 p.investigator.name + "</span>";
@@ -104,7 +104,7 @@ class Info
                 s += " <span style='color:#ffffff'>--- Hidden ---</span>";
               s += '<br>';
             }
-          if (Game.isDebug && p.investigatorTimeout > 0 && p.isInfoKnown)
+          if (Game.isDebug && p.investigatorTimeout > 0 && p.isInfoKnown[game.player.id])
             s += " Investigator timeout: " + p.investigatorTimeout + "<br>";
 
           // debug info
@@ -134,7 +134,7 @@ class Info
             }
 
           // ritual
-          if (p.isRitual && p.isInfoKnown)
+          if (p.isRitual && p.isInfoKnown[game.player.id])
             {
               var turns = Std.int(p.ritualPoints / p.priests);
               if (p.ritualPoints % p.priests > 0)
@@ -148,7 +148,7 @@ class Info
             }
 
           // followers
-          if (!p.isDead && p.isInfoKnown)
+          if (!p.isDead && p.isInfoKnown[game.player.id])
             {
               s += p.nodes.length + ' followers (' +
                 p.neophytes + ' neophytes, ' + p.adepts + ' adepts, ' +
@@ -165,9 +165,9 @@ class Info
                 "' style='height:10; width:10; font-size:12px; border: 1px solid #777'>+</span>";
               s += '<br>';
               s += "<span id='info.note" + i + "'>" +
-                (p.isInfoKnown ? p.info.note : 'No information.') + "</span>";
+                (p.isInfoKnown[game.player.id] ? p.info.note : 'No information.') + "</span>";
               s += "<span id='info.longnote" + i + "'>" +
-                (p.isInfoKnown ? p.info.longNote : 'No information.') + "</span>";
+                (p.isInfoKnown[game.player.id] ? p.info.longNote : 'No information.') + "</span>";
             }
           s += '</div><hr>';
           i++;

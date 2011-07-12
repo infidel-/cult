@@ -52,8 +52,7 @@ class CultSabotageRitualTask extends Task
             break;
         }
 
-      if (pts > 0 && !cult.isAI)
-        ui.log2('cult', cult, 'Ritual of ' + c.fullName + ' stalled for ' +
-          pts + ' points.');
+      if (pts > 0)
+        cult.log('Ritual of ' + c.fullName + ' stalled for ' + pts + ' points.');
     }
 }

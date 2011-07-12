@@ -110,7 +110,7 @@ class Map
 
       // paint visible lines
       for (l in game.lines)
-        l.paint(ctx, this);
+        l.paint(ctx, this, game.player.id);
 
       // paint visible nodes
       for (n in game.nodes)

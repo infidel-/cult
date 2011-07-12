@@ -15,8 +15,10 @@ class AI extends Cult
       else
         difficulty = Static.difficulty[1];
 
-      isInfoKnown = game.difficulty.isInfoKnown;
-      isDiscovered = game.difficulty.isDiscovered;
+      for (i in 0...isInfoKnown.length)
+        isInfoKnown[i] = game.difficulty.isInfoKnown;
+      for (i in 0...isDiscovered.length)
+        isDiscovered[i] = game.difficulty.isDiscovered;
     }
 
 

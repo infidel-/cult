@@ -201,7 +201,7 @@ class Debug
 
       for (c in game.cults)
         {
-          c.isInfoKnown = true;
+          c.isInfoKnown[game.player.id] = true;
           for (n in c.nodes)
             n.update();
         }
