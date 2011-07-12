@@ -30,12 +30,11 @@ class CultResourceInfoTask extends Task
     {
       var c:Cult = sect.taskTarget;
 
-      if (!cult.isAI)
-        ui.log2('cult', cult,
-          'Task completed: ' + c.fullName + ' has ' +
-          c.power[0] + ' (+' + c.powerMod[0] + ') ' + UI.powerName(0) + ', ' +
-          c.power[1] + ' (+' + c.powerMod[1] + ') ' + UI.powerName(1) + ', ' +
-          c.power[3] + ' (+' + c.powerMod[2] + ') ' + UI.powerName(2) + ', ' +
-          c.power[3] + ' (+' + c.powerMod[3] + ') ' + UI.powerName(3) + '.');
+      cult.log(
+        'Task completed: ' + c.fullName + ' has ' +
+        c.power[0] + ' (+' + c.powerMod[0] + ') ' + UI.powerName(0) + ', ' +
+        c.power[1] + ' (+' + c.powerMod[1] + ') ' + UI.powerName(1) + ', ' +
+        c.power[3] + ' (+' + c.powerMod[2] + ') ' + UI.powerName(2) + ', ' +
+        c.power[3] + ' (+' + c.powerMod[3] + ') ' + UI.powerName(3) + '.');
     }
 }

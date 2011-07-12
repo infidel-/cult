@@ -26,10 +26,8 @@ class Status
       status.style.fontSize = '12px';
       status.style.overflow = 'hidden';
 
-      var s = '';
-//      "<div style='padding:0 5 5 5; background: #111; height: 20; " +
-//        "font-weight: bold; font-size:19px;'>Evil Cult " +
-//        Game.version + "</div>";
+      var s = "<div id='status.cult' style='padding:0 5 5 5; background: #111; height: 17; " +
+        "font-weight: bold; font-size:15px; text-align:center;'>-</div>";
 
       s += "<fieldset>";
       s += "<legend>FOLLOWERS</legend>";
@@ -313,6 +311,8 @@ class Status
 // update status window (fups)
   public function update()
     {
+      e("status.cult").innerHTML = game.player.fullName;
+
       // update tooltips
 	  for (i in 0...(Game.numPowers + 1))
         {

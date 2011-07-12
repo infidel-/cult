@@ -8,6 +8,7 @@ class Game
 
   // cults list and link to player
   public var cults: Array<Cult>;
+  public var currentPlayerID: Int; // ID of current player's turn
   public var player: Cult;
   public var sectTasks: Array<sects.Task>; // available sect tasks
 
@@ -86,7 +87,6 @@ class Game
 	  this.turns = 0;
       ui.clearMap();
       ui.clearLog();
-      ui.log("Game started.", false);
 
       this.lines = new List<Line>();
       this.nodes = new Array<Node>();
@@ -95,6 +95,7 @@ class Game
 
       // clear cults
       var cultInfo = new Array<Int>();
+      var numPlayersLeft = difficulty.numPlayers;
       for (i in 0...difficulty.numCults)
         {
           var p = null;
@@ -115,13 +116,17 @@ class Game
                 if (ok) break;
               }
 
-          if (i == 0)
-            p = new Cult(this, ui, id, infoID);
+          if (i <= numPlayersLeft)
+            {
+              p = new Cult(this, ui, id, infoID);
+              numPlayersLeft--;
+            }
           else p = new AI(this, ui, id, infoID);
           cults.push(p);
           cultInfo.push(infoID);
         }
       player = cults[0];
+      currentPlayerID = 0;
 	  this.lastNodeIndex = 0;
 
       // spawn nodes
@@ -164,6 +169,9 @@ class Game
 //      ui.map.paint();
       ui.map.center(player.origin.x, player.origin.y);
       ui.updateStatus();
+
+      for (c in cults)
+        c.log("Game started.");
       endTimer("restart"); 
     }
 
@@ -287,8 +295,9 @@ class Game
           var endNode = getNode(l[1]);
           var cult = cults[l[2]];
           var line = Line.create(ui.map, cult, startNode, endNode);
-          if (l[3] == 1)
-            line.setVisible(true);
+          trace('TODO: load lines visibility bug!');
+//          if (l[3] == 1)
+//            line.setVisible(game.player, true);
           lines.add(line);
           startNode.lines.add(line);
           endNode.lines.add(line);
@@ -310,10 +319,12 @@ class Game
       for (c in cults)
         save.cults.push(c.save());
       save.lines = new Array<Dynamic>();
+      trace('TODO: save lines fail');
+/*      
       for (l in lines) // pack lines into int arrays
         save.lines.push([ l.startNode.id, l.endNode.id, l.owner.id,
           (l.isVisible ? 1 : 0) ]);
-
+*/
       save.turns = turns;
       save.dif = difficultyLevel;
       return save;
@@ -333,6 +344,57 @@ class Game
 // on clicking end turn button
   public function endTurn()
     {
+      var newPlayerID = -1;
+      for (i in (currentPlayerID + 1)...cults.length)
+        {
+          var c = cults[i];
+          trace('cult ' + c.id + ' ' + c.isAI);
+
+          // AI turn
+          if (c.isAI && !c.isDead)
+            {
+              c.turn();
+
+              // game could be finished on summoning success
+              if (isFinished)
+                return;
+
+              startTimer("ai " + c.name);
+              untyped c.aiTurn();
+              endTimer("ai " + c.name);
+            }
+          
+          if (!c.isAI && !c.isDead)
+            {
+              newPlayerID = i;
+              break;
+            }
+        }
+
+      // move turn to next player
+      if (newPlayerID >= 0)
+        {
+          trace('player cult ' + newPlayerID);
+          player = cults[newPlayerID];
+          currentPlayerID = newPlayerID;
+
+          player.turn();
+          for (c in cults)
+            c.checkVictory();
+      
+          ui.map.paint();
+	      ui.updateStatus();
+        }
+
+      // all cults are done, next turn
+      if (newPlayerID < 0)
+        {
+          turns++;
+          currentPlayerID = -1;
+          endTurn();
+        }
+
+/* --++-- old single-player behaviour
       ui.logPanel.endTurn(); // darken older messages
 
       // clear node highlight
@@ -361,6 +423,7 @@ class Game
 	  turns++;
       ui.map.paint();
 	  ui.updateStatus();
+*/      
 	}
 
 

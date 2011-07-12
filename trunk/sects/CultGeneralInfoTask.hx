@@ -18,7 +18,7 @@ class CultGeneralInfoTask extends Task
   public override function check(cult: Cult, sect: Sect, target: Dynamic): Bool
     {
       var c: Cult = target;
-      if (cult == c || c.isInfoKnown)
+      if (cult == c || c.isInfoKnown[cult.id])
         return false;
 
       return true;
@@ -29,10 +29,9 @@ class CultGeneralInfoTask extends Task
   public override function complete(game: Game, ui: UI, cult: Cult, sect: Sect, points: Int)
     {
       var c:Cult = sect.taskTarget;
-      c.isInfoKnown = true;
+      c.isInfoKnown[cult.id] = true;
 
-      if (!cult.isAI)
-        ui.log2('cult', cult, 'Task completed: Information about ' + c.fullName + ' gathered.');
+      cult.log('Task completed: Information about ' + c.fullName + ' gathered.');
 
       for (n in c.nodes)
         if (n.isVisible(c))

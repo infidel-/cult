@@ -67,7 +67,7 @@ class Investigator
         turnVisible = 2;
       if (isHidden && numTurn > turnVisible)
         {
-          ui.log2('cult', cult, cult.fullName + " has found out the investigator's location.");
+          ui.log2(cult, cult.fullName + " has found out the investigator's location.");
           isHidden = false;
         }
       if (will >= 9) // becomes hidden again on gaining enough willpower
@@ -105,7 +105,7 @@ class Investigator
         level = 2;
       
       if (level > oldLevel && !cult.isAI)
-        ui.log2('cult', cult, "The investigator of " + cult.fullName +
+        ui.log2(cult, "The investigator of " + cult.fullName +
           " has gained level " + (level + 1) + ".");
     }
 
@@ -145,7 +145,7 @@ class Investigator
       if (node == null)
         return;
 
-      ui.log2('cult', cult, "The investigator revealed the " + cult.fullName + " follower.");
+      ui.log2(cult, "The investigator revealed the " + cult.fullName + " follower.");
       if (node.sect != null) // destroy sect
         cult.removeSect(node);
       node.generateAttributes(); // regen node

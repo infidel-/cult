@@ -15,7 +15,7 @@ class Line
   public var endNode: Node;
   public var pixels: Array<Pixel>;
   public var owner: Cult;
-  public var isVisible: Bool;
+  public var visibility: Array<Bool>; // line visibility to cults
 
 
   function new()
@@ -32,7 +32,7 @@ class Line
       line.owner = player;
 	  line.startNode = startNode;
 	  line.endNode = endNode;
-      line.isVisible = false;
+      line.visibility = [ false, false, false, false ];
 
       var cnt = 10;
       var dist = cast startNode.distance(endNode);
@@ -56,9 +56,9 @@ class Line
 
 
 // paint a line
-  public function paint(ctx: Dynamic, map: Map)
+  public function paint(ctx: Dynamic, map: Map, cultID: Int)
     {
-      if (!isVisible)
+      if (!visibility[cultID])
         return;
 
       for (p in pixels)
@@ -76,10 +76,10 @@ class Line
     }
 
 
-// set line visibility
-  public function setVisible(vis)
+// set line visibility to this cult
+  public inline function setVisible(c: Cult, vis: Bool)
     {
-      isVisible = vis;
+      visibility[c.id] = vis;
     }
 
 

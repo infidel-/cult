@@ -59,19 +59,14 @@ class Log
     }
 
 
-// add message to log
-  public function add(s: String, ?doShow: Bool)
+// add message to cult log
+  public function getRenderedMessage(s: String): String
     {
-//      if (logPrevTurn != game.turns)
-//        logText.innerHTML += "<center style='font-size:10px'>...</center><br>";
-      text.innerHTML += 
+      return
         "<span style='color:#888888'>" +
         DateTools.format(Date.now(), "%H:%M:%S") +
         "</span>" +
         " Turn " + (game.turns + 1) + ": " + s + "<br>";
-      if (doShow == null || doShow == true)
-        show();
-      logPrevTurn = game.turns;
     }
 
 
@@ -85,6 +80,7 @@ class Log
 // show log
   public function show()
     {
+      text.innerHTML = game.player.logMessages;
       text.scrollTop = 10000;
       window.style.visibility = 'visible';
       isVisible = true;

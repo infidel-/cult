@@ -153,7 +153,7 @@ class UINode
             s += node.visibility[i] + "<br>";
         }
 
-      if (node.owner != null && !node.owner.isInfoKnown && !node.isKnown)
+      if (node.owner != null && !node.owner.isInfoKnown[game.player.id] && !node.isKnown)
         {
           s += "<span style='color:#ff8888'>Use sect to gather cult<br>or node information.</span><br>";
 //          s += 'Use sects to gather cult<br>or node information.<br>';
