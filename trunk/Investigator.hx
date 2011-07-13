@@ -4,6 +4,7 @@ class Investigator
 {
   public var cult: Cult; // the cult that investigator knows about
   var ui: UI;
+  var game: Game;
   var numTurn: Int;
 
   public var name: String;
@@ -11,10 +12,11 @@ class Investigator
   public var level: Int; // investigator level
   public var isHidden: Bool; // is hidden?
 
-  public function new(c: Cult, ui: UI)
+  public function new(c: Cult, ui: UI, g: Game)
     {
       cult = c;
       this.ui = ui;
+      this.game = g;
       name = GenName.generate();
       numTurn = 0;
       isHidden = true;
@@ -150,8 +152,11 @@ class Investigator
         cult.removeSect(node);
       node.generateAttributes(); // regen node
       node.removeOwner(); // clean ownership
-      if (node.visibility[0]) // highlight node
-        node.setHighlighted(true);
+
+      // highlight node
+      for (c in game.cults)
+        if (node.isVisible(c))
+          c.highlightNode(node);
     }
 
 

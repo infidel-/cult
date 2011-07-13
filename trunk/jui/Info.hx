@@ -130,6 +130,7 @@ class Info
                   s += "<span title='Chance of investigator willpower raise'>IWC: " +
                     p.investigator.getGainWillChance() + "%</span> ";
                 }
+              s += 'Dif: ' + p.difficulty.level;
               s += "</span><br>";
             }
 

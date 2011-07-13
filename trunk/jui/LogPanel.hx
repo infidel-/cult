@@ -38,52 +38,55 @@ class LogPanel
     }
 
 
-// add item to log
-  public function add(text: String, ?type: String, ?obj: Dynamic)
+// clear and paint all player messages
+  public function paint()
     {
-      // clear log if too many items
-      if (list.length >= 24)
-        clear();
+      clear();
 
-      // choose symbol/color pair
-      var sym = '!';
-      var col = 'white';
-      if (type == 'cult') // cult-related message
+      for (m in game.player.logPanelMessages)
         {
-          var cult: Cult = obj;
-          col = UI.lineColors[cult.id]; 
+          // choose symbol/color pair
+          var sym = '!';
+          var col = 'white';
+          if (m.type == 'cult' || m.type == null) // cult-related message
+            {
+              var cult: Cult = m.obj;
+              col = UI.lineColors[cult.id]; 
+            }
+          else if (m.type == 'cults') // messages relating to 2 cults
+            {
+              var cult: Cult = m.obj.c1;
+              var cult2: Cult = m.obj.c2;
+              sym = "<span style='color:" + UI.lineColors[cult.id] + "'>!</span>" +
+                "<span style='color:" + UI.lineColors[cult2.id] + "'>!</span>";
+            }
+
+          // create element
+          var e = Lib.document.createElement("div");
+          m.id = list.length;
+          e.id = 'log.id' + list.length;
+          untyped e.messageID = m.id;
+          e.style.position = 'absolute';
+          e.style.width = '18';
+          e.style.height = '18';
+          e.style.left = '0';
+          e.style.top = '' + (list.length * 22);
+          e.style.background = '#151515';
+          e.style.border = '1px solid #999';
+          e.style.cursor = 'pointer';
+          e.style.fontSize = 15;
+          e.style.color = col;
+          e.style.fontWeight = 'bold';
+          e.style.textAlign = 'center';
+          e.innerHTML = sym;
+          panel.appendChild(e);
+
+          e.onclick = onClick;
+          e.title = "Turn " + m.turn + ": " + m.text;
+          new JQuery("#log\\.id" + list.length).tooltip({ delay: 0 });
+
+          list.add(e);
         }
-      else if (type == 'cults') // messages relating to 2 cults
-        {
-          var cult: Cult = obj.c1;
-          var cult2: Cult = obj.c2;
-          sym = "<span style='color:" + UI.lineColors[cult.id] + "'>!</span>" +
-            "<span style='color:" + UI.lineColors[cult2.id] + "'>!</span>";
-        }
-
-      // create element
-      var e = Lib.document.createElement("div");
-      e.id = 'log.id' + list.length;
-      e.style.position = 'absolute';
-      e.style.width = '18';
-      e.style.height = '18';
-      e.style.left = '0';
-      e.style.top = '' + (list.length * 22);
-      e.style.background = '#151515';
-	  e.style.border = '1px solid #999';
-	  e.style.cursor = 'pointer';
-      e.style.fontSize = 15;
-      e.style.color = col;
-      e.style.fontWeight = 'bold';
-      e.style.textAlign = 'center';
-      e.innerHTML = sym;
-      panel.appendChild(e);
-
-	  e.onclick = onClick;
-      e.title = "Turn " + (game.turns + 1) + ": " + text;
-      new JQuery("#log\\.id" + list.length).tooltip({ delay: 0 });
-
-      list.add(e);
     }
 
 
@@ -96,6 +99,11 @@ class LogPanel
         e = e.parentNode;
       panel.removeChild(e);
       list.remove(e);
+
+      // remove item from log
+      for (m in game.player.logPanelMessages)
+        if (m.id == e.messageID)
+          game.player.logPanelMessages.remove(m);
 
       // pack items
       var cnt = 0;

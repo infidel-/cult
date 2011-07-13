@@ -16,13 +16,6 @@ class UINode
     }
 
 
-// set node highlight
-  public function setHighlighted()
-    {
-      update();
-    }
-
-
   public function paint(ctx: Dynamic)
     {
       if (!node.isVisible(game.player))
@@ -102,11 +95,13 @@ class UINode
       hly -= ui.map.viewRect.y;
 
       // paint node highlight
-      if (node.isHighlighted)
-        {
-          var img = ui.map.images.get('hl');
-          ctx.drawImage(img, hlx, hly);
-        }
+      for (n in game.player.highlightedNodes)
+        if (n == node)
+          {
+            var img = ui.map.images.get('hl');
+            ctx.drawImage(img, hlx, hly);
+            break;
+          }
 
       // paint node image
       var img = ui.map.images.get(key);
@@ -152,12 +147,17 @@ class UINode
           for (i in 0...game.difficulty.numCults)
             s += node.visibility[i] + "<br>";
         }
-
-      if (node.owner != null && !node.owner.isInfoKnown[game.player.id] && !node.isKnown)
+/*
+      s += 'isKnown: <br>';
+      for (i in 0...game.difficulty.numCults)
+        s += node.isKnown[i] + "<br>";
+*/
+      if (node.owner != null && !node.owner.isInfoKnown[game.player.id] && !node.isKnown[game.player.id] &&
+          node.owner != game.player)
         {
           s += "<span style='color:#ff8888'>Use sect to gather cult<br>or node information.</span><br>";
 //          s += 'Use sects to gather cult<br>or node information.<br>';
-          if (node.owner == null || node.owner.isAI)
+          if (node.owner == null || node.owner != game.player)
             s += "<br>Chance of success: <span style='color:white'>" +
               game.player.getGainChance(node) + "%</span><br>";
           return s;
@@ -167,7 +167,7 @@ class UINode
         {
           s += "<span style='color:" + Game.cultColors[node.owner.id] + "'>" +
             node.owner.name + "</span><br>";
-          if (node.owner.origin == node && node.isKnown)
+          if (node.owner.origin == node && node.isKnown[game.player.id])
             s += "<span style='color:" + Game.cultColors[node.owner.id] +
               "'>The Origin</span><br>";
           s += "<br>";
@@ -178,9 +178,9 @@ class UINode
       s += node.job + "<br>";
 
       if (node.owner != null) // follower level
-        s += "<b>" + (node.isKnown ? Game.followerNames[node.level] : 'Unknown') + 
+        s += "<b>" + (node.isKnown[game.player.id] ? Game.followerNames[node.level] : 'Unknown') + 
           "</b> <span style='color:white'>L" +
-          (node.isKnown ? '' + (node.level + 1) : '?') + "</span><br>";
+          (node.isKnown[game.player.id] ? '' + (node.level + 1) : '?') + "</span><br>";
       s += "<br>";
 
       if (node.sect != null) // sect name
@@ -216,7 +216,7 @@ class UINode
         }
 
       // amount of power to conquer
-      if (node.owner == null || node.isKnown)
+      if (node.owner == null || node.isKnown[game.player.id])
         for (i in 0...Game.numPowers)
           if (node.power[i] > 0)
             {
@@ -227,7 +227,7 @@ class UINode
         s += "Chance of success: <span style='color:white'>" +
           game.player.getGainChance(node) + "%</span><br>";
 
-	  if (node.isGenerator && (node.owner == null || node.isKnown))
+	  if (node.isGenerator && (node.owner == null || node.isKnown[game.player.id]))
 		{
 		  s += "<br>Generates:<br>";
 	      for (i in 0...Game.numPowers)

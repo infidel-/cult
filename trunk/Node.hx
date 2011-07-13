@@ -18,10 +18,9 @@ class Node
   public var centerX: Int;
   public var centerY: Int;
   public var visibility: Array<Bool>; // node visibility to cults
+  public var isKnown: Array<Bool>; // node info known to players?
   public var isGenerator: Bool; // node is generating resources?
   public var isProtected: Bool; // node protected by neighbours?
-  public var isHighlighted: Bool; // node highlighted in ui?
-  public var isKnown: Bool; // node info known to player?
   public var level: Int; // node level
   public var owner: Cult; // node owner
   public var sect: Sect; // sect link
@@ -37,9 +36,12 @@ class Node
       id = index;
       lines = new List<Line>();
       links = new List<Node>();
-      visibility = new Array<Bool>();
+      visibility = [];
       for (i in 0...game.difficulty.numCults)
         visibility.push(false);
+      isKnown = [];
+      for (i in 0...game.difficulty.numCults)
+        isKnown.push(false);
 
       owner = null;
 
@@ -60,7 +62,9 @@ class Node
       job = jobs[Std.int(Math.random() * (jobs.length - 1))];
      
 	  isGenerator = false;
-      isKnown = false;
+      isKnown = [];
+      for (i in 0...game.difficulty.numCults)
+        isKnown.push(false);
       power = [0, 0, 0];
 	  powerGenerated = [0, 0, 0];
       level = 0;
@@ -199,9 +203,8 @@ class Node
       if (owner != null)
         owner.nodes.remove(this);
       owner = c;
+      isKnown[owner.id] = true;
       owner.nodes.add(this);
-      if (owner != null && !owner.isAI)
-        isKnown = true;
       update();
 
       // show nearby nodes to new owner
@@ -277,8 +280,8 @@ class Node
             v = true;
           for (l in lines) // show lines leading to this node
             l.setVisible(cult, v);
-          if (isHighlighted) // highlight node
-            setHighlighted(v);
+//          if (v && cult != game.player)
+//            cult.highlightNode(this);
           if (owner != null && !owner.isDiscovered[cult.id]) // discover cult
             cult.discover(owner);
         }
@@ -342,9 +345,12 @@ class Node
             game.lines.add(l);
             n.lines.add(l);
             this.lines.add(l);
-            if (!owner.isAI ||
-                (n.isVisible(game.player) && this.isVisible(game.player)))
-              l.setVisible(game.player, true);
+
+            // make line visible to all cults who see that node
+            for (c in game.cults)
+              if (n.isVisible(c) || this.isVisible(c))
+                l.setVisible(c, true);
+
             hasLine = true;
           }
 
@@ -365,9 +371,11 @@ class Node
       game.lines.add(l);
       nc.lines.add(l);
       this.lines.add(l);
-      if (!owner.isAI ||
-          (nc.isVisible(game.player) && this.isVisible(game.player)))
-        l.setVisible(game.player, true);
+
+      // make line visible to all cults who see that node
+      for (c in game.cults)
+        if (nc.isVisible(c) || this.isVisible(c))
+          l.setVisible(c, true);
     }
 
 
@@ -392,14 +400,6 @@ class Node
           l.startNode.lines.remove(l);
           l.endNode.lines.remove(l);
         }
-    }
-
-
-// set node highlight
-  public function setHighlighted(isHL: Bool)
-    {
-      isHighlighted = isHL;
-      uiNode.setHighlighted();
     }
 
 

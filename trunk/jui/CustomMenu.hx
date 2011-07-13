@@ -28,8 +28,8 @@ class CustomMenu
       { name: 'nodesCount', type: 'int', title: 'Amount of nodes', note: 'Amount of nodes on map' },
       { name: 'nodeVisibilityRadius', type: 'int', title: 'Visibility radius',
         note: 'Node visibility radius (node is considered visible when in that radius)' },
-      { name: 'numCults', type: 'int', title: 'Number of cults (2-6)', note: 'Number of cults in game' },
-      { name: 'numPlayers', type: 'int', title: 'Number of human players (1-6)', note: 'Number of human players in game' },
+      { name: 'numCults', type: 'int', title: 'Number of cults (2-4)', note: 'Number of cults in game' },
+      { name: 'numPlayers', type: 'int', title: 'Number of human players (1-4)', note: 'Number of human players in game' },
       { name: 'numSummonVirgins', type: 'int', title: 'Number of virgins for the final ritual',
         note: 'Number of virgins needed to perform final ritual' },
 
@@ -209,6 +209,12 @@ class CustomMenu
 //      trace(dif);
       if (dif.numPlayers < 1)
         dif.numPlayers = 1;
+      if (dif.numCults < 1)
+        dif.numCults = 1;
+      if (dif.numPlayers > 4)
+        dif.numPlayers = 4;
+      if (dif.numCults > 4)
+        dif.numCults = 4;
 
       game.restart(-1, dif);
 

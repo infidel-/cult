@@ -165,7 +165,7 @@ class Debug
         if (c.isAI)
           {
             c.hasInvestigator = true;
-            c.investigator = new Investigator(c, ui);
+            c.investigator = new Investigator(c, ui, game);
           }
     }
 
@@ -177,7 +177,7 @@ class Debug
         if (c == game.player)
           {
             c.hasInvestigator = true;
-            c.investigator = new Investigator(c, ui);
+            c.investigator = new Investigator(c, ui, game);
           }
     }
 
@@ -196,7 +196,7 @@ class Debug
       for (n in game.nodes)
         {
           n.setVisible(game.player, true);
-          n.isKnown = true;
+          n.isKnown[game.player.id] = true;
         }
 
       for (c in game.cults)

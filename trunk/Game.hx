@@ -116,7 +116,7 @@ class Game
                 if (ok) break;
               }
 
-          if (i <= numPlayersLeft)
+          if (numPlayersLeft > 0)
             {
               p = new Cult(this, ui, id, infoID);
               numPlayersLeft--;
@@ -271,7 +271,7 @@ class Game
           node.load(n);
           nodes.push(node);
           if (node.owner == player)
-            node.isKnown = true;
+            node.isKnown[player.id] = true;
         }
       updateLinks(); // update adjacent node links
 
@@ -344,11 +344,13 @@ class Game
 // on clicking end turn button
   public function endTurn()
     {
+      // clear node highlight
+      player.highlightedNodes.clear();
+
       var newPlayerID = -1;
       for (i in (currentPlayerID + 1)...cults.length)
         {
           var c = cults[i];
-          trace('cult ' + c.id + ' ' + c.isAI);
 
           // AI turn
           if (c.isAI && !c.isDead)
@@ -374,7 +376,6 @@ class Game
       // move turn to next player
       if (newPlayerID >= 0)
         {
-          trace('player cult ' + newPlayerID);
           player = cults[newPlayerID];
           currentPlayerID = newPlayerID;
 
@@ -383,6 +384,7 @@ class Game
             c.checkVictory();
       
           ui.map.paint();
+          ui.logPanel.paint();
 	      ui.updateStatus();
         }
 

@@ -33,13 +33,13 @@ class CultNodeInfoTask extends Task
 
       var cnt = 0;
       for (n in c.nodes)
-        if (n.isVisible(cult) && !n.isKnown)
+        if (n.isVisible(cult) && !n.isKnown[cult.id])
           {
             cnt += 10; // 10 points per node
             if (cnt >= points)
               break;
 
-            n.isKnown = true;
+            n.isKnown[cult.id] = true;
             n.update();
           }
     }
