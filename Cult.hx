@@ -50,6 +50,8 @@ class Cult
   public var investigatorTimeout: Int; // timeout before next investigator may appear
 
   public var logMessages: String; // log string
+  public var logPanelMessages: List<LogPanelMessage>; // log panel messages list
+  public var highlightedNodes: List<Node>; // highlighted nodes list
 
 
   public function new(gvar: Game, uivar: UI, id: Int, infoID: Int)
@@ -61,12 +63,27 @@ class Cult
       this.info = Static.cults[infoID];
       this.name = this.info.name;
       this.isAI = false;
-      this.isDiscovered = [ false, false, false, false ];
+      this.highlightedNodes = new List<Node>();
+
+      isDiscovered = [];
+      isInfoKnown = [];
+
+      for (i in 0...game.difficulty.numCults)
+        isInfoKnown[i] = game.difficulty.isInfoKnown;
+      for (i in 0...game.difficulty.numCults)
+        isDiscovered[i] = game.difficulty.isDiscovered;
+
+      // self discovered and info known
       this.isDiscovered[id] = true;
-      this.isInfoKnown = [ true, true, true, true ];
+      this.isInfoKnown[id] = true;
+
       this.power = [0, 0, 0, 0];
       this.powerMod = [0, 0, 0, 0];
-      this.wars = [false, false, false, false];
+
+      wars = [];
+      for (i in 0...game.difficulty.numCults)
+        wars.push(false);
+
       this.adeptsUsed = 0;
       this.awareness = 0;
       this.nodes = new List<Node>();
@@ -74,6 +91,7 @@ class Cult
       this.investigatorTimeout = 0;
       this.difficulty = game.difficulty;
       this.logMessages = '';
+      this.logPanelMessages = new List<LogPanelMessage>();
     }
 
 
@@ -92,7 +110,7 @@ class Cult
       if (c.inv != null)
         {
           hasInvestigator = true;
-          investigator = new Investigator(this, ui);
+          investigator = new Investigator(this, ui, game);
           investigator.load(c.inv);
         }
       if (c.r != null)
@@ -215,7 +233,7 @@ class Cult
 	  origin = game.nodes[index];
       origin.owner = this;
       if (!isAI || game.difficulty.isOriginKnown)
-        origin.isKnown = true;
+        origin.isKnown[this.id] = true;
 
       nodes.add(origin);
       origin.update();
@@ -232,6 +250,7 @@ class Cult
 
       origin.setVisible(this, true);
       origin.showLinks();
+      highlightedNodes.clear(); // hack: clear highlighted
 
       // give initial power from starting node
 	  for (i in 0...Game.numPowers)
@@ -322,7 +341,7 @@ class Cult
         ch -= 20;
 
       // player penalty if node info is not known
-      if (!isAI && node.owner != null && !node.isKnown)
+      if (!isAI && node.owner != null && !node.isKnown[game.player.id])
         ch -= 10;
 
       if (ch < 1)
@@ -602,7 +621,7 @@ class Cult
         {
           hasInvestigator = true;
           ui.log2(this, "An investigator has found out about " + fullName + ".");
-          investigator = new Investigator(this, ui);
+          investigator = new Investigator(this, ui, game);
 
           if (!isAI)
             ui.updateStatus();
@@ -721,8 +740,9 @@ class Cult
       checkVictory();
 
       // set highlight
-      if (isAI && node.visibility[0])
-        node.setHighlighted(true);
+      for (c in game.cults)
+        if (c != this && node.isVisible(c))
+          c.highlightNode(node);
 
       return "ok";
     }
@@ -738,13 +758,21 @@ class Cult
       wars[cult.id] = true;
 
       // log messages
-      trace('TODO war message');
-/*      
+      var text = fullName + " has declared war against " + cult.fullName + ".";
+      var m:LogPanelMessage = {
+        id: -1,
+        type: 'cults',
+        text: text,
+        obj: { c1: this, c2: cult },
+        turn: game.turns + 1 
+        };
       for (c in game.cults)
-        if (this.isInfoKnown[c.id] || cult.isInfoKnown[c.id])
-          ui.log2(c, 'cults', { c1: this, c2: cult },
-            fullName + " has declared war against " + cult.fullName + ".");
-*/            
+        if (this.isInfoKnown[c.id] || cult.isInfoKnown[c.id] ||
+            this.isDiscovered[c.id] || cult.isDiscovered[c.id])
+          {
+            c.log(text);
+            c.logPanel(m);
+          }
     }
 
 
@@ -757,9 +785,22 @@ class Cult
       cult.wars[id] = false;
       wars[cult.id] = false;
 
-      trace("TODO peace message");
-//      ui.log2('cults', { c1: this, c2: cult },
-//        fullName + " has made peace with " + cult.fullName + ".");
+      // log messages
+      var text = fullName + " has made peace with " + cult.fullName + ".";
+      var m:LogPanelMessage = {
+        id: -1,
+        type: 'cults',
+        text: text,
+        obj: { c1: this, c2: cult },
+        turn: game.turns + 1
+        };
+      for (c in game.cults)
+        if (this.isInfoKnown[c.id] || cult.isInfoKnown[c.id] ||
+            this.isDiscovered[c.id] || cult.isDiscovered[c.id])
+          {
+            c.log(text);
+            c.logPanel(m);
+          }
     }
 
 
@@ -901,6 +942,27 @@ class Cult
     }
 
 
+// add message to log panel
+  public function logPanel(m: LogPanelMessage)
+    {
+      // clear log if too many items
+      if (logPanelMessages.length >= 24)
+        logPanelMessages.clear();
+
+      logPanelMessages.add(m);
+      ui.logPanel.paint();
+    }
+
+
+// highlight a node for this cult
+  public function highlightNode(n: Node)
+    {
+      if (isAI)
+        return;
+      highlightedNodes.add(n);
+    }
+
+
 // getter for virgins
   function getVirgins()
     {
@@ -950,3 +1012,16 @@ class Cult
       return UI.cultName(id, info);
     }
 }
+
+
+// log panel message type
+
+typedef LogPanelMessage =
+{
+  var id: Int; // message id
+  var type: String; // message type (cult, cults, etc)
+  var text: String; // message text
+  var obj: Dynamic; // message object (origin etc)
+  var turn: Int; // turn on which message appeared
+};
+

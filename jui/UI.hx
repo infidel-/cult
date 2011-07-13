@@ -252,24 +252,16 @@ class UI
     }
 
 
-// add message to log
-  public function log(s: String, ?show: Bool)
-    {
-      trace('TODO ' + s);
-//      logWindow.add(s, false);
-//      if (show == true || show == null)
-//        logPanel.add(s);
-    }
-
-
 // add message to logs of all player cults who know about this cult (more info)
   public function log2(cultOrigin: Cult, s: String)
     {
       // no messages about unknown cults
       for (c in game.cults)
         if (c.isDiscovered[cultOrigin.id] || cultOrigin.isDiscovered[c.id])
-          c.log(s);
-//      logPanel.add(s, 'cult', cultOrigin);
+          {
+            c.log(s);
+            c.logPanel({ id: -1, type: null, text: s, obj: cultOrigin, turn: game.turns + 1 });
+          }
     }
 
 
