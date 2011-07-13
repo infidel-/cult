@@ -4,7 +4,7 @@ _v4pre2 is a development version with everything subject to change_
 
 _New stuff_: sects, canvas display, custom game, multiplayer 
 
-_MANUAL IN PROCESS_
+==NEW MANUAL IN PROCESS!!!==
 
 <wiki:toc max_depth="3" />
 
