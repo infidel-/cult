@@ -41,7 +41,7 @@ class Game
   public static var followerLevels = 3; // number of follower levels
   public static var numPowers = 3; // number of basic powers
   public static var upgradeCost = 3; // cost to upgrade follower
-  public static var isDebug = true; // debug mode (debug button + extended info window)
+  public static var isDebug = false; // debug mode (debug button + extended info window)
 
 
 // constructor
@@ -342,10 +342,13 @@ class Game
 
 
 // on clicking end turn button
-  public function endTurn()
+  public function endTurn(?clearHL: Bool)
     {
+      ui.logPanel.endTurn(); // darken older messages
+
       // clear node highlight
-      player.highlightedNodes.clear();
+      if (clearHL)
+        player.highlightedNodes.clear();
 
       var newPlayerID = -1;
       for (i in (currentPlayerID + 1)...cults.length)
