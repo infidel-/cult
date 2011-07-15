@@ -4,8 +4,6 @@ _v4pre2 is a development version with everything subject to change_
 
 _New stuff_: sects, canvas display, custom game, multiplayer 
 
-==NEW MANUAL IN PROCESS!!!==
-
 <wiki:toc max_depth="3" />
 
 ==Introduction==
@@ -70,13 +68,33 @@ Once a Final Ritual begins, any investigator of that cult will focus on the high
 
 ===Destroying an Investigator===
 
-Once an investigator becomes active, a cult must first find out just who he is.  This takes time dependent on the difficulty level of the game.  Once his identity is uncovered, adepts can spend two core resource points per turn to try and lower his willpower by a single point.  If an investigator's willpower is lowered to zero, they succumb to the overwhelming darkness and futility of their situation and are destroyed.  The elimination of an investigator gives a cult some breathing room, as it takes time before another picks up the scent of the cult.
+Once an investigator becomes active, a cult must first find out just who he is.  This takes time dependent on the difficulty level of the game. You can decrease this time significantly using sects (on hard difficulty you are basically required to do so as the investigator will forever stay hidden and active destroying your cult over time). Once his identity is uncovered, adepts can spend two core resource points per turn to try and lower his willpower by a single point.  If an investigator's willpower is lowered to zero, they succumb to the overwhelming darkness and futility of their situation and are destroyed.  The elimination of an investigator gives a cult some breathing room, as it takes time before another picks up the scent of the cult.
 
 ===Hiding from an Investigator===
 
 If the society awareness level of a cult is below 5%, investigators have a difficult time finding information about the cult, and do not gain willpower.
 
 Once an investigator has reached level 3, they can no longer be destroyed.  However, with a low society awareness level, the investigator may be fooled into thinking the cult is already almost destroyed and not work with the diligence they may otherwise bring to bear.
+
+== Sects ==
+
+===General information===
+
+Once a cult reaches some amount of nodes, it can start to create sects. The main purpose of a sect is to fulfull various small tasks for its parent cult. These tasks range from collecting information about a different cult or a specific node to confusing the investigator who tries to destroy the cult. Sect members have no idea about the cult they serve. As far as they know, their leader is the supreme enlightened, etc.
+
+Each cult member no matter what level they are can create a sect for themselves. Clicking the button SECTS on top of the game window opens up a sect management dialog. Selecting the member of cult you can see his information on the right and the CREATE SECT button if your cult is of sufficient size. Starting size of sect depends on the level of its leader. A sect grows some amount of members each turn. Once reaching sufficient amount of members a sect raises its level. There are three levels of sects and each one will open up additional tasks for the sect. If the leader of the sect is taken over by enemy cult or killed by an investigator, the sect is destroyed. The sect information window also displays how many people will join this sect on the next turn. It's probably a good idea to start creating sects as soon as you are able to.
+
+===Tasks===
+
+Each turn a sect with a task generates the amount of task points equal to its size. Those go towards completing the task. There are two kinds of tasks. One requires X amount of points to complete, then is finished. Upon completion the information about this task is added to the log. The other one is worked on each turn, the sect does something specific with the amount of task points generated. Keep in mind that on easy level some tasks are useless because the information is already know at start of the game. Also some tasks are optional while others are required to progress further into the game.
+
+ * Cult information (level 1, 30 points) - gather general information about target cult. Displays the description of the cult in the cult information window and makes it significantly easier to conquer nodes of this cult.
+ * Node information (level 1) - each turn this sect gathers information about visible nodes of target cult. The bigger the sect the greater amount of nodes will the information be gathered about. If information about specific node is not known, you don't know what level the node is (represented by "?" symbol) and don't know what resources you need to take it over. The chance to gain it is also reduced (you can still click it to try to conquer it).
+ * Cult resources (level 1, 50 points) - gather information about the resources at target cult's disposal. The information goes into log.
+ * Search for investigator (level 1, 50 points) - upon completion, the investigator is revealed and can be attacked using adepts. Keep in mind, that on normal difficulty the investigator will be revealed only 10 turns after he appears and on hard difficulty this won't happen at all!
+ * Confuse investigator (level 1) - with each sect on this task the chance of investigator to kill any of your followers is decreased depending on sect level.
+ * Sabotage ritual (level 2) - try to sabotage the ritual performed by target cult. The sect requires 150 task points per each ritual point removed. Also the chance of that happening is lower than 100%. When successful, the ritual pool of target cult is decreased by the amount of successes.
+
 
 == Miscellaneous information ==
 
@@ -100,6 +118,8 @@ The AI cults play with the opposite difficulty of the player. So, for example, i
 
 === Save/Load ===
 
+*Save/Load has been disabled for this release!*
+
 You can save and load your game at any point. The amount of saves is limited to 5 at the moment. You can also delete saved games you don't need. Before doing any of that you will have to enter a key that the games will be saved under. A key is something between a login and a password - if you know the key, you can load games on a different computer. After entering the key, press the Refresh button. You'll be able to see any games you might have saved under that key. Keep in mind that anyone knowing you key might be able to save, load or delete your saved games.
 
 ===Keyboard shortcuts===
@@ -112,7 +132,8 @@ In any menu:
 
 During the game while being on map:
  * E - end turn
- * I - cults information
+ * C - cults information
+ * S - sects management dialog
  * L - log
  * Esc - main menu
  * 1-3 - upgrade neophytes/adepts/start summoning ritual
