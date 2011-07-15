@@ -30,7 +30,7 @@ class CultResourceInfoTask extends Task
     {
       var c:Cult = sect.taskTarget;
 
-      cult.log(
+      log(cult,
         'Task completed: ' + c.fullName + ' has ' +
         c.power[0] + ' (+' + c.powerMod[0] + ') ' + UI.powerName(0) + ', ' +
         c.power[1] + ' (+' + c.powerMod[1] + ') ' + UI.powerName(1) + ', ' +

@@ -40,6 +40,6 @@ class InvSearchTask extends Task
 */
 
       cult.investigator.isHidden = false;
-      cult.log('Task completed: Investigator found.');
+      log(cult, 'Task completed: Investigator found.');
     }
 }

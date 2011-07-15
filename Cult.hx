@@ -942,6 +942,13 @@ class Cult
     }
 
 
+// add message to log panel (short)
+  public inline function logPanelShort(s: String)
+    {
+      logPanel({ id: -1, type: 'cult', text: s, obj: this, turn: game.turns + 1 });
+    }
+
+
 // add message to log panel
   public function logPanel(m: LogPanelMessage)
     {

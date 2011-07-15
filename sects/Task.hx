@@ -35,4 +35,12 @@ class Task
     {
       trace('default complete(), should not be called!');
     }
+
+
+// log message into cult log
+  inline function log(cult: Cult, m: String)
+    {
+      cult.log(m);
+      cult.logPanelShort(m);
+    }
 }

@@ -55,6 +55,8 @@ class UINode
 //          if (node.level == 0)
 //            is1 = true;
           textColor = 'white';
+          if (!node.isKnown[game.player.id])
+            text = '?';
         }
       else
         {
@@ -69,7 +71,7 @@ class UINode
           dd = 2;
 
           for (p in game.cults)
-            if (p.origin == node && !p.isDead)
+            if (p.origin == node && !p.isDead && node.isKnown[game.player.id])
               {
                 key = "origin" + p.id;
                 dd = 4;
@@ -191,12 +193,13 @@ class UINode
           var br = false;
 
 	      // check for power
-          for (i in 0...Game.numPowers)
-            if (game.player.power[i] < node.power[i])
-              {
-                s += "<span style='color:#ff8888'>Not enough " + Game.powerNames[i] + "</span><br>";
-                br = true;
-              }
+          if (node.isKnown[game.player.id])
+            for (i in 0...Game.numPowers)
+              if (game.player.power[i] < node.power[i])
+                {
+                  s += "<span style='color:#ff8888'>Not enough " + Game.powerNames[i] + "</span><br>";
+                  br = true;
+                }
               
           // check for links
           if (node.isGenerator && node.owner != null)

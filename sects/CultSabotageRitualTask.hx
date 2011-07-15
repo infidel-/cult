@@ -53,6 +53,6 @@ class CultSabotageRitualTask extends Task
         }
 
       if (pts > 0)
-        cult.log('Ritual of ' + c.fullName + ' stalled for ' + pts + ' points.');
+        log(cult, 'Ritual of ' + c.fullName + ' stalled for ' + pts + ' points.');
     }
 }

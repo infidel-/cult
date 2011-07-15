@@ -30,8 +30,8 @@ class CultGeneralInfoTask extends Task
     {
       var c:Cult = sect.taskTarget;
       c.isInfoKnown[cult.id] = true;
-
-      cult.log('Task completed: Information about ' + c.fullName + ' gathered.');
+  
+      log(cult, 'Task completed: Information about ' + c.fullName + ' gathered.');
 
       for (n in c.nodes)
         if (n.isVisible(c))
