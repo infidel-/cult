@@ -207,8 +207,8 @@ class Map
         }
 
       var el = untyped UI.e("map");
-      var x = event.clientX - el.offsetLeft - 4;
-      var y = event.clientY - el.offsetTop - 6;
+      var x = event.clientX - el.offsetLeft - 4 + js.Lib.document.body.scrollLeft;
+      var y = event.clientY - el.offsetTop - 6 + js.Lib.document.body.scrollTop;
 
       if (x + 250 > js.Lib.window.innerWidth)
         x = js.Lib.window.innerWidth - 250;
@@ -284,8 +284,8 @@ class Map
   function getEventNode(event: Dynamic): Node
     {
       var el = untyped UI.e("map");
-      var x = event.clientX - el.offsetLeft - 4 + viewRect.x;
-      var y = event.clientY - el.offsetTop - 6 + viewRect.y;
+      var x = event.clientX - el.offsetLeft - 4 + viewRect.x + js.Lib.document.body.scrollLeft;
+      var y = event.clientY - el.offsetTop - 6 + viewRect.y + js.Lib.document.body.scrollTop;
 
       // find which node the click was on
       var node = null;
