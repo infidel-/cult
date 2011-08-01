@@ -61,8 +61,40 @@ class UI
       music.onRandom = status.updateTrack;
 
       Lib.document.onkeyup = onKey;
+//      Lib.window.onresize = onResize;
     }
 
+/*
+// on resizing document
+  function onResize(event: Dynamic)
+    {
+      var w = Lib.window.innerWidth;
+      var h = Lib.window.innerHeight;
+      if (w < 1050 || h < 680 ||
+          (!game.isFinished && game.difficulty != null && game.difficulty.mapWidth <= 780 &&
+            game.difficulty.mapHeight <= 580))
+        {
+          w = 1050;
+          h = 680;
+        }
+
+      var mw = w - 270;
+      var mh = h - UI.topHeight - 40;
+
+      var el = untyped e('map');
+      var ctx = el.getContext('2d');
+      el.width = mw;
+      el.height = mh;
+//      el.style.width = '' + mw;
+//      el.style.height = '' + mh;
+
+//      map.resize(w - 191, h - UI.topHeight);
+      trace(el.style.width + ' ' + el.style.height);
+//      trace(ctx.canvas.width + ' ' + ctx.canvas.height);
+      map.paint();
+      //Lib.window.innerWidth + " " + Lib.window.innerHeight);
+    }
+*/
 
 // on key press
   function onKey(e: Dynamic)
@@ -246,21 +278,22 @@ class UI
 
 
 // message with confirmation
-  public function alert(s, ?shadow: Bool)
+  public function alert(s, ?shadow: Bool, ?shadowOpacity: Float)
     {
-      alertWindow.show(s, shadow);
+      alertWindow.show(s, shadow, shadowOpacity);
     }
 
 
 // add message to logs of all player cults who know about this cult (more info)
-  public function log2(cultOrigin: Cult, s: String)
+  public function log2(cultOrigin: Cult, s: String, ?important: Bool)
     {
       // no messages about unknown cults
       for (c in game.cults)
         if (c.isDiscovered[cultOrigin.id] || cultOrigin.isDiscovered[c.id])
           {
             c.log(s);
-            c.logPanel({ id: -1, type: null, text: s, obj: cultOrigin, turn: game.turns + 1 });
+            c.logPanel({ id: -1, type: null, text: s, obj: cultOrigin, turn: game.turns + 1,
+              important: important });
           }
     }
 

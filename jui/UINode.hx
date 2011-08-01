@@ -55,8 +55,11 @@ class UINode
 //          if (node.level == 0)
 //            is1 = true;
           textColor = 'white';
+          if (node.sect != null)
+            text = 'S';
           if (!node.isKnown[game.player.id])
             text = '?';
+
         }
       else
         {
@@ -192,8 +195,8 @@ class UINode
         {
           var br = false;
 
-	      // check for power
-          if (node.isKnown[game.player.id])
+          // check for power
+          if (node.isKnown[game.player.id] || node.owner == null)
             for (i in 0...Game.numPowers)
               if (game.player.power[i] < node.power[i])
                 {

@@ -63,8 +63,11 @@ class Alert
 
 
 // show alert
-  public function show(s: String, ?shadow: Bool)
+  public function show(s: String, ?shadow: Bool, ?shadowOpacity: Float)
     {
+      if (shadowOpacity == null)
+        shadowOpacity = 0.8;
+      bg.style.opacity = shadowOpacity;
       text.innerHTML = '<center>' + s + '</center>';
       window.style.visibility = 'visible';
       bg.style.visibility = 
