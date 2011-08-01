@@ -268,7 +268,7 @@ class SectsInfo
 
               for (c in game.cults)
                 {
-                  if (c == game.player || !c.isDiscovered[game.player.id])// || c.isParalyzed)
+                  if (c == game.player || !c.isDiscovered[game.player.id] || c.isDead)
                     continue;
 
                   // check start conditions

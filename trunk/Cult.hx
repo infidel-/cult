@@ -620,7 +620,7 @@ class Cult
           investigatorTimeout == 0)
         {
           hasInvestigator = true;
-          ui.log2(this, "An investigator has found out about " + fullName + ".");
+          ui.log2(this, "An investigator has found out about " + fullName + ".", !this.isAI);
           investigator = new Investigator(this, ui, game);
 
           if (!isAI)
@@ -764,7 +764,8 @@ class Cult
         type: 'cults',
         text: text,
         obj: { c1: this, c2: cult },
-        turn: game.turns + 1 
+        turn: game.turns + 1,
+        important: false
         };
       for (c in game.cults)
         if (this.isInfoKnown[c.id] || cult.isInfoKnown[c.id] ||
@@ -792,7 +793,8 @@ class Cult
         type: 'cults',
         text: text,
         obj: { c1: this, c2: cult },
-        turn: game.turns + 1
+        turn: game.turns + 1,
+        important: false
         };
       for (c in game.cults)
         if (this.isInfoKnown[c.id] || cult.isInfoKnown[c.id] ||
@@ -945,7 +947,9 @@ class Cult
 // add message to log panel (short)
   public inline function logPanelShort(s: String)
     {
-      logPanel({ id: -1, type: 'cult', text: s, obj: this, turn: game.turns + 1 });
+      logPanel({ id: -1, type: 'cult', text: s, obj: this, turn: game.turns + 1, 
+        important: false
+        });
     }
 
 
@@ -1030,5 +1034,6 @@ typedef LogPanelMessage =
   var text: String; // message text
   var obj: Dynamic; // message object (origin etc)
   var turn: Int; // turn on which message appeared
+  var important: Bool; // message important?
 };
 

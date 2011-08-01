@@ -385,10 +385,31 @@ class Game
           player.turn();
           for (c in cults)
             c.checkVictory();
+
+          // center map on new player
+          var x = 0, y = 0;
+          if (player.origin != null)
+            {
+              x = player.origin.x;
+              y = player.origin.y;
+            }
+          else
+            {
+              // no origin, get eldest node
+              var node = player.nodes.first();
+              for (n in player.nodes)
+                if (n.level > node.level)
+                  node = n;
+              x = node.x;
+              y = node.y;
+            }
+          ui.map.center(x, y);
       
-          ui.map.paint();
           ui.logPanel.paint();
 	      ui.updateStatus();
+
+          if (difficulty.numPlayers > 1)
+            ui.alert("Your turn<br>" + player.fullName, true, 1); 
         }
 
       // all cults are done, next turn

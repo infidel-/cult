@@ -60,7 +60,6 @@ class LogPanel
               sym = "<span style='color:" + UI.lineColors[cult.id] + "'>!</span>" +
                 "<span style='color:" + UI.lineColors[cult2.id] + "'>!</span>";
             }
-
           // create element
           var e = Lib.document.createElement("div");
           m.id = list.length;
@@ -78,6 +77,8 @@ class LogPanel
           e.style.color = col;
           e.style.fontWeight = 'bold';
           e.style.textAlign = 'center';
+          if (m.important)
+            e.style.textDecoration = 'blink';
           e.innerHTML = sym;
           panel.appendChild(e);
 

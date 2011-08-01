@@ -44,7 +44,7 @@ class Map
       screen.onmousemove = onMove;
       screen.onmousedown = onMouseDown; 
       screen.onmouseup = onMouseUp;
-      screen.onmouseout = onMouseUp;
+      screen.onmouseout = onMouseOut;
       
       // main menu window
       tooltip = Tools.window(
@@ -168,6 +168,12 @@ class Map
     }
 
 
+  public inline function hideTooltip()
+    {
+      tooltip.style.visibility = 'hidden';
+    }
+
+
 // on moving over map
   public function onMove(event: Dynamic)
     {
@@ -188,7 +194,7 @@ class Map
       var node = getEventNode(event);
       if (node == null)
         {
-          tooltip.style.visibility = 'hidden';
+          hideTooltip();
           return;
         }
 
@@ -237,6 +243,13 @@ class Map
   public function onMouseUp(event: Dynamic)
     {
       isDrag = false;
+    }
+
+
+  public function onMouseOut(event: Dynamic)
+    {
+      isDrag = false;
+      hideTooltip();
     }
 
 
