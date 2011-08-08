@@ -1,4 +1,5 @@
 #summary Manual for v4
+#labels Featured
 
 <wiki:toc max_depth="3" />
 
