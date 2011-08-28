@@ -3,7 +3,7 @@
 
 = About Evil Cult =
 
-Evil Cult is copyright 2009,2010 [http://www.starinfidel.co.cc StarInfidel] and Phil Bordelon.  It is released under the GNU GPL v3; further details, including source, are available at:
+Evil Cult is copyright 2009, 2010, 2011 [http://www.starinfidel.co.cc StarInfidel] and Phil Bordelon.  It is released under the GNU GPL v3; further details, including source, are available at:
 
   http://code.google.com/p/cult
 
