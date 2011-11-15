@@ -1,0 +1,9 @@
+#summary DEV release changes from latest version
+
+ * AI cheat: investigators will cap starting willpower :)
+ * much lower chance of investigator killing cult origin
+ * automatically un-paralyze cult after 3 turns even if it has no priests (you can still win the game when all enemy cults are paralyzed at the same time)
+ * when un-paralyzed, a new origin will be made a temporary generator (stops being a generator when lost)
+ * investigator will now disappear after destroying the cult origin thinking he destroyed the whole cult :)
+ * bug: when searching for a node to be a sect leader, was not using the most connected node
+ * bug: node visibility for enemy cult was not correctly updated on losing that node
