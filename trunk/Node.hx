@@ -20,6 +20,7 @@ class Node
   public var visibility: Array<Bool>; // node visibility to cults
   public var isKnown: Array<Bool>; // node info known to players?
   public var isGenerator: Bool; // node is generating resources?
+  public var isTempGenerator: Bool; // temporary generator?
   public var isProtected: Bool; // node protected by neighbours?
   public var level: Int; // node level
   public var owner: Cult; // node owner
@@ -70,6 +71,32 @@ class Node
       level = 0;
 	  var index: Int = Math.round((Game.numPowers - 1) * Math.random());
 	  power[index] = 1;
+    }
+
+
+// make this node a generator
+  public function makeGenerator()
+    {
+      // make node harder to conquer
+      var powerIndex = 0;
+      for (ii in 0...Game.numPowers)
+        if (power[ii] > 0)
+          {
+            power[ii]++;
+            powerIndex = ii;
+          }
+
+      // another resource must be generated
+      var ii = -1;
+      while (true)
+        {
+          ii = Math.round((Game.numPowers - 1) * Math.random());
+          if (ii != powerIndex)
+            break;
+        }
+      powerGenerated[ii] = 1;
+
+      setGenerator(true);
     }
 
 
@@ -330,6 +357,19 @@ class Node
             n.setVisible(cult, vis);
 //            n.update();
           }
+  
+      // update visibility of this node for that cult
+      var hasLinks = false;
+      for (n2 in links)
+        if (n2.owner == cult)
+          {
+            setVisible(cult, true);
+            hasLinks = true;
+            break;
+          }
+
+      if (!hasLinks)
+        setVisible(cult, false);
     }
 
 

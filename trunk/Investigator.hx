@@ -25,6 +25,8 @@ class Investigator
       will = 1 + Std.int(c.nodes.length * c.difficulty.investigatorCultSize);
       if (will > 9)
         will = 9;
+      if (cult.isAI && will > 4) // ai cheat, cap max willpower
+        will = 4;
       level = Std.int(will / 3);
       if (level > 2)
         level = 2;
@@ -145,6 +147,8 @@ class Investigator
               break;
           }
       if (node == null)
+        return;
+      if (node == cult.origin && Math.random() > 0.3) // rarely attacks origin in any case
         return;
 
       ui.log2(cult, "The investigator revealed the " + cult.fullName + " follower.");

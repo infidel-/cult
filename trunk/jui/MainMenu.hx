@@ -33,7 +33,7 @@ class MainMenu
       Tools.label({
         id: 'titleLabel',
         text: 'Evil Cult ' + Game.version,
-        w: 200,
+        w: 260,
         h: 30,
         x: 120,
         y: 10,
