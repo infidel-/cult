@@ -63,6 +63,7 @@ class Node
       job = jobs[Std.int(Math.random() * (jobs.length - 1))];
      
 	  isGenerator = false;
+      isTempGenerator = false;
       isKnown = [];
       for (i in 0...game.difficulty.numCults)
         isKnown.push(false);

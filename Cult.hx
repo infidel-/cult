@@ -397,22 +397,28 @@ class Cult
       // kill investigator
       if (investigator.will <= 0)
         {
-          investigator = null;
-          hasInvestigator = false;
           ui.log2(this, "The investigator of the " + fullName +
             " has disappeared.");
-
-          investigatorTimeout = 3;
-
-          // clean sect tasks for investigators
-          for (s in sects)
-            if (s.task != null && s.task.type == 'investigator')
-              s.clearTask();
+          killInvestigator();
         }
       adeptsUsed++;
 
       if (!isAI)
         ui.updateStatus();
+    }
+
+
+// remove investigator for this cult
+  function killInvestigator()
+    {
+      investigator = null;
+      hasInvestigator = false;
+      investigatorTimeout = 3;
+
+      // clean sect tasks for investigators
+      for (s in sects)
+        if (s.task != null && s.task.type == 'investigator')
+          s.clearTask();
     }
 
 
@@ -508,7 +514,7 @@ class Cult
       if (isParalyzed && priests >= 1)
         {
           unParalyze();
-          ui.log2(this, fullName + " gains a priest and is no longer paralyzed.");
+          ui.log2(this, fullName + " has gained a priest and is no longer paralyzed.");
         }
 
       ui.map.paint();
@@ -654,7 +660,7 @@ class Cult
       if (isParalyzed && paralyzedTurns > 3)
         {
           unParalyze();
-          ui.log2(this, fullName + " gains an origin and is no longer paralyzed.");
+          ui.log2(this, fullName + " has gained an origin and is no longer paralyzed.");
         }
 
       // if a cult has any adepts, each turn it has a 
@@ -920,6 +926,13 @@ class Cult
           ui.log2(this, "Another priest becomes the Origin of " +
             fullName + ".");
           origin.update();
+        }
+
+      if (hasInvestigator) // remove investigator
+        {
+          killInvestigator();
+          ui.log2(this, "The investigator of the " + fullName +
+            " has disappeared thinking the cult is finished.");
         }
     }
 
