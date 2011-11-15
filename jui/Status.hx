@@ -140,7 +140,7 @@ class Status
       s += "</center>";
 
       // music player
-      s += "<fieldset style='bottom: 5px; margin-top: 10px; height: 60px; padding:0 5 0 5'>";
+      s += "<fieldset id='musicplayer' style='bottom: 5px; margin-top: 10px; height: 60px; padding:0 5 0 5'>";
       s += "<legend>MUSIC</legend>";
       s += "<div title='Click to go to album page.' id='status.track' " + 
         "style='background: #222; cursor:pointer; font-size:10px; color: #00ff00'> - </div>";
@@ -283,7 +283,7 @@ class Status
       if (game.isFinished)
         return;
 
-	  game.endTurn();
+	  game.endTurn(true);
 	}
 
 

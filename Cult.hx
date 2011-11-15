@@ -19,6 +19,7 @@ class Cult
   public var isAI: Bool; // player or AI?
   public var isDead: Bool; // cult is dead
   public var isParalyzed: Bool; // cult is paralyzed
+  var paralyzedTurns: Int; // paralyzed state count
   public var isDebugInvisible: Bool; // debug: cult nodes are invisible
 
   // ritual stuff
@@ -67,6 +68,7 @@ class Cult
 
       isDiscovered = [];
       isInfoKnown = [];
+      paralyzedTurns = 0;
 
       for (i in 0...game.difficulty.numCults)
         isInfoKnown[i] = game.difficulty.isInfoKnown;
@@ -487,12 +489,7 @@ class Cult
       // find a node with maximum amount of links
       if (!ok)
         {
-          var upNode = null;
-          var nlinks = 0;
-          for (n in nodes)
-            if (n.level == level && n.links.length > nlinks)
-              upNode = n;
-
+          var upNode = findMostLinkedNode(level);
           if (upNode != null)
             {
               upNode.upgrade();
@@ -507,16 +504,56 @@ class Cult
       if (this != game.player && priests >= 2)
         ui.log2(this, fullName + " has " + priests + " priests. Be careful.");
 
-      // cult un-paralyzed 
+      // cult un-paralyzed with priests 
       if (isParalyzed && priests >= 1)
         {
-          isParalyzed = false;
-          origin = upNode;
-//          origin.update();
+          unParalyze();
           ui.log2(this, fullName + " gains a priest and is no longer paralyzed.");
         }
 
       ui.map.paint();
+    }
+
+
+// find most linked node for this cult
+  function findMostLinkedNode(?level: Int): Node
+    {
+      var node = null;
+      var nlinks = 0;
+      if (level != null)
+        {
+          for (n in nodes)
+            if (n.level == level && n.links.length > nlinks)
+              {
+                node = n;
+                nlinks = n.links.length;
+              }
+        }
+      else
+        for (n in nodes)
+          if (n.links.length > nlinks)
+            {
+              node = n;
+              nlinks = n.links.length;
+            }
+      return node;
+    }
+
+
+// unparalyze cult
+  function unParalyze()
+    {
+      // get most protected with links node
+      var node = findMostLinkedNode();
+
+      // make it a temp generator
+      node.makeGenerator();
+      node.isTempGenerator = true;
+
+      // unparalyze cult
+      isParalyzed = false;
+      paralyzedTurns = 0;
+      origin = node;
     }
 
 
@@ -613,6 +650,13 @@ class Cult
 // start new turn for this cult (fturn) - gain resources, finish rituals, etc
   public function turn()
     {
+      // un-paralyzed after 3 turns even if no priests available
+      if (isParalyzed && paralyzedTurns > 3)
+        {
+          unParalyze();
+          ui.log2(this, fullName + " gains an origin and is no longer paralyzed.");
+        }
+
       // if a cult has any adepts, each turn it has a 
       // chance of an investigator finding out about it
       if ((priests > 0 || adepts > 0) &&
@@ -665,6 +709,9 @@ class Cult
 
       for (s in sects) // sect tasks
         s.turn();
+
+      if (isParalyzed) // count paralyzed state time
+        paralyzedTurns++;
     }
 
 
@@ -735,6 +782,13 @@ class Cult
 
       // save prev owner
       node.setOwner(this);
+
+      // remove temp generator state
+      if (node.isTempGenerator)
+        {
+          node.setGenerator(false);
+          node.isTempGenerator = false;
+        }
 
       // check for victory
       checkVictory();
@@ -857,8 +911,8 @@ class Cult
       // if not found, cult is in big trouble
       if (!ok)
         {
-          ui.log2(this, "With no priests left " + fullName +
-            " is completely paralyzed.");
+          ui.log2(this, "Destroying the origin of " + fullName +
+            " has left it completely paralyzed.");
           isParalyzed = true;
         }
       else

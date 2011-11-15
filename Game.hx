@@ -37,11 +37,11 @@ class Game
   public static var cultColors: Array<String> =
     [ "#00B400", "#2F43FD", "#B400AE", "#B4AE00" ];
 
-  public static var version = "v4pre2"; // game version
+  public static var version = "(DEV Nov 15)"; // game version
   public static var followerLevels = 3; // number of follower levels
   public static var numPowers = 3; // number of basic powers
   public static var upgradeCost = 3; // cost to upgrade follower
-  public static var isDebug = false; // debug mode (debug button + extended info window)
+  public static var isDebug = true; // debug mode (debug button + extended info window)
 
 
 // constructor
@@ -140,24 +140,7 @@ class Game
           var nodeIndex = Math.round((difficulty.nodesCount - 1) * Math.random());
           var node = nodes[nodeIndex];
 
-          var powerIndex = 0;
-          for (ii in 0...numPowers)
-            if (node.power[ii] > 0)
-              {
-                node.power[ii]++;
-                powerIndex = ii;
-              }
-
-		  // another resource must be generated
-		  var ii = -1;
-		  while (true)
-			{
-			  ii = Math.round((numPowers - 1) * Math.random());
-			  if (ii != powerIndex)
-			    break;
-			}
-		  node.powerGenerated[ii] = 1;
-		  node.setGenerator(true);
+          node.makeGenerator();
         }
 
       updateLinks(); // update adjacent node links
