@@ -7,3 +7,7 @@
  * investigator will now disappear after destroying the cult origin thinking he destroyed the whole cult :)
  * bug: when searching for a node to be a sect leader, was not using the most connected node
  * bug: node visibility for enemy cult was not correctly updated on losing that node
+
+ * advanced map mode (toggled by pressing A)
+ * when cult loses origin remove investigator only if no priests are available
+ * bug: map display was not updated after sect creation
