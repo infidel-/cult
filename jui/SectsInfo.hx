@@ -370,6 +370,7 @@ class SectsInfo
       var node = game.getNode(el.nodeID);
 
       game.player.createSect(node);
+      ui.map.paint();
       show();
     }
 

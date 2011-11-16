@@ -365,7 +365,10 @@ class Cult
       adeptsUsed++;
 
       if (!isAI)
-        ui.updateStatus();
+        {
+          ui.updateStatus();
+          ui.map.paint();
+        }
     }
 
 
@@ -529,19 +532,35 @@ class Cult
       if (level != null)
         {
           for (n in nodes)
-            if (n.level == level && n.links.length > nlinks)
-              {
-                node = n;
-                nlinks = n.links.length;
-              }
+            {
+              // count links owned by that cult
+              var cnt = 0;
+              for (l in n.links)
+                if (l.owner == this)
+                  cnt++;
+
+              if (n.level == level && cnt > nlinks)
+                {
+                  node = n;
+                  nlinks = cnt;
+                }
+            }
         }
       else
         for (n in nodes)
-          if (n.links.length > nlinks)
-            {
-              node = n;
-              nlinks = n.links.length;
-            }
+          {
+            // count links owned by that cult
+            var cnt = 0;
+            for (l in n.links)
+              if (l.owner == this)
+                cnt++;
+
+            if (cnt > nlinks)
+              {
+                node = n;
+                nlinks = cnt;
+              }
+          }
       return node;
     }
 
@@ -920,19 +939,20 @@ class Cult
           ui.log2(this, "Destroying the origin of " + fullName +
             " has left it completely paralyzed.");
           isParalyzed = true;
+
+          if (hasInvestigator) // remove investigator
+            {
+              killInvestigator();
+              ui.log2(this, "The investigator of the " + fullName +
+                " has disappeared thinking the cult is finished.");
+            }
         }
       else
         {
           ui.log2(this, "Another priest becomes the Origin of " +
             fullName + ".");
           origin.update();
-        }
-
-      if (hasInvestigator) // remove investigator
-        {
-          killInvestigator();
-          ui.log2(this, "The investigator of the " + fullName +
-            " has disappeared thinking the cult is finished.");
+          ui.map.paint();
         }
     }
 
@@ -965,6 +985,7 @@ class Cult
         return;
 
       ui.log2(this, fullName + " has been destroyed, forgotten by time.");
+      ui.map.paint();
 
       isDead = true;
 

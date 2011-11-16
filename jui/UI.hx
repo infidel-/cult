@@ -181,6 +181,13 @@ class UI
           // summon
           else if (e.keyCode == 51) // 3
             game.player.upgrade(2);
+
+          // advanced map mode
+          if (e.keyCode == 65) // A
+            {
+              map.isAdvanced = !map.isAdvanced;
+              map.paint();
+            }
         }
     }
 
