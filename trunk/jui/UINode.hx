@@ -7,6 +7,11 @@ class UINode
   var node: Node;
   var imageName: String; // image name
 
+  var tempx: Int; // temp buffer for painting - calculated screen x,y,h, border width
+  var tempy: Int;
+  var temph: Int;
+  var tempd: Int;
+
 
   public function new(gvar, uivar, nvar)
     {
@@ -16,8 +21,10 @@ class UINode
     }
 
 
+// paint node on map
   public function paint(ctx: Dynamic)
     {
+      // node not visible to player
       if (!node.isVisible(game.player))
         return;
 
@@ -52,8 +59,6 @@ class UINode
         {
           key = "cult" + node.owner.id;
           text = "" + (node.level + 1);
-//          if (node.level == 0)
-//            is1 = true;
           textColor = 'white';
           if (node.sect != null)
             text = 'S';
@@ -61,13 +66,11 @@ class UINode
             text = '?';
 
         }
-      else
-        {
-          key = "neutral";
-        }
+      else key = "neutral";
 
       // different borders
       var dd = 0;
+      temph = 17;
 	  if (node.isGenerator)
 		{
           key += "g";
@@ -84,10 +87,8 @@ class UINode
             key += "p";
           xx -= dd;
           yy -= dd;
-//          tx += dd;
-//          ty += dd;
-//          hlx += dd;
-//          hly += dd;
+          temph += dd * 2;
+          tempd = dd;
         }
       if (isI) // "I" symbol needs to be centered
         tx += 2;
@@ -120,6 +121,47 @@ class UINode
       // paint node symbol
       ctx.fillStyle = textColor;
       ctx.fillText(text, tx, ty);
+
+      tempx = xx;
+      tempy = yy;
+    }
+
+
+// paint advanced node info
+  public function paintAdvanced(ctx: Dynamic)
+    {
+      // node not visible to player
+      if (!node.isVisible(game.player))
+        return;
+
+      // node out of view rectangle
+      if (node.x < ui.map.viewRect.x - 20 ||
+          node.y < ui.map.viewRect.y - 20 ||
+          node.x > ui.map.viewRect.x + ui.map.viewRect.w ||
+          node.y > ui.map.viewRect.y + ui.map.viewRect.h)
+        return;
+
+      // chance to gain node
+      if (node.owner != game.player)
+        {
+          ctx.fillStyle = 'white';
+          ctx.fillText(game.player.getGainChance(node) + '%', tempx - 3, tempy - 4);
+
+          if (node.owner == null || node.isKnown[game.player.id])
+            {
+              for (i in 0...Game.numPowers)
+                if (node.power[i] > 0)
+                  {
+                    ctx.fillStyle = UI.powerColors[i];
+                    ctx.fillText(node.power[i], tempd + tempx - 3 + i * 7, tempy + temph + 11);
+                  }
+                else
+                  {
+                    ctx.fillStyle = '#333';
+                    ctx.fillText('-', tempd + tempx - 3 + i * 7, tempy + temph + 11);
+                  }
+            }
+        }
     }
 
 

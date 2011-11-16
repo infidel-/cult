@@ -21,12 +21,14 @@ class Map
 //  public var screen: Dynamic; // map element
   public var viewRect: Rect; // viewport x,y
   var isDrag: Bool; // is viewport being dragged?
+  public var isAdvanced: Bool; // is advanced mode
 
   public function new(uivar: UI, gvar: Game)
     {
       ui = uivar;
       game = gvar;
       viewRect = { x:0, y:0, w:UI.mapWidth, h:UI.mapHeight };
+      isAdvanced = false;
 
       // map display
       var screen:Dynamic = UI.e("map");
@@ -102,6 +104,8 @@ class Map
       if (game.isFinished && game.turns == 0)
         return;
 
+      game.startTimer('map paint');
+
       var el = untyped UI.e("map");
       var ctx = el.getContext("2d");
       ctx.fillStyle = "black";
@@ -116,9 +120,18 @@ class Map
       for (n in game.nodes)
         n.uiNode.paint(ctx);
 
+      if (isAdvanced) // paint advanced node info
+        {
+          ctx.font = "11px Verdana";
+          for (n in game.nodes)
+            n.uiNode.paintAdvanced(ctx);
+        }
+
       if (game.difficulty.mapWidth > UI.mapWidth ||
           game.difficulty.mapHeight > UI.mapHeight)
         paintMinimap(ctx); // paint minimap
+
+      game.endTimer('map paint');
     }
 
 
