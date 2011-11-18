@@ -5,6 +5,7 @@ import Static;
 class Game
 {
   var ui: UI;
+  var director: Director;
 
   // cults list and link to player
   public var cults: Array<Cult>;
@@ -37,7 +38,7 @@ class Game
   public static var cultColors: Array<String> =
     [ "#00B400", "#2F43FD", "#B400AE", "#B4AE00" ];
 
-  public static var version = "(DEV Nov 16)"; // game version
+  public static var version = "(DEV Nov 18)"; // game version
   public static var followerLevels = 3; // number of follower levels
   public static var numPowers = 3; // number of basic powers
   public static var upgradeCost = 3; // cost to upgrade follower
@@ -51,6 +52,7 @@ class Game
 	  this.turns = 0;
 	  ui = new UI(this);
 	  ui.init();
+      director = new Director(this, ui);
       ui.mainMenu.show(); // needs to be moved into ui
 
       // fill up tasks array
@@ -324,7 +326,7 @@ class Game
     }
 
 
-// on clicking end turn button
+// on clicking end turn button (ftu)
   public function endTurn(?clearHL: Bool)
     {
       ui.logPanel.endTurn(); // darken older messages
@@ -400,6 +402,7 @@ class Game
         {
           turns++;
           currentPlayerID = -1;
+          director.turn();
           endTurn();
         }
 
@@ -468,5 +471,6 @@ class Game
   public static var debugVis = false; // show node visibility for all cults
   public static var debugNear = false; // show "nearness" of all nodes
   public static var debugAI = false; // show AI debug messages
+  public static var debugDirector = false; // show director debug messages
   public static var mapVisible = false; // all map is visible at start
 }

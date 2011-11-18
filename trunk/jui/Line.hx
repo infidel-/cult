@@ -61,7 +61,7 @@ class Line
       if (!visibility[cultID])
         return;
 
-      var img = map.images.get('pixel' + owner.id);
+//      var img = map.images.get('pixel' + owner.id);
       for (p in pixels)
         {
           // pixel out of view rectangle
@@ -71,7 +71,10 @@ class Line
               p.y > map.viewRect.y + map.viewRect.h)
             continue;
 
-          ctx.drawImage(img, p.x - map.viewRect.x, p.y - map.viewRect.y);
+//          ctx.drawImage(img, p.x - map.viewRect.x, p.y - map.viewRect.y);
+          ctx.drawImage(map.nodeImage,
+            owner.id * 2, 120, 2, 2,
+            p.x - map.viewRect.x, p.y - map.viewRect.y, 2, 2);
         }
     }
 

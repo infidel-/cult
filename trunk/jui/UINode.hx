@@ -57,7 +57,8 @@ class UINode
       // get bg and node char
       if (node.owner != null)
         {
-          key = "cult" + node.owner.id;
+//          key = "cult" + node.owner.id;
+          key = 'c';
           text = "" + (node.level + 1);
           textColor = 'white';
           if (node.sect != null)
@@ -79,7 +80,8 @@ class UINode
           for (p in game.cults)
             if (p.origin == node && !p.isDead && node.isKnown[game.player.id])
               {
-                key = "origin" + p.id;
+//                key = "origin" + p.id;
+                key = 'o';
                 dd = 4;
                 break;
               }
@@ -104,12 +106,16 @@ class UINode
       for (n in game.player.highlightedNodes)
         if (n == node)
           {
-            var img = ui.map.images.get('hl');
-            ctx.drawImage(img, hlx, hly);
+//            var img = ui.map.images.get('hl');
+//            ctx.drawImage(img, hlx, hly);
+            ctx.drawImage(ui.map.nodeImage,
+              0, 167, 37, 37,
+              hlx, hly, 37, 37);
             break;
           }
 
       // paint node image
+/*      
       var img = ui.map.images.get(key);
       if (img == null)
         {
@@ -117,6 +123,14 @@ class UINode
           return;
         }
       ctx.drawImage(img, xx, yy);
+*/   
+      var a: Array<Int> = Reflect.field(imageKeys, key);
+      var y0 = a[0];
+      var w = a[1];
+      var x0 = (node.owner != null ? node.owner.id * w : 0);
+      ctx.drawImage(ui.map.nodeImage,
+        x0, y0, w, w,
+        xx, yy, w, w);
 
       // paint node symbol
       ctx.fillStyle = textColor;
@@ -144,11 +158,24 @@ class UINode
       // chance to gain node
       if (node.owner != game.player)
         {
+          var ch = game.player.getGainChance(node);
+          ui.map.paintText(ctx, [ Std.int(ch / 10), ch % 10, 10 ], 0,
+             tempx + tempd + 1, tempy - 11);
+/*        
           ctx.fillStyle = 'white';
           ctx.fillText(game.player.getGainChance(node) + '%', tempx - 3, tempy - 4);
+*/          
 
           if (node.owner == null || node.isKnown[game.player.id])
             {
+              for (i in 0...Game.numPowers)
+                if (node.power[i] > 0)
+                  ui.map.paintText(ctx, [ node.power[i] ], i + 1,
+                    tempd + tempx + i * 6, tempy + temph + 3);
+                else
+                  ui.map.paintText(ctx, [ 10 ], i + 1,
+                    tempd + tempx + i * 6, tempy + temph + 3);
+/*            
               for (i in 0...Game.numPowers)
                 if (node.power[i] > 0)
                   {
@@ -160,6 +187,7 @@ class UINode
                     ctx.fillStyle = '#333';
                     ctx.fillText('-', tempd + tempx - 3 + i * 7, tempy + temph + 11);
                   }
+*/                  
             }
         }
     }
@@ -296,5 +324,16 @@ class UINode
         return;
       if (Game.mapVisible)
         v = true;
+    }
+
+  public static var imageKeys: Dynamic =
+    {
+      c: [ 0, 17 ],
+      cg: [ 19, 21 ],
+      cgp: [ 42, 21 ],
+      o: [ 65, 25 ],
+      op: [ 92, 25 ],
+      neutral: [ 125, 17 ],
+      neutralg: [ 144, 21 ],
     }
 }

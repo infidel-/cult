@@ -366,7 +366,7 @@ class Status
             "<b>" + game.player.power[i] + "</b>";
           if (i == 3)
             e("status.powerMod3").innerHTML = " +0-" +
-              Std.int(game.player.neophytes / 4 - 0.5);
+              game.player.maxVirgins();
 		  else 
 		    e("status.powerMod" + i).innerHTML =
               " +0-" + game.player.powerMod[i];

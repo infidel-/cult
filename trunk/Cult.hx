@@ -724,7 +724,7 @@ class Cult
 			}
 
       // neophytes bring in some virgins
-      var value = Std.int(Math.random() * (neophytes / 4 - 0.5));
+      var value = Std.int(Math.random() * maxVirgins());
       virgins += value;
       adeptsUsed = 0;
 
@@ -737,6 +737,12 @@ class Cult
 
       if (isParalyzed) // count paralyzed state time
         paralyzedTurns++;
+    }
+
+
+  public inline function maxVirgins(): Int
+    {
+      return Std.int(neophytes / 4 - 0.5);
     }
 
 
