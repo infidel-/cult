@@ -117,8 +117,8 @@ class MainMenu
     {
       window.style.visibility = 'visible';
       bg.style.visibility = 'visible';
-      close.style.visibility = 
-        (game.isFinished ? 'hidden' : 'visible');
+//      close.style.visibility = 
+//        (game.isFinished ? 'hidden' : 'visible');
       saveButton.style.visibility = 
         (game.isFinished ? 'hidden' : 'visible');
       isVisible = true;
@@ -200,7 +200,8 @@ class MainMenu
         onSaveGame(null);
 */
       // exit menu
-      else if (e.keyCode == 27 && !game.isFinished) // ESC
+      else if (e.keyCode == 27// && !game.isFinished
+      ) // ESC
         onClose(null);
     }
 
@@ -212,7 +213,7 @@ class MainMenu
 //        return;
       window.style.visibility = 'hidden';
       bg.style.visibility = 'hidden';
-      close.style.visibility = 'hidden';
+//      close.style.visibility = 'hidden';
       saveButton.style.visibility = 'hidden'; 
       isVisible = false;
     }

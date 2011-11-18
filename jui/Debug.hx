@@ -49,20 +49,22 @@ class Debug
 
       lastMenuY = -20;
       menuItem = 0;
-      addItem('Clear trace', onClearTrace);
-      addItem('Give power', onGivePower);
-      addItem('Open map', onOpenMap);
-      addItem('Investigator: AI', onInvestigatorAI);
-      addItem('Investigator: Player', onInvestigatorPlayer);
-      addItem('Victory: Summon', onVictorySummon);
-      addItem('Total war', onTotalWar);
-      addItem('Invisibility toggle', onToggleInvisible);
-      addItem('Trace timing toggle', onTiming);
-      addItem('Trace AI toggle', onAI);
-      addItem('Node vis toggle', onVis);
-      addItem('Node near toggle', onNear);
-      addItem('Give adepts', onGiveAdepts);
-      addItem('Upgrade sects', onUpgradeSects);
+      addItem(0, 'Clear trace', onClearTrace);
+      addItem(0, 'Give power', onGivePower);
+      addItem(0, 'Open map', onOpenMap);
+      addItem(0, 'Investigator: AI', onInvestigatorAI);
+      addItem(0, 'Investigator: Player', onInvestigatorPlayer);
+      addItem(0, 'Victory: Summon', onVictorySummon);
+      addItem(0, 'Total war', onTotalWar);
+      addItem(0, 'Invisibility toggle', onToggleInvisible);
+      addItem(0, 'Trace timing toggle', onTiming);
+      addItem(0, 'Trace AI toggle', onAI);
+      addItem(0, 'Node vis toggle', onVis);
+      addItem(0, 'Node near toggle', onNear);
+      addItem(0, 'Give adepts', onGiveAdepts);
+      addItem(0, 'Upgrade sects', onUpgradeSects);
+      lastMenuY = -20;
+      addItem(1, 'Trace Director toggle', onDirector);
     }
 
 
@@ -110,6 +112,14 @@ class Debug
     {
       Game.debugAI = !Game.debugAI;
       trace("trace ai " + (Game.debugAI ? "on" : "off"));
+    }
+
+
+// toggle tracing director
+  function onDirector(event)
+    {
+      Game.debugDirector = !Game.debugDirector;
+      trace("trace director " + (Game.debugDirector ? "on" : "off"));
     }
 
 
@@ -212,7 +222,7 @@ class Debug
 // add menu item
   var lastMenuY: Int;
   var menuItem: Int;
-  function addItem(title, func)
+  function addItem(row: Int, title: String, func)
     {
       lastMenuY += 30;
       var sym = menuItem + 49;
@@ -225,7 +235,7 @@ class Debug
         text: String.fromCharCode(sym) + " " + title,
         w: 200,
         h: 22,
-        x: 10,
+        x: 10 + row * 210,
         y: lastMenuY,
         container: menu,
         func: func

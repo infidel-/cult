@@ -16,7 +16,9 @@ class Map
   var ui: UI;
   var game: Game;
 
-  public var images: Hash<Dynamic>; // images array
+//  public var images: Hash<Dynamic>; // images array
+  public var fontImage: Dynamic; // bitmapped font image 
+  public var nodeImage: Dynamic; // nodes imageset
   public var tooltip: Dynamic;
 //  public var screen: Dynamic; // map element
   public var viewRect: Rect; // viewport x,y
@@ -71,23 +73,32 @@ class Map
 // load all game-related images
   function loadImages()
     {
+/*    
       images = new Hash<Dynamic>();
 
       var imgnames = [ 'cult0', 'cult0gp', 'cult0g', 'cult1g', 'cult1gp', 'cult1', 
         'cult2g', 'cult2gp', 'cult2', 'cult3g', 'cult3gp', 
         'cult3', 'hl', 'neutralg', 'neutral', 'origin0', 'origin0p', 
         'origin1', 'origin1p', 'origin2', 'origin2p', 'origin3', 
-        'origin3p', 'pixel0', 'pixel1', 'pixel2', 'pixel3'
+        'origin3p', 'pixel0', 'pixel1', 'pixel2', 'pixel3', 'data/4x6'
       ];
 
       for (nm in imgnames)
         {
           var img = untyped __js__("new Image()");
           img.onload = onLoadImage;
-          img.src = 'data/nodes/' + nm + '.png';
+          img.src = (nm.indexOf('/') > 0 ? '' : 'data/nodes/') + nm + '.png';
 
           images.set(nm, img);
         }
+*/
+      nodeImage = untyped __js__("new Image()");
+      nodeImage.onload = onLoadImage;
+      nodeImage.src = 'data/nodes.png';
+
+      fontImage = untyped __js__("new Image()");
+      fontImage.onload = onLoadImage;
+      fontImage.src = 'data/5x8.png';
     }
 
 
@@ -181,6 +192,20 @@ class Map
     }
 
 
+// paint bitmapped text
+  public function paintText(ctx: Dynamic, syms: Array<Int>, row: Int, x: Int, y: Int)
+    {
+      var i = 0;
+      for (ch in syms)
+        {
+          ctx.drawImage(fontImage,
+            ch * 5, row * 8, 5, 8,
+            x + i * 6, y, 5, 8);
+          i++;
+        }
+    }
+
+
   public inline function hideTooltip()
     {
       tooltip.style.visibility = 'hidden';
@@ -210,6 +235,9 @@ class Map
           hideTooltip();
           return;
         }
+
+      if (isAdvanced) // no tooltips in advanced mode
+        return;
 
       // render tooltip for this node
       var text = node.uiNode.getTooltip();
