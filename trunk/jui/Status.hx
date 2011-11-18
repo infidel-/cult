@@ -16,7 +16,7 @@ class Status
 
 	  // status screen
       status = UI.e("status");
-      status.style.border = 'double white 4px';
+      status.style.border = 'double #777 4px';
       status.style.width = 191;
       status.style.height = UI.mapHeight + UI.topHeight - 10;
       status.style.position = 'absolute';
@@ -140,10 +140,10 @@ class Status
       s += "</center>";
 
       // music player
-      s += "<fieldset id='musicplayer' style='bottom: 5px; margin-top: 10px; height: 60px; padding:0 5 0 5'>";
+      s += "<fieldset id='musicplayer'>";
       s += "<legend>MUSIC</legend>";
       s += "<div title='Click to go to album page.' id='status.track' " + 
-        "style='background: #222; cursor:pointer; font-size:10px; color: #00ff00'> - </div>";
+        "style='text-align: center; background: #222; cursor:pointer; font-size:10px; color: #00ff00'>-<br>-<br>-</div>";
       s += "<center style='padding-top:0px'>";
       s += "<span class=button2 title='Play' id='status.play'>PLAY</span>&nbsp;&nbsp;";
       s += "<span class=button2 title='Pause' id='status.pause'>PAUSE</span>&nbsp;&nbsp;";
@@ -152,7 +152,7 @@ class Status
       s += "</center></fieldset>";
 
       // buttons 2
-      s += "<center style='padding-top:8px;'><span class=button title='" + tipMainMenu +
+      s += "<center style='padding-top:12px;'><span class=button title='" + tipMainMenu +
         "' id='status.mainMenu'>MAIN MENU</span></center>";
       
       status.innerHTML = s;
@@ -411,7 +411,7 @@ class Status
 
 
 // update track name in status
-  public function updateTrack()
+  public function onMusic()
     {
       e("status.track").innerHTML = ui.music.getName();
     }

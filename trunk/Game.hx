@@ -5,7 +5,7 @@ import Static;
 class Game
 {
   var ui: UI;
-  var director: Director;
+  public var director: Director; // AI director
 
   // cults list and link to player
   public var cults: Array<Cult>;

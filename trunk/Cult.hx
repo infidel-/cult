@@ -192,6 +192,9 @@ class Cult
       sects.add(sect);
       node.sect = sect;
       node.update();
+    
+      if (!isAI)
+        ui.log2(this, node.name + " becomes the leader of a sect " + sect.name + ".");
     }
 
 
@@ -525,7 +528,7 @@ class Cult
 
 
 // find most linked node for this cult
-  function findMostLinkedNode(?level: Int): Node
+  function findMostLinkedNode(?level: Int, ?noSects: Bool): Node
     {
       var node = null;
       var nlinks = 0;
@@ -533,6 +536,10 @@ class Cult
         {
           for (n in nodes)
             {
+              // no sects
+              if (noSects && n.sect != null)
+                continue;
+
               // count links owned by that cult
               var cnt = 0;
               for (l in n.links)
@@ -549,6 +556,10 @@ class Cult
       else
         for (n in nodes)
           {
+            // no sects
+            if (noSects && n.sect != null)
+              continue;
+
             // count links owned by that cult
             var cnt = 0;
             for (l in n.links)
@@ -737,6 +748,22 @@ class Cult
 
       if (isParalyzed) // count paralyzed state time
         paralyzedTurns++;
+
+      createSects(); // create new sects
+    }
+
+
+// create new sects
+  function createSects()
+    {
+      if (isAI) return;
+
+      while (sects.length < getMaxSects())
+        {
+          var node = findMostLinkedNode(null, true);
+          createSect(node);
+        }
+//      ui.map.paint();
     }
 
 
@@ -1005,7 +1032,9 @@ class Cult
 
       // clean tasks on that cult
       for (s in game.player.sects)
-        if (s.task.type == 'cult' && s.taskTarget == this)
+        if (s.task != null &&
+            s.task.type == 'cult' &&
+            s.taskTarget == this)
           s.clearTask();
 
       // player cult is dead

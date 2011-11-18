@@ -190,11 +190,13 @@ class Music
 
 
 // get name of played music
- public function getName()
-   {
-     var a = playlist[trackID];
-     return a[0] + " - " + a[1] + " - " + a[2];
-   }
+  public function getName()
+    {
+      var a = playlist[trackID];
+      return "<span style='color: #080'>Track:</span> " + a[2] +
+       "<br><span style='color: #080'>Album:</span> " + a[1] +
+       "<br><span style='color: #080'>Artist:</span> " + a[0];
+    }
 
 
 // get album page

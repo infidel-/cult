@@ -113,7 +113,7 @@ class Info
               s += "<span style='font-size: 10px'>";
               for (i in 0...p.power.length)
                 {
-                  s += UI.powerName(i) + ": " + p.power[i] + " (";
+                  s += UI.powerName(i, true) + ": " + p.power[i] + " (";
                   if (i < 3)
                     s += p.getResourceChance() + "%) ";
                   else s += (p.neophytes / 4 - 0.5) + ") ";
@@ -130,6 +130,8 @@ class Info
                   s += "<span title='Chance of investigator willpower raise'>IWC: " +
                     p.investigator.getGainWillChance() + "%</span> ";
                 }
+              s += "<span title='Cult Power'>PWR: " +
+                game.director.getCultPower(p) + "</span> ";
               s += 'Dif: ' + p.difficulty.level;
               s += "</span><br>";
             }
