@@ -58,7 +58,7 @@ class UI
       customMenu = new CustomMenu(this, game);
       top = new TopMenu(this, game);
       sects = new SectsInfo(this, game);
-      music.onRandom = status.updateTrack;
+      music.onRandom = status.onMusic;
 
       Lib.document.onkeyup = onKey;
 //      Lib.window.onresize = onResize;
@@ -269,10 +269,10 @@ class UI
 
 
 // show colored power name
-  public static function powerName(i)
+  public static function powerName(i, ?isShort: Bool)
     {
       return "<span style='color:" + powerColors[i] + "'>" +
-        Game.powerNames[i] + "</span>";
+        (isShort ? Game.powerShortNames[i] : Game.powerNames[i]) + "</span>";
     }
 
 

@@ -34,7 +34,7 @@ class Map
 
       // map display
       var screen:Dynamic = UI.e("map");
-      screen.style.border = 'double white 4px';
+      screen.style.border = 'double #777 4px';
       screen.style.width = UI.mapWidth;
       screen.style.height = UI.mapHeight;
       screen.style.position = 'absolute';

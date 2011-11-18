@@ -331,7 +331,7 @@ class SectsInfo
 
       if (game.player.sects.length >= game.player.getMaxSects())
         return;
-
+/*
       var but = Tools.button({
         id: 'createSect',
         text: "CREATE SECT",
@@ -344,6 +344,7 @@ class SectsInfo
         func: onCreateSect
         });
       but.nodeID = node.id;
+*/      
     }
 
 
