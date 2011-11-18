@@ -11,3 +11,10 @@
  * advanced map mode (toggled by pressing A)
  * when cult loses origin remove investigator only if no priests are available
  * bug: map display was not updated after sect creation
+
+ * all node images combined into one
+ * leave "close" button in the main menu after finishing game
+ * new bitmap font for advanced map mode, courtesy of qubodup
+ * music player display tweaked
+ * new sects are now automatically created at the start of player's turn, button "Create sect" removed
+ * AI director implemented, will try to give some virgins to the weakest cult and double generators output sometimes (to get debug info about all director actions, open debug menu and select Trace Director toggle)
