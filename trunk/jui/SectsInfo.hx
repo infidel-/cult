@@ -10,6 +10,7 @@ class SectsInfo
   public var window: Dynamic; // window element
   public var list: Dynamic; // list element
   public var text: Dynamic; // text element
+  public var menu: Dynamic; // hovering menu element
   public var isVisible: Bool;
 
   var selectedNode: Node; // selected node
@@ -47,7 +48,7 @@ class SectsInfo
       list.style.position = 'absolute';
       list.style.left = 10;
       list.style.top = 10;
-      list.style.width = 200;
+      list.style.width = 790;
       list.style.height = 480;
       list.style.background = '#111';
       window.appendChild(list);
@@ -56,12 +57,29 @@ class SectsInfo
       text = js.Lib.document.createElement("div");
       text.style.overflow = 'auto';
       text.style.position = 'absolute';
-      text.style.left = 220;
-      text.style.top = 10;
-      text.style.width = 570;
-      text.style.height = 480;
+      text.style.textAlign = 'center';
+      text.style.left = 120;
+      text.style.top = 498;
+      text.style.width = 130;
+      text.style.height = 20;
       text.style.background = '#111';
       window.appendChild(text);
+
+      // hovering menu
+      menu = Tools.window(
+        {
+          id: "sectsMenuWindow",
+          center: true,
+          winW: UI.winWidth,
+          winH: UI.winHeight,
+          fontSize: 16,
+          w: 200,
+          h: 280,
+          z: 3000
+        });
+      menu.style.padding = 5;
+      menu.style.border = '1px solid';
+      menu.style.opacity = 0.9;
 
       // close button
       var close = Tools.closeButton(window, 365, 493, 'infoClose');
@@ -88,111 +106,41 @@ class SectsInfo
     {
       window.style.visibility = 'hidden';
       isVisible = false;
-    }
-
-
-// helper: add list entry
-  function listEntry(name: String, nodeid: Int, isMarked:Bool, isSelected: Bool)
-    {
-      var el = create(list, 'span');
-      el.style.cursor = 'pointer';
-      if (isSelected)
-        el.style.backgroundColor = '#555555';
-      el.innerHTML = (isMarked ? '! ' : '') + name;
-      el.onclick = onClick;
-      untyped el.nodeID = nodeid;
-      create(list, 'br');
-    }
-
-
-// show info
-  public function show()
-    {
-      // !!!DEBUG!!!
-//      if (game.player.origin.sect == null)
-//        game.player.createSect(game.player.origin);
-
-      if ((selectedNode == null && game.getNode(selectedNodeID) == null) ||
-          (selectedNode != null && 
-            (selectedNode.owner == null || selectedNode.owner != game.player)))
-        {
-          selectedNode = null;
-          selectedNodeID = 0;
-        }
-      var s = '';
       list.innerHTML = '';
-
-      var el = create(list, 'span');
-      el.innerHTML = '<center><u>Sects (' + game.player.sects.length + '/' +
-        game.player.getMaxSects() + ')</u></center>';
-
-      // list of sects
-      for (sect in game.player.sects)
-        listEntry(sect.name, sect.leader.id, 
-          (sect.task != null), (selectedNodeID == sect.leader.id));
-
-      // list of adepts
-      var el = create(list, 'span');
-      el.innerHTML = '<br><center><u>Adepts</u></center>';
-      for (n in game.player.nodes)
-        {
-          if (n.level != 1 || n.sect != null)
-            continue;
-  
-          listEntry(n.name, n.id, false, (selectedNodeID == n.id));
-        }
-
-      // list of neophytes
-      var el = create(list, 'span');
-      el.innerHTML = '<br><center><u>Neophytes</u></center>';
-      for (n in game.player.nodes)
-        {
-          if (n.level != 0 || n.sect != null)
-            continue;
-
-          listEntry(n.name, n.id, false, (selectedNodeID == n.id));
-        }
-
-      text.innerHTML = '<center>Select a follower or a sect</center>';
-/*
-      // !!!DEBUG!!!
-      if (selectedNode == null)
-        {
-          selectedNode = game.player.origin;
-          selectedNodeID = selectedNode.id;
-
-        }
-*/
-      if (selectedNode != null)
-        {
-          // show node/adept info
-          if (selectedNode.sect != null)
-            sectInfo(selectedNode);
-          else nodeInfo(selectedNode);
-        }
-
-      window.style.visibility = 'visible';
-      isVisible = true;
     }
 
 
-// select task
-  function onTaskSelect(e: Dynamic)
+// select task for a sect
+  public function onSelect(strID: String)
     {
-      var b = Tools.getTarget(e);
-      var target = null;
+      var dotIndex = strID.indexOf('.');
+      var dashIndex = strID.indexOf('-');
+      var nodeID = Std.parseInt(strID.substr(0, dotIndex));
+      var taskID = strID.substr(dotIndex + 1, dashIndex - dotIndex - 1);
+      var targetID = Std.parseInt(strID.substr(dashIndex + 1));
+
+//      trace(nodeID + ' ' + taskID + ' ' + targetID);
+
+      // find this sect
+      var sect = null;
+      for (s in game.player.sects)
+        if (s.leader.id == nodeID)
+          {
+            sect = s;
+            break;
+          }
 
       // clear task
-      if (b.taskID == 'doNothing')
+      if (taskID == 'doNothing')
         {
-          selectedNode.sect.clearTask();
+          sect.clearTask();
           show();
           return;
         }
 
       var task = null;
       for (t in game.sectTasks)
-        if (t.id == b.taskID)
+        if (t.id == taskID)
           {
             task = t;
             break;
@@ -200,14 +148,112 @@ class SectsInfo
 
       if (task == null)
         return;
-
+  
+      var target = null;
       if (task.type == 'cult')
-        target = game.cults[b.cultID];
+        target = game.cults[targetID];
 
-      selectedNode.sect.setTask(task, target);
-      show();
-//      sectInfo(selectedNode);
+      sect.setTask(task, target);
+//      show();
     }
+
+
+// show info
+  public function show()
+    {
+      var s = '<table style="overflow:auto" cellspacing=3 cellpadding=3 width=100%>' +
+        '<tr><th>Name<th>Leader<th>LVL<th>Size<th>Current Task';
+
+      for (sect in game.player.sects)
+        {
+          s += '<tr style="background:black"><td>' + sect.name + '<td>' + sect.leader.name +
+            '<td style="text-align:center">' + (sect.level + 1) + 
+            '<td style="text-align:center">' + 
+            sect.size + '/' + sect.getMaxSize() + ' (+' + sect.getGrowth() + ')' +
+            '<td style="te1xt-align:center">';
+/*
+          // display sect task
+          if (sect.task == null)
+            s += '-- None --';
+          else
+            {
+              s += sect.task.name;
+              if (!sect.task.isInfinite)
+                s += ' (' + sect.taskPoints + '/' + sect.task.points + ')';
+            }
+          if (sect.task != null)
+            {
+              if (sect.task.type == 'cult')
+                s += ' on ' + cast(sect.taskTarget, Cult).fullName + '<br>';
+            }
+*/
+          s += "<select class=secttasks onchange='Game.instance.ui.sects.onSelect(this.value)'>";
+//          "<option value=" + sect.leader.id + ".none>-- None --";
+          
+          for (t in game.sectTasks)
+            {
+              // no investigator
+              if (t.type == 'investigator' && !game.player.hasInvestigator)
+                continue;
+
+              // sect is too low-level
+              if (t.level > sect.level)
+                continue;
+
+              // cult target task - check all other cults and draw cult buttons
+              if (t.type == 'cult')
+                {
+                  for (c in game.cults)
+                    {
+                      if (c == game.player || !c.isDiscovered[game.player.id] || c.isDead)
+                        continue;
+
+                      // check start conditions
+                      var ok = t.check(game.player, sect, c);
+                      if (!ok)
+                        continue;
+              
+                      s += '<option value=' + sect.leader.id + '.' + t.id + '-' + c.id + 
+                        (sect.task != null && sect.task.id == t.id &&
+                          sect.taskTarget == c ? ' selected' : '') +
+                        '>' + t.name + ': ' + c.name;
+                    }
+                }
+
+              // investigator type task
+              else if (t.type == 'investigator')
+                {
+                  var ok = t.check(game.player, sect, null);
+                  if (!ok)
+                    continue;
+
+                  s += '<option value=' + sect.leader.id + '.' + t.id + '-0 ' +
+                    (sect.task != null && sect.task.id == t.id ? ' selected' : '') +
+                    '>' + t.name;
+                }
+              else s += '<option value=' + sect.leader.id + '.' + t.id + '-0' +
+                (sect.task != null && sect.task.id == t.id ? ' selected' : '') +
+                '>' + t.name;
+              
+              // points
+              if (sect.task != null && sect.task.id == t.id && 
+                  !sect.task.isInfinite)
+                s += ' (' + sect.taskPoints + '/' + sect.task.points + ')';
+            }
+
+          s += '</select>';
+        }
+
+      s += '</table>';
+      list.innerHTML = s;
+      text.innerHTML = 'Sects: ' + game.player.sects.length + '/' +
+        game.player.getMaxSects();
+
+      window.style.visibility = 'visible';
+      isVisible = true;
+    }
+
+/*
 
 
 // helper: update sect info panel (fis)
@@ -218,24 +264,11 @@ class SectsInfo
       s += sect.name + '<br>';
       s += 'Leader: ' + sect.leader.name + '<br>';
       s += 'Level: ' + (sect.level + 1) + '<br>';
-      s += 'Size: ' + sect.size + ' (+' + sect.getGrowth() + ')<br>';
+      s += 'Size: ' + sect.size + '/' + sect.getMaxSize() +
+        ' (+' + sect.getGrowth() + ')<br>';
 //      s += 'Growth rate: ' + sect.getGrowth() + '<br>';
       s += '<br>';
       s += 'Current Task: ';
-      if (sect.task == null)
-        s += '-- None --';
-      else
-        {
-          s += sect.task.name;
-          if (!sect.task.isInfinite)
-            s += ' (' + sect.taskPoints + '/' + sect.task.points + ')';
-        }
-      s += '<br>';
-      if (sect.task != null)
-        {
-          if (sect.task.type == 'cult')
-            s += 'Target: ' + cast(sect.taskTarget, Cult).fullName + '<br>';
-        }
       s += '<br>';
       s += '= Tasks =<br>';
       text.innerHTML = s;
@@ -331,20 +364,6 @@ class SectsInfo
 
       if (game.player.sects.length >= game.player.getMaxSects())
         return;
-/*
-      var but = Tools.button({
-        id: 'createSect',
-        text: "CREATE SECT",
-        w: 140,
-        h: 20,
-        x: 200,
-        y: 100,
-        fontSize: 16,
-        container: text,
-        func: onCreateSect
-        });
-      but.nodeID = node.id;
-*/      
     }
 
 
@@ -374,7 +393,7 @@ class SectsInfo
       ui.map.paint();
       show();
     }
-
+*/
 
 // get element shortcut
   public static inline function e(s)

@@ -35,11 +35,17 @@ class Sect
       level = 0;
 
       // generate a silly name
+/*      
       var rnd = 4 + Std.int(Math.random() * 4);
       var rnd2 = 3 + Std.int(Math.random() * 4);
       var rnd3 = Std.int(Math.random() * names.length);
       name = leader.name.substr(0, rnd) +
         leader.name.substr(leader.name.indexOf(' '), rnd2) + ' ' +
+        names[rnd3];
+*/
+      var rnd3 = Std.int(Math.random() * names.length);
+      name = leader.name.substr(0, leader.name.indexOf(' ')) +
+        leader.name.substr(leader.name.indexOf(' ') + 1, 1) + ' ' +
         names[rnd3];
     }
 
@@ -62,9 +68,20 @@ class Sect
     }
 
 
+  public function getMaxSize(): Int
+    {
+      var maxSize = 100;
+      if (leader.level == 1)
+        maxSize = 500;
+      else if (leader.level == 2)
+        maxSize = 1000;
+      return maxSize;
+    }
+
+
   public function getGrowth(): Int
     {
-      if (size < 1000)
+      if (size < getMaxSize())
         return 1 + Std.int(size / 10);
       else return 0;
     }
@@ -105,9 +122,12 @@ class Sect
 
 // ======================= Sect Tasks ============================
   public static var taskClasses: Array<Dynamic> =
-    [ CultGeneralInfoTask, CultNodeInfoTask,
+    [ 
+      DoNothingTask,
+      CultGeneralInfoTask, CultNodeInfoTask,
       CultResourceInfoTask, CultSabotageRitualTask,
-      InvSearchTask, InvConfuseTask, DoNothingTask ];
+      InvSearchTask, InvConfuseTask,
+    ];
 
 
   static var names0 = [ 'Open', 'Free', 'Rising', 'Strong' ];
