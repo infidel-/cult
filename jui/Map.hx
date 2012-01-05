@@ -50,7 +50,7 @@ class Map
       screen.onmouseup = onMouseUp;
       screen.onmouseout = onMouseOut;
       
-      // main menu window
+      // tooltip element
       tooltip = Tools.window(
         {
           id: "mapTooltipWindow",

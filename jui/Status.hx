@@ -330,7 +330,9 @@ class Status
             game.player.getUpgradeChance(i) + "%</span>");
         }
       updateTip("status.followers1",
-        game.player.adeptsUsed + " used of " + game.player.adepts);
+        (game.player.adeptsUsed > game.player.adepts ? 
+          game.player.adepts : game.player.adeptsUsed) +
+        " used of " + game.player.adepts);
 
       // convert buttons
 	  for (i in 0...(Game.numPowers + 1))
