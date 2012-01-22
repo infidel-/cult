@@ -225,7 +225,7 @@ class Cult
           var ok = 1;
           for (p in game.cults)
             if (p.origin != null &&
-                node.distance(p.origin) < difficulty.nodeVisibilityRadius + 50)
+                node.distance(p.origin) < difficulty.nodeActivationRadius + 50)
               {
                 ok = 0;
                 break;
@@ -383,6 +383,7 @@ class Cult
         return;
 
       power[pwr] -= Game.willPowerCost;
+      adeptsUsed++;
 
       // chance of failure
       var failChance = 30 * difficulty.investigatorWillpower;
@@ -407,7 +408,6 @@ class Cult
             " has disappeared.");
           killInvestigator();
         }
-      adeptsUsed++;
 
       if (!isAI)
         ui.updateStatus();
@@ -421,10 +421,7 @@ class Cult
       hasInvestigator = false;
       investigatorTimeout = 3;
 
-      // clean sect tasks for investigators
-      for (s in sects)
-        if (s.task != null && s.task.type == 'investigator')
-          s.clearTask();
+      game.failSectTasks(); // fail all tasks for that investigator
     }
 
 
@@ -531,7 +528,7 @@ class Cult
   function findMostLinkedNode(?level: Int, ?noSects: Bool): Node
     {
       var node = null;
-      var nlinks = 0;
+      var nlinks = -1;
       if (level != null)
         {
           for (n in nodes)
@@ -794,6 +791,21 @@ class Cult
           return "";
         }
 
+      // check for adjacent nodes of this cult
+      var ok = false;
+      for (l in node.links)
+        if (l.owner == this)
+          {
+            ok = true;
+            break;
+          }
+      if (!ok)
+        {
+          if (!isAI)
+            ui.alert("Must have an adjacent node to activate.");
+          return "";
+        }
+
 	  if (node.owner == this)
 		return "isOwner";
 
@@ -951,6 +963,8 @@ class Cult
         {
           isRitual = false;
           ui.log2(this, "The execution of " + ritual.name + " has been stopped.");
+
+          game.failSectTasks(); // fail all appropriate sect tasks
         }
 
       // find a new origin, starting with priests
@@ -1031,11 +1045,12 @@ class Cult
       investigator = null;
 
       // clean tasks on that cult
-      for (s in game.player.sects)
-        if (s.task != null &&
-            s.task.type == 'cult' &&
-            s.taskTarget == this)
-          s.clearTask();
+      for (c in game.cults)
+        for (s in c.sects)
+          if (s.task != null &&
+              s.task.type == 'cult' &&
+              s.taskTarget == this)
+            s.clearTask();
 
       // player cult is dead
       if (!isAI)

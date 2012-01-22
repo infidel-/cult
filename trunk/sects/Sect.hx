@@ -11,7 +11,7 @@ class Sect
 
   public var name: String; // sect name
   public var leader: Node; // sect leader
-  var cult: Cult; // parent cult
+  public var cult: Cult; // parent cult
   public var size: Int; // sect size
   public var level: Int; // sect level (0-2)
 
@@ -116,7 +116,12 @@ class Sect
 
       // clean task on finish
       if (!task.isInfinite)
-        clearTask();
+        {
+          clearTask();
+
+          // check for failure of other tasks
+          game.failSectTasks();
+        }
     }
 
 

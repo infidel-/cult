@@ -38,7 +38,7 @@ class Game
   public static var cultColors: Array<String> =
     [ "#00B400", "#2F43FD", "#B400AE", "#B4AE00" ];
 
-  public static var version = "(DEV Nov 18)"; // game version
+  public static var version = "(DEV Jan 22)"; // game version
   public static var followerLevels = 3; // number of follower levels
   public static var numPowers = 3; // number of basic powers
   public static var upgradeCost = 3; // cost to upgrade follower
@@ -167,7 +167,7 @@ class Game
       // fill adjacent node lists
       for (n in nodes)
         for (n2 in nodes)
-          if (n != n2 && n.distance(n2) < difficulty.nodeVisibilityRadius)
+          if (n != n2 && n.distance(n2) < difficulty.nodeActivationRadius)
             {
               n.links.remove(n2);
               n.links.add(n2);
@@ -437,6 +437,16 @@ class Game
 	  ui.updateStatus();
 */      
 	}
+
+
+// fail all appropriate sect tasks
+  public function failSectTasks()
+    {
+      for (c in cults)
+        for (s in c.sects)
+          if (s.task != null && s.task.checkFailure(s) == true)
+            s.clearTask();
+    }
 
 
 // start counting time

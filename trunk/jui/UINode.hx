@@ -311,6 +311,8 @@ class UINode
           	  s += "<b style='color:" + UI.powerColors[i] + "'>" +
                 Game.powerNames[i] + "</b> " +
 			    node.powerGenerated[i] + "<br>";
+          if (node.isTempGenerator)
+            s += "Temporary<br>";
         }
 
       return s;

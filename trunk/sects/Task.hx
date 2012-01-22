@@ -30,6 +30,13 @@ class Task
     }
 
 
+// check if this task became uncompletable
+  public function checkFailure(sect: Sect): Bool
+    {
+      return false;
+    }
+
+
 // on task complete
   public function complete(game: Game, ui: UI, cult: Cult, sect: Sect, points: Int)
     {
