@@ -18,3 +18,13 @@
  * music player display tweaked
  * new sects are now automatically created at the start of player's turn, button "Create sect" removed
  * AI director implemented, will try to give some virgins to the weakest cult and double generators output sometimes (to get debug info about all director actions, open debug menu and select Trace Director toggle)
+
+ * new sect info display
+ * cap sect growth with leader power
+ * sect name algorythm changed
+ * add "temporary" to the temporary generator tooltip
+ * fix: use adepts, upgrade them, will find "5 of 3 adepts used"
+ * fix: finding most linked node
+ * fix: clean investigator and cult tasks when needed
+ * fix: sects continue to sabotage ritual after it's disabled
+ * fix: "adepts used" counter now correctly updates when failing to lower willpower
