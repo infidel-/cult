@@ -49,16 +49,19 @@ class Tools
         b.style.fontWeight = "bold";
       if (params.fontSize == null)
         params.fontSize = 20;
+      b.className = 'uiButton';
       b.style.fontSize = params.fontSize;
       b.style.position = 'absolute';
       b.style.width = params.w;
       b.style.height = params.h;
       b.style.left = params.x;
       b.style.top = params.y;
+/*      
       b.style.background = '#111';
 	  b.style.border = '1px outset #777';
 	  b.style.cursor = 'pointer';
       b.style.textAlign = 'center';
+*/      
       params.container.appendChild(b);
       if (params.func != null)
         b.onclick = params.func;

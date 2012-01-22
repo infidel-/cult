@@ -8,6 +8,7 @@ typedef DifficultyInfo = {
   var mapHeight: Int; // map height
   var nodesCount: Int; // nodes count
   var nodeVisibilityRadius: Int; // node visibility radius
+  var nodeActivationRadius: Int; // node activation radius
   var numCults: Int; // number of cults in game
   var numPlayers: Int; // number of player cults in game
   var numSummonVirgins: Int; // number of virgins needed for summoning
@@ -45,6 +46,7 @@ class Static
         mapHeight: 580,
         nodesCount: 100,
         nodeVisibilityRadius: 101,
+        nodeActivationRadius: 101,
         numCults: 3,
         numPlayers: 1,
         numSummonVirgins: 6,
@@ -73,6 +75,7 @@ class Static
         mapHeight: 580,
         nodesCount: 100,
         nodeVisibilityRadius: 101, 
+        nodeActivationRadius: 101,
         numCults: 4,
         numPlayers: 1,
         numSummonVirgins: 9,
@@ -101,6 +104,7 @@ class Static
         mapHeight: 580,
         nodesCount: 100,
         nodeVisibilityRadius: 101, 
+        nodeActivationRadius: 101,
         numCults: 4,
         numPlayers: 1,
         numSummonVirgins: 9,

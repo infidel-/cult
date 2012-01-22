@@ -27,6 +27,17 @@ class CultSabotageRitualTask extends Task
     }
 
 
+// check for task failure
+  public override function checkFailure(sect: Sect): Bool
+    {
+      var c: Cult = sect.taskTarget;
+      if (!c.isRitual)
+        return true;
+
+      return false;
+    }
+
+
 // on task complete
   public override function complete(game: Game, ui: UI, cult: Cult, sect: Sect, points: Int)
     {
