@@ -38,7 +38,7 @@ class Game
   public static var cultColors: Array<String> =
     [ "#00B400", "#2F43FD", "#B400AE", "#B4AE00" ];
 
-  public static var version = "(DEV Jan 22)"; // game version
+  public static var version = "(DEV Jan 25)"; // game version
   public static var followerLevels = 3; // number of follower levels
   public static var numPowers = 3; // number of basic powers
   public static var upgradeCost = 3; // cost to upgrade follower
@@ -327,14 +327,8 @@ class Game
 
 
 // on clicking end turn button (ftu)
-  public function endTurn(?clearHL: Bool)
+  public function endTurn()
     {
-      ui.logPanel.endTurn(); // darken older messages
-
-      // clear node highlight
-      if (clearHL)
-        player.highlightedNodes.clear();
-
       var newPlayerID = -1;
       for (i in (currentPlayerID + 1)...cults.length)
         {
@@ -405,37 +399,6 @@ class Game
           director.turn();
           endTurn();
         }
-
-/* --++-- old single-player behaviour
-      ui.logPanel.endTurn(); // darken older messages
-
-      // clear node highlight
-      for (n in nodes)
-        if (n.isHighlighted)
-          n.setHighlighted(false);
-
-      // ensure player goes last
-      for (c in cults)
-        if (c.isAI && !c.isDead)
-          {
-            c.turn();
-
-            // game could be finished on summoning success
-            if (isFinished)
-              return;
-
-            startTimer("ai " + c.name);
-            untyped c.aiTurn();
-            endTimer("ai " + c.name);
-          }
-      player.turn();
-      for (c in cults)
-        c.checkVictory();
-
-	  turns++;
-      ui.map.paint();
-	  ui.updateStatus();
-*/      
 	}
 
 

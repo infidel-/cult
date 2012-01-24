@@ -283,7 +283,14 @@ class Status
       if (game.isFinished)
         return;
 
-	  game.endTurn(true);
+      // clear node highlight
+      game.player.highlightedNodes.clear();
+
+      // set all messages as old
+      for (m in game.player.logPanelMessages)
+        m.old = true;
+
+	  game.endTurn();
 	}
 
 

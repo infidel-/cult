@@ -30,14 +30,6 @@ class LogPanel
     }
 
 
-// darken older messages on end turn
-  public function endTurn()
-    {
-      for (e in list)
-        e.style.background = '#050505';
-    }
-
-
 // clear and paint all player messages
   public function paint()
     {
@@ -60,6 +52,9 @@ class LogPanel
               sym = "<span style='color:" + UI.lineColors[cult.id] + "'>!</span>" +
                 "<span style='color:" + UI.lineColors[cult2.id] + "'>!</span>";
             }
+          if (m.params != null && m.params.symbol != null)
+             sym = m.params.symbol;
+
           // create element
           var e = Lib.document.createElement("div");
           m.id = list.length;
@@ -70,14 +65,14 @@ class LogPanel
           e.style.height = '18';
           e.style.left = '0';
           e.style.top = '' + (list.length * 22);
-          e.style.background = '#151515';
+          e.style.background = (m.old ? '#050505' : '#252525');
           e.style.border = '1px solid #999';
           e.style.cursor = 'pointer';
           e.style.fontSize = 15;
           e.style.color = col;
           e.style.fontWeight = 'bold';
           e.style.textAlign = 'center';
-          if (m.important)
+          if (m.params != null && m.params.important)
             e.style.textDecoration = 'blink';
           e.innerHTML = sym;
           panel.appendChild(e);

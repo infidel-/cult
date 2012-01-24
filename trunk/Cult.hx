@@ -405,7 +405,7 @@ class Cult
       if (investigator.will <= 0)
         {
           ui.log2(this, "The investigator of the " + fullName +
-            " has disappeared.");
+            " has disappeared.", { symbol: 'I' });
           killInvestigator();
         }
 
@@ -697,7 +697,11 @@ class Cult
           investigatorTimeout == 0)
         {
           hasInvestigator = true;
-          ui.log2(this, "An investigator has found out about " + fullName + ".", !this.isAI);
+          ui.log2(this, "An investigator has found out about " + fullName + ".",
+            {
+              important: !this.isAI, 
+              symbol: 'I' 
+            });
           investigator = new Investigator(this, ui, game);
 
           if (!isAI)
@@ -885,11 +889,12 @@ class Cult
       var text = fullName + " has declared war against " + cult.fullName + ".";
       var m:LogPanelMessage = {
         id: -1,
+        old: false,
         type: 'cults',
         text: text,
         obj: { c1: this, c2: cult },
         turn: game.turns + 1,
-        important: false
+        params: {}
         };
       for (c in game.cults)
         if (this.isInfoKnown[c.id] || cult.isInfoKnown[c.id] ||
@@ -914,11 +919,12 @@ class Cult
       var text = fullName + " has made peace with " + cult.fullName + ".";
       var m:LogPanelMessage = {
         id: -1,
+        old: false,
         type: 'cults',
         text: text,
         obj: { c1: this, c2: cult },
         turn: game.turns + 1,
-        important: false
+        params: {}
         };
       for (c in game.cults)
         if (this.isInfoKnown[c.id] || cult.isInfoKnown[c.id] ||
@@ -1085,8 +1091,14 @@ class Cult
 // add message to log panel (short)
   public inline function logPanelShort(s: String)
     {
-      logPanel({ id: -1, type: 'cult', text: s, obj: this, turn: game.turns + 1, 
-        important: false
+      logPanel({ 
+        id: -1, 
+        old: false,
+        type: 'cult', 
+        text: s, 
+        obj: this, 
+        turn: game.turns + 1, 
+        params: {}
         });
     }
 
@@ -1168,10 +1180,11 @@ class Cult
 typedef LogPanelMessage =
 {
   var id: Int; // message id
+  var old: Bool; // message old?
   var type: String; // message type (cult, cults, etc)
   var text: String; // message text
   var obj: Dynamic; // message object (origin etc)
   var turn: Int; // turn on which message appeared
-  var important: Bool; // message important?
+  var params: Dynamic; // additional message parameters
 };
 

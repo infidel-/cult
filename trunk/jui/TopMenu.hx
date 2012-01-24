@@ -90,6 +90,22 @@ class TopMenu
         title: "Click to go to About page.",
         func: onAbout
         });
+
+      Tools.button({
+        id: 'advanced',
+        text: "A",
+        w: 12,
+        h: 12,
+        x: 774,
+        y: 30,
+        fontSize: 10,
+        container: panel,
+        title: "Click to set/unset advanced map mode (or press <span style=\"color:white\">A</span>).",
+        func: onAdvanced
+        });
+
+//      s += "<div class=button style='position: absolute; z-index: 20; top: 30; left: 240;' title='" + tipMainMenu +
+//        "' id='status.mainMenu'>A</div>";
     }
 
 
@@ -119,6 +135,12 @@ class TopMenu
       ui.debug.show();
     }
 
+
+  public function onAdvanced(event)
+    {
+      ui.map.isAdvanced = !ui.map.isAdvanced;
+      ui.map.paint();
+    }
 
 // about game button
   function onAbout(event: Dynamic)
