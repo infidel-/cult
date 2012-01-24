@@ -131,6 +131,10 @@ class UI
                e.keyCode == 13 || // Enter
                e.keyCode == 32) // Space
         {
+          // Enter disabled in Sects info
+          if (e.keyCode == 13 && sects.isVisible)
+            return;
+
           if (alertWindow.isVisible)
             alertWindow.onClose(null);
 
@@ -146,8 +150,14 @@ class UI
           // open main menu
           else mainMenu.show();
         }
+      
+      // close log
+      else if (logWindow.isVisible && e.keyCode == 76) // L
+        logWindow.onClose(null);
 
-
+      else if (info.isVisible && e.keyCode == 67) // C
+        info.onClose(null);
+          
       else if (!windowOpen) // these work only without windows open
         {
           // end turn
@@ -292,15 +302,21 @@ class UI
 
 
 // add message to logs of all player cults who know about this cult (more info)
-  public function log2(cultOrigin: Cult, s: String, ?important: Bool)
+  public function log2(cultOrigin: Cult, s: String, ?params: Dynamic)
     {
       // no messages about unknown cults
       for (c in game.cults)
         if (c.isDiscovered[cultOrigin.id] || cultOrigin.isDiscovered[c.id])
           {
             c.log(s);
-            c.logPanel({ id: -1, type: null, text: s, obj: cultOrigin, turn: game.turns + 1,
-              important: important });
+            c.logPanel({
+              id: -1,
+              old: false,
+              type: null,
+              text: s, 
+              obj: cultOrigin, 
+              turn: game.turns + 1,
+              params: params });
           }
     }
 
