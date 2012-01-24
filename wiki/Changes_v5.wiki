@@ -28,3 +28,11 @@
  * fix: clean investigator and cult tasks when needed
  * fix: sects continue to sabotage ritual after it's disabled
  * fix: "adepts used" counter now correctly updates when failing to lower willpower
+
+ * two more cult descriptions
+ * all keyboard shortcuts (C,S,L) should also close their windows when pressed
+ * removed Enter shortcut for closing sects info window
+ * add A button for setting advanced mode (in the upper right corner of the map)
+ * letter I instead of ! on investigator events 
+ * fixed darkening of log panel events on ending turn
+ * hopefully fixed wrong clearing of node highlights in some cases
