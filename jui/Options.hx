@@ -28,11 +28,11 @@ class Options
         note: 'Turn on which new investigator becomes visible' },
       { name: 'investigatorGainWill', type: 'float', title: 'Investigator: Chance of gaining will',
         note: 'Higher value raises chance of investigator gaining will' },
-      { name: 'investigatorCultSize', type: 'float', title: 'Investigator: Cult size mod',
-        note: 'Starting investigator willpower - cult size multiplier (less - easier)' },
 */
       { name: 'mapAdvancedMode', type: 'bool', title: 'Advanced map mode',
         note: 'Displays additional node information on map' },
+      { name: 'logPanelSkipSects', type: 'bool', title: 'No sect messages in log panel',
+        note: 'Will not show sect messages in log panel' },
     ];
 
 

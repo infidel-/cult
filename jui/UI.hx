@@ -168,21 +168,32 @@ class UI
           
       else if (!windowOpen) // these work only without windows open
         {
-          // end turn
-          if (e.keyCode == 69) // E
-            status.onEndTurn(null);
+          // advanced map mode
+          if (e.keyCode == 65) // A
+            {
+              map.isAdvanced = !map.isAdvanced;
+              map.paint();
+            }
 
           // cults
           else if (e.keyCode == 67) // C
             top.onCults(null);
 
+          // debug
+          else if (e.keyCode == 68) // D
+            top.onDebug(null);
+
+          // end turn
+          else if (e.keyCode == 69) // E
+            status.onEndTurn(null);
+
           // log
           else if (e.keyCode == 76) // L
             top.onLog(null);
 
-          // debug
-          else if (e.keyCode == 68) // D
-            top.onDebug(null);
+          // main menu
+          else if (e.keyCode == 77) // M
+            mainMenu.show();
 
           // options
           else if (e.keyCode == 79) // O
@@ -203,13 +214,6 @@ class UI
           // summon
           else if (e.keyCode == 51) // 3
             game.player.upgrade(2);
-
-          // advanced map mode
-          if (e.keyCode == 65) // A
-            {
-              map.isAdvanced = !map.isAdvanced;
-              map.paint();
-            }
         }
     }
 
@@ -321,6 +325,11 @@ class UI
         if (c.isDiscovered[cultOrigin.id] || cultOrigin.isDiscovered[c.id])
           {
             c.log(s);
+
+            // skip sect messages is on
+            if (params != null && params.type == 'sect' &&
+                c.options.get('logPanelSkipSects'))
+              continue;
             c.logPanel({
               id: -1,
               old: false,

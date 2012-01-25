@@ -102,7 +102,8 @@ class Sect
       else level = 2;
 
       if (level != oldlevel && !cult.isAI)
-        ui.log2(cult, name + ' has gained a new level.');
+        ui.log2(cult, name + ' has gained a new level.',
+          { type: 'sect' });
 
       if (task == null) // no task
         return;

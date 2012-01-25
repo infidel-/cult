@@ -65,8 +65,8 @@ class LogPanel
           e.style.height = '18';
           e.style.left = '0';
           e.style.top = '' + (list.length * 22);
-          e.style.background = (m.old ? '#050505' : '#252525');
-          e.style.border = '1px solid #999';
+          e.style.background = (m.old ? '#050505' : '#151515');
+          e.style.border = (m.old ? '1px solid #999' : '1px solid #fff');
           e.style.cursor = 'pointer';
           e.style.fontSize = 15;
           e.style.color = col;
