@@ -64,13 +64,26 @@ class TopMenu
         func: onLog
         });
 
+      Tools.button({
+        id: 'options',
+        text: "OPTIONS",
+        w: 100,
+        h: buttonHeight,
+        x: 290,
+        y: 2,
+        fontSize: 16,
+        container: panel,
+        title: "Click to view options (or press <span style=\"color:white\">O</span>).",
+        func: onOptions
+        });
+
       if (Game.isDebug)
         Tools.button({
           id: 'debug',
           text: "DEBUG",
           w: 70,
           h: buttonHeight,
-          x: 290,
+          x: 410,
           y: 2,
           fontSize: 16,
           container: panel,
@@ -127,6 +140,12 @@ class TopMenu
     }
 
 
+  public function onOptions(event: Dynamic)
+    {
+      ui.options.show();
+    }
+
+
   public function onDebug(event)
     {
       if (game.isFinished || !Game.isDebug)
@@ -139,6 +158,7 @@ class TopMenu
   public function onAdvanced(event)
     {
       ui.map.isAdvanced = !ui.map.isAdvanced;
+      game.player.options.set('mapAdvancedMode', ui.map.isAdvanced);
       ui.map.paint();
     }
 
