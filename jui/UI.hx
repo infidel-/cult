@@ -32,6 +32,7 @@ class UI
   public var logPanel: LogPanel; // log panel
   public var top: TopMenu; // top menu block
   public var sects: SectsInfo; // sects info block
+  public var options: Options; // options block
 
 
   public function new(g)
@@ -58,6 +59,7 @@ class UI
       customMenu = new CustomMenu(this, game);
       top = new TopMenu(this, game);
       sects = new SectsInfo(this, game);
+      options = new Options(this, game);
       music.onRandom = status.onMusic;
 
       Lib.document.onkeyup = onKey;
@@ -147,16 +149,22 @@ class UI
           else if (sects.isVisible)
             sects.onClose(null);
 
+          else if (options.isVisible)
+            options.onClose(null);
+          
           // open main menu
           else mainMenu.show();
         }
       
-      // close log
+      // close window
       else if (logWindow.isVisible && e.keyCode == 76) // L
         logWindow.onClose(null);
 
       else if (info.isVisible && e.keyCode == 67) // C
         info.onClose(null);
+          
+      else if (options.isVisible && e.keyCode == 79) // O
+        options.onClose(null);
           
       else if (!windowOpen) // these work only without windows open
         {
@@ -175,6 +183,10 @@ class UI
           // debug
           else if (e.keyCode == 68) // D
             top.onDebug(null);
+
+          // options
+          else if (e.keyCode == 79) // O
+            top.onOptions(null);
 
           // sects
           else if (e.keyCode == 83) // S

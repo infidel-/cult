@@ -53,6 +53,7 @@ class Cult
   public var logMessages: String; // log string
   public var logPanelMessages: List<LogPanelMessage>; // log panel messages list
   public var highlightedNodes: List<Node>; // highlighted nodes list
+  public var options: Hash<Dynamic>; // player options
 
 
   public function new(gvar: Game, uivar: UI, id: Int, infoID: Int)
@@ -65,6 +66,7 @@ class Cult
       this.name = this.info.name;
       this.isAI = false;
       this.highlightedNodes = new List<Node>();
+      this.options = new Hash<Dynamic>();
 
       isDiscovered = [];
       isInfoKnown = [];

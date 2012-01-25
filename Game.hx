@@ -412,6 +412,15 @@ class Game
     }
 
 
+// apply current player options
+  public function applyPlayerOptions()
+    {
+      ui.map.isAdvanced = player.options.get('mapAdvancedMode');
+
+      ui.map.paint();
+    }
+
+
 // start counting time
   var timerTime: Float;
   public inline function startTimer(name)
