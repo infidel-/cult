@@ -196,14 +196,16 @@ class Cult
       node.update();
     
       if (!isAI)
-        ui.log2(this, node.name + " becomes the leader of a sect " + sect.name + ".");
+        ui.log2(this, node.name + " becomes the leader of a sect " + sect.name + ".",
+          { type: 'sect' });
     }
 
 
 // remove a sect
   public function removeSect(node: Node)
     {
-      ui.log2(this, "Sect " + node.sect.name + " has been destroyed without leadership.");
+      ui.log2(this, "Sect " + node.sect.name + " has been destroyed without leadership.",
+        { type: 'sect' });
       sects.remove(node.sect);
       node.sect = null;
       node.update();
