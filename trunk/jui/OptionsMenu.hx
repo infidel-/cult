@@ -10,7 +10,7 @@ typedef OptionInfo =
 };
 
 
-class Options
+class OptionsMenu
 {
   var ui: UI;
   var game: Game;
@@ -33,6 +33,8 @@ class Options
         note: 'Displays additional node information on map' },
       { name: 'logPanelSkipSects', type: 'bool', title: 'No sect messages in log panel',
         note: 'Will not show sect messages in log panel' },
+      { name: 'sectAdvisor', type: 'bool', title: 'Sect advisor',
+        note: 'Sect advisor will automatically give tasks to sects depending on the situation' },
     ];
 
 
@@ -113,7 +115,7 @@ class Options
                 fontSize: 14,
                 container: divel
                 });
-              el.checked = game.player.options.get(info.name);
+              el.checked = game.player.options.getBool(info.name);
             }
           else el = Tools.textfield({
             id: info.name,
