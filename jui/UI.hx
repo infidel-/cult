@@ -32,7 +32,7 @@ class UI
   public var logPanel: LogPanel; // log panel
   public var top: TopMenu; // top menu block
   public var sects: SectsInfo; // sects info block
-  public var options: Options; // options block
+  public var options: OptionsMenu; // options block
 
 
   public function new(g)
@@ -59,7 +59,7 @@ class UI
       customMenu = new CustomMenu(this, game);
       top = new TopMenu(this, game);
       sects = new SectsInfo(this, game);
-      options = new Options(this, game);
+      options = new OptionsMenu(this, game);
       music.onRandom = status.onMusic;
 
       Lib.document.onkeyup = onKey;
@@ -170,10 +170,7 @@ class UI
         {
           // advanced map mode
           if (e.keyCode == 65) // A
-            {
-              map.isAdvanced = !map.isAdvanced;
-              map.paint();
-            }
+            top.onAdvanced(null);
 
           // cults
           else if (e.keyCode == 67) // C
@@ -328,7 +325,7 @@ class UI
 
             // skip sect messages is on
             if (params != null && params.type == 'sect' &&
-                c.options.get('logPanelSkipSects'))
+                c.options.getBool('logPanelSkipSects'))
               continue;
             c.logPanel({
               id: -1,

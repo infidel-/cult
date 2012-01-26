@@ -50,6 +50,18 @@ class Sect
     }
 
 
+// set task by string id
+  public function setTaskByID(taskID: String, ?target: Dynamic)
+    {
+      for (t in game.sectTasks)
+        if (t.id == taskID)
+          {
+            setTask(t, target);
+            return;
+          }
+    }
+
+
 // set task
   public function setTask(newTask: Task, target: Dynamic)
     {

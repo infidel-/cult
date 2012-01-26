@@ -6,6 +6,7 @@ class Game
 {
   var ui: UI;
   public var director: Director; // AI director
+  public var sectAdvisor: sects.Advisor; // sects advisor
 
   // cults list and link to player
   public var cults: Array<Cult>;
@@ -53,6 +54,7 @@ class Game
 	  ui = new UI(this);
 	  ui.init();
       director = new Director(this, ui);
+      sectAdvisor = new sects.Advisor(this);
       ui.mainMenu.show(); // needs to be moved into ui
 
       // fill up tasks array
@@ -121,6 +123,10 @@ class Game
           if (numPlayersLeft > 0)
             {
               p = new Cult(this, ui, id, infoID);
+
+              // starting player options
+              p.options.set('sectAdvisor', true);
+
               numPlayersLeft--;
             }
           else p = new AI(this, ui, id, infoID);
@@ -361,6 +367,8 @@ class Game
           player = cults[newPlayerID];
           currentPlayerID = newPlayerID;
 
+          applyPlayerOptions(); // apply options for this player
+
           player.turn();
           for (c in cults)
             c.checkVictory();
@@ -415,7 +423,8 @@ class Game
 // apply current player options
   public function applyPlayerOptions()
     {
-      ui.map.isAdvanced = player.options.get('mapAdvancedMode');
+      ui.map.isAdvanced = player.options.getBool('mapAdvancedMode');
+//      trace(player.id + ' ' + ui.map.isAdvanced);
 
       ui.map.paint();
     }

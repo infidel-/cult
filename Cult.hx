@@ -45,6 +45,7 @@ class Cult
   public var nodes: List<Node>; // cache of owned nodes
   public var adeptsUsed: Int; // how many adepts were used this turn
   public var sects: List<Sect>; // list of controlled sects
+  public var options: Options; // player options
 
   public var hasInvestigator: Bool; // does this cult has investigator on its back?
   public var investigator: Investigator; // investigator
@@ -53,7 +54,6 @@ class Cult
   public var logMessages: String; // log string
   public var logPanelMessages: List<LogPanelMessage>; // log panel messages list
   public var highlightedNodes: List<Node>; // highlighted nodes list
-  public var options: Hash<Dynamic>; // player options
 
 
   public function new(gvar: Game, uivar: UI, id: Int, infoID: Int)
@@ -66,7 +66,7 @@ class Cult
       this.name = this.info.name;
       this.isAI = false;
       this.highlightedNodes = new List<Node>();
-      this.options = new Hash<Dynamic>();
+      this.options = new Options(this);
 
       isDiscovered = [];
       isInfoKnown = [];
@@ -755,6 +755,10 @@ class Cult
         paralyzedTurns++;
 
       createSects(); // create new sects
+
+      // run sect advisor
+      if (options.getBool('sectAdvisor'))
+        game.sectAdvisor.run(this);
     }
 
 
