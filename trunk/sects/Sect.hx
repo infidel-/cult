@@ -19,6 +19,7 @@ class Sect
   public var task: Task; // task info id
   public var taskPoints: Int; // points to completion
   public var taskTarget: Dynamic; // task target
+  public var taskImportant: Bool; // task is important (for sect advisor)
 
   public function new(g: Game, uivar: UI, l: Node, c: Cult)
     {
@@ -27,6 +28,7 @@ class Sect
       leader = l;
       cult = c;
       taskPoints = 0;
+      taskImportant = false;
       size = 10;
       if (l.level == 1)
         size = 50;
@@ -68,6 +70,7 @@ class Sect
       task = newTask;
       taskPoints = 0;
       taskTarget = target;
+//      trace('setTask ' + newTask.id);
     }
 
 
@@ -77,6 +80,8 @@ class Sect
       task = null;
       taskTarget = null;
       taskPoints = 0;
+      taskImportant = false;
+//      trace('clear! ' + taskImportant);
     }
 
 
