@@ -36,3 +36,13 @@
  * letter I instead of ! on investigator events 
  * fixed darkening of log panel events on ending turn
  * hopefully fixed wrong clearing of node highlights in some cases
+
+ * Sect Advisor AI that will auto-select tasks for all sects (can be turned off in options menu)
+ * new cult colors and raising custom game cults and players max to 8
+ * options menu, each player in multiplayer mode has separate options table
+ * option: advanced map mode
+ * option: don't show sect messages in log panel
+ * add M keyboard shortcut to call main menu
+ * use border color to mark fresh event
+ * fix: custom game start
+ * fix: If player one presses A to view the advanced map, that map viewing state does not change when player 2 starts their turn.
