@@ -167,7 +167,9 @@ class SectsInfo
 
       for (sect in game.player.sects)
         {
-          s += '<tr style="background:black"><td>' + sect.name + '<td>' + sect.leader.name +
+          s += '<tr style="background:black"><td>' + sect.name + 
+//            (Game.isDebug ? ' ' + sect.taskImportant : '') +
+            '<td>' + sect.leader.name +
             '<td style="text-align:center">' + (sect.level + 1) + 
             '<td style="text-align:center">' + 
             sect.size + '/' + sect.getMaxSize() + ' (+' + sect.getGrowth() + ')' +

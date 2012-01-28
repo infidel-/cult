@@ -185,6 +185,11 @@ class OptionsMenu
 
           // save option
           game.player.options.set(info.name, value);
+
+          // sect advisor off, clear task importance flag
+          if (info.name == 'sectAdvisor' && !value)
+            for (s in game.player.sects)
+              s.taskImportant = false;
         }
 
       game.applyPlayerOptions(); // apply player options
