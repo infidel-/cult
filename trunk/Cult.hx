@@ -970,7 +970,8 @@ class Cult
 // lose origin
   public function loseOrigin()
     {
-      ui.log2(this, fullName + " has lost its Origin.");
+      if (nodes.length > 0)
+        ui.log2(this, fullName + " has lost its Origin.");
 
       // stop a ritual
       if (isRitual)
@@ -997,15 +998,17 @@ class Cult
       // if not found, cult is in big trouble
       if (!ok)
         {
-          ui.log2(this, "Destroying the origin of " + fullName +
-            " has left it completely paralyzed.");
+          if (nodes.length > 0)
+            ui.log2(this, "Destroying the origin of " + fullName +
+              " has left it completely paralyzed.");
           isParalyzed = true;
 
           if (hasInvestigator) // remove investigator
             {
               killInvestigator();
-              ui.log2(this, "The investigator of the " + fullName +
-                " has disappeared thinking the cult is finished.");
+              if (nodes.length > 0)
+                ui.log2(this, "The investigator of the " + fullName +
+                  " has disappeared thinking the cult is finished.");
             }
         }
       else

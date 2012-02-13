@@ -201,15 +201,15 @@ class UI
             top.onSects(null);
 
           // upgrade neophytes
-          else if (e.keyCode == 49) // 1
+          else if (e.keyCode == 49 && !game.isFinished) // 1
             game.player.upgrade(0);
 
           // upgrade adepts 
-          else if (e.keyCode == 50) // 2
+          else if (e.keyCode == 50 && !game.isFinished) // 2
             game.player.upgrade(1);
 
           // summon
-          else if (e.keyCode == 51) // 3
+          else if (e.keyCode == 51 && !game.isFinished) // 3
             game.player.upgrade(2);
         }
     }
@@ -302,7 +302,7 @@ class UI
 // show colored cult name
   public static function cultName(i, info)
     {
-      return "<span style='color:" + Game.cultColors[i] + "'>" +
+      return "<span style='color:" + UI.cultColors[i] + "'>" +
         info.name + "</span>";
     }
 
@@ -371,13 +371,19 @@ class UI
 
   public static var powerColors: Array<String> =
     [ "rgb(255, 0, 0)", "rgb(0, 255, 255)", "rgb(0, 255, 0)", "rgb(255, 255, 0)" ];
-  public static var nodeColors: Array<String> =
-    [ "rgb(0, 85, 0)", "rgb(1, 9, 85)", "rgb(86, 0, 83)", "rgb(80, 80, 0)" ];
+//  public static var nodeColors: Array<String> =
+//    [ "rgb(0, 85, 0)", "rgb(1, 9, 85)", "rgb(86, 0, 83)", "rgb(80, 80, 0)" ];
   public static var nodePixelColors: Array<Array<Int>> =
-    [ [ 85, 221, 85 ], [ 39, 39, 215 ], [ 224, 82, 202 ], [ 216, 225, 81 ] ];
+    [ [ 85, 221, 85 ], [ 39, 39, 215 ], [ 224, 82, 202 ], [ 216, 225, 81 ],
+      [ 9, 136, 255 ], [ 96, 150, 18 ], [ 168, 87, 0 ], [ 153, 0, 9 ] ];
   public static var nodeNeutralPixelColors: Array<Int> = [ 120, 120, 120 ];
   public static var lineColors: Array<String> =
-    [ "#55dd55", "#2727D7", "#E052CA", "#D8E151" ];
+    [ "#55dd55", "#2727D7", "#E052CA", "#D8E151",
+      "#0988ff", "#609612", "#a85700", "#990009"
+    ];
+  public static var cultColors: Array<String> =
+    [ "#00B400", "#2F43FD", "#B400AE", "#B4AE00",
+      "#0988ff", "#609612", "#a85700", "bb000b" ];
 
 
   public static var winWidth = 1024;

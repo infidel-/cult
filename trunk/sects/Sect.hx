@@ -14,6 +14,7 @@ class Sect
   public var cult: Cult; // parent cult
   public var size: Int; // sect size
   public var level: Int; // sect level (0-2)
+  public var isAdvisor: Bool; // controlled by advisor?
 
   // current task
   public var task: Task; // task info id
@@ -49,6 +50,8 @@ class Sect
       name = leader.name.substr(0, leader.name.indexOf(' ')) +
         leader.name.substr(leader.name.indexOf(' ') + 1, 1) + ' ' +
         names[rnd3];
+
+      isAdvisor = cult.options.getBool('sectAdvisor');
     }
 
 

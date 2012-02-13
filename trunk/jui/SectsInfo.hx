@@ -128,6 +128,7 @@ class SectsInfo
         if (s.leader.id == nodeID)
           {
             sect = s;
+            sect.isAdvisor = false;
             break;
           }
 
@@ -155,7 +156,7 @@ class SectsInfo
         target = game.cults[targetID];
 
       sect.setTask(task, target);
-//      show();
+      show();
     }
 
 
@@ -163,7 +164,7 @@ class SectsInfo
   public function show()
     {
       var s = '<table style="overflow:auto" cellspacing=3 cellpadding=3 width=100%>' +
-        '<tr><th>Name<th>Leader<th>LVL<th>Size<th>Current Task';
+        '<tr><th>Name<th>Leader<th>LVL<th>Size<th>Current Task<th>AI';
 
       for (sect in game.player.sects)
         {
@@ -230,8 +231,14 @@ class SectsInfo
             }
 
           s += '</select>';
-        }
 
+          s += '<td style="text-align:center">' +
+            '<input type="checkbox" name="sectai' + sect.leader.id + '" ' +
+            (sect.isAdvisor ? 'checked' : '') + 
+            ' onchange="Game.instance.ui.sects.onAdvisor(' + sect.leader.id +
+            ', this.checked)">';
+        }
+        
       s += '</table>';
       list.innerHTML = s;
       text.innerHTML = 'Sects: ' + game.player.sects.length + '/' +
@@ -239,6 +246,20 @@ class SectsInfo
 
       window.style.visibility = 'visible';
       isVisible = true;
+    }
+
+
+// checkbox click callback
+  public function onAdvisor(leaderID: Int, checked: Bool)
+    {
+//      trace(leaderID + ' ' + checked);
+
+      for (sect in game.player.sects)
+        if (sect.leader.id == leaderID)
+          {
+            sect.isAdvisor = checked;
+            break;
+          }
     }
 
 
