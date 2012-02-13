@@ -240,10 +240,10 @@ class UINode
 
       if (node.owner != null) // cult info
         {
-          s += "<span style='color:" + Game.cultColors[node.owner.id] + "'>" +
+          s += "<span style='color:" + UI.cultColors[node.owner.id] + "'>" +
             node.owner.name + "</span><br>";
           if (node.owner.origin == node && node.isKnown[game.player.id])
-            s += "<span style='color:" + Game.cultColors[node.owner.id] +
+            s += "<span style='color:" + UI.cultColors[node.owner.id] +
               "'>The Origin</span><br>";
           s += "<br>";
         }

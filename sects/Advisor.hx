@@ -41,6 +41,9 @@ class Advisor
       var minimalSize = 10000;
       for (s in cult.sects)
         {
+          if (!s.isAdvisor)
+            continue;
+
           if (s.taskImportant && !taskVeryImportant)
             continue;
 
@@ -90,7 +93,8 @@ class Advisor
       else if (cult.hasInvestigator)
         {
           for (s in cult.sects)
-            if (s.task == null || s.task.id != 'invConfuse')
+            if ((s.task == null || s.task.id != 'invConfuse') &&
+                s.isAdvisor)
               {
                 s.setTaskByID('invConfuse');
                 s.taskImportant = true;
@@ -130,7 +134,7 @@ class Advisor
         return;
 
       for (s in cult.sects)
-        if (!s.taskImportant)
+        if (!s.taskImportant && s.isAdvisor)
           {
             // find random cult and set a task to it
             var cultTarget = game.cults[temp[Std.random(temp.length)]];

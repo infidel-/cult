@@ -36,10 +36,8 @@ class Game
     [ "Neophyte", "Adept", "Priest" ];
   public static var powerConversionCost: Array<Int> = [2, 2, 2, 1];
   public static var willPowerCost: Int = 2;
-  public static var cultColors: Array<String> =
-    [ "#00B400", "#2F43FD", "#B400AE", "#B4AE00" ];
 
-  public static var version = "(DEV Jan 25)"; // game version
+  public static var version = "(DEV Feb 14)"; // game version
   public static var followerLevels = 3; // number of follower levels
   public static var numPowers = 3; // number of basic powers
   public static var upgradeCost = 3; // cost to upgrade follower

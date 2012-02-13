@@ -30,8 +30,8 @@ class CustomMenu
 //        note: 'Node visibility radius (node is considered visible when in that radius)' },
       { name: 'nodeActivationRadius', type: 'int', title: 'Activation radius',
         note: 'Node activation radius (node can be activated only when the player has an adjacent node in that radius)' },
-      { name: 'numCults', type: 'int', title: 'Number of cults (2-4)', note: 'Number of cults in game' },
-      { name: 'numPlayers', type: 'int', title: 'Number of human players (1-4)', note: 'Number of human players in game' },
+      { name: 'numCults', type: 'int', title: 'Number of cults (2-8)', note: 'Number of cults in game' },
+      { name: 'numPlayers', type: 'int', title: 'Number of human players (1-8)', note: 'Number of human players in game' },
       { name: 'numSummonVirgins', type: 'int', title: 'Number of virgins for the final ritual',
         note: 'Number of virgins needed to perform final ritual' },
 
@@ -213,10 +213,10 @@ class CustomMenu
         dif.numPlayers = 2;
       if (dif.numCults < 1)
         dif.numCults = 1;
-      if (dif.numPlayers > 4)
-        dif.numPlayers = 4;
-      if (dif.numCults > 4)
-        dif.numCults = 4;
+      if (dif.numPlayers > 8)
+        dif.numPlayers = 8;
+      if (dif.numCults > 8)
+        dif.numCults = 8;
 
       game.restart(-1, dif);
 
