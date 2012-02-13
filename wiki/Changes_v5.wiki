@@ -46,3 +46,6 @@
  * use border color to mark fresh event
  * fix: custom game start
  * fix: If player one presses A to view the advanced map, that map viewing state does not change when player 2 starts their turn.
+
+ * checkboxes in sects info for sect advisor to skip them when planning
+ * remove most of unnecessary messages when cult is destroyed
