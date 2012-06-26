@@ -83,6 +83,27 @@ class MainMenu
         func: onCustomGame
         });
 
+      Tools.button({
+        id: 'createMult',
+        text: "CREATE MULT",
+        w: 150,
+        h: 30,
+        x: 35,
+        y: 200,
+        container: window,
+        func: onCreateMult
+        });
+
+      Tools.button({
+        id: 'joinMult',
+        text: "JOIN MULT",
+        w: 120,
+        h: 30,
+        x: 220,
+        y: 200,
+        container: window,
+        func: onJoinMult
+        });
       saveButton = { style: {} };
 /*
       Tools.button({
@@ -145,6 +166,102 @@ class MainMenu
   function onSaveGame(event: Dynamic)
     {
       ui.saveMenu.show();
+      onClose(null);
+    }
+
+
+  function onCreateOpened()
+    {
+//      sendMessage('/mp.opened');
+      trace('onCreateOpened');
+    }
+
+
+  function onJoinOpened()
+    {
+      sendMessage('/mp.joined');
+      trace('onJoinOpened');
+    }
+
+
+  function onMessage(m)
+    {
+      trace('onMessage ' + m.data);
+//      newState = JSON.parse(m.data);
+    }
+
+
+// send message through channel
+  function sendMessage(path: String, ?opt_param: Dynamic)
+    {
+      path += '?k=' + game_key;
+      if (opt_param != null)
+        path += '&' + opt_param;
+      
+      var xhr = new js.XMLHttpRequest();
+      xhr.open('GET', path, true);
+      xhr.send(null);
+    }
+
+
+// create multiplayer game
+  var game_key: String;
+  function onCreateMult(event: Dynamic)
+    {
+      UI.e("haxe:trace").innerHTML = "";
+      var dif = Static.difficulty[3];
+      game.restart(-1, dif);
+
+      // get channel id and game key
+      var req = new js.XMLHttpRequest();
+      req.open("GET", "/mp.create" //"?owner=" +
+//        ui.config.get("owner") + "&id=" + save.id
+        , false);
+      req.send(null);
+      var text = req.responseText;
+      var arr = text.split(',');
+      game_key = arr[0];
+      var token = arr[1];
+
+      var channel = untyped __js__("new goog.appengine.Channel(token)");
+      var handler = {
+        onopen: onCreateOpened,
+        onmessage: onMessage,
+        onerror: function() {},
+        onclose: function() {}
+      };
+      var socket = channel.open(handler);
+      socket.onopen = onCreateOpened;
+      socket.onmessage = onMessage;
+
+      onClose(null);
+    }
+
+
+// join multiplayer game
+  function onJoinMult(event: Dynamic)
+    {
+      game_key = '123';
+
+      // get channel id
+      var req = new js.XMLHttpRequest();
+      req.open("GET", "/mp.join?k=" + game_key, false);
+      req.send(null);
+      var text = req.responseText;
+      var token = text;
+
+      // open channel
+      var channel = untyped __js__("new goog.appengine.Channel(token)");
+      var handler = {
+        onopen: onJoinOpened,
+        onmessage: onMessage,
+        onerror: function() {},
+        onclose: function() {}
+      };
+      var socket = channel.open(handler);
+      socket.onopen = onJoinOpened;
+      socket.onmessage = onMessage;
+
       onClose(null);
     }
 
