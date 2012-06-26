@@ -130,7 +130,7 @@ class CustomMenu
             el = Tools.checkbox({
               id: info.name,
               text: '' + Reflect.field(Static.difficulty[2], info.name),
-              w: 80,
+              w: 70,
               h: 20,
               x: 320,
               y: y,
@@ -140,7 +140,7 @@ class CustomMenu
           else el = Tools.textfield({
             id: info.name,
             text: '' + Reflect.field(Static.difficulty[2], info.name),
-            w: 80,
+            w: 70,
             h: 20,
             x: 320,
             y: y,
@@ -152,9 +152,9 @@ class CustomMenu
           Tools.label({
             id: 'note' + info.name,
             text: info.note,
-            w: 545,
+            w: 540,
             h: 20,
-            x: 420,
+            x: 410,
             y: y,
             fontSize: 14,
             bold: false,

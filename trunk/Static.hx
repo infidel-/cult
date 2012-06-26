@@ -124,6 +124,35 @@ class Static
         isOriginKnown: false,
         isDiscovered: false,
       },
+
+      // test - 2 players multiplayer
+      {
+        level: -1,
+
+        mapWidth: 780,
+        mapHeight: 580,
+        nodesCount: 100,
+        nodeVisibilityRadius: 101, 
+        nodeActivationRadius: 101,
+        numCults: 4,
+        numPlayers: 2,
+        numSummonVirgins: 9,
+
+        upgradeChance: 1.0,
+        awarenessResource: 1.5,
+        awarenessUpgrade: 1.0,
+        awarenessGain: 1.0,
+        investigatorChance: 1.0,
+        investigatorKill: 1.0,
+        investigatorWillpower: 1.0,
+        investigatorTurnVisible: 10,
+        investigatorGainWill: 0.75,
+        investigatorCultSize: 0.1,
+        maxAwareness: 5,
+        isInfoKnown: false,
+        isOriginKnown: false,
+        isDiscovered: false,
+      },
     ];
 
 
