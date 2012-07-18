@@ -49,3 +49,5 @@
 
  * checkboxes in sects info for sect advisor to skip them when planning
  * remove most of unnecessary messages when cult is destroyed
+
+ * "start multiplayer game" button and dialog
