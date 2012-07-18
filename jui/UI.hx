@@ -23,6 +23,7 @@ class UI
   public var loadMenu: LoadMenu; // load menu block
   public var saveMenu: SaveMenu; // save menu block
   public var customMenu: CustomMenu; // custom menu block
+  public var mpMenu: MultiplayerMenu; // multiplayer menu block
   public var info: Info; // cult info block
   public var logWindow: Log; // log block
   public var alertWindow: Alert; // alert block
@@ -57,6 +58,7 @@ class UI
       loadMenu = new LoadMenu(this, game);
       saveMenu = new SaveMenu(this, game);
       customMenu = new CustomMenu(this, game);
+      mpMenu = new MultiplayerMenu(this, game);
       top = new TopMenu(this, game);
       sects = new SectsInfo(this, game);
       options = new OptionsMenu(this, game);
@@ -121,6 +123,9 @@ class UI
         
       else if (customMenu.isVisible) // custom menu keys
         customMenu.onKey(e);
+        
+      else if (mpMenu.isVisible) // multiplayer menu keys
+        mpMenu.onKey(e);
         
       else if (debug.isVisible) // debug menu keys
         debug.onKey(e);

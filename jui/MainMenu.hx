@@ -84,6 +84,17 @@ class MainMenu
         });
 
       Tools.button({
+        id: 'customGame',
+        text: "MULTIPLAYER GAME",
+        w: 350,
+        h: 30,
+        x: 35,
+        y: 200,
+        container: window,
+        func: onMultiplayerGame
+        });
+/*
+      Tools.button({
         id: 'createMult',
         text: "CREATE MULT",
         w: 150,
@@ -104,6 +115,8 @@ class MainMenu
         container: window,
         func: onJoinMult
         });
+*/
+
       saveButton = { style: {} };
 /*
       Tools.button({
@@ -154,6 +167,14 @@ class MainMenu
     }
 
 
+// multiplayer game menu
+  function onMultiplayerGame(event: Dynamic)
+    {
+      ui.mpMenu.show();
+      onClose(null);
+    }
+
+
 // load game menu
   function onLoadGame(event: Dynamic)
     {
@@ -169,7 +190,7 @@ class MainMenu
       onClose(null);
     }
 
-
+/*
   function onCreateOpened()
     {
 //      sendMessage('/mp.opened');
@@ -264,7 +285,7 @@ class MainMenu
 
       onClose(null);
     }
-
+*/
 
 // start new game
   function onNewGame(event: Dynamic)
@@ -307,6 +328,10 @@ class MainMenu
       // custom game
       else if (e.keyCode == 52) // 4
         onCustomGame(null);
+
+      // multiplayer game
+      else if (e.keyCode == 53) // 5
+        onMultiplayerGame(null);
 /*
       // load game
       else if (e.keyCode == 52) // 4
