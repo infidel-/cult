@@ -1,42 +1,29 @@
 #summary DEV release changes from latest version
 
+ * "start multiplayer game" button and dialog
  * AI cheat: investigators will cap starting willpower :)
  * much lower chance of investigator killing cult origin
  * automatically un-paralyze cult after 3 turns even if it has no priests (you can still win the game when all enemy cults are paralyzed at the same time)
  * when un-paralyzed, a new origin will be made a temporary generator (stops being a generator when lost)
  * investigator will now disappear after destroying the cult origin thinking he destroyed the whole cult :)
- * bug: when searching for a node to be a sect leader, was not using the most connected node
- * bug: node visibility for enemy cult was not correctly updated on losing that node
-
  * advanced map mode (toggled by pressing A)
  * when cult loses origin remove investigator only if no priests are available
- * bug: map display was not updated after sect creation
-
  * all node images combined into one
  * leave "close" button in the main menu after finishing game
  * new bitmap font for advanced map mode, courtesy of qubodup
  * music player display tweaked
  * new sects are now automatically created at the start of player's turn, button "Create sect" removed
  * AI director implemented, will try to give some virgins to the weakest cult and double generators output sometimes (to get debug info about all director actions, open debug menu and select Trace Director toggle)
-
  * new sect info display
  * cap sect growth with leader power
  * sect name algorythm changed
  * add "temporary" to the temporary generator tooltip
- * fix: use adepts, upgrade them, will find "5 of 3 adepts used"
- * fix: finding most linked node
- * fix: clean investigator and cult tasks when needed
- * fix: sects continue to sabotage ritual after it's disabled
- * fix: "adepts used" counter now correctly updates when failing to lower willpower
-
  * two more cult descriptions
  * all keyboard shortcuts (C,S,L) should also close their windows when pressed
  * removed Enter shortcut for closing sects info window
  * add A button for setting advanced mode (in the upper right corner of the map)
  * letter I instead of ! on investigator events 
- * fixed darkening of log panel events on ending turn
  * hopefully fixed wrong clearing of node highlights in some cases
-
  * Sect Advisor AI that will auto-select tasks for all sects (can be turned off in options menu)
  * new cult colors and raising custom game cults and players max to 8
  * options menu, each player in multiplayer mode has separate options table
@@ -44,10 +31,17 @@
  * option: don't show sect messages in log panel
  * add M keyboard shortcut to call main menu
  * use border color to mark fresh event
- * fix: custom game start
- * fix: If player one presses A to view the advanced map, that map viewing state does not change when player 2 starts their turn.
-
  * checkboxes in sects info for sect advisor to skip them when planning
  * remove most of unnecessary messages when cult is destroyed
 
- * "start multiplayer game" button and dialog
+ * fix: when searching for a node to be a sect leader, was not using the most connected node
+ * fix: node visibility for enemy cult was not correctly updated on losing that node
+ * fix: map display was not updated after sect creation
+ * fix: use adepts, upgrade them, will find "5 of 3 adepts used"
+ * fix: finding most linked node
+ * fix: clean investigator and cult tasks when needed
+ * fix: sects continue to sabotage ritual after it's disabled
+ * fix: "adepts used" counter now correctly updates when failing to lower willpower
+ * fix: darkening of log panel events on ending turn
+ * fix: custom game start
+ * fix: If player one presses A to view the advanced map, that map viewing state does not change when player 2 starts their turn.
