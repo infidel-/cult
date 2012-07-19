@@ -35,7 +35,7 @@ class MainMenu
         text: 'Evil Cult ' + Game.version,
         w: 260,
         h: 30,
-        x: 120,
+        x: 130,
         y: 10,
         container: window
         });
