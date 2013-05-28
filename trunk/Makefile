@@ -1,7 +1,7 @@
 all: clean cult.js
 
 cult.js:
-	haxe cult.hxml && cp cult.js /mnt/1/3/
+	haxe cult.hxml
 
 cult.n:
 	haxe cultnme.hxml
