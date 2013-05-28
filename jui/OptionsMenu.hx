@@ -151,9 +151,9 @@ class OptionsMenu
 	  close.onclick = onClose;
 
       // make window visible
-      window.style.visibility = 'visible';
-      bg.style.visibility = 'visible';
-      close.style.visibility = 'visible';
+      window.style.display = 'inline';
+      bg.style.display = 'inline';
+      close.style.display = 'inline';
       isVisible = true;
     }
 
@@ -208,9 +208,9 @@ class OptionsMenu
 
   function realClose()
     {
-      window.style.visibility = 'hidden';
-      bg.style.visibility = 'hidden';
-      close.style.visibility = 'hidden';
+      window.style.display = 'none';
+      bg.style.display = 'none';
+      close.style.display = 'none';
       isVisible = false;
     }
 }

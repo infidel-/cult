@@ -118,7 +118,7 @@ class SaveMenu
   public function show()
     {  
       for (b in delButtons)
-        b.style.visibility = 'hidden';
+        b.style.display = 'none';
 
       // load list of saved games
       if (ui.config.get("owner") != '' && ui.config.get("owner") != null)
@@ -134,7 +134,7 @@ class SaveMenu
 
           for(b in saveButtons)
             {
-              b.style.visibility = 'visible';
+              b.style.display = 'inline';
               b.innerHTML = '---';
             }
       
@@ -144,24 +144,24 @@ class SaveMenu
               var b = saveButtons[i];
               if (b == null) break;
               b.innerHTML = item.name;
-              delButtons[i].style.visibility = 'visible';
+              delButtons[i].style.display = 'inline';
               i++;
             }
 
-          noKey.style.visibility = 'hidden';
+          noKey.style.display = 'none';
         }
       else
         {
           for (b in saveButtons)
-            b.style.visibility = 'hidden';
+            b.style.display = 'none';
 
-          noKey.style.visibility = 'visible';
+          noKey.style.display = 'inline';
         }
 
       key.value = ui.config.get("owner");
-      window.style.visibility = 'visible';
-      bg.style.visibility = 'visible';
-      close.style.visibility = 'visible';
+      window.style.display = 'inline';
+      bg.style.display = 'inline';
+      close.style.display = 'inline';
       isVisible = true;
       keyFocused = false;
     }
@@ -284,14 +284,14 @@ class SaveMenu
 // hide menu
   function onClose(event: Dynamic)
     {
-      window.style.visibility = 'hidden';
-      bg.style.visibility = 'hidden';
-      close.style.visibility = 'hidden';
-      noKey.style.visibility = 'hidden';
+      window.style.display = 'none';
+      bg.style.display = 'none';
+      close.style.display = 'none';
+      noKey.style.display = 'none';
       for (b in delButtons)
-        b.style.visibility = 'hidden';
+        b.style.display = 'none';
       for (b in saveButtons)
-        b.style.visibility = 'hidden';
+        b.style.display = 'none';
       isVisible = false;
     }
 }

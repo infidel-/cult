@@ -19,7 +19,7 @@ class Alert
       // window
       window = Tools.window(
         {
-          id: "window",
+          id: "windowAlert",
           center: true,
           winW: UI.winWidth,
           winH: UI.winHeight,
@@ -29,7 +29,7 @@ class Alert
           h: 450,
           z: 25
         });
-      window.style.visibility = 'hidden';
+      window.style.display = 'none';
       window.style.background = '#222';
 	  window.style.border = '4px double #ffffff';
 
@@ -56,8 +56,8 @@ class Alert
 // hide log
   public function onClose(event)
     {
-      window.style.visibility = 'hidden';
-      bg.style.visibility = 'hidden';
+      window.style.display = 'none';
+      bg.style.display = 'none';
       isVisible = false;
     }
 
@@ -69,9 +69,9 @@ class Alert
         shadowOpacity = 0.8;
       bg.style.opacity = shadowOpacity;
       text.innerHTML = '<center>' + s + '</center>';
-      window.style.visibility = 'visible';
-      bg.style.visibility = 
-        (shadow ? 'visible' : 'hidden');
+      window.style.display = 'inline';
+      bg.style.display = 
+        (shadow ? 'inline' : 'none');
       isVisible = true;
     }
 }

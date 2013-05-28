@@ -134,30 +134,30 @@ class LoadMenu
       var i = 0;
       for (b in saveButtons)
         {
-          b.style.visibility = 'hidden';
-          delButtons[i].style.visibility = 'hidden';
+          b.style.display = 'none';
+          delButtons[i].style.display = 'none';
           i++;
         }
   
       i = 0;
-      noSavesFound.style.visibility = 'visible';
+      noSavesFound.style.display = 'inline';
       for (item in list)
         {
           var b = saveButtons[i];
           if (b == null) break;
 //          item.date = item.date.substr(0, item.date.indexOf(".")); 
           b.innerHTML = item.name;
-          b.style.visibility = 'visible';
-          delButtons[i].style.visibility = 'visible';
+          b.style.display = 'inline';
+          delButtons[i].style.display = 'inline';
           i++;
           
-          noSavesFound.style.visibility = 'hidden';
+          noSavesFound.style.display = 'none';
         }
 
       key.value = ui.config.get("owner");
-      window.style.visibility = 'visible';
-      bg.style.visibility = 'visible';
-      close.style.visibility = 'visible';
+      window.style.display = 'inline';
+      bg.style.display = 'inline';
+      close.style.display = 'inline';
       isVisible = true;
       keyFocused = false;
     }
@@ -264,14 +264,14 @@ class LoadMenu
 // hide menu
   function onClose(event: Dynamic)
     {
-      window.style.visibility = 'hidden';
-      bg.style.visibility = 'hidden';
-      close.style.visibility = 'hidden';
-      noSavesFound.style.visibility = 'hidden';
+      window.style.display = 'none';
+      bg.style.display = 'none';
+      close.style.display = 'none';
+      noSavesFound.style.display = 'none';
       for (b in saveButtons)
-        b.style.visibility = 'hidden';
+        b.style.display = 'none';
       for (b in delButtons)
-        b.style.visibility = 'hidden';
+        b.style.display = 'none';
       isVisible = false;
     }
 }

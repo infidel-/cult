@@ -208,7 +208,7 @@ class Map
 
   public inline function hideTooltip()
     {
-      tooltip.style.visibility = 'hidden';
+      tooltip.style.display = 'none';
     }
 
 
@@ -267,7 +267,7 @@ class Map
 
       tooltip.innerHTML = text;
       tooltip.style.height = cnt * 20;
-      tooltip.style.visibility = 'visible';
+      tooltip.style.display = 'inline';
     }
 
 

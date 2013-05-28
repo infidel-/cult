@@ -271,7 +271,7 @@ class Debug
 // hide widget
   function onClose(event)
     {
-      window.style.visibility = 'hidden';
+      window.style.display = 'none';
       isVisible = false;
     }
 
@@ -279,7 +279,7 @@ class Debug
 // show widget
   public function show()
     {
-      window.style.visibility = 'visible';
+      window.style.display = 'inline';
       isVisible = true;
     }
 }

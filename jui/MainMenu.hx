@@ -149,12 +149,12 @@ class MainMenu
 // show main menu
   public function show()
     {
-      window.style.visibility = 'visible';
-      bg.style.visibility = 'visible';
+      window.style.display = 'inline';
+      bg.style.display = 'inline';
 //      close.style.visibility = 
 //        (game.isFinished ? 'hidden' : 'visible');
-      saveButton.style.visibility = 
-        (game.isFinished ? 'hidden' : 'visible');
+      saveButton.style.display = 
+        (game.isFinished ? 'none' : 'inline');
       isVisible = true;
     }
 
@@ -353,10 +353,10 @@ class MainMenu
     {
 //      if (game.isFinished)
 //        return;
-      window.style.visibility = 'hidden';
-      bg.style.visibility = 'hidden';
-//      close.style.visibility = 'hidden';
-      saveButton.style.visibility = 'hidden'; 
+      window.style.display = 'none';
+      bg.style.display = 'none';
+//      close.style.display = 'none';
+      saveButton.style.display = 'none'; 
       isVisible = false;
     }
 }

@@ -23,7 +23,7 @@ class Tools
         params.z = 15;
 
       var bg: Dynamic = js.Lib.document.createElement("div");
-      bg.style.visibility = 'hidden';
+      bg.style.display = 'none';
       bg.style.position = 'absolute';
       bg.style.zIndex = params.z;
       bg.style.width = params.w;
@@ -112,6 +112,8 @@ class Tools
       params.container.appendChild(b);
       return b;
     }
+
+
 // create a window
   public static function window(params: Dynamic): Dynamic
     {
@@ -125,7 +127,7 @@ class Tools
 
       var w = Lib.document.createElement("div");
       w.id = params.id;
-      w.style.visibility = 'hidden';
+      w.style.display = 'none';
       w.style.position = 'absolute';
       w.style.zIndex = params.z;
       w.style.width = params.w;
