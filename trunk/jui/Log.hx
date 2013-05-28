@@ -20,7 +20,7 @@ class Log
       // window
       window = Tools.window(
         {
-          id: "window",
+          id: "windowLog",
           center: true,
           winW: UI.winWidth,
           winH: UI.winHeight,
@@ -29,7 +29,7 @@ class Log
           h: 500,
           z: 14
         });
-      window.style.visibility = 'hidden';
+      window.style.display = 'none';
       window.style.background = '#333333';
 	  window.style.border = '4px double #ffffff';
 
@@ -54,7 +54,7 @@ class Log
 // hide log
   public function onClose(event)
     {
-      window.style.visibility = 'hidden';
+      window.style.display = 'none';
       isVisible = false;
     }
 
@@ -82,7 +82,7 @@ class Log
     {
       text.innerHTML = game.player.logMessages;
       text.scrollTop = 10000;
-      window.style.visibility = 'visible';
+      window.style.display = 'inline';
       isVisible = true;
     }
 }

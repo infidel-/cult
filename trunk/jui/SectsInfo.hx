@@ -28,7 +28,7 @@ class SectsInfo
       // window
       window = Tools.window(
         {
-          id: "window",
+          id: "windowSects",
           center: true,
           winW: UI.winWidth,
           winH: UI.winHeight,
@@ -38,7 +38,7 @@ class SectsInfo
           h: 520,
           z: 20
         });
-      window.style.visibility = 'hidden';
+      window.style.display = 'none';
       window.style.padding = '5 5 5 5';
 	  window.style.border = '4px double #ffffff';
 
@@ -105,7 +105,7 @@ class SectsInfo
 // hide info
   public function onClose(event)
     {
-      window.style.visibility = 'hidden';
+      window.style.display = 'none';
       isVisible = false;
       list.innerHTML = '';
     }
@@ -244,7 +244,7 @@ class SectsInfo
       text.innerHTML = 'Sects: ' + game.player.sects.length + '/' +
         game.player.getMaxSects();
 
-      window.style.visibility = 'visible';
+      window.style.display = 'inline';
       isVisible = true;
     }
 
