@@ -209,10 +209,10 @@ class CustomMenu
         }
 
 //      trace(dif);
-      if (dif.numPlayers < 2)
-        dif.numPlayers = 2;
-      if (dif.numCults < 1)
-        dif.numCults = 1;
+      if (dif.numPlayers < 1)
+        dif.numPlayers = 1;
+      if (dif.numCults < 2)
+        dif.numCults = 2;
       if (dif.numPlayers > 8)
         dif.numPlayers = 8;
       if (dif.numCults > 8)
