@@ -68,7 +68,7 @@ class LogPanel
           e.style.background = (m.old ? '#050505' : '#151515');
           e.style.border = (m.old ? '1px solid #999' : '1px solid #fff');
           e.style.cursor = 'pointer';
-          e.style.fontSize = 15;
+          e.style.fontSize = '15px';
           e.style.color = col;
           e.style.fontWeight = 'bold';
           e.style.textAlign = 'center';
