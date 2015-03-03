@@ -1072,8 +1072,21 @@ class Cult
       // player cult is dead
       if (!isAI)
         {
-          game.isFinished = true;
-          ui.finish(this, "wiped");
+          // check for any alive player cults
+          var humansAlive = false;
+          for (c in game.cults)
+            if (!c.isAI && !c.isDead)
+              {
+                humansAlive = true;
+                break;
+              }
+
+          if (!humansAlive)
+            {
+              game.isFinished = true;
+              ui.finish(this,
+                game.difficulty.numPlayers == 1 ? "wiped" : "multiplayerFinish");
+            }
         }
       else checkVictory();
     }

@@ -2,7 +2,6 @@
 // js version
 
 import js.Lib;
-import js.Dom;
 
 
 extern class JQDialog implements Dynamic
@@ -286,6 +285,13 @@ class UI
             "The Elder God lies dormant beneath the sea, waiting.";
           msg += "<br><br><center><b>YOU LOSE</b></center>";
           track("loseGame diff:" + game.difficultyLevel, "wiped", game.turns);
+        }
+
+      else if (state == "multiplayerFinish")
+        {
+          msg += "The great game has ended. Humanity will live.";
+          msg += "<br><br><center><b>YOU ALL LOSE</b></center>";
+          track("loseGame diff:" + game.difficultyLevel, "multiplayerFinish", game.turns);
         }
   
       // open map
