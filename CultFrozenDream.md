@@ -1,0 +1,36 @@
+# Name #
+The Frozen Dream
+
+# Short Description #
+A group of ice demons that want to freeze the world.
+
+# Long Description #
+
+Led by unholy denizens of frozen wastes, The Frozen Dream works to turn
+the world into an eternal winter horrorland, full of ice demons and
+frosthounds cavorting in the terrible chill.  What little can survive
+in the icy bleakness will be hunted for sport.
+
+# Summoning Start #
+
+As The Frozen Dream begins their dark rituals, temperatures across the
+world begin to drop.  Winter has become bitterly frigid, spring and fall
+too cold for the plants, and summer a wan shadow of its former self.
+Weather patterns spiral out of control, and food crops wither and die.
+
+# Summoning Success #
+
+Their dark ritual complete, The Frozen Dream's grasp upon the Earth
+becomes stronger.  The biting cold becomes unbearable, freezing and
+shattering plants and animals alike still on the surface.  What little
+humanity remains is ensconced deep underground, but the unnatural chill
+manages to penetrate even those bastions, slowly but surely.  It is only
+a matter of time before the thin flame of natural life is extinguished
+by the icy winds that blow across the planet.
+
+# Summoning Failure #
+
+The unnatural chill of recent days begins to fade, the world scrambling
+to repair what damage can be fixed.  Many still shiver uncontrollably
+when a gust of cool air blows past them, a psychic remnant of the grasp
+The Frozen Dream nearly had upon the Earth.

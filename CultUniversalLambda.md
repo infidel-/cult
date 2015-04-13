@@ -1,0 +1,23 @@
+# Name #
+
+Universal Lambda
+
+# Short Description #
+
+Programmers who want to turn humanity into a vast computer.
+
+# Long Description #
+
+In the early seventies, a secret goverment project uncovered the changes necessary to turn any human brain into an efficient, soulless computer.  Little did the project know that it had been subverted by the dark cult. The Universal Lambda works to refine that now-defunct project's results: the turning of every human being into cogs of a huge machine, a distributed network for the vast living intellect of the Elder God.
+
+# Mastery Start #
+
+The Universal Lambda's cybermantic machinations begin to influence the entire world.  People start to walk in unconscious lockstep down the streets; crime and accident rates drop as the rituals rewire minds to be more and more regimented.  People make fewer choices, locking themselves into patterns without realizing the steady loss of free will.
+
+# Mastery Success #
+
+Their rituals complete, the Universal Lambda turns the world into a well-oiled machine.  Bodies still move around, taking part in the same rote behavior they did before, but the minds of the populace are gone.  Instead of thinking independent thoughts, humanity's brains run the code that allows the Universal Lambda's Elder God to run in our dimension.  The tiny flickers of free will brought upon by every birth are quickly consumed by the overwhelming cybermantic magics enveloping the world; even children are just parts of the soulless machine.  Massive breeding programs are put into effect, and the Universal Lambda turns their attention to the other animals of the world with enough brain capacity to house their master...
+
+# Mastery Failure #
+
+The eerily constant behavior of humanity slowly returns to its regular froth of chaos.  People still occasionally slip into the robotic state they exhibited mere days before, but the rising rate of accidents and deaths heralds the return of free will, for better or worse.

@@ -1,0 +1,24 @@
+# Name #
+
+Blooded Mask
+
+# Short Description #
+
+A group devoted to ripping away the masks people wear and revealing the insane reality beyond.
+
+# Long Description #
+
+Those who peer too long into the Abyss find that it stares back at them, and the Blooded Mask has long gazed into the ineffable world beyond our own.  Affiliated with no Elder God, or perhaps all of them, the Blooded Mask longs to show humanity the brutal truths that hide behind the consensual reality.  The truths drive those who see them insane, filling them with a desire to show others as well, and the Blooded Mask are the original converts.
+
+# Summoning Start #
+
+A rash of cases of schizophrenia and paranoid delusions becomes an epidemic.  World health organizations struggle to understand environmental factors behind the increasing numbers of psychotic breaks and irrational behaviour across the world, unaware of the rituals the Blooded Mask are enacting.  The only clue is an increased incidence of individuals trying to claw their eyes out, often babbling about seeing _the truth_ better without them.
+
+# Summoning Success #
+
+Even the most stable individuals become gripped by the desire to see beyond the veil.  Plucking their eyes out of their heads, almost as one, humanity peers out of bloody sockets into the screaming void of alien truth that had, until then, been hidden to most.  The Bloody Mask's incantations brought to their climax, the world becomes a madhouse of screaming blind horror, people stumbling through living nightmares in colours their minds were never meant to comprehend, groping past those others wandering in the same strange geometries.
+
+
+# Summoning Failure #
+
+The outbreak of madness draws to a close, the circumstances at its end as mysterious as when it began.  Sanity returns to some of those who saw the underlying truth, but those who blinded themselves are relegated to sanitariums around the world, their screaming reverberating in the halls of the buildings, unable to stop seeing the horrifying ur-reality.  A small number of painters attempt to incorporate the colours they saw in their madness into their work, and the epileptic seizures their paintings evoke cause the black ops divisions of the world's governments to destroy all evidence of their work.

@@ -1,0 +1,23 @@
+# Name #
+
+Pharaonic Slumber
+
+# Short Description #
+
+A group that wants to put the entire world to sleep, feeding on the nightmares of the dreamers.
+
+# Long Description #
+
+Abhumans from a dark dimension close to ours came to Earth thousands of years ago, trading their magics and technology with the Egyptians for control of their people's minds when they slept, for they fed upon nightmares.  With the secret help of the Roman Empire, the Egyptians drove the abhumans into hiding.  But they have returned, and their goal has grown with time: the permanent slumber of the world.
+
+# Summoning Start #
+
+As the Pharaonic Slumber's power grows, the world enters a state of controlled drowsiness.  People go to bed earlier and sleep later, their dreams plagued with thoughts of sweeping sands and dark figures.  Short naps at work become almost commonplace, and as the abhumans feed upon the dreaming energies of the world, everyone feels less and less energetic.  All the more reason to take a bit of a rest...
+
+# Summoning Success #
+
+The world drifts off to sleep, some even slumping to the sidewalk where they were just walking or barely managing to bring their vehicles to a stop.  The abhumans come out in force, walking amongst the dreaming populace, feeding hungrily upon the horrid dreams foisted upon them by the dark magics.  A few humans manage to keep themselves awake a bit longer on massive doses of amphetamines, but soon they too crash into the darkness of eternal slumber, screaming into unconsciousness as they see the burning red eyes of those who've come to consume their thoughts.
+
+# Summoning Failure #
+
+People shake off the dozing state that had captured them.  Sales of coffee and cola rocket temporarily, an odd spike that intrigues many commentators, and for a moment humanity is more awake than it has ever been before.  Soon, however, old habits return, and some are still plagued by dreams of windswept deserts they have never before seen and cloaked figures that move in a way that somehow feels inhuman, dreams that feel more real than reality.
