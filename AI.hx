@@ -208,7 +208,7 @@ class AI extends Cult
           // spend all virgins on upgrades
           while (true)
             {
-              if (virgins < 1 || adepts >= 5)
+              if (!canUpgrade(0) || virgins < 1 || adepts >= 5)
                 break;
               upgrade(0);
 
@@ -224,7 +224,7 @@ class AI extends Cult
           // spend all virgins on upgrades
           while (true)
             {
-              if (virgins < 2 || priests >= 3)
+              if (!canUpgrade(1) || virgins < 2 || priests >= 3)
                 break;
               upgrade(1);
 
