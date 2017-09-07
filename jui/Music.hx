@@ -7,6 +7,7 @@ extern class SoundManager implements Dynamic
   static function togglePause(id: Dynamic): Void;
   static function createSound(p1: Dynamic): Void;
   static function destroySound(p1: Dynamic): Void;
+  static function stopAll(): Void;
 }
 
 class Music
@@ -198,6 +199,7 @@ class Music
 // start playing
   public function play()
     {
+      SoundManager.stopAll();
       if (trackID == -1)
         random();
       else SoundManager.play('music', { onfinish: random });
@@ -207,7 +209,7 @@ class Music
 // stop playing
   public function stop()
     {
-      SoundManager.stop('music');
+      SoundManager.stopAll();
     }
 
 
