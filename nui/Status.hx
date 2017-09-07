@@ -187,7 +187,7 @@ class Status
 
   public function onTrack(event)
     {
-//      Lib.window.open(ui.music.getPage(), '');
+//      Browser.window.open(ui.music.getPage(), '');
     }
 
 
@@ -267,7 +267,7 @@ class Status
 // about game button
   function onAbout(target: DisplayObject)
     {
-//      Lib.window.open("http://code.google.com/p/cult/wiki/About"); 
+//      Browser.window.open("http://code.google.com/p/cult/wiki/About"); 
     }
 
 
@@ -396,7 +396,7 @@ class Status
 // get element shortcut
   public static inline function e(s)
     {
-//	  return Lib.document.getElementById(s);
+//	  return Browser.document.getElementById(s);
 	}
 
 

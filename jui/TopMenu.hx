@@ -1,13 +1,14 @@
 // top menu
 
-import js.Lib;
+import js.Browser;
+import js.html.DivElement;
 
 class TopMenu
 {
   var ui: UI;
   var game: Game;
 
-  var panel: Dynamic;
+  var panel: DivElement;
 
   public function new(uivar: UI, gvar: Game)
     {
@@ -15,15 +16,15 @@ class TopMenu
       game = gvar;
 
       // panel element
-      panel = Lib.document.createElement("div");
+      panel = Browser.document.createDivElement();
       panel.id = 'topPanel';
       panel.style.position = 'absolute';
-      panel.style.width = UI.mapWidth + 8;
-      panel.style.height = 26;
-      panel.style.left = 240;
-      panel.style.top = 5;
+      panel.style.width = (UI.mapWidth + 8) + 'px';
+      panel.style.height = '26px';
+      panel.style.left = '240px';
+      panel.style.top = '5px';
       panel.style.background = '#090909';
-      Lib.document.body.appendChild(panel);
+      Browser.document.body.appendChild(panel);
 
       Tools.button({
         id: 'cults',
@@ -165,7 +166,7 @@ class TopMenu
 // about game button
   function onAbout(event: Dynamic)
     {
-      Lib.window.open("http://code.google.com/p/cult/wiki/About"); 
+      Browser.window.open("http://code.google.com/p/cult/wiki/About"); 
     }
 
 

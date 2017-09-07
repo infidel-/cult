@@ -101,7 +101,7 @@ class Music
          "http://ftp.scene.org/pub/music/groups/kahvicollective/kahvi254e_curious_inversions-predators.ogg",
          "http://www.kahvi.org/releases.php?release_number=254"],
         ["Curious Inversions", "Whom", "Sissot Eclipse",
-         "http://ftp.scene.org/pub/music/groups/kahvicollective/kahvi254f_curious_inversions-sissot_eclipse.ogg",
+         "http://ftp.scene.org/pub/music/groups/kahvicollective/kahvi254f_curious_inversions-sissots_eclipse.ogg",
          "http://www.kahvi.org/releases.php?release_number=254"],
         ["Curious Inversions", "Whom", "Voluntary",
          "http://ftp.scene.org/pub/music/groups/kahvicollective/kahvi254g_curious_inversions-voluntary.ogg",

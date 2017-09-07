@@ -1,32 +1,33 @@
 // log panel
 
-import js.Lib;
-import js.Dom;
+import js.Browser;
+import js.html.DivElement;
+import js.html.Element;
 
 class LogPanel
 {
   var ui: UI;
   var game: Game;
 
-  var panel: Dynamic;
-  var list: List<Dynamic>;
+  var panel: DivElement;
+  var list: List<DivElement>;
 
   public function new(uivar: UI, gvar: Game)
     {
       ui = uivar;
       game = gvar;
-      list = new List<Dynamic>();
+      list = new List();
 
       // panel element
-      panel = Lib.document.createElement("div");
+      panel = Browser.document.createDivElement();
       panel.id = 'logPanel';
       panel.style.position = 'absolute';
-      panel.style.width = 20;
-      panel.style.height = (UI.mapHeight + UI.topHeight + 8);
-      panel.style.left = 217;
-      panel.style.top = 5;
+      panel.style.width = '20px';
+      panel.style.height = (UI.mapHeight + UI.topHeight + 8) + 'px';
+      panel.style.left = '217px';
+      panel.style.top = '5px';
       panel.style.background = '#090909';
-      Lib.document.body.appendChild(panel);
+      Browser.document.body.appendChild(panel);
     }
 
 
@@ -43,7 +44,7 @@ class LogPanel
           if (m.type == 'cult' || m.type == null) // cult-related message
             {
               var cult: Cult = m.obj;
-              col = UI.lineColors[cult.id]; 
+              col = UI.lineColors[cult.id];
             }
           else if (m.type == 'cults') // messages relating to 2 cults
             {
@@ -56,7 +57,7 @@ class LogPanel
              sym = m.params.symbol;
 
           // create element
-          var e = Lib.document.createElement("div");
+          var e = Browser.document.createDivElement();
           m.id = list.length;
           e.id = 'log.id' + list.length;
           untyped e.messageID = m.id;
@@ -103,10 +104,11 @@ class LogPanel
 
       // pack items
       var cnt = 0;
-      var nodes: HtmlCollection<HtmlDom> = panel.childNodes;
+      var nodes = panel.childNodes;
       for (i in 0...nodes.length)
         {
-          nodes[i].style.top = '' + (cnt * 24);
+          var el: Element = cast nodes[i];
+          el.style.top = (cnt * 24) + 'px';
           cnt++;
         }
     }

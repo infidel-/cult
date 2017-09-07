@@ -1,5 +1,8 @@
 // multiplayer menu class
 
+import js.html.DivElement;
+import js.html.Element;
+
 typedef MPUIInfo =
 {
   var name: String; // element name (and parameter name too)
@@ -13,36 +16,36 @@ class MultiplayerMenu
   var ui: UI;
   var game: Game;
 
-  var window: Dynamic; // window element
-  var bg: Dynamic; // background element
-  var close: Dynamic; // close button element
+  var window: DivElement; // window element
+  var bg: DivElement; // background element
+  var close: DivElement; // close button element
   public var isVisible: Bool;
-  var difElements: List<Dynamic>; // ui elements
+  var difElements: List<Element>; // ui elements
 
   static var difElementInfo: Array<MPUIInfo> =
     [
-      { 
-        name: 'numCults', 
-        type: 'int', 
-        title: 'Number of cults (2-8)', 
-        params: null 
+      {
+        name: 'numCults',
+        type: 'int',
+        title: 'Number of cults (2-8)',
+        params: null
       },
-      { 
-        name: 'numPlayers', 
-        type: 'int', 
-        title: 'Number of human players (1-8)', 
-        params: null 
+      {
+        name: 'numPlayers',
+        type: 'int',
+        title: 'Number of human players (1-8)',
+        params: null
       },
-      { 
-        name: 'difficulty', 
-        type: 'select', 
-        title: 'Game difficulty', 
+      {
+        name: 'difficulty',
+        type: 'select',
+        title: 'Game difficulty',
         params: [ 'Easy', 'Normal', 'Hard' ]
       },
-      { 
-        name: 'mapSize', 
-        type: 'select', 
-        title: 'Map size', 
+      {
+        name: 'mapSize',
+        type: 'select',
+        title: 'Map size',
         params: [ 'Small', 'Medium', 'Large', 'Huge' ]
       },
     ];
@@ -76,7 +79,7 @@ class MultiplayerMenu
         container: window
         });
 
-      var divel = js.Lib.document.createElement("div");
+      var divel = js.Browser.document.createElement("div");
       divel.style.background = '#030303';
       divel.style.left = '10';
       divel.style.top = '40';
@@ -86,9 +89,9 @@ class MultiplayerMenu
       divel.style.overflow = 'none';
       window.appendChild(divel);
 
-      difElements = new List<Dynamic>();
+      difElements = new List();
       var y = 10;
-      
+
       for (info in difElementInfo)
         {
           // parameter label
@@ -104,7 +107,7 @@ class MultiplayerMenu
             });
 
           // parameter field
-          var el = null;
+          var el: Element = null;
 
           if (info.type == 'bool')
             el = Tools.checkbox({
@@ -119,13 +122,13 @@ class MultiplayerMenu
               });
           else if (info.type == 'select')
             {
-              el = js.Lib.document.createElement("select");
+              el = js.Browser.document.createElement("select");
               el.id = info.name;
               el.style.width = '100';
               el.style.height = '20';
               el.style.left = '320';
               el.style.top = '' + y;
-              el.style.fontSize = 14;
+              el.style.fontSize = '14px';
               el.style.position = 'absolute';
               el.style.color = '#ffffff';
               el.style.background = '#111';
@@ -149,7 +152,7 @@ class MultiplayerMenu
             });
 
           y += 30;
-          
+
           difElements.add(el);
         }
 
@@ -183,22 +186,22 @@ class MultiplayerMenu
 
       var value: Dynamic = null;
       if (info.type == 'int')
-        value = Std.parseInt(el.value);
+        value = Std.parseInt(untyped el.value);
       else if (info.type == 'float')
-        value = Std.parseFloat(el.value);
+        value = Std.parseFloat(untyped el.value);
       else if (info.type == 'select')
         {
           var list: Array<String> = info.params;
           var id = -1;
           for (i in 0...list.length)
-            if (list[i] == el.value)
+            if (list[i] == untyped el.value)
               {
                 value = i;
                 break;
               }
         }
       else if (info.type == 'bool')
-        value = el.checked;
+        value = untyped el.checked;
 
       return value;
     }
@@ -214,7 +217,7 @@ class MultiplayerMenu
 
       // copy over stuff from this difficulty level
       for (f in Reflect.fields(Static.difficulty[level]))
-        Reflect.setField(dif, f, 
+        Reflect.setField(dif, f,
           Reflect.field(Static.difficulty[level], f));
 
       // set stuff changed by player

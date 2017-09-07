@@ -1,5 +1,7 @@
 // options menu class
 
+import js.html.DivElement;
+import js.html.Element;
 
 typedef OptionInfo =
 {
@@ -15,11 +17,11 @@ class OptionsMenu
   var ui: UI;
   var game: Game;
 
-  var window: Dynamic; // window element
-  var bg: Dynamic; // background element
-  var close: Dynamic; // close button element
+  var window: DivElement; // window element
+  var bg: DivElement; // background element
+  var close: DivElement; // close button element
   public var isVisible: Bool;
-  var elements: List<Dynamic>; // ui elements
+  var elements: List<Element>; // ui elements
 
   static var elementInfo: Array<OptionInfo> =
     [
@@ -73,7 +75,7 @@ class OptionsMenu
         container: window
         });
 
-      var divel = js.Lib.document.createElement("div");
+      var divel = js.Browser.document.createDivElement();
       divel.style.background = '#030303';
       divel.style.left = '10';
       divel.style.top = '40';
@@ -83,7 +85,7 @@ class OptionsMenu
       divel.style.overflow = 'auto';
       window.appendChild(divel);
 
-      elements = new List<Dynamic>();
+      elements = new List();
       var y = 10;
       
       for (info in elementInfo)
@@ -101,7 +103,7 @@ class OptionsMenu
             });
 
           // parameter field
-          var el = null;
+          var el: Element = null;
 
           if (info.type == 'bool')
             {
@@ -115,7 +117,7 @@ class OptionsMenu
                 fontSize: 14,
                 container: divel
                 });
-              el.checked = game.player.options.getBool(info.name);
+              untyped el.checked = game.player.options.getBool(info.name);
             }
           else el = Tools.textfield({
             id: info.name,
@@ -177,11 +179,11 @@ class OptionsMenu
 
           var value: Dynamic = null;
           if (info.type == 'int')
-            value = Std.parseInt(el.value);
+            value = Std.parseInt(untyped el.value);
           else if (info.type == 'float')
-            value = Std.parseFloat(el.value);
+            value = Std.parseFloat(untyped el.value);
           else if (info.type == 'bool')
-            value = el.checked;
+            value = untyped el.checked;
 
           // save option
           game.player.options.set(info.name, value);

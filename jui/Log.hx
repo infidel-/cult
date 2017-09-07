@@ -1,12 +1,14 @@
 // log window
 
+import js.html.DivElement;
+
 class Log
 {
   var ui: UI;
   var game: Game;
 
-  public var window: Dynamic; // window element
-  public var text: Dynamic; // text element
+  public var window: DivElement; // window element
+  public var text: DivElement; // text element
   public var isVisible: Bool;
 
   var logPrevTurn: Int; // number of previous turn
@@ -34,13 +36,13 @@ class Log
 	  window.style.border = '4px double #ffffff';
 
       // log text
-      text = js.Lib.document.createElement("div");
+      text = js.Browser.document.createDivElement();
       text.style.overflow = 'auto';
       text.style.position = 'absolute';
-      text.style.left = 10;
-      text.style.top = 10;
-      text.style.width = 780;
-      text.style.height = 450;
+      text.style.left = '10px';
+      text.style.top = '10px';
+      text.style.width = '780px';
+      text.style.height = '450px';
       text.style.background = '#0b0b0b';
 	  text.style.border = '1px solid #777';
       window.appendChild(text);

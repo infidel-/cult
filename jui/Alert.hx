@@ -1,13 +1,15 @@
 // alert window
 
+import js.html.DivElement;
+
 class Alert
 {
   var ui: UI;
   var game: Game;
 
-  public var window: Dynamic; // window element
-  public var text: Dynamic; // text element
-  var bg: Dynamic; // background element
+  public var window: DivElement; // window element
+  public var text: DivElement; // text element
+  var bg: DivElement; // background element
   public var isVisible: Bool;
 
   public function new(uivar: UI, gvar: Game)
@@ -34,13 +36,13 @@ class Alert
 	  window.style.border = '4px double #ffffff';
 
       // log text
-      text = js.Lib.document.createElement("div");
+      text = js.Browser.document.createDivElement();
       text.style.overflow = 'auto';
       text.style.position = 'absolute';
-      text.style.left = 10;
-      text.style.top = 10;
-      text.style.width = 580;
-      text.style.height = 400;
+      text.style.left = '10px';
+      text.style.top = '10px';
+      text.style.width = '580px';
+      text.style.height = '400px';
       text.style.background = '#111';
 	  text.style.border = '1px solid #777';
       window.appendChild(text);
@@ -67,10 +69,10 @@ class Alert
     {
       if (shadowOpacity == null)
         shadowOpacity = 0.8;
-      bg.style.opacity = shadowOpacity;
+      bg.style.opacity = '' + shadowOpacity;
       text.innerHTML = '<center>' + s + '</center>';
       window.style.display = 'inline';
-      bg.style.display = 
+      bg.style.display =
         (shadow ? 'inline' : 'none');
       isVisible = true;
     }

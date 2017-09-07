@@ -1,5 +1,6 @@
 // sects information ui
 
+import js.html.DivElement;
 import sects.Sect;
 
 class SectsInfo
@@ -7,10 +8,10 @@ class SectsInfo
   var ui: UI;
   var game: Game;
 
-  public var window: Dynamic; // window element
-  public var list: Dynamic; // list element
-  public var text: Dynamic; // text element
-  public var menu: Dynamic; // hovering menu element
+  public var window: DivElement; // window element
+  public var list: DivElement; // list element
+  public var text: DivElement; // text element
+  public var menu: DivElement; // hovering menu element
   public var isVisible: Bool;
 
   var selectedNode: Node; // selected node
@@ -43,25 +44,25 @@ class SectsInfo
 	  window.style.border = '4px double #ffffff';
 
       // list
-      list = js.Lib.document.createElement("div");
+      list = js.Browser.document.createDivElement();
       list.style.overflow = 'auto';
       list.style.position = 'absolute';
-      list.style.left = 10;
-      list.style.top = 10;
-      list.style.width = 790;
-      list.style.height = 480;
+      list.style.left = '10px';
+      list.style.top = '10px';
+      list.style.width = '790px';
+      list.style.height = '480px';
       list.style.background = '#111';
       window.appendChild(list);
 
       // info text
-      text = js.Lib.document.createElement("div");
+      text = js.Browser.document.createDivElement();
       text.style.overflow = 'auto';
       text.style.position = 'absolute';
       text.style.textAlign = 'center';
-      text.style.left = 120;
-      text.style.top = 498;
-      text.style.width = 130;
-      text.style.height = 20;
+      text.style.left = '120px';
+      text.style.top = '498px';
+      text.style.width = '130px';
+      text.style.height = '20px';
       text.style.background = '#111';
       window.appendChild(text);
 
@@ -77,9 +78,9 @@ class SectsInfo
           h: 280,
           z: 3000
         });
-      menu.style.padding = 5;
+      menu.style.padding = '5px';
       menu.style.border = '1px solid';
-      menu.style.opacity = 0.9;
+      menu.style.opacity = '0.9';
 
       // close button
       var close = Tools.closeButton(window, 365, 493, 'infoClose');
@@ -266,14 +267,14 @@ class SectsInfo
 // get element shortcut
   public static inline function e(s)
     {
-	  return js.Lib.document.getElementById(s);
+	  return js.Browser.document.getElementById(s);
 	}
 
 
 // create element shortcut
   public static inline function create(parent: Dynamic, s: String)
     {
-      var el = js.Lib.document.createElement(s);
+      var el = js.Browser.document.createElement(s);
       parent.appendChild(el);
       return el; 
     }

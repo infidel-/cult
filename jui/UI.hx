@@ -1,7 +1,7 @@
 // ui class for cult
 // js version
 
-import js.Lib;
+import js.Browser;
 
 
 extern class JQDialog implements Dynamic
@@ -27,7 +27,7 @@ class UI
   public var logWindow: Log; // log block
   public var alertWindow: Alert; // alert block
   public var debug: Debug; // debug menu block
-  public var map: Map; // map block
+  public var map: MapUI; // map block
   public var config: Config; // configuration
   public var logPanel: LogPanel; // log panel
   public var top: TopMenu; // top menu block
@@ -51,7 +51,7 @@ class UI
       info = new Info(this, game);
       debug = new Debug(this, game);
       status = new Status(this, game);
-      map = new Map(this, game); 
+      map = new MapUI(this, game); 
       music = new Music();
       mainMenu = new MainMenu(this, game);
       loadMenu = new LoadMenu(this, game);
@@ -63,16 +63,16 @@ class UI
       options = new OptionsMenu(this, game);
       music.onRandom = status.onMusic;
 
-      Lib.document.onkeyup = onKey;
-//      Lib.window.onresize = onResize;
+      Browser.document.onkeyup = onKey;
+//      Browser.window.onresize = onResize;
     }
 
 /*
 // on resizing document
   function onResize(event: Dynamic)
     {
-      var w = Lib.window.innerWidth;
-      var h = Lib.window.innerHeight;
+      var w = Browser.window.innerWidth;
+      var h = Browser.window.innerHeight;
       if (w < 1050 || h < 680 ||
           (!game.isFinished && game.difficulty != null && game.difficulty.mapWidth <= 780 &&
             game.difficulty.mapHeight <= 580))
@@ -95,14 +95,14 @@ class UI
       trace(el.style.width + ' ' + el.style.height);
 //      trace(ctx.canvas.width + ' ' + ctx.canvas.height);
       map.paint();
-      //Lib.window.innerWidth + " " + Lib.window.innerHeight);
+      //Browser.window.innerWidth + " " + Browser.window.innerHeight);
     }
 */
 
 // on key press
   function onKey(e: Dynamic)
     {
-//      var key = (Lib.window.event) ? Lib.window.event.keyCode : event.keyCode;
+//      var key = (Browser.window.event) ? Browser.window.event.keyCode : event.keyCode;
       var key = e.keyCode;
 //      trace(key);
 
@@ -361,7 +361,7 @@ class UI
 // get element shortcut
   public static inline function e(s)
     {
-	  return Lib.document.getElementById(s);
+	  return Browser.document.getElementById(s);
 	}
 
 

@@ -1,13 +1,14 @@
 // status block
 
-import js.Lib;
+import js.Browser;
+import js.html.DivElement;
 
 class Status
 {
   var ui: UI;
   var game: Game;
 
-  var status: Dynamic; // element 
+  var status: DivElement; // element 
 
   public function new(uivar: UI, gvar: Game)
     {
@@ -15,14 +16,14 @@ class Status
       game = gvar;
 
 	  // status screen
-      status = UI.e("status");
+      status = cast UI.e("status");
       status.style.border = 'double #777 4px';
-      status.style.width = 191;
-      status.style.height = UI.mapHeight + UI.topHeight - 10;
+      status.style.width = '191px';
+      status.style.height = (UI.mapHeight + UI.topHeight - 10) + 'px';
       status.style.position = 'absolute';
-      status.style.left = 5;
-      status.style.top = 5;
-      status.style.padding = 5;
+      status.style.left = '5px';
+      status.style.top = '5px';
+      status.style.padding = '5px';
       status.style.fontSize = '12px';
       status.style.overflow = 'hidden';
 
@@ -226,7 +227,7 @@ class Status
 
   public function onTrack(event)
     {
-      Lib.window.open(ui.music.getPage(), '');
+      Browser.window.open(ui.music.getPage(), '');
     }
 
 
@@ -429,7 +430,7 @@ class Status
 // get element shortcut
   public static inline function e(s)
     {
-	  return Lib.document.getElementById(s);
+	  return Browser.document.getElementById(s);
 	}
 
 

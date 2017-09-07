@@ -1,6 +1,7 @@
 // map block
 
-import js.Lib;
+import js.Browser;
+import js.html.DivElement;
 
 typedef Rect =
 { 
@@ -11,7 +12,7 @@ typedef Rect =
 };
 
 
-class Map
+class MapUI
 {
   var ui: UI;
   var game: Game;
@@ -19,7 +20,7 @@ class Map
 //  public var images: Hash<Dynamic>; // images array
   public var fontImage: Dynamic; // bitmapped font image 
   public var nodeImage: Dynamic; // nodes imageset
-  public var tooltip: Dynamic;
+  public var tooltip: DivElement;
 //  public var screen: Dynamic; // map element
   public var viewRect: Rect; // viewport x,y
   var isDrag: Bool; // is viewport being dragged?
@@ -33,16 +34,16 @@ class Map
       isAdvanced = false;
 
       // map display
-      var screen:Dynamic = UI.e("map");
+      var screen = UI.e("map");
       screen.style.border = 'double #777 4px';
-      screen.style.width = UI.mapWidth;
-      screen.style.height = UI.mapHeight;
+      screen.style.width = UI.mapWidth + 'px';
+      screen.style.height = UI.mapHeight + 'px';
       screen.style.position = 'absolute';
-      screen.style.left = 240;
-      screen.style.top = 5 + UI.topHeight;
+      screen.style.left = '240px';
+      screen.style.top = (5 + UI.topHeight) + 'px';
       screen.style.overflow = 'hidden';
       if (!(untyped screen).getContext)
-        Lib.window.alert("No canvas available. Please use a canvas-compatible browser like Mozilla Firefox 3.5+ or Google Chrome.");
+        Browser.window.alert("No canvas available. Please use a canvas-compatible browser like Mozilla Firefox 3.5+ or Google Chrome.");
 
       screen.onclick = onClick;
       screen.onmousemove = onMove;
@@ -62,9 +63,9 @@ class Map
           h: 280,
           z: 3000
         });
-      tooltip.style.padding = 5;
+      tooltip.style.padding = '5px';
       tooltip.style.border = '1px solid';
-      tooltip.style.opacity = 0.9;
+      tooltip.style.opacity = '0.9';
 
       loadImages();
     }
@@ -254,19 +255,19 @@ class Map
         }
 
       var el = untyped UI.e("map");
-      var x = event.clientX - el.offsetLeft - 4 + js.Lib.document.body.scrollLeft;
-      var y = event.clientY - el.offsetTop - 6 + js.Lib.document.body.scrollTop;
+      var x = event.clientX - el.offsetLeft - 4 + js.Browser.document.body.scrollLeft;
+      var y = event.clientY - el.offsetTop - 6 + js.Browser.document.body.scrollTop;
 
-      if (x + 250 > js.Lib.window.innerWidth)
-        x = js.Lib.window.innerWidth - 250;
-      if (y + cnt * 20 + 50 > js.Lib.window.innerHeight)
-        y = js.Lib.window.innerHeight - cnt * 20 - 50;
+      if (x + 250 > js.Browser.window.innerWidth)
+        x = js.Browser.window.innerWidth - 250;
+      if (y + cnt * 20 + 50 > js.Browser.window.innerHeight)
+        y = js.Browser.window.innerHeight - cnt * 20 - 50;
 
-      tooltip.style.left = x;
-      tooltip.style.top = y;
+      tooltip.style.left = x + 'px';
+      tooltip.style.top = y + 'px';
 
       tooltip.innerHTML = text;
-      tooltip.style.height = cnt * 20;
+      tooltip.style.height = (cnt * 20) + 'px';
       tooltip.style.display = 'inline';
     }
 
@@ -338,8 +339,8 @@ class Map
   function getEventNode(event: Dynamic): Node
     {
       var el = untyped UI.e("map");
-      var x = event.clientX - el.offsetLeft - 4 + viewRect.x + js.Lib.document.body.scrollLeft;
-      var y = event.clientY - el.offsetTop - 6 + viewRect.y + js.Lib.document.body.scrollTop;
+      var x = event.clientX - el.offsetLeft - 4 + viewRect.x + js.Browser.document.body.scrollLeft;
+      var y = event.clientY - el.offsetTop - 6 + viewRect.y + js.Browser.document.body.scrollTop;
 
       // find which node the click was on
       var node = null;

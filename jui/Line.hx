@@ -1,6 +1,6 @@
 // line drawing class
 
-import js.Lib;
+import js.Browser;
 
 
 typedef Pixel =
@@ -25,7 +25,7 @@ class Line
 
 
 // make a new line on screen
-  public static function create(map: Map, player: Cult,
+  public static function create(map: MapUI, player: Cult,
       startNode: Node, endNode: Node): Line
 	{
 	  var line = new Line();
@@ -56,12 +56,11 @@ class Line
 
 
 // paint a line
-  public function paint(ctx: Dynamic, map: Map, cultID: Int)
+  public function paint(ctx: Dynamic, map: MapUI, cultID: Int)
     {
       if (!visibility[cultID])
         return;
 
-//      var img = map.images.get('pixel' + owner.id);
       for (p in pixels)
         {
           // pixel out of view rectangle
@@ -71,7 +70,6 @@ class Line
               p.y > map.viewRect.y + map.viewRect.h)
             continue;
 
-//          ctx.drawImage(img, p.x - map.viewRect.x, p.y - map.viewRect.y);
           ctx.drawImage(map.nodeImage,
             owner.id * 2, 120, 2, 2,
             p.x - map.viewRect.x, p.y - map.viewRect.y, 2, 2);

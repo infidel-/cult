@@ -3,12 +3,12 @@
 class Options
 {
   var cult: Cult;
-  var list: Hash<Dynamic>; // player options
+  var list: Map<String, Dynamic>; // player options
 
   public function new(c: Cult)
     {
       cult = c;
-      list = new Hash<Dynamic>();
+      list = new Map();
     }
 
 

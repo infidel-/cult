@@ -1,13 +1,15 @@
 // main menu class
 
+import js.html.DivElement;
+
 class MainMenu
 {
   var ui: UI;
   var game: Game;
 
-  var window: Dynamic; // window element
-  var bg: Dynamic; // background element
-  var close: Dynamic; // close button element
+  var window: DivElement; // window element
+  var bg: DivElement; // background element
+  var close: DivElement; // close button element
   var saveButton: Dynamic; // save button element
   public var isVisible: Bool;
 
@@ -219,7 +221,7 @@ class MainMenu
       if (opt_param != null)
         path += '&' + opt_param;
       
-      var xhr = new js.XMLHttpRequest();
+      var xhr = new js.html.XMLHttpRequest();
       xhr.open('GET', path, true);
       xhr.send(null);
     }
@@ -234,7 +236,7 @@ class MainMenu
       game.restart(-1, dif);
 
       // get channel id and game key
-      var req = new js.XMLHttpRequest();
+      var req = new js.html.XMLHttpRequest();
       req.open("GET", "/mp.create" //"?owner=" +
 //        ui.config.get("owner") + "&id=" + save.id
         , false);
@@ -265,7 +267,7 @@ class MainMenu
       game_key = '123';
 
       // get channel id
-      var req = new js.XMLHttpRequest();
+      var req = new js.html.XMLHttpRequest();
       req.open("GET", "/mp.join?k=" + game_key, false);
       req.send(null);
       var text = req.responseText;

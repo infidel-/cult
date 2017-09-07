@@ -1,22 +1,24 @@
 // debug menu
 
+import js.html.DivElement;
+
 class Debug
 {
   var ui: UI;
   var game: Game;
 
-  var window: Dynamic; // window element
-  var menu: Dynamic; // menu element
-  var buttons: Array<Dynamic>;
+  var window: DivElement; // window element
+  var menu: DivElement; // menu element
+  var buttons: Array<DivElement>;
   public var isVisible: Bool;
 
 
-  public function new(uivar: UI, gvar: Game)  
+  public function new(uivar: UI, gvar: Game)
     {
       ui = uivar;
       game = gvar;
       isVisible = false;
-      buttons = new Array<Dynamic>();
+      buttons = [];
 
       // debug window
       window = Tools.window(
@@ -31,14 +33,14 @@ class Debug
           z: 20
         });
 
-      // internals 
-      menu = js.Lib.document.createElement("div");
+      // internals
+      menu = js.Browser.document.createDivElement();
       menu.style.overflow = 'auto';
       menu.style.position = 'absolute';
-      menu.style.left = 10;
-      menu.style.top = 10;
-      menu.style.width = 780;
-      menu.style.height = 450;
+      menu.style.left = '10px';
+      menu.style.top = '10px';
+      menu.style.width = '780px';
+      menu.style.height = '450px';
       menu.style.background = '#0b0b0b';
 	  menu.style.border = '1px solid #777';
       window.appendChild(menu);
@@ -76,7 +78,7 @@ class Debug
     }
 
 
-// give adepts 
+// give adepts
   function onGiveAdepts(event)
     {
       onGivePower(null);
@@ -240,7 +242,7 @@ class Debug
         container: menu,
         func: func
         });
-      b.name = String.fromCharCode(sym);
+      untyped b.name = String.fromCharCode(sym);
       buttons.push(b);
       menuItem++;
     }
@@ -260,7 +262,7 @@ class Debug
 
       // find out which menu item was pressed
       for (b in buttons)
-        if (b.name == String.fromCharCode(e.keyCode).toLowerCase())
+        if (untyped b.name == String.fromCharCode(e.keyCode).toLowerCase())
           {
             b.onclick(null);
             break;

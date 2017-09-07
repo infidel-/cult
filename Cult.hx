@@ -10,7 +10,7 @@ class Cult
   public var id: Int;
   public var infoID: Int;
   public var name: String;
-  public var fullName(getFullName, null): String;
+  public var fullName(get_fullName, null): String;
   public var info: CultInfo;
   public var difficulty: DifficultyInfo; // difficulty info link
 
@@ -27,20 +27,20 @@ class Cult
   public var ritual: RitualInfo; // which ritual is in progress
   public var ritualPoints: Int; // amount of ritual points left 
 
-  public var awareness(default, setAwareness): Int; // public awareness
+  public var awareness(default, set): Int; // public awareness
 
   // power reserves
   public var power: Array<Int>; // intimidation, persuasion, bribe, virgins
-  public var virgins(getVirgins, setVirgins): Int;
+  public var virgins(get, set): Int;
  
   public var wars: Array<Bool>; // wars
   public var powerMod: Array<Int>; // power that will be generated next turn (cache)
   public var origin: Node; // origin 
 
   // followers number cache
-  public var neophytes(getNeophytes, null): Int;
-  public var adepts(getAdepts, null): Int;
-  public var priests(getPriests, null): Int;
+  public var neophytes(get, null): Int;
+  public var adepts(get, null): Int;
+  public var priests(get, null): Int;
 
   public var nodes: List<Node>; // cache of owned nodes
   public var adeptsUsed: Int; // how many adepts were used this turn
@@ -295,7 +295,7 @@ class Cult
 
 
 // setter for awareness
-  function setAwareness(v)
+  function set_awareness(v)
     {
       awareness = v;
       for (n in game.nodes)
@@ -1149,14 +1149,14 @@ class Cult
 
 
 // getter for virgins
-  function getVirgins()
+  function get_virgins()
     {
       return power[3];
     }
 
 
 // setter for virgins
-  function setVirgins(v)
+  function set_virgins(v)
     {
       power[3] = v;
       return v;
@@ -1175,24 +1175,24 @@ class Cult
 
 
 // getters and setters for different numFollowers
-  function getNeophytes()
+  function get_neophytes()
     {
       return getNumFollowers(0);
     }
 
 
-  function getAdepts()
+  function get_adepts()
     {
       return getNumFollowers(1);
     }
 
 
-  function getPriests()
+  function get_priests()
     {
       return getNumFollowers(2);
     }
 
-  function getFullName(): String
+  function get_fullName(): String
     {
       return UI.cultName(id, info);
     }

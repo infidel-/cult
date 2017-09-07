@@ -69,7 +69,7 @@ class Alert
 	  window.style.border = '4px double #ffffff';
 
       // log text
-      text = js.Lib.document.createElement("div");
+      text = js.Browser.document.createElement("div");
       text.style.overflow = 'auto';
       text.style.position = 'absolute';
       text.style.left = 10;

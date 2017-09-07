@@ -1,5 +1,7 @@
 // custom menu class
 
+import js.html.DivElement;
+import js.html.Element;
 
 typedef DifficultyUIInfo =
 {
@@ -15,11 +17,11 @@ class CustomMenu
   var ui: UI;
   var game: Game;
 
-  var window: Dynamic; // window element
-  var bg: Dynamic; // background element
-  var close: Dynamic; // close button element
+  var window: DivElement; // window element
+  var bg: DivElement; // background element
+  var close: DivElement; // close button element
   public var isVisible: Bool;
-  var difElements: List<Dynamic>; // ui elements
+  var difElements: List<Element>; // ui elements
 
   static var difElementInfo: Array<DifficultyUIInfo> =
     [
@@ -96,7 +98,7 @@ class CustomMenu
         container: window
         });
 
-      var divel = js.Lib.document.createElement("div");
+      var divel = js.Browser.document.createElement("div");
       divel.style.background = '#030303';
       divel.style.left = '10';
       divel.style.top = '40';
@@ -106,9 +108,9 @@ class CustomMenu
       divel.style.overflow = 'auto';
       window.appendChild(divel);
 
-      difElements = new List<Dynamic>();
+      difElements = new List();
       var y = 10;
-      
+
       for (info in difElementInfo)
         {
           // parameter label
@@ -124,7 +126,7 @@ class CustomMenu
             });
 
           // parameter field
-          var el = null;
+          var el: Element = null;
 
           if (info.type == 'bool')
             el = Tools.checkbox({
@@ -162,7 +164,7 @@ class CustomMenu
             });
 
           y += 30;
-          
+
           difElements.add(el);
         }
 
@@ -200,11 +202,11 @@ class CustomMenu
 
           var value: Dynamic = null;
           if (info.type == 'int')
-            value = Std.parseInt(el.value);
+            value = Std.parseInt(untyped el.value);
           else if (info.type == 'float')
-            value = Std.parseFloat(el.value);
+            value = Std.parseFloat(untyped el.value);
           else if (info.type == 'bool')
-            value = el.checked;
+            value = untyped el.checked;
           Reflect.setField(dif, info.name, value);
         }
 

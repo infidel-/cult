@@ -123,7 +123,7 @@ class SaveMenu
       // load list of saved games
       if (ui.config.get("owner") != '' && ui.config.get("owner") != null)
         {
-          var req = new js.XMLHttpRequest();
+          var req = new js.html.XMLHttpRequest();
           req.open("GET", "/save.list?owner=" +
             ui.config.get("owner"), false);
           req.send(null);
@@ -202,7 +202,7 @@ class SaveMenu
     
       // save game
       var name = Date.now().toString();
-      var req = new js.XMLHttpRequest();
+      var req = new js.html.XMLHttpRequest();
       req.open("POST", "/save.save?owner=" +
         ui.config.get("owner") + "&id=" + id +
         "&name=" + name +
@@ -245,7 +245,7 @@ class SaveMenu
       var save = saves[n];
     
       // delete game
-      var req = new js.XMLHttpRequest();
+      var req = new js.html.XMLHttpRequest();
       req.open("GET", "/save.delete?owner=" +
         ui.config.get("owner") + "&id=" + save.id, false);
       req.send(null);

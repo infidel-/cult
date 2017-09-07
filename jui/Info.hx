@@ -1,12 +1,14 @@
 // ui for cult info 
 
+import js.html.DivElement;
+
 class Info
 {
   var ui: UI;
   var game: Game;
 
-  public var window: Dynamic; // window element
-  public var text: Dynamic; // text element
+  public var window: DivElement; // window element
+  public var text: DivElement; // text element
   public var isVisible: Bool;
 
 
@@ -34,13 +36,13 @@ class Info
 	  window.style.border = '4px double #ffffff';
 
       // info text
-      text = js.Lib.document.createElement("div");
+      text = js.Browser.document.createDivElement();
       text.style.overflow = 'auto';
       text.style.position = 'absolute';
-      text.style.left = 10;
-      text.style.top = 10;
-      text.style.width = 780;
-      text.style.height = 480;
+      text.style.left = '10px';
+      text.style.top = '10px';
+      text.style.width = '780px';
+      text.style.height = '480px';
       text.style.background = '#111';
       window.appendChild(text);
 
@@ -216,6 +218,6 @@ class Info
 // get element shortcut
   public static inline function e(s)
     {
-	  return js.Lib.document.getElementById(s);
+	  return js.Browser.document.getElementById(s);
 	}
 }

@@ -122,7 +122,7 @@ class LoadMenu
       var list = [];
       if (ui.config.get("owner") != '')
         {
-          var req = new js.XMLHttpRequest();
+          var req = new js.html.XMLHttpRequest();
           req.open("GET", "/save.list?owner=" +
             ui.config.get("owner"), false);
           req.send(null);
@@ -194,7 +194,7 @@ class LoadMenu
       var save = saves[n];
     
       // load game
-      var req = new js.XMLHttpRequest();
+      var req = new js.html.XMLHttpRequest();
       req.open("GET", "/save.load?owner=" +
         ui.config.get("owner") + "&id=" + save.id, false);
       req.send(null);
@@ -225,7 +225,7 @@ class LoadMenu
       var save = saves[n];
     
       // delete game
-      var req = new js.XMLHttpRequest();
+      var req = new js.html.XMLHttpRequest();
       req.open("GET", "/save.delete?owner=" +
         ui.config.get("owner") + "&id=" + save.id, false);
       req.send(null);
