@@ -50,9 +50,9 @@ class Game
   function new()
     {
       isFinished = true;
-	  this.turns = 0;
-	  ui = new UI(this);
-	  ui.init();
+      this.turns = 0;
+      ui = new UI(this);
+      ui.init();
       director = new Director(this, ui);
       sectAdvisor = new sects.Advisor(this);
       ui.mainMenu.show(); // needs to be moved into ui
@@ -88,7 +88,7 @@ class Game
       else
         difficulty = newDif; // custom difficulty
       this.isFinished = false;
-	  this.turns = 0;
+      this.turns = 0;
       ui.clearMap();
       ui.clearLog();
 
@@ -135,7 +135,7 @@ class Game
         }
       player = cults[0];
       currentPlayerID = 0;
-	  this.lastNodeIndex = 0;
+      this.lastNodeIndex = 0;
 
       // spawn nodes
       for (i in 1...(difficulty.nodesCount + 1))
@@ -155,7 +155,7 @@ class Game
 
       // choose and setup starting nodes
       for (p in cults)
-	    p.setOrigin();
+        p.setOrigin();
 
 //      ui.map.paint();
       ui.map.center(player.origin.x, player.origin.y);
@@ -163,7 +163,7 @@ class Game
 
       for (c in cults)
         c.log("Game started.");
-      endTimer("restart"); 
+      endTimer("restart");
     }
 
 
@@ -188,25 +188,25 @@ class Game
       var cnt = 0;
       while (true)
         {
-		  x = Math.round(20 + Math.random() * 
-		    (difficulty.mapWidth - UI.markerWidth - 40));
-		  y = Math.round(20 + Math.random() * 
-		    (difficulty.mapHeight - UI.markerHeight - 40));
+          x = Math.round(20 + Math.random() *
+            (difficulty.mapWidth - UI.markerWidth - 40));
+          y = Math.round(20 + Math.random() *
+            (difficulty.mapHeight - UI.markerHeight - 40));
 
-		  cnt++;
-		  if (cnt > 100)
-		    return;
+          cnt++;
+          if (cnt > 100)
+            return;
 
-		  // node
-		  var ok = 1;
-		  for (n in nodes)
-	    	if ((x - 30 < n.x && x + UI.markerWidth + 30 > n.x) &&
-	        	(y - 30 < n.y && y + UI.markerHeight + 30 > n.y))
-		      ok = 0;
+          // node
+          var ok = 1;
+          for (n in nodes)
+            if ((x - 30 < n.x && x + UI.markerWidth + 30 > n.x) &&
+                (y - 30 < n.y && y + UI.markerHeight + 30 > n.y))
+              ok = 0;
 
-		  if (ok == 1)
-	    	break;
-		}
+          if (ok == 1)
+            break;
+        }
 
       // node attributes
       var node = new Node(this, ui, x, y, lastNodeIndex++);
@@ -224,7 +224,7 @@ class Game
     {
       // clear everything
       this.isFinished = false;
-	  this.turns = 0;
+      this.turns = 0;
       ui.clearMap();
       ui.clearLog();
 
@@ -255,7 +255,7 @@ class Game
 
       // load nodes
       var savenodes:Array<Dynamic> = save.nodes;
-//	  this.lastNodeIndex = 0;
+//      this.lastNodeIndex = 0;
       for (n in savenodes)
         {
           var node = new Node(this, ui, n.x, n.y, n.id);
@@ -311,7 +311,7 @@ class Game
         save.cults.push(c.save());
       save.lines = new Array<Dynamic>();
       trace('TODO: save lines fail');
-/*      
+/*
       for (l in lines) // pack lines into int arrays
         save.lines.push([ l.startNode.id, l.endNode.id, l.owner.id,
           (l.isVisible ? 1 : 0) ]);
@@ -353,7 +353,7 @@ class Game
               untyped c.aiTurn();
               endTimer("ai " + c.name);
             }
-          
+
           if (!c.isAI && !c.isDead)
             {
               newPlayerID = i;
@@ -391,12 +391,12 @@ class Game
               y = node.y;
             }
           ui.map.center(x, y);
-      
+
           ui.logPanel.paint();
-	      ui.updateStatus();
+          ui.updateStatus();
 
           if (difficulty.numPlayers > 1)
-            ui.alert("Your turn<br>" + player.fullName, true, 1); 
+            ui.alert("Your turn<br>" + player.fullName, true, 1);
         }
 
       // all cults are done, next turn
@@ -407,7 +407,7 @@ class Game
           director.turn();
           endTurn();
         }
-	}
+    }
 
 
 // fail all appropriate sect tasks

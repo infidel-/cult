@@ -8,14 +8,14 @@ class Status
   var ui: UI;
   var game: Game;
 
-  var status: DivElement; // element 
+  var status: DivElement; // element
 
   public function new(uivar: UI, gvar: Game)
     {
       ui = uivar;
       game = gvar;
 
-	  // status screen
+      // status screen
       status = cast UI.e("status");
       status.style.border = 'double #777 4px';
       status.style.width = '191px';
@@ -41,13 +41,13 @@ class Status
             Game.followerNames[i] + "s";
 
           // icon
-	      s += "<td><div id='status.upgrade" + i + "' " +
-		    "style='cursor: pointer; width:12; height:12; " +
-		    "background:#222; border:1px solid #777; " +
+          s += "<td><div id='status.upgrade" + i + "' " +
+            "style='cursor: pointer; width:12; height:12; " +
+            "background:#222; border:1px solid #777; " +
             "color:lightgreen; " +
-            (i < Game.followerNames.length - 1 ? "" : 
+            (i < Game.followerNames.length - 1 ? "" :
               "text-decoration:blink; ") +
-		    "text-align:center; font-size: 10px; font-weight: bold; '>";
+            "text-align:center; font-size: 10px; font-weight: bold; '>";
           if (i < Game.followerNames.length - 1)
             s += "+";
           else s += "!";
@@ -64,58 +64,58 @@ class Status
         " style='padding:0 5 0 5;'>RESOURCES</legend>" +
         "<table width=100% cellpadding=0 cellspacing=0 style='font-size:14px'>";
       for (i in 0...(Game.numPowers + 1))
-	    {
+        {
           s += "<tr style='";
           if (i % 2 == 1)
             s += "background:#101010";
-          s += "'><td>" + 
-	  	  // icon
-		    "<div id='status.powerMark" + i + "' style='width:" + UI.markerWidth +
-		    "; height: " + UI.markerHeight +
+          s += "'><td>" +
+            // icon
+            "<div id='status.powerMark" + i + "' style='width:" + UI.markerWidth +
+            "; height: " + UI.markerHeight +
             "; font-size: 12px; " +
-		    "; background:#222; border:1px solid #777; color: " +
-            UI.powerColors[i] + ";'>" + 
-		    "<center><b>" + Game.powerShortNames[i] +
-		    "</b></center></div>" +
-		  // name
+            "; background:#222; border:1px solid #777; color: " +
+            UI.powerColors[i] + ";'>" +
+            "<center><b>" + Game.powerShortNames[i] +
+            "</b></center></div>" +
+          // name
             "<td><b id='status.powerName" + i + "' " + UI.powerName(i) + "</b>" +
-		  // level
-		    "<td><td><span id='status.power" +
-		    i + "'>0</span><br>" +
+          // level
+            "<td><td><span id='status.power" +
+            i + "'>0</span><br>" +
             "<span style='font-size:10px' id='status.powerMod" + i +
             "'>0</span>";
 
-		  // convert buttons
-	  	  s += "<tr style='";
+          // convert buttons
+            s += "<tr style='";
           if (i % 2 == 1)
             s += "background:#101010";
           s += "'><td colspan=4><table style='font-size:11px'>" +
             "<tr><td width=20 halign=right>To";
-	  	  for (ii in 0...Game.numPowers)
-			if (ii != i)
-	      	  s += "<td><div id='status.convert" + i + ii + "' " +
-			    "style='cursor: pointer; width:12; height:12; " +
-		        "background:#222; border:1px solid #777; " +
+            for (ii in 0...Game.numPowers)
+            if (ii != i)
+                s += "<td><div id='status.convert" + i + ii + "' " +
+                "style='cursor: pointer; width:12; height:12; " +
+                "background:#222; border:1px solid #777; " +
                 "color:" + UI.powerColors[ii] + "; " +
-		    	"text-align:center; font-size: 10px; font-weight: bold; '>" +
-		        Game.powerShortNames[ii] + "</div>";
+                "text-align:center; font-size: 10px; font-weight: bold; '>" +
+                Game.powerShortNames[ii] + "</div>";
 
           // not for virgins
           if (i != 3)
             {
-	          s += "<td><div id='status.lowerAwareness" + i + "' " +
-			    "style='cursor: pointer; width:12; height:12; " +
-		        "background:#222; border:1px solid #777; " +
+              s += "<td><div id='status.lowerAwareness" + i + "' " +
+                "style='cursor: pointer; width:12; height:12; " +
+                "background:#222; border:1px solid #777; " +
                 "color:" + UI.colAwareness + "; " +
-		        "text-align:center; font-size: 10px; font-weight: bold; '>A</div>";
-	          s += "<td halign=right><div id='status.lowerWillpower" + i + "' " +
-			    "style='cursor: pointer; width:12; height:12; " +
-		        "background:#222; border:1px solid #777; " +
+                "text-align:center; font-size: 10px; font-weight: bold; '>A</div>";
+              s += "<td halign=right><div id='status.lowerWillpower" + i + "' " +
+                "style='cursor: pointer; width:12; height:12; " +
+                "background:#222; border:1px solid #777; " +
                 "color:" + UI.colWillpower + "; " +
-		        "text-align:center; font-size: 10px; font-weight: bold; '>W</div>";
+                "text-align:center; font-size: 10px; font-weight: bold; '>W</div>";
             }
           s += "</table>";
-		}
+        }
       s += "</table></fieldset>";
 
       s += "<fieldset>";
@@ -123,17 +123,17 @@ class Status
       s += "<table cellpadding=0 cellspacing=2 width=100% style='font-size:14px'>";
 
       // awareness
-	  s += "<tr id='status.awRow' title='" + tipAwareness +
+      s += "<tr id='status.awRow' title='" + tipAwareness +
         "'><td>Awareness<td><span id='status.awareness' " +
-		"style='font-weight:bold'>0</span>";
+        "style='font-weight:bold'>0</span>";
       // turns
-	  s += "<tr id='status.tuRow' title='" + tipTurns +
+      s += "<tr id='status.tuRow' title='" + tipTurns +
         "'><td>Turns<td><span id='status.turns' " +
-		"style='font-weight:bold'>0</span>";
+        "style='font-weight:bold'>0</span>";
 
       s += "</table></fieldset>";
 
-	  s += "<center style='padding:15 0 2 0'>";
+      s += "<center style='padding:15 0 2 0'>";
 
       // buttons
       s += "<span title='" + tipEndTurn +
@@ -143,7 +143,7 @@ class Status
       // music player
       s += "<fieldset id='musicplayer'>";
       s += "<legend>MUSIC</legend>";
-      s += "<div title='Click to go to album page.' id='status.track' " + 
+      s += "<div title='Click to go to album page.' id='status.track' " +
         "style='text-align: center; background: #222; cursor:pointer; font-size:10px; color: #00ff00'>-<br>-<br>-</div>";
       s += "<center style='padding-top:0px'>";
       s += "<span class=button2 title='Play' id='status.play'>PLAY</span>&nbsp;&nbsp;";
@@ -155,11 +155,11 @@ class Status
       // buttons 2
       s += "<center style='padding-top:12px;'><span class=button title='" + tipMainMenu +
         "' id='status.mainMenu'>MAIN MENU</span></center>";
-      
+
       status.innerHTML = s;
 
-	  // setting events and tooltips
-	  for (i in 0...Game.followerNames.length)
+      // setting events and tooltips
+      for (i in 0...Game.followerNames.length)
         {
           e("status.follower" + i).title = tipFollowers[i];
           var c = e("status.upgrade" + i);
@@ -167,15 +167,15 @@ class Status
           c.title = tipUpgrade[i];
           c.style.visibility = 'hidden';
         }
-	  for (i in 0...(Game.numPowers + 1))
+      for (i in 0...(Game.numPowers + 1))
         {
           e("status.powerMark" + i).title = tipPowers[i];
           e("status.powerName" + i).title = tipPowers[i];
           for (ii in 0...Game.numPowers)
-		    if (i != ii)
+            if (i != ii)
               {
                 var c = e("status.convert" + i + ii);
-		        c.onclick = onConvert;
+                c.onclick = onConvert;
                 c.title = tipConvert + UI.powerName(ii) + ": " +
                   Game.powerConversionCost[i];
               }
@@ -183,15 +183,15 @@ class Status
           if (i != 3)
             {
               var c = e("status.lowerAwareness" + i);
-		      c.onclick = onLowerAwareness;
+              c.onclick = onLowerAwareness;
               c.title = tipLowerAwareness;
               var c = e("status.lowerWillpower" + i);
-		      c.onclick = onLowerWillpower;
+              c.onclick = onLowerWillpower;
               c.title = tipLowerWillpower + Game.willPowerCost;
             }
         }
-	  e("status.endTurn").onclick = onEndTurn;
-	  e("status.mainMenu").onclick = onMainMenu;
+      e("status.endTurn").onclick = onEndTurn;
+      e("status.mainMenu").onclick = onMainMenu;
       e("status.play").onclick = onPlay;
       e("status.pause").onclick = onPause;
       e("status.stop").onclick = onStop;
@@ -237,7 +237,7 @@ class Status
       if (game.isFinished)
         return;
 
-	  var power = Std.parseInt(Tools.getTarget(event).id.substr(21, 1));
+      var power = Std.parseInt(Tools.getTarget(event).id.substr(21, 1));
       game.player.lowerAwareness(power);
     }
 
@@ -248,7 +248,7 @@ class Status
       if (game.isFinished)
         return;
 
-	  var power = Std.parseInt(Tools.getTarget(event).id.substr(21, 1));
+      var power = Std.parseInt(Tools.getTarget(event).id.substr(21, 1));
       game.player.lowerWillpower(power);
     }
 
@@ -259,9 +259,9 @@ class Status
       if (game.isFinished)
         return;
 
-	  var lvl = Std.parseInt(Tools.getTarget(event).id.substr(14, 1));
+      var lvl = Std.parseInt(Tools.getTarget(event).id.substr(14, 1));
 
-	  game.player.upgrade(lvl);
+      game.player.upgrade(lvl);
     }
 
 
@@ -271,11 +271,11 @@ class Status
       if (game.isFinished)
         return;
 
-	  var from = Std.parseInt(Tools.getTarget(event).id.substr(14, 1));
-	  var to = Std.parseInt(Tools.getTarget(event).id.substr(15, 1));
+      var from = Std.parseInt(Tools.getTarget(event).id.substr(14, 1));
+      var to = Std.parseInt(Tools.getTarget(event).id.substr(15, 1));
 
-	  game.player.convert(from, to);
-	}
+      game.player.convert(from, to);
+    }
 
 
 // end turn button
@@ -291,8 +291,8 @@ class Status
       for (m in game.player.logPanelMessages)
         m.old = true;
 
-	  game.endTurn();
-	}
+      game.endTurn();
+    }
 
 
 // main menu button
@@ -322,9 +322,9 @@ class Status
       e("status.cult").innerHTML = game.player.fullName;
 
       // update tooltips
-	  for (i in 0...(Game.numPowers + 1))
+      for (i in 0...(Game.numPowers + 1))
         {
-          var s = tipPowers[i] + 
+          var s = tipPowers[i] +
             "<br>Chance to gain each unit: <span style='color:white'>" +
             game.player.getResourceChance() + "%</span>";
           updateTip("status.powerMark" + i, s);
@@ -338,18 +338,18 @@ class Status
             game.player.getUpgradeChance(i) + "%</span>");
         }
       updateTip("status.followers1",
-        (game.player.adeptsUsed > game.player.adepts ? 
+        (game.player.adeptsUsed > game.player.adepts ?
           game.player.adepts : game.player.adeptsUsed) +
         " used of " + game.player.adepts);
 
       // convert buttons
-	  for (i in 0...(Game.numPowers + 1))
+      for (i in 0...(Game.numPowers + 1))
         for (ii in 0...Game.numPowers)
           {
             if (i == ii) continue;
 
             var c = e("status.convert" + i + ii);
-            c.style.visibility = 
+            c.style.visibility =
               (game.player.power[i] >= Game.powerConversionCost[i] ?
                'visible' : 'hidden');
           }
@@ -366,25 +366,25 @@ class Status
                 adepts = 0;
               s = "<span style='color:#55dd55'>" + adepts + "</span>";
             }
-          e("status.followers" + i).innerHTML = s; 
+          e("status.followers" + i).innerHTML = s;
         }
 
       // update powers
-	  for (i in 0...(Game.numPowers + 1))
-	    {
-          e("status.power" + i).innerHTML = 
+      for (i in 0...(Game.numPowers + 1))
+        {
+          e("status.power" + i).innerHTML =
             "<b>" + game.player.power[i] + "</b>";
           if (i == 3)
             e("status.powerMod3").innerHTML = " +0-" +
               game.player.maxVirgins();
-		  else 
-		    e("status.powerMod" + i).innerHTML =
+          else
+            e("status.powerMod" + i).innerHTML =
               " +0-" + game.player.powerMod[i];
-		}
+        }
 
-	  e("status.turns").innerHTML = "" + game.turns;
-	  e("status.awareness").innerHTML = "" + game.player.awareness + "%";
- 
+      e("status.turns").innerHTML = "" + game.turns;
+      e("status.awareness").innerHTML = "" + game.player.awareness + "%";
+
       // lower awareness buttons visibility
       for (i in 0...Game.numPowers)
         e("status.lowerAwareness" + i).style.visibility = 'hidden';
@@ -409,7 +409,7 @@ class Status
           (game.player.canUpgrade(i) ? 'visible' : 'hidden');
 
       updateTip("status.follower2",
-        "3 priests and " + game.difficulty.numSummonVirgins + 
+        "3 priests and " + game.difficulty.numSummonVirgins +
           " virgins are needed to summon the Elder God.");
       updateTip("status.upgrade2",
         "To perform the " + Static.rituals[0].name +
@@ -430,8 +430,8 @@ class Status
 // get element shortcut
   public static inline function e(s)
     {
-	  return Browser.document.getElementById(s);
-	}
+      return Browser.document.getElementById(s);
+    }
 
 
 // ===================== tips ===============
@@ -439,7 +439,7 @@ class Status
   static var tipPowers: Array<String> =
     [ UI.powerName(0) + " is needed to gain new followers.",
       UI.powerName(1) + " is needed to gain new followers.",
-      UI.powerName(2) + " is needed to gain new followers.", 
+      UI.powerName(2) + " is needed to gain new followers.",
       UI.powerName(3) + " are gathered by your neophytes.<br>" +
       "They are needed for rituals to upgrade your<br>followers " +
       "and also for the final ritual of summoning." ];

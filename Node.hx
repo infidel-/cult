@@ -46,7 +46,7 @@ class Node
 
       owner = null;
 
-	  x = newx;
+      x = newx;
       y = newy;
       centerX = x + Math.round(UI.markerWidth / 2);
       centerY = y + Math.round(UI.markerHeight / 2);
@@ -61,17 +61,17 @@ class Node
     {
       name = GenName.generate();
       job = jobs[Std.int(Math.random() * (jobs.length - 1))];
-     
-	  isGenerator = false;
+
+      isGenerator = false;
       isTempGenerator = false;
       isKnown = [];
       for (i in 0...game.difficulty.numCults)
         isKnown.push(false);
       power = [0, 0, 0];
-	  powerGenerated = [0, 0, 0];
+      powerGenerated = [0, 0, 0];
       level = 0;
-	  var index: Int = Math.round((Game.numPowers - 1) * Math.random());
-	  power[index] = 1;
+      var index: Int = Math.round((Game.numPowers - 1) * Math.random());
+      power[index] = 1;
     }
 
 
@@ -131,7 +131,7 @@ class Node
         {
           isGenerator = true;
           powerGenerated = n.pg;
-          
+
           // update power mod cache
           if (owner != null)
             for (i in 0...Game.numPowers)
@@ -177,8 +177,8 @@ class Node
     {
       // update protected flag
       isProtected = false;
-	  if (isGenerator && owner != null)
-		{
+      if (isGenerator && owner != null)
+        {
           var cnt = 0;
           for (n in links)
             if (n.owner == owner)
@@ -203,9 +203,9 @@ class Node
 // set/unset generator flag
   public function setGenerator(isgen: Bool)
     {
-	  isGenerator = isgen;
+      isGenerator = isgen;
       update();
-	}
+    }
 
 
 // set owned flag
@@ -214,9 +214,9 @@ class Node
       var prevOwner = owner;
 
       // update power mod cache
-	  if (isGenerator)
-	    for (i in 0...Game.numPowers)
-		  c.powerMod[i] += Math.round(powerGenerated[i]);
+      if (isGenerator)
+        for (i in 0...Game.numPowers)
+          c.powerMod[i] += Math.round(powerGenerated[i]);
 
       // clear lines leading to this node
       clearLines();
@@ -284,7 +284,7 @@ class Node
 
       // update display
       for (n in links)
-        n.update();  
+        n.update();
 
       // lower all power to 2 max
       for (i in 0...Game.numPowers)
@@ -358,7 +358,7 @@ class Node
             n.setVisible(cult, vis);
 //            n.update();
           }
-  
+
       // update visibility of this node for that cult
       var hasLinks = false;
       for (n2 in links)
@@ -377,7 +377,7 @@ class Node
 // paint links from adjacent nodes owned by node owner to this one
   public function paintLines()
     {
-	  // create lines between this node and adjacent ones
+      // create lines between this node and adjacent ones
       var hasLine = false;
       for (n in links)
         if (n.owner == this.owner)
@@ -444,7 +444,7 @@ class Node
     }
 
 
-  static var jobs: Array<String> = 
+  static var jobs: Array<String> =
     [
       "Government official",
       "Corporate worker",

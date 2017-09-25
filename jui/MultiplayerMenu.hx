@@ -169,7 +169,7 @@ class MultiplayerMenu
 
       bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
       close = Tools.closeButton(window, 320, 180, 'mpMenuClose');
-	  close.onclick = onClose;
+      close.onclick = onClose;
     }
 
 

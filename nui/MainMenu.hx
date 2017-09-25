@@ -33,20 +33,20 @@ class MainMenu
           h: 208
         });
 
-      var newEasy = new Button(window, 
+      var newEasy = new Button(window,
         { x: 35, y: 30, image: "new_easy",
           name: "newGameEasy",
           onClick: onNewGame });
-      var newNormal = new Button(window, 
+      var newNormal = new Button(window,
         { x: 35, y: 70, image: "new_normal",
           name: "newGameNormal",
           onClick: onNewGame });
-      var newHard = new Button(window, 
+      var newHard = new Button(window,
         { x: 35, y: 110, image: "new_hard",
           name: "newGameHard",
           onClick: onNewGame });
 
-      var close = new Button(window, 
+      var close = new Button(window,
         { x: 160, y: 160, image: "close", onClick: onClose });
     }
 
@@ -95,7 +95,7 @@ class MainMenu
   public function onKey(e: KeyboardEvent)
     {
       // new game - easy
-      if (e.keyCode == Keyboard.NUMBER_1) 
+      if (e.keyCode == Keyboard.NUMBER_1)
         onNewGameReal(0);
 
       // new game - normal

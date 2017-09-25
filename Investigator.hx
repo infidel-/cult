@@ -107,7 +107,7 @@ class Investigator
       level = Std.int(will / 3);
       if (level > 2)
         level = 2;
-      
+
       if (level > oldLevel && !cult.isAI)
         ui.log2(cult, "The investigator of " + cult.fullName +
           " has gained level " + (level + 1) + ".", { symbol: 'I' });
@@ -183,7 +183,7 @@ class Investigator
         }
       if (chance < 20)
         chance = 20;
-  
+
       return chance;
     }
 

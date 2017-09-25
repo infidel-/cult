@@ -25,17 +25,17 @@ class Cult
   // ritual stuff
   public var isRitual: Bool; // cult is performing ritual?
   public var ritual: RitualInfo; // which ritual is in progress
-  public var ritualPoints: Int; // amount of ritual points left 
+  public var ritualPoints: Int; // amount of ritual points left
 
   public var awareness(default, set): Int; // public awareness
 
   // power reserves
   public var power: Array<Int>; // intimidation, persuasion, bribe, virgins
   public var virgins(get, set): Int;
- 
+
   public var wars: Array<Bool>; // wars
   public var powerMod: Array<Int>; // power that will be generated next turn (cache)
-  public var origin: Node; // origin 
+  public var origin: Node; // origin
 
   // followers number cache
   public var neophytes(get, null): Int;
@@ -158,7 +158,7 @@ class Cult
         obj.inv = investigator.save();
       if (isRitual)
         {
-          obj.r = ritual.id; 
+          obj.r = ritual.id;
           obj.rp = ritualPoints;
         }
       obj.aw = awareness;
@@ -194,7 +194,7 @@ class Cult
       sects.add(sect);
       node.sect = sect;
       node.update();
-    
+
       if (!isAI)
         ui.log2(this, node.name + " becomes the leader of a sect " + sect.name + ".",
           { type: 'sect' });
@@ -239,7 +239,7 @@ class Cult
 
           break;
         }
-	  origin = game.nodes[index];
+      origin = game.nodes[index];
       origin.owner = this;
       if (!isAI || game.difficulty.isOriginKnown)
         origin.isKnown[this.id] = true;
@@ -249,22 +249,22 @@ class Cult
 //      origin.setOwner(this);
 
       // make starting node generator
-	  for (i in 0...Game.numPowers)
-	    if (origin.power[i] > 0)
-		  {
-		    origin.powerGenerated[i] = 1;
-			powerMod[i] += 1;
-		  }
-	  origin.setGenerator(true);
+      for (i in 0...Game.numPowers)
+        if (origin.power[i] > 0)
+          {
+            origin.powerGenerated[i] = 1;
+            powerMod[i] += 1;
+          }
+      origin.setGenerator(true);
 
       origin.setVisible(this, true);
       origin.showLinks();
       highlightedNodes.clear(); // hack: clear highlighted
 
       // give initial power from starting node
-	  for (i in 0...Game.numPowers)
+      for (i in 0...Game.numPowers)
         {
-	      power[i] += Math.round(origin.powerGenerated[i]);
+          power[i] += Math.round(origin.powerGenerated[i]);
 
           // 50% chance of raising the conquer difficulty
           if (Math.random() < 0.5)
@@ -275,7 +275,7 @@ class Cult
       // remove close generators on hard for player
       if (!isAI && game.difficultyLevel == 2)
         removeCloseGenerators();
-	}
+    }
 
 
 // remove close node generators
@@ -283,7 +283,7 @@ class Cult
     {
       for (n in origin.links)
         {
-/*        
+/*
           for (n2 in n.links)
             if (n2.owner == null && n2.isGenerator)
               n2.setGenerator(false);
@@ -432,18 +432,18 @@ class Cult
 // convert resources
   public function convert(from: Int, to: Int)
     {
-	  if (power[from] < Game.powerConversionCost[from])
-	    {
+      if (power[from] < Game.powerConversionCost[from])
+        {
 //          if (!isAI)
-//	        ui.msg("Not enough " + Game.powerNames[from]);
-		  return;
-		}
-	
-	  power[from] -= Game.powerConversionCost[from];
-	  power[to] += 1;
+//            ui.msg("Not enough " + Game.powerNames[from]);
+          return;
+        }
+
+      power[from] -= Game.powerConversionCost[from];
+      power[to] += 1;
       if (!isAI)
-	    ui.updateStatus();
-	}
+        ui.updateStatus();
+    }
 
 
 // cult can upgrade?
@@ -512,12 +512,12 @@ class Cult
 
       if (!isAI)
         ui.updateStatus();
-      
+
       // notify player
       if (this != game.player && priests >= 2)
         ui.log2(this, fullName + " has " + priests + " priests. Be careful.");
 
-      // cult un-paralyzed with priests 
+      // cult un-paralyzed with priests
       if (isParalyzed && priests >= 1)
         {
           unParalyze();
@@ -663,7 +663,7 @@ class Cult
           if (!isAI)
             {
               ui.alert("The stars were not properly aligned. The high priest goes insane.");
-              ui.log2(this, fullName + " has failed to perform the " + 
+              ui.log2(this, fullName + " has failed to perform the " +
                 Static.rituals[0].name + ".");
               ui.updateStatus();
             }
@@ -694,7 +694,7 @@ class Cult
           ui.log2(this, fullName + " has gained an origin and is no longer paralyzed.");
         }
 
-      // if a cult has any adepts, each turn it has a 
+      // if a cult has any adepts, each turn it has a
       // chance of an investigator finding out about it
       if ((priests > 0 || adepts > 0) &&
           !hasInvestigator && 100 * Math.random() < getInvestigatorChance() &&
@@ -703,8 +703,8 @@ class Cult
           hasInvestigator = true;
           ui.log2(this, "An investigator has found out about " + fullName + ".",
             {
-              important: !this.isAI, 
-              symbol: 'I' 
+              important: !this.isAI,
+              symbol: 'I'
             });
           investigator = new Investigator(this, ui, game);
 
@@ -727,17 +727,17 @@ class Cult
             return;
         }
 
-	  // give power and recalculate power mod cache
-	  powerMod = [0, 0, 0, 0];
-	  for (node in nodes)
-	    if (node.isGenerator)
-		  for (i in 0...Game.numPowers)
-		    {
+      // give power and recalculate power mod cache
+      powerMod = [0, 0, 0, 0];
+      for (node in nodes)
+        if (node.isGenerator)
+          for (i in 0...Game.numPowers)
+            {
               // failure chance
               if (100 * Math.random() < getResourceChance())
-		        power[i] += Math.round(node.powerGenerated[i]);
-			  powerMod[i] += Math.round(node.powerGenerated[i]);
-			}
+                power[i] += Math.round(node.powerGenerated[i]);
+              powerMod[i] += Math.round(node.powerGenerated[i]);
+            }
 
       // neophytes bring in some virgins
       var value = Std.int(Math.random() * maxVirgins());
@@ -785,7 +785,7 @@ class Cult
 // can this player activate this node?
   public function canActivate(node: Node): Bool
     {
-	  for (i in 0...Game.numPowers)
+      for (i in 0...Game.numPowers)
         if (power[i] < node.power[i])
           return false;
 
@@ -818,8 +818,8 @@ class Cult
           return "";
         }
 
-	  if (node.owner == this)
-		return "isOwner";
+      if (node.owner == this)
+        return "isOwner";
 
       // cannot gain a generator if it has 3+ active links
       if (node.isGenerator && node.owner != null)
@@ -833,15 +833,15 @@ class Cult
           if (cnt >= 3)
             return "hasLinks";
         }
-  
-	  // check for power
-	  for (i in 0...Game.numPowers)
-		if (power[i] < node.power[i])
+
+      // check for power
+      for (i in 0...Game.numPowers)
+        if (power[i] < node.power[i])
           return "notEnoughPower";
 
-	  // subtract power
-	  for (i in 0...Game.numPowers)
-		power[i] = Math.round(power[i] - node.power[i]);
+      // subtract power
+      for (i in 0...Game.numPowers)
+        power[i] = Math.round(power[i] - node.power[i]);
 
       // failure chance
       if (100 * Math.random() > getGainChance(node))
@@ -1115,13 +1115,13 @@ class Cult
 // add message to log panel (short)
   public inline function logPanelShort(s: String)
     {
-      logPanel({ 
-        id: -1, 
+      logPanel({
+        id: -1,
         old: false,
-        type: 'cult', 
-        text: s, 
-        obj: this, 
-        turn: game.turns + 1, 
+        type: 'cult',
+        text: s,
+        obj: this,
+        turn: game.turns + 1,
         params: {}
         });
     }

@@ -91,7 +91,7 @@ class LogPanel
   public function onClick(event: Dynamic)
     {
       // remove item
-	  var e:Dynamic = Tools.getTarget(event);
+      var e:Dynamic = Tools.getTarget(event);
       if (e.parentNode != panel) // hack for !! items
         e = e.parentNode;
       panel.removeChild(e);

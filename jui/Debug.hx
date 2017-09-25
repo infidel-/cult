@@ -42,12 +42,12 @@ class Debug
       menu.style.width = '780px';
       menu.style.height = '450px';
       menu.style.background = '#0b0b0b';
-	  menu.style.border = '1px solid #777';
+      menu.style.border = '1px solid #777';
       window.appendChild(menu);
 
       // log close button
       var close = Tools.closeButton(window, 360, 465, 'debugClose');
-	  close.onclick = onClose;
+      close.onclick = onClose;
 
       lastMenuY = -20;
       menuItem = 0;

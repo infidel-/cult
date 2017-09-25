@@ -57,7 +57,7 @@ class UINode
       text.selectable = false;
       text.defaultTextFormat = textFormat;
       clip.addChild(text);
-    
+
       tooltip = new Tooltip(clip, "");
     }
 
@@ -106,8 +106,8 @@ class UINode
       text.y = textY;
       hl.x = clip.x - 10;
       hl.y = clip.y - 10;
-	  if (node.isGenerator)
-		{
+      if (node.isGenerator)
+        {
           key += "g";
           dd = 2;
 
@@ -192,7 +192,7 @@ class UINode
       s += node.name + "\n<br>\n";
 
       if (node.owner != null)
-        s += "<b>" + Game.followerNames[node.level] + 
+        s += "<b>" + Game.followerNames[node.level] +
           "</b> <font color=white>L" +
           (node.level + 1) + "</font><br>\n";
 
@@ -208,15 +208,15 @@ class UINode
         s += "Chance of success: <font color=white>" +
           game.player.getGainChance(node) + "%</font><br>\n";
 
-	  if (node.isGenerator)
-		{
-		  s += "<br>\nGenerates:<br>\n";
-	      for (i in 0...Game.numPowers)
-     	    if (node.powerGenerated[i] > 0)
-          	  s += "<b><font color='" + UI.powerColors[i] + "'>" +
+      if (node.isGenerator)
+        {
+          s += "<br>\nGenerates:<br>\n";
+          for (i in 0...Game.numPowers)
+             if (node.powerGenerated[i] > 0)
+                s += "<b><font color='" + UI.powerColors[i] + "'>" +
                 Game.powerNames[i] + "</font></b> " +
-			    node.powerGenerated[i] + "<br>\n";
-		}
+                node.powerGenerated[i] + "<br>\n";
+        }
 
 /*
       // temporary de-htmling

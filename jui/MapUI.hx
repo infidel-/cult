@@ -4,7 +4,7 @@ import js.Browser;
 import js.html.DivElement;
 
 typedef Rect =
-{ 
+{
   var x: Int;
   var y: Int;
   var w: Int;
@@ -18,7 +18,7 @@ class MapUI
   var game: Game;
 
 //  public var images: Hash<Dynamic>; // images array
-  public var fontImage: Dynamic; // bitmapped font image 
+  public var fontImage: Dynamic; // bitmapped font image
   public var nodeImage: Dynamic; // nodes imageset
   public var tooltip: DivElement;
 //  public var screen: Dynamic; // map element
@@ -47,10 +47,10 @@ class MapUI
 
       screen.onclick = onClick;
       screen.onmousemove = onMove;
-      screen.onmousedown = onMouseDown; 
+      screen.onmousedown = onMouseDown;
       screen.onmouseup = onMouseUp;
       screen.onmouseout = onMouseOut;
-      
+
       // tooltip element
       tooltip = Tools.window(
         {
@@ -74,13 +74,13 @@ class MapUI
 // load all game-related images
   function loadImages()
     {
-/*    
+/*
       images = new Hash<Dynamic>();
 
-      var imgnames = [ 'cult0', 'cult0gp', 'cult0g', 'cult1g', 'cult1gp', 'cult1', 
-        'cult2g', 'cult2gp', 'cult2', 'cult3g', 'cult3gp', 
-        'cult3', 'hl', 'neutralg', 'neutral', 'origin0', 'origin0p', 
-        'origin1', 'origin1p', 'origin2', 'origin2p', 'origin3', 
+      var imgnames = [ 'cult0', 'cult0gp', 'cult0g', 'cult1g', 'cult1gp', 'cult1',
+        'cult2g', 'cult2gp', 'cult2', 'cult3g', 'cult3gp',
+        'cult3', 'hl', 'neutralg', 'neutral', 'origin0', 'origin0p',
+        'origin1', 'origin1p', 'origin2', 'origin2p', 'origin3',
         'origin3p', 'pixel0', 'pixel1', 'pixel2', 'pixel3', 'data/4x6'
       ];
 
@@ -180,7 +180,7 @@ class MapUI
             if (n.owner != null)
               {
               }
-*/              
+*/
           }
 
       ctx.putImageData(imageData, mx, my);

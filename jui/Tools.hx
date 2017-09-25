@@ -60,8 +60,8 @@ class Tools
       b.style.top = params.y;
 /*
       b.style.background = '#111';
-	  b.style.border = '1px outset #777';
-	  b.style.cursor = 'pointer';
+      b.style.border = '1px outset #777';
+      b.style.cursor = 'pointer';
       b.style.textAlign = 'center';
 */
       params.container.appendChild(b);
@@ -141,7 +141,7 @@ class Tools
       if (params.bold)
         w.style.fontWeight = 'bold';
       w.style.background = '#222';
-	  w.style.border = '4px double #ffffff';
+      w.style.border = '4px double #ffffff';
       Browser.document.body.appendChild(w);
 
       return w;
@@ -169,7 +169,7 @@ class Tools
       t.style.top = params.y;
       t.style.background = '#111';
       t.style.paddingLeft = '5px';
-	  t.style.border = '1px outset #777';
+      t.style.border = '1px outset #777';
       params.container.appendChild(t);
       return t;
     }
@@ -197,7 +197,7 @@ class Tools
       t.style.top = params.y;
       t.style.background = '#111';
       t.style.paddingLeft = '5px';
-	  t.style.border = '1px outset #777';
+      t.style.border = '1px outset #777';
       params.container.appendChild(t);
       return t;
     }

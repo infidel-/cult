@@ -20,7 +20,7 @@ typedef DifficultyInfo = {
 
   var investigatorChance: Float; // higher value raises chance of investigator appearing
   var investigatorKill: Float; // higher value raises chance of investigator killing a follower
-  var investigatorWillpower: Float; // higher value lowers chance of success in lowering 
+  var investigatorWillpower: Float; // higher value lowers chance of success in lowering
       // investigator willpower using adepts
   var investigatorTurnVisible: Int; // turn on which new investigator becomes visible
   var investigatorGainWill: Float; // higher value raises chance of investigator gaining will
@@ -36,12 +36,12 @@ typedef DifficultyInfo = {
 class Static
 {
   // ======================= Difficulty settings =======================
-  public static var difficulty: Array<DifficultyInfo> = 
+  public static var difficulty: Array<DifficultyInfo> =
     [
       // easy
       {
         level: 0,
-  
+
         mapWidth: 780,
         mapHeight: 580,
         nodesCount: 100,
@@ -74,7 +74,7 @@ class Static
         mapWidth: 780,
         mapHeight: 580,
         nodesCount: 100,
-        nodeVisibilityRadius: 101, 
+        nodeVisibilityRadius: 101,
         nodeActivationRadius: 101,
         numCults: 4,
         numPlayers: 1,
@@ -103,14 +103,14 @@ class Static
         mapWidth: 780,
         mapHeight: 580,
         nodesCount: 100,
-        nodeVisibilityRadius: 101, 
+        nodeVisibilityRadius: 101,
         nodeActivationRadius: 101,
         numCults: 4,
         numPlayers: 1,
         numSummonVirgins: 9,
 
         upgradeChance: 0.90,
-        awarenessResource: 1.75, 
+        awarenessResource: 1.75,
         awarenessUpgrade: 1.25,
         awarenessGain: 1.25,
         investigatorChance: 1.25,
@@ -132,7 +132,7 @@ class Static
         mapWidth: 780,
         mapHeight: 580,
         nodesCount: 100,
-        nodeVisibilityRadius: 101, 
+        nodeVisibilityRadius: 101,
         nodeActivationRadius: 101,
         numCults: 4,
         numPlayers: 2,
@@ -214,14 +214,14 @@ class Static
       summonFinish: "Their dark ritual complete, The Frozen Dream's grasp upon the Earth becomes stronger. The biting cold becomes unbearable, freezing and shattering plants and animals alike still on the surface. What little humanity remains is ensconced deep underground, but the unnatural chill manages to penetrate even those bastions, slowly but surely. It is only a matter of time before the thin flame of natural life is extinguished by the icy winds that blow across the planet. ",
       summonFail: "The unnatural chill of recent days begins to fade, the world scrambling to repair what damage can be fixed. Many still shiver uncontrollably when a gust of cool air blows past them, a psychic remnant of the grasp The Frozen Dream nearly had upon the Earth."
     },
-    { 
+    {
       name: "The Slake",
       note: "Emotional vampires who feed on ecstasy and horror.",
       longNote: "Legends passed down for generations speak of vampires, those who consume the blood of mankind. Little do most know that those stories contain the dim shine of truth: twisted creatures among humanity, drinking in strong emotion and leaving shattered husks. With the world ripe for the plucking, the Slake want nothing more than to turn it all into an eternal feeding ground.",
        summonStart: "The Slake begin to draw on their stores of distilled emotions, slowly drawing the world into a heightened sense of existence. Petty disputes flare into armed conflicts, teetering towards full-fledge wars; long-hidden passions and desires erupt into a reflowering of hedonism. On the edges of it all, the vampires drink and drink, powering their dark magics ever further...",
         summonFinish: "Society collapses into an orgy of violence and ecstasy. Nation-states collapse as they destroy each other in terrible attacks and counterattacks, while those back home fall into reckless passion, destroying relationships and souls alike as the Slake consume it all. They leave only a small number of chattel alive, to procreate and destroy as they drain them, one by one, until the end of time.",
          summonFail: "The strange passions that had gripped the world fade like a bad dream, the world shaking off the heightened sense of everything with little more than whispers of concern. A wild season, nothing more, the media proclaims, a self-fulfilling prophecy. The Slake retreat for a while, to gather their powers once again for another attempt at goading the world into providing the emotions they crave." }
-/*    
+/*
     {
       name: "",
       note: "",
@@ -230,7 +230,7 @@ class Static
       summonFinish: "",
       summonFail: ""
     }
-*/  
+*/
     ];
 
 

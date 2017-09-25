@@ -111,7 +111,7 @@ class LoadMenu
 
       bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
       close = Tools.closeButton(window, 180, 280, 'loadMenuClose');
-	  close.onclick = onClose;
+      close.onclick = onClose;
     }
 
 
@@ -128,7 +128,7 @@ class LoadMenu
           req.send(null);
           var text = req.responseText;
           list = untyped JSON.parse(text);
-        } 
+        }
       saves = list;
 
       var i = 0;
@@ -138,19 +138,19 @@ class LoadMenu
           delButtons[i].style.display = 'none';
           i++;
         }
-  
+
       i = 0;
       noSavesFound.style.display = 'inline';
       for (item in list)
         {
           var b = saveButtons[i];
           if (b == null) break;
-//          item.date = item.date.substr(0, item.date.indexOf(".")); 
+//          item.date = item.date.substr(0, item.date.indexOf("."));
           b.innerHTML = item.name;
           b.style.display = 'inline';
           delButtons[i].style.display = 'inline';
           i++;
-          
+
           noSavesFound.style.display = 'none';
         }
 
@@ -170,7 +170,7 @@ class LoadMenu
     }
 
 
-// refresh 
+// refresh
   function onRefresh(event: Dynamic)
     {
       ui.config.set("owner", key.value);
@@ -178,12 +178,12 @@ class LoadMenu
     }
 
 
-// load game 
+// load game
   function onLoadGame(event: Dynamic)
     {
       var b = Tools.getTarget(event);
       var n = Std.parseInt(b.id.substring(4));
-     
+
       onLoadReal(n);
     }
 
@@ -192,7 +192,7 @@ class LoadMenu
   function onLoadReal(n: Int)
     {
       var save = saves[n];
-    
+
       // load game
       var req = new js.html.XMLHttpRequest();
       req.open("GET", "/save.load?owner=" +
@@ -205,7 +205,7 @@ class LoadMenu
       var savedGame = untyped JSON.parse(text);
       game.load(savedGame);
 
-      onClose(null);    
+      onClose(null);
     }
 
 
@@ -214,7 +214,7 @@ class LoadMenu
     {
       var b = Tools.getTarget(event);
       var n = Std.parseInt(b.id.substring(3));
-     
+
       onDelReal(n);
     }
 
@@ -223,7 +223,7 @@ class LoadMenu
   function onDelReal(n: Int)
     {
       var save = saves[n];
-    
+
       // delete game
       var req = new js.html.XMLHttpRequest();
       req.open("GET", "/save.delete?owner=" +

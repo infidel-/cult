@@ -87,7 +87,7 @@ class OptionsMenu
 
       elements = new List();
       var y = 10;
-      
+
       for (info in elementInfo)
         {
           // parameter label
@@ -144,13 +144,13 @@ class OptionsMenu
             });
 
           y += 30;
-          
+
           elements.add(el);
         }
 
       bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
       close = Tools.closeButton(window, 460, 460, 'optionMenuClose');
-	  close.onclick = onClose;
+      close.onclick = onClose;
 
       // make window visible
       window.style.display = 'inline';

@@ -19,19 +19,19 @@ class Line
 
 
   function new()
-	{
-	  this.pixels = new Array<Pixel>();
-	}
+    {
+      this.pixels = new Array<Pixel>();
+    }
 
 
 // make a new line on screen
   public static function create(map: MapUI, player: Cult,
       startNode: Node, endNode: Node): Line
-	{
-	  var line = new Line();
+    {
+      var line = new Line();
       line.owner = player;
-	  line.startNode = startNode;
-	  line.endNode = endNode;
+      line.startNode = startNode;
+      line.endNode = endNode;
       line.visibility = [ false, false, false, false ];
 
       var cnt = 10;
@@ -39,20 +39,20 @@ class Line
       if (dist < 50)
         cnt = Std.int(dist / 6) + 1;
 
-	  var x: Float = startNode.centerX, y: Float = startNode.centerY;
+      var x: Float = startNode.centerX, y: Float = startNode.centerY;
       var modx = (endNode.centerX - startNode.centerX) / cnt,
         mody = (endNode.centerY - startNode.centerY) / cnt;
 
       for (i in 1...cnt)
         {
-		  x += modx;
-		  y += mody;
+          x += modx;
+          y += mody;
 
-		  line.pixels.push({ x: Math.round(x), y: Math.round(y) });
+          line.pixels.push({ x: Math.round(x), y: Math.round(y) });
         }
 
       return line;
-	}
+    }
 
 
 // paint a line

@@ -1,4 +1,4 @@
-// ui for cult info 
+// ui for cult info
 
 import js.html.DivElement;
 
@@ -17,7 +17,7 @@ class Info
       ui = uivar;
       game = gvar;
       isVisible = false;
-  
+
       // window
       window = Tools.window(
         {
@@ -33,7 +33,7 @@ class Info
         });
       window.style.display = 'none';
       window.style.padding = '5 5 5 5';
-	  window.style.border = '4px double #ffffff';
+      window.style.border = '4px double #ffffff';
 
       // info text
       text = js.Browser.document.createDivElement();
@@ -48,7 +48,7 @@ class Info
 
       // close button
       var close = Tools.closeButton(window, 365, 493, 'infoClose');
-	  close.onclick = onClose;
+      close.onclick = onClose;
     }
 
 
@@ -72,7 +72,7 @@ class Info
 //            continue;
 
           // name
-          s += '<div style="' + (i == 0 ? 'background:#333333' : 
+          s += '<div style="' + (i == 0 ? 'background:#333333' :
             '') +
             '">';
           if (p.isDead)
@@ -184,7 +184,7 @@ class Info
 
       for (i in 0...game.difficulty.numCults)
         {
-/*        
+/*
           if (!game.cults[i].isDiscovered || !game.cults[i].isInfoKnown)
             continue;
           if (e("info.longnote" + i) == null)
@@ -195,7 +195,7 @@ class Info
           c.style.cursor = 'pointer';
           c.noteID = i;
           c.onclick =
-            function(event) 
+            function(event)
               {
                 var t: Dynamic = event.target;
                 if (t.innerHTML == '+')
@@ -218,6 +218,6 @@ class Info
 // get element shortcut
   public static inline function e(s)
     {
-	  return js.Browser.document.getElementById(s);
-	}
+      return js.Browser.document.getElementById(s);
+    }
 }

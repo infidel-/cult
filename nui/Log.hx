@@ -35,7 +35,7 @@ class Log
         });
 
       // log close button
-      var close = new Button(window, 
+      var close = new Button(window,
         { x: 364, y: 469, image: "close", onClick: onClose });
 
       // log text
@@ -56,10 +56,10 @@ class Log
 //      text.addEventListener(MouseEvent.CLICK, onScrollDown);
       window.addChild(text);
 
-      var scrollUp = new Button(window, 
+      var scrollUp = new Button(window,
         { x: 782, y: 14, image: "scroll_up", name: "scrollUp",
           onClick: onScroll });
-      var scrollDown = new Button(window, 
+      var scrollDown = new Button(window,
         { x: 782, y: 451, image: "scroll_down", name: "scrollDown",
           onClick: onScroll });
 
@@ -67,7 +67,7 @@ class Log
       for (i in 0...200)
         add("test " + i);
         //"Test ar close = Tools.closeButton(window, 360, 465, 'logClose');", false);
-*/        
+*/
     }
 
 
@@ -84,13 +84,13 @@ class Log
 //      if (logPrevTurn != game.turns)
 //        logText.innerHTML += "<center style='font-size:10px'>...</center><br>";
 /*
-      text.innerHTML += 
+      text.innerHTML +=
         "<span style='color:#888888'>" +
         DateTools.format(Date.now(), "%H:%M:%S") +
         "</span>" +
         " Turn " + (game.turns + 1) + ": " + s + "<br>";
-*/     
-      text.text += DateTools.format(Date.now(), "%H:%M:%S") + 
+*/
+      text.text += DateTools.format(Date.now(), "%H:%M:%S") +
         " Turn " + (game.turns + 1) + ": " + s + "\n";
       if (doShow == null || doShow == true)
         show();

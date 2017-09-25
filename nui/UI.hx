@@ -34,8 +34,8 @@ class UI
 
   public function new(g)
     {
-	  game = g;
-	}
+      game = g;
+    }
 
 
 // init game screen
@@ -46,7 +46,7 @@ class UI
       info = new Info(this, game);
       debug = new Debug(this, game);
       status = new Status(this, game);
-      map = new Map(this, game); 
+      map = new Map(this, game);
       music = new Music();
       mainMenu = new MainMenu(this, game);
       config = new Config(this, game, "cultrc");
@@ -140,12 +140,12 @@ class UI
       else if (e.keyCode == Keyboard.Q ||
                e.keyCode == Keyboard.Q + 32)
         Lib.close();
-        
+
       // upgrade neophytes
       else if (e.keyCode == Keyboard.NUMBER_1)
         game.player.upgrade(0);
 
-      // upgrade adepts 
+      // upgrade adepts
       else if (e.keyCode == Keyboard.NUMBER_2)
         game.player.upgrade(1);
 
@@ -162,15 +162,15 @@ class UI
     }
 
 
-// message box 
+// message box
   public function msg(s)
-	{
+    {
       msgText.text = s;
       msgText.width = msgText.textWidth;
       msgText.center();
       msgText.visible = true;
       Timer.delay(msgHide, 1000);
-	}
+    }
 
 
 // hide msg - called in timer
@@ -231,7 +231,7 @@ class UI
           msg += "<br><br><center><b>YOU LOSE</b></center>";
           track("loseGame diff:" + game.difficultyLevel, "wiped", game.turns);
         }
-  
+
       // open map
       for (n in game.nodes)
         n.setVisible(game.player, true);
