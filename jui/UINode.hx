@@ -156,6 +156,24 @@ class UINode
           node.y > ui.map.viewRect.y + ui.map.viewRect.h)
         return;
 
+      // Draw production indicators
+      var productionIndicatorWidth = 6;
+      var productionIndicatorHeight = 2;
+      if (node.isGenerator && !node.isTempGenerator)
+        if (node.owner == null || node.isKnown[game.player.id])
+          {
+            for (i in 0...Game.numPowers)
+              if (node.powerGenerated[i] > 0)
+                {
+                  ctx.fillStyle = UI.powerColors[i];
+                  ctx.fillRect(
+                    tempx + (tempd - 1) + i*(productionIndicatorWidth+1),
+                    tempy - productionIndicatorHeight,
+                    productionIndicatorWidth,
+                    productionIndicatorHeight);
+                }
+          }
+
       // chance to gain node
       if (node.owner != game.player)
         {
