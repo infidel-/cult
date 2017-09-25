@@ -338,6 +338,10 @@ class MapUI
 // get node from mouse event
   function getEventNode(event: Dynamic): Node
     {
+      // No game started yet
+      if (game.nodes == null)
+        return null;
+
       var el = untyped UI.e("map");
       var x = event.clientX - el.offsetLeft - 4 + viewRect.x + js.Browser.document.body.scrollLeft;
       var y = event.clientY - el.offsetTop - 6 + viewRect.y + js.Browser.document.body.scrollTop;
