@@ -144,7 +144,7 @@ class MainMenu
 */
       bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
       close = Tools.closeButton(window, 160, 240, 'mainMenuClose');
-	  close.onclick = onClose;
+      close.onclick = onClose;
     }
 
 
@@ -153,9 +153,9 @@ class MainMenu
     {
       window.style.display = 'inline';
       bg.style.display = 'inline';
-//      close.style.visibility = 
+//      close.style.visibility =
 //        (game.isFinished ? 'hidden' : 'visible');
-      saveButton.style.display = 
+      saveButton.style.display =
         (game.isFinished ? 'none' : 'inline');
       isVisible = true;
     }
@@ -220,7 +220,7 @@ class MainMenu
       path += '?k=' + game_key;
       if (opt_param != null)
         path += '&' + opt_param;
-      
+
       var xhr = new js.html.XMLHttpRequest();
       xhr.open('GET', path, true);
       xhr.send(null);
@@ -358,7 +358,7 @@ class MainMenu
       window.style.display = 'none';
       bg.style.display = 'none';
 //      close.style.display = 'none';
-      saveButton.style.display = 'none'; 
+      saveButton.style.display = 'none';
       isVisible = false;
     }
 }

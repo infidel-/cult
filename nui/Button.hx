@@ -20,7 +20,7 @@ class Button extends Sprite
       var l = new Loader();
       l.load(new URLRequest("data/" + params.image + ".png"));
       var bmp: Bitmap = cast l.content;
-      
+
       var b = new Bitmap(bmp.bitmapData.clone());
       x = params.x;
       y = params.y;
@@ -46,7 +46,7 @@ class Button extends Sprite
       cont.addChild(this);
     }
 
-  
+
   public function onClick(e: MouseEvent)
     {
       if (onClickFunc != null)

@@ -76,7 +76,7 @@ class Status
       // follower numbers
       for (i in 0...Game.followerLevels)
         {
-          followers[i] = new Label(screen, 
+          followers[i] = new Label(screen,
             { x: 172, y: 58 + i * 20, w: 36, h: 19,
               font: { size: 15, bold: true },
               text: "0" });
@@ -91,19 +91,19 @@ class Status
       // power
       tf.size = 15;
       for (i in 0...(Game.numPowers + 1))
-	    {
-          powers[i] = new Label(screen, 
+        {
+          powers[i] = new Label(screen,
             { x: 160, y: 154 + i * 51, w: 36, h: 19,
               font: { size: 15, bold: true },
               text: "0" });
 
           var cnt = 0;
-	  	  for (ii in 0...Game.numPowers) // convert buttons
-			if (ii != i)
+            for (ii in 0...Game.numPowers) // convert buttons
+            if (ii != i)
               convert[ii][i] = new Button(screen,
                 { x: 45 + (cnt++) * 17, y: 184 + i * 51,
                   name: "convert" + i + ii,
-                  image: "convert" + ii, 
+                  image: "convert" + ii,
                   onClick: onConvert,
                   visible: false });
 
@@ -198,7 +198,7 @@ class Status
         return;
 
       var name = new String(target.name);
-	  var power = Std.parseInt(name.substr(14, 1));
+      var power = Std.parseInt(name.substr(14, 1));
       game.player.lowerAwareness(power);
     }
 
@@ -210,7 +210,7 @@ class Status
         return;
 
       var name = new String(target.name);
-	  var power = Std.parseInt(name.substr(14, 1));
+      var power = Std.parseInt(name.substr(14, 1));
       game.player.lowerWillpower(power);
     }
 
@@ -222,8 +222,8 @@ class Status
         return;
 
       var name = new String(target.name);
-	  var lvl = Std.parseInt(name.substr(7, 1));
-	  game.player.upgrade(lvl);
+      var lvl = Std.parseInt(name.substr(7, 1));
+      game.player.upgrade(lvl);
     }
 
 
@@ -232,12 +232,12 @@ class Status
     {
       if (game.isFinished)
         return;
-    
+
       var name = new String(target.name);
-	  var from = Std.parseInt(name.substr(7, 1));
+      var from = Std.parseInt(name.substr(7, 1));
       var to = Std.parseInt(name.substr(8, 1));
-	  game.player.convert(from, to);
-	}
+      game.player.convert(from, to);
+    }
 
 
 // show log
@@ -253,8 +253,8 @@ class Status
       if (game.isFinished)
         return;
 
-	  game.endTurn();
-	}
+      game.endTurn();
+    }
 
 
 // main menu button
@@ -267,7 +267,7 @@ class Status
 // about game button
   function onAbout(target: DisplayObject)
     {
-//      Browser.window.open("http://code.google.com/p/cult/wiki/About"); 
+//      Browser.window.open("http://code.google.com/p/cult/wiki/About");
     }
 
 
@@ -306,9 +306,9 @@ class Status
   public function update()
     {
       // update tooltips
-	  for (i in 0...(Game.numPowers + 1))
+      for (i in 0...(Game.numPowers + 1))
         {
-          var s = tipPowers[i] + 
+          var s = tipPowers[i] +
             "<br>Chance to gain each unit: <span style='color:white'>" +
             game.player.getResourceChance() + "%</span>";
           updateTip("status.powerMark" + i, s);
@@ -325,12 +325,12 @@ class Status
         game.player.adeptsUsed + " used of " + game.player.adepts);
 
       // convert buttons
-	  for (i in 0...(Game.numPowers + 1))
+      for (i in 0...(Game.numPowers + 1))
         for (ii in 0...Game.numPowers)
           {
             if (i == ii) continue;
 
-            convert[ii][i].visible = 
+            convert[ii][i].visible =
               (game.player.power[i] >= Game.powerConversionCost[i]);
           }
 
@@ -345,19 +345,19 @@ class Status
                 (game.player.adepts - game.player.adeptsUsed) +
                 "</font>";
             }
-          s = "" + game.player.getNumFollowers(i); // vm crash workaround 
+          s = "" + game.player.getNumFollowers(i); // vm crash workaround
           followers[i].htmlText = s;
         }
 
-	  for (i in 0...(Game.numPowers + 1)) // update powers
-	    {
+      for (i in 0...(Game.numPowers + 1)) // update powers
+        {
           powers[i].text = "" + game.player.power[i];
           if (i == 3)
             powersMod[i].text = " +0 - " +
               Std.int(game.player.neophytes / 4 - 0.5);
-          else powersMod[i].text = 
+          else powersMod[i].text =
             " +0 - " + game.player.powerMod[i];
-		}
+        }
 
       turns.text = "" + game.turns;
       awareness.text = game.player.awareness + "%";
@@ -396,8 +396,8 @@ class Status
 // get element shortcut
   public static inline function e(s)
     {
-//	  return Browser.document.getElementById(s);
-	}
+//      return Browser.document.getElementById(s);
+    }
 
 
 // ===================== tips ===============
@@ -405,7 +405,7 @@ class Status
   static var tipPowers: Array<String> =
     [ UI.powerName(0) + " is needed to gain new followers.",
       UI.powerName(1) + " is needed to gain new followers.",
-      UI.powerName(2) + " is needed to gain new followers.", 
+      UI.powerName(2) + " is needed to gain new followers.",
       UI.powerName(3) + " are gathered by your neophytes.<br>" +
       "They are needed for rituals to upgrade your<br>followers " +
       "and also for the final ritual of summoning." ];
@@ -423,7 +423,7 @@ class Status
   static var tipFollowers: Array<String> =
     [ "Neophytes can find some virgins if they're lucky.",
       "Adepts can lower society awareness and investigator's willpower.",
-      "3 priests and " + Game.numSummonVirgins + 
+      "3 priests and " + Game.numSummonVirgins +
       " virgins are needed to summon the Elder God." ];
   static var tipTurns = "Shows the number of turns passed from the start.";
   static var tipAwareness =

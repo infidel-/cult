@@ -17,7 +17,7 @@ class Window extends Sprite
           var l = new Loader();
           l.load(new URLRequest("data/" + params.image + ".png"));
           var bmp: Bitmap = cast l.content;
-          
+
           var b = new Bitmap(bmp.bitmapData.clone());
           addChild(b);
         }
@@ -27,7 +27,7 @@ class Window extends Sprite
           params.x = (cont.width - params.w) / 2;
           params.y = (cont.height - params.h) / 2;
         }
-        
+
       x = params.x;
       y = params.y;
       width = params.w;

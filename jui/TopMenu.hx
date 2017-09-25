@@ -91,7 +91,7 @@ class TopMenu
           title: "Click to open debug menu (or press <span style=\"color:white\">D</span>).",
           func: onDebug
           });
-  
+
       Tools.button({
         id: 'about',
         text: "ABOUT",
@@ -166,7 +166,7 @@ class TopMenu
 // about game button
   function onAbout(event: Dynamic)
     {
-      Browser.window.open("http://code.google.com/p/cult/wiki/About"); 
+      Browser.window.open("http://code.google.com/p/cult/wiki/About");
     }
 
 

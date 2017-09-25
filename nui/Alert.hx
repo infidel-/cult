@@ -33,7 +33,7 @@ class Alert
           w: 800,
           h: 500
         });
-      var close = new Button(window, 
+      var close = new Button(window,
         { x: 364, y: 469, image: "close", onClick: onClose });
 
       var tf : TextFormat = new TextFormat();
@@ -66,7 +66,7 @@ class Alert
         });
       window.style.visibility = 'hidden';
       window.style.background = '#222';
-	  window.style.border = '4px double #ffffff';
+      window.style.border = '4px double #ffffff';
 
       // log text
       text = js.Browser.document.createElement("div");
@@ -77,13 +77,13 @@ class Alert
       text.style.width = 580;
       text.style.height = 400;
       text.style.background = '#111';
-	  text.style.border = '1px solid #777';
+      text.style.border = '1px solid #777';
       window.appendChild(text);
 
       // log close button
       var close = Tools.closeButton(window, 260, 415, 'alertClose');
-	  close.onclick = onClose;
-*/      
+      close.onclick = onClose;
+*/
     }
 
 

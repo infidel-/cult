@@ -37,9 +37,9 @@ class UI
 
   public function new(g)
     {
-	  game = g;
+      game = g;
       config = new Config();
-	}
+    }
 
 
 // init game screen
@@ -51,7 +51,7 @@ class UI
       info = new Info(this, game);
       debug = new Debug(this, game);
       status = new Status(this, game);
-      map = new MapUI(this, game); 
+      map = new MapUI(this, game);
       music = new Music();
       mainMenu = new MainMenu(this, game);
       loadMenu = new LoadMenu(this, game);
@@ -119,13 +119,13 @@ class UI
 
       else if (mainMenu.isVisible) // main menu keys
         mainMenu.onKey(e);
-        
+
       else if (customMenu.isVisible) // custom menu keys
         customMenu.onKey(e);
-        
+
       else if (mpMenu.isVisible) // multiplayer menu keys
         mpMenu.onKey(e);
-        
+
       else if (debug.isVisible) // debug menu keys
         debug.onKey(e);
 
@@ -149,27 +149,27 @@ class UI
 
           else if (info.isVisible)
             info.onClose(null);
-          
+
           else if (sects.isVisible)
             sects.onClose(null);
 
           else if (options.isVisible)
             options.onClose(null);
-          
+
           // open main menu
           else mainMenu.show();
         }
-      
+
       // close window
       else if (logWindow.isVisible && e.keyCode == 76) // L
         logWindow.onClose(null);
 
       else if (info.isVisible && e.keyCode == 67) // C
         info.onClose(null);
-          
+
       else if (options.isVisible && e.keyCode == 79) // O
         options.onClose(null);
-          
+
       else if (!windowOpen) // these work only without windows open
         {
           // advanced map mode
@@ -208,7 +208,7 @@ class UI
           else if (e.keyCode == 49 && !game.isFinished) // 1
             game.player.upgrade(0);
 
-          // upgrade adepts 
+          // upgrade adepts
           else if (e.keyCode == 50 && !game.isFinished) // 2
             game.player.upgrade(1);
 
@@ -226,12 +226,12 @@ class UI
     }
 
 
-// message box 
+// message box
   public inline function msg(s)
-	{
+    {
       e('jqDialog_close').style.visibility = 'hidden';
       JQDialog.notify(s, 1);
-	}
+    }
 
 
 // update status block
@@ -293,7 +293,7 @@ class UI
           msg += "<br><br><center><b>YOU ALL LOSE</b></center>";
           track("loseGame diff:" + game.difficultyLevel, "multiplayerFinish", game.turns);
         }
-  
+
       // open map
       for (n in game.nodes)
         n.setVisible(game.player, true);
@@ -342,8 +342,8 @@ class UI
               id: -1,
               old: false,
               type: null,
-              text: s, 
-              obj: cultOrigin, 
+              text: s,
+              obj: cultOrigin,
               turn: game.turns + 1,
               params: params });
           }
@@ -361,8 +361,8 @@ class UI
 // get element shortcut
   public static inline function e(s)
     {
-	  return Browser.document.getElementById(s);
-	}
+      return Browser.document.getElementById(s);
+    }
 
 
 // track stuff through google analytics

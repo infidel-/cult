@@ -33,7 +33,7 @@ class Log
         });
       window.style.display = 'none';
       window.style.background = '#333333';
-	  window.style.border = '4px double #ffffff';
+      window.style.border = '4px double #ffffff';
 
       // log text
       text = js.Browser.document.createDivElement();
@@ -44,12 +44,12 @@ class Log
       text.style.width = '780px';
       text.style.height = '450px';
       text.style.background = '#0b0b0b';
-	  text.style.border = '1px solid #777';
+      text.style.border = '1px solid #777';
       window.appendChild(text);
 
       // log close button
       var close = Tools.closeButton(window, 360, 465, 'logClose');
-	  close.onclick = onClose;
+      close.onclick = onClose;
     }
 
 

@@ -72,8 +72,8 @@ class UINode
       // different borders
       var dd = 0;
       temph = 17;
-	  if (node.isGenerator)
-		{
+      if (node.isGenerator)
+        {
           key += "g";
           dd = 2;
 
@@ -115,7 +115,7 @@ class UINode
           }
 
       // paint node image
-/*      
+/*
       var img = ui.map.images.get(key);
       if (img == null)
         {
@@ -123,7 +123,7 @@ class UINode
           return;
         }
       ctx.drawImage(img, xx, yy);
-*/   
+*/
       var a: Array<Int> = Reflect.field(imageKeys, key);
       var y0 = a[0];
       var w = a[1];
@@ -161,10 +161,10 @@ class UINode
           var ch = game.player.getGainChance(node);
           ui.map.paintText(ctx, [ Std.int(ch / 10), ch % 10, 10 ], 0,
              tempx + tempd + 1, tempy - 11);
-/*        
+/*
           ctx.fillStyle = 'white';
           ctx.fillText(game.player.getGainChance(node) + '%', tempx - 3, tempy - 4);
-*/          
+*/
 
           if (node.owner == null || node.isKnown[game.player.id])
             {
@@ -175,7 +175,7 @@ class UINode
                 else
                   ui.map.paintText(ctx, [ 10 ], i + 1,
                     tempd + tempx + i * 6, tempy + temph + 3);
-/*            
+/*
               for (i in 0...Game.numPowers)
                 if (node.power[i] > 0)
                   {
@@ -187,7 +187,7 @@ class UINode
                     ctx.fillStyle = '#333';
                     ctx.fillText('-', tempd + tempx - 3 + i * 7, tempy + temph + 11);
                   }
-*/                  
+*/
             }
         }
     }
@@ -253,7 +253,7 @@ class UINode
       s += node.job + "<br>";
 
       if (node.owner != null) // follower level
-        s += "<b>" + (node.isKnown[game.player.id] ? Game.followerNames[node.level] : 'Unknown') + 
+        s += "<b>" + (node.isKnown[game.player.id] ? Game.followerNames[node.level] : 'Unknown') +
           "</b> <span style='color:white'>L" +
           (node.isKnown[game.player.id] ? '' + (node.level + 1) : '?') + "</span><br>";
       s += "<br>";
@@ -273,7 +273,7 @@ class UINode
                   s += "<span style='color:#ff8888'>Not enough " + Game.powerNames[i] + "</span><br>";
                   br = true;
                 }
-              
+
           // check for links
           if (node.isGenerator && node.owner != null)
             {
@@ -303,14 +303,14 @@ class UINode
         s += "Chance of success: <span style='color:white'>" +
           game.player.getGainChance(node) + "%</span><br>";
 
-	  if (node.isGenerator && (node.owner == null || node.isKnown[game.player.id]))
-		{
-		  s += "<br>Generates:<br>";
-	      for (i in 0...Game.numPowers)
-     	    if (node.powerGenerated[i] > 0)
-          	  s += "<b style='color:" + UI.powerColors[i] + "'>" +
+      if (node.isGenerator && (node.owner == null || node.isKnown[game.player.id]))
+        {
+          s += "<br>Generates:<br>";
+          for (i in 0...Game.numPowers)
+             if (node.powerGenerated[i] > 0)
+                s += "<b style='color:" + UI.powerColors[i] + "'>" +
                 Game.powerNames[i] + "</b> " +
-			    node.powerGenerated[i] + "<br>";
+                node.powerGenerated[i] + "<br>";
           if (node.isTempGenerator)
             s += "Temporary<br>";
         }

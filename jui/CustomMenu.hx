@@ -181,7 +181,7 @@ class CustomMenu
 
       bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
       close = Tools.closeButton(window, 630, 460, 'customMenuClose');
-	  close.onclick = onClose;
+      close.onclick = onClose;
     }
 
 

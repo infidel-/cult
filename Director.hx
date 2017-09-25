@@ -21,11 +21,11 @@ class Director
 
       // find weakest cult
       var cult = findWeakestCult();
-    
+
       giveVirgins(cult);
       doubleGenerators(cult);
     }
-  
+
 
 // give virgins to the cult
   function giveVirgins(cult: Cult)

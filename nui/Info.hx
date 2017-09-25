@@ -1,4 +1,4 @@
-// ui for cult info 
+// ui for cult info
 
 import nme.text.TextField;
 import nme.text.TextFormat;
@@ -32,7 +32,7 @@ class Info
         });
 
       // close button
-      var close = new Button(window, 
+      var close = new Button(window,
         { x: 364, y: 469, image: "close", onClick: onClose });
 
       // log text
@@ -69,7 +69,7 @@ class Info
       for (p in game.cults)
         {
           // name
-          s += '<div style="' + (i == 0 ? 'background:#333333' : 
+          s += '<div style="' + (i == 0 ? 'background:#333333' :
             '') +
             '">';
           if (p.isDead)
@@ -160,7 +160,7 @@ class Info
         }
 
       // temporary de-htmling
-      
+
       s = StringTools.replace(s, "<br>", "\n");
       var sb = new StringBuf();
       var arr = s.split('<');
@@ -173,7 +173,7 @@ class Info
 //      text.htmlText = s;
       window.visible = true;
 
-/*        
+/*
       for (i in 0...Game.numCults)
         {
           e("info.longnote" + i).style.display = 'none';
@@ -181,7 +181,7 @@ class Info
           c.style.cursor = 'pointer';
           c.noteID = i;
           c.onclick =
-            function(event) 
+            function(event)
               {
                 var t: Dynamic = event.target;
                 if (t.innerHTML == '+')
@@ -198,7 +198,7 @@ class Info
                   }
               };
         }
-*/                  
+*/
     }
 
 

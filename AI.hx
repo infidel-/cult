@@ -45,7 +45,7 @@ class AI extends Cult
         }
 
       // has investigator
-      if (hasInvestigator && adepts > 0) 
+      if (hasInvestigator && adepts > 0)
         {
           // try to lower awareness even using virgins
           if (awareness >= difficulty.maxAwareness)
@@ -107,7 +107,7 @@ class AI extends Cult
             item.priority++;
 
           // enemy node + enemy is in final ritual
-          else if (node.owner != null && 
+          else if (node.owner != null &&
                    node.owner.isRitual && node.owner.ritual.id == "summoning")
             item.priority += 2;
 
@@ -258,7 +258,7 @@ class AI extends Cult
     {
       if (awareness == 0 || adepts == 0)
         return;
-  
+
       var prevAwareness = awareness;
 
       // spend all adepts we have
@@ -280,7 +280,7 @@ class AI extends Cult
           (awareness < 5 && hasInvestigator) ||
           adepts == 0 || adeptsUsed >= adepts)
         return;
-  
+
       var prevAwareness = awareness;
 
       // spend all we have
@@ -312,8 +312,8 @@ class AI extends Cult
     {
       // check for resources (1 res max assumed)
       var resNeed = -1;
-	  for (i in 0...Game.numPowers)
-		if (power[i] < node.power[i])
+      for (i in 0...Game.numPowers)
+        if (power[i] < node.power[i])
           resNeed = i;
 
       // check if we can convert resources

@@ -110,13 +110,13 @@ class SaveMenu
 
       bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
       close = Tools.closeButton(window, 180, 280, 'saveMenuClose');
-	  close.onclick = onClose;
+      close.onclick = onClose;
     }
 
 
 // show save menu
   public function show()
-    {  
+    {
       for (b in delButtons)
         b.style.display = 'none';
 
@@ -137,7 +137,7 @@ class SaveMenu
               b.style.display = 'inline';
               b.innerHTML = '---';
             }
-      
+
           var i = 0;
           for (item in list)
             {
@@ -174,7 +174,7 @@ class SaveMenu
     }
 
 
-// refresh 
+// refresh
   function onRefresh(event: Dynamic)
     {
       ui.config.set("owner", key.value);
@@ -182,12 +182,12 @@ class SaveMenu
     }
 
 
-// save game 
+// save game
   function onSaveGame(event: Dynamic)
     {
       var b = Tools.getTarget(event);
       var n = Std.parseInt(b.id.substring(4));
-     
+
       onSaveReal(n);
     }
 
@@ -199,7 +199,7 @@ class SaveMenu
       var id = 0;
       if (save != null)
         id = save.id;
-    
+
       // save game
       var name = Date.now().toString();
       var req = new js.html.XMLHttpRequest();
@@ -225,7 +225,7 @@ class SaveMenu
           return;
         }
 
-      onClose(null);    
+      onClose(null);
     }
 
 
@@ -234,7 +234,7 @@ class SaveMenu
     {
       var b = Tools.getTarget(event);
       var n = Std.parseInt(b.id.substring(3));
-     
+
       onDelReal(n);
     }
 
@@ -243,7 +243,7 @@ class SaveMenu
   function onDelReal(n: Int)
     {
       var save = saves[n];
-    
+
       // delete game
       var req = new js.html.XMLHttpRequest();
       req.open("GET", "/save.delete?owner=" +

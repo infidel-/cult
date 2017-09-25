@@ -33,7 +33,7 @@ class Alert
         });
       window.style.display = 'none';
       window.style.background = '#222';
-	  window.style.border = '4px double #ffffff';
+      window.style.border = '4px double #ffffff';
 
       // log text
       text = js.Browser.document.createDivElement();
@@ -44,12 +44,12 @@ class Alert
       text.style.width = '580px';
       text.style.height = '400px';
       text.style.background = '#111';
-	  text.style.border = '1px solid #777';
+      text.style.border = '1px solid #777';
       window.appendChild(text);
 
       // log close button
       var close = Tools.closeButton(window, 260, 415, 'alertClose');
-	  close.onclick = onClose;
+      close.onclick = onClose;
 
       bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight, z: 24 });
     }

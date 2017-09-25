@@ -15,21 +15,21 @@ class Line
 
 
   function new(screen)
-	{
+    {
       this.screen = screen;
-	  this.pixels = new Array<Bitmap>();
-	}
+      this.pixels = new Array<Bitmap>();
+    }
 
 
 // make a new line on screen
   public static function create(map: Map, player: Cult,
       startNode: Node, endNode: Node): Dynamic
-	{
+    {
       var screen = map.screen;
-	  var line = new Line(screen);
+      var line = new Line(screen);
       line.owner = player;
-	  line.startNode = startNode;
-	  line.endNode = endNode;
+      line.startNode = startNode;
+      line.endNode = endNode;
       line.isVisible = false;
 
       var cnt = 10;
@@ -37,15 +37,15 @@ class Line
       if (dist < 50)
         cnt = Std.int(dist / 6) + 1;
 
-	  var x: Float = startNode.centerX,
+      var x: Float = startNode.centerX,
         y: Float = startNode.centerY;
       var modx = (endNode.centerX - startNode.centerX) / cnt,
         mody = (endNode.centerY - startNode.centerY) / cnt;
 
       for (i in 1...cnt)
         {
-		  x += modx;
-		  y += mody;
+          x += modx;
+          y += mody;
 
           var bmp: Bitmap = cast
             map.images.get("pixel" + player.id);
@@ -55,13 +55,13 @@ class Line
           pixel.visible = false;
           screen.addChild(pixel);
 
-		  line.pixels.push(pixel);
+          line.pixels.push(pixel);
         }
       screen.addChild(startNode.uiNode.clip);
       screen.addChild(endNode.uiNode.clip);
 
       return line;
-	}
+    }
 
 
 // set line visibility

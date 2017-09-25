@@ -14,7 +14,7 @@ class Debug
   public var isVisible(getIsVisible, null): Bool;
 
 
-  public function new(uivar: UI, gvar: Game)  
+  public function new(uivar: UI, gvar: Game)
     {
       ui = uivar;
       game = gvar;
@@ -33,7 +33,7 @@ class Debug
         });
 
       // log close button
-      var close = new Button(window, 
+      var close = new Button(window,
         { x: 364, y: 469, image: "close", onClick: onClose });
 
       lastMenuY = -20;
@@ -54,7 +54,7 @@ class Debug
     }
 
 
-// give adepts 
+// give adepts
   function onGiveAdepts(event)
     {
       onGivePower(null);
@@ -189,7 +189,7 @@ class Debug
         sym = menuItem - 9 + 65 + 32;
       var b = new Button(window,
         { x: 20, y: 10 + lastMenuY,
-          label: { x: 3, y: 3, 
+          label: { x: 3, y: 3,
             text: String.fromCharCode(sym) + " " + title },
           font: { size: 12, bold: true },
           name: String.fromCharCode(sym),

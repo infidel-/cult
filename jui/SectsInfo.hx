@@ -25,7 +25,7 @@ class SectsInfo
       isVisible = false;
       selectedNode = null;
       selectedNodeID = 0;
-  
+
       // window
       window = Tools.window(
         {
@@ -41,7 +41,7 @@ class SectsInfo
         });
       window.style.display = 'none';
       window.style.padding = '5 5 5 5';
-	  window.style.border = '4px double #ffffff';
+      window.style.border = '4px double #ffffff';
 
       // list
       list = js.Browser.document.createDivElement();
@@ -84,7 +84,7 @@ class SectsInfo
 
       // close button
       var close = Tools.closeButton(window, 365, 493, 'infoClose');
-	  close.onclick = onClose;
+      close.onclick = onClose;
     }
 
 
@@ -151,7 +151,7 @@ class SectsInfo
 
       if (task == null)
         return;
-  
+
       var target = null;
       if (task.type == 'cult')
         target = game.cults[targetID];
@@ -169,17 +169,17 @@ class SectsInfo
 
       for (sect in game.player.sects)
         {
-          s += '<tr style="background:black"><td>' + sect.name + 
+          s += '<tr style="background:black"><td>' + sect.name +
 //            (Game.isDebug ? ' ' + sect.taskImportant : '') +
             '<td>' + sect.leader.name +
-            '<td style="text-align:center">' + (sect.level + 1) + 
-            '<td style="text-align:center">' + 
+            '<td style="text-align:center">' + (sect.level + 1) +
+            '<td style="text-align:center">' +
             sect.size + '/' + sect.getMaxSize() + ' (+' + sect.getGrowth() + ')' +
             '<td style="te1xt-align:center">';
 
           s += "<select class=secttasks onchange='Game.instance.ui.sects.onSelect(this.value)'>";
 //          "<option value=" + sect.leader.id + ".none>-- None --";
-          
+
           for (t in game.sectTasks)
             {
               // no investigator
@@ -202,8 +202,8 @@ class SectsInfo
                       var ok = t.check(game.player, sect, c);
                       if (!ok)
                         continue;
-              
-                      s += '<option class=secttasks value=' + sect.leader.id + '.' + t.id + '-' + c.id + 
+
+                      s += '<option class=secttasks value=' + sect.leader.id + '.' + t.id + '-' + c.id +
                         (sect.task != null && sect.task.id == t.id &&
                           sect.taskTarget == c ? ' selected' : '') +
                         '>' + t.name + ': ' + c.name;
@@ -224,9 +224,9 @@ class SectsInfo
               else s += '<option class=secttasks value=' + sect.leader.id + '.' + t.id + '-0' +
                 (sect.task != null && sect.task.id == t.id ? ' selected' : '') +
                 '>' + t.name;
-              
+
               // points
-              if (sect.task != null && sect.task.id == t.id && 
+              if (sect.task != null && sect.task.id == t.id &&
                   !sect.task.isInfinite)
                 s += ' (' + sect.taskPoints + '/' + sect.task.points + ')';
             }
@@ -235,11 +235,11 @@ class SectsInfo
 
           s += '<td style="text-align:center">' +
             '<input type="checkbox" name="sectai' + sect.leader.id + '" ' +
-            (sect.isAdvisor ? 'checked' : '') + 
+            (sect.isAdvisor ? 'checked' : '') +
             ' onchange="Game.instance.ui.sects.onAdvisor(' + sect.leader.id +
             ', this.checked)">';
         }
-        
+
       s += '</table>';
       list.innerHTML = s;
       text.innerHTML = 'Sects: ' + game.player.sects.length + '/' +
@@ -267,8 +267,8 @@ class SectsInfo
 // get element shortcut
   public static inline function e(s)
     {
-	  return js.Browser.document.getElementById(s);
-	}
+      return js.Browser.document.getElementById(s);
+    }
 
 
 // create element shortcut
@@ -276,6 +276,6 @@ class SectsInfo
     {
       var el = js.Browser.document.createElement(s);
       parent.appendChild(el);
-      return el; 
+      return el;
     }
 }
