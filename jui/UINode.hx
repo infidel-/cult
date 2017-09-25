@@ -71,6 +71,7 @@ class UINode
 
       // different borders
       var dd = 0;
+      tempd = 0;
       temph = 17;
       if (node.isGenerator)
         {
