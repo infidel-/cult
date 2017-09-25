@@ -16,6 +16,7 @@ class Game
   public var sectTasks: Array<sects.Task>; // available sect tasks
 
   public var turns: Int; // turns passed
+  public var isNeverStarted: Bool; // game never started?
   public var isFinished: Bool; // game finished?
   public var difficultyLevel: Int; // game difficulty (0: easy, 1: normal, 2: hard, -1: custom)
   public var difficulty: DifficultyInfo; // link to difficulty info
@@ -49,6 +50,7 @@ class Game
 // constructor
   function new()
     {
+      isNeverStarted = true;
       isFinished = true;
       this.turns = 0;
       ui = new UI(this);
@@ -70,6 +72,8 @@ class Game
 // restart a game
   public function restart(newDifficulty: Int, ?newDif: DifficultyInfo)
     {
+      isNeverStarted = false;
+
       // show starting message
       if (ui.config.get('hasPlayed') == null)
         ui.alert("Welcome.<br><br>If this is your first time playing, please take the time to " +

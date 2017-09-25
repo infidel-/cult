@@ -344,7 +344,7 @@ class MainMenu
         onSaveGame(null);
 */
       // exit menu
-      else if (e.keyCode == 27// && !game.isFinished
+      else if (e.keyCode == 27
       ) // ESC
         onClose(null);
     }
@@ -353,8 +353,9 @@ class MainMenu
 // hide main menu
   function onClose(event: Dynamic)
     {
-//      if (game.isFinished)
-//        return;
+      if (game.isNeverStarted)
+        return;
+
       window.style.display = 'none';
       bg.style.display = 'none';
 //      close.style.display = 'none';
