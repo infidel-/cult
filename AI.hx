@@ -18,7 +18,7 @@ class AI extends Cult
 
 
 // ai entry point
-  function aiTurn()
+  public function aiTurn()
     {
       // cult is paralyzed and has investigator, it's dead but doesn't know it yet
       if (isParalyzed && hasInvestigator)

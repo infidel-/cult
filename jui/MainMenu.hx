@@ -231,7 +231,6 @@ class MainMenu
   var game_key: String;
   function onCreateMult(event: Dynamic)
     {
-      UI.e("haxe:trace").innerHTML = "";
       var dif = Static.difficulty[3];
       game.restart(-1, dif);
 
@@ -306,7 +305,6 @@ class MainMenu
 // start for real
   function onNewGameReal(dif: Int)
     {
-      UI.e("haxe:trace").innerHTML = "";
       game.restart(dif);
       onClose(null);
     }

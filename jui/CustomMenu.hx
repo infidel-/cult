@@ -188,7 +188,6 @@ class CustomMenu
   public function onStartGame(e: Dynamic)
     {
       var dif: Dynamic = { level: -1 };
-      UI.e("haxe:trace").innerHTML = "";
 
       for (info in difElementInfo)
         {

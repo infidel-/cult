@@ -1,2 +1,0 @@
-export HAXE_LIBRARY_PATH=$HOME/haxe-2.10-linux/std
-~/haxe-2.10-linux/haxe -cp . cult.hxml

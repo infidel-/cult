@@ -12,12 +12,14 @@ extern class SoundManager implements Dynamic
 
 class Music
 {
+  var ui: UI;
   public var isInited: Bool;
   var trackID: Int;
   var playlist: Array<Array<String>>;
 
-  public function new()
+  public function new(ui: UI)
     {
+      this.ui = ui;
       isInited = false;
       trackID = -1;
       playlist = [
@@ -157,13 +159,6 @@ class Music
     }
 
 
-// init player
-  public function init()
-    {
-      isInited = true;
-    }
-
-
 // select random track
   public function random()
     {
@@ -196,6 +191,17 @@ class Music
     }
 
 
+// first start - checks for config variable
+  public function start()
+    {
+      var val = ui.config.get('music');
+      if (val == null || val == '0')
+        return;
+
+      play();
+    }
+
+
 // start playing
   public function play()
     {
@@ -203,6 +209,7 @@ class Music
       if (trackID == -1)
         random();
       else SoundManager.play('music', { onfinish: random });
+      ui.config.set('music', '1');
     }
 
 
@@ -210,6 +217,7 @@ class Music
   public function stop()
     {
       SoundManager.stopAll();
+      ui.config.set('music', '0');
     }
 
 

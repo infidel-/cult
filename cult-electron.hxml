@@ -1,0 +1,14 @@
+-lib electron
+-D electron
+-cp ./jui/
+-dce no
+-debug
+--each
+
+--next
+-js main.js
+-main MainElectron
+
+--next
+-js app.js
+-main Game

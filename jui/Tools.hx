@@ -77,7 +77,7 @@ class Tools
 
 
 // create close button
-  public inline static function closeButton(container: Dynamic, x: Int, y: Int, name: String)
+  public inline static function closeButton(container: Dynamic, x: Int, y: Int, name: String): DivElement
     {
       var b = Tools.button({
         id: name,

@@ -51,7 +51,6 @@ class Debug
 
       lastMenuY = -20;
       menuItem = 0;
-      addItem(0, 'Clear trace', onClearTrace);
       addItem(0, 'Give power', onGivePower);
       addItem(0, 'Open map', onOpenMap);
       addItem(0, 'Investigator: AI', onInvestigatorAI);
@@ -91,13 +90,6 @@ class Debug
               if (Math.random() < 0.2)
                 game.player.activate(n2);
           }
-    }
-
-
-// clear trace
-  function onClearTrace(event)
-    {
-      UI.e("haxe:trace").innerHTML = '';
     }
 
 

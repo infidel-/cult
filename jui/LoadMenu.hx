@@ -201,7 +201,6 @@ class LoadMenu
       var text = req.responseText;
       if (text == "NoSuchSave")
         return;
-      UI.e("haxe:trace").innerHTML = "";
       var savedGame = untyped JSON.parse(text);
       game.load(savedGame);
 

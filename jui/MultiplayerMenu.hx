@@ -210,7 +210,6 @@ class MultiplayerMenu
   public function onStartGame(e: Dynamic)
     {
       var dif: Dynamic = { level: -1 };
-      UI.e("haxe:trace").innerHTML = "";
 
       // get difficulty level
       var level = getInfoValue(difElementInfo[2]);

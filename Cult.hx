@@ -10,7 +10,7 @@ class Cult
   public var id: Int;
   public var infoID: Int;
   public var name: String;
-  public var fullName(get_fullName, null): String;
+  public var fullName(get, null): String;
   public var info: CultInfo;
   public var difficulty: DifficultyInfo; // difficulty info link
 

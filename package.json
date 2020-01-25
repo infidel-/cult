@@ -1,0 +1,14 @@
+{
+    "name": "evil-cult",
+    "version": "1.0.0",
+    "license": "GPL",
+    "description": "A turn-based strategy game about world domination",
+    "repository": "https://github.com/-infidel/cult",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron ."
+    },
+    "dependencies": {
+        "electron": "^7.1.10"
+    }
+}

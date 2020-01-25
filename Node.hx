@@ -452,6 +452,6 @@ class Node
       "Army officer",
       "Scientist",
       "Politician",
-      "Media Person"
+      "Media person"
     ];
 }

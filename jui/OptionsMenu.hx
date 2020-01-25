@@ -164,7 +164,6 @@ class OptionsMenu
   public function onClose(e: Dynamic)
     {
       var dif: Dynamic = { level: -1 };
-      UI.e("haxe:trace").innerHTML = "";
 
       // save all options for current player
       for (info in elementInfo)

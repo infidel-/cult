@@ -52,7 +52,7 @@ class UI
       debug = new Debug(this, game);
       status = new Status(this, game);
       map = new MapUI(this, game);
-      music = new Music();
+      music = new Music(this);
       mainMenu = new MainMenu(this, game);
       loadMenu = new LoadMenu(this, game);
       saveMenu = new SaveMenu(this, game);
@@ -373,7 +373,9 @@ class UI
         label = '';
       if (value == null)
         value = 0;
+#if !electron
       untyped pageTracker._trackEvent('Evil Cult', action, label, value);
+#end
     }
 
 

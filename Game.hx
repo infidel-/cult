@@ -347,15 +347,16 @@ class Game
           // AI turn
           if (c.isAI && !c.isDead)
             {
-              c.turn();
+              var ai: AI = cast cults[i];
+              ai.turn();
 
               // game could be finished on summoning success
               if (isFinished)
                 return;
 
-              startTimer("ai " + c.name);
-              untyped c.aiTurn();
-              endTimer("ai " + c.name);
+              startTimer("ai " + ai.name);
+              ai.aiTurn();
+              endTimer("ai " + ai.name);
             }
 
           if (!c.isAI && !c.isDead)
