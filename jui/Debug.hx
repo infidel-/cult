@@ -64,8 +64,12 @@ class Debug
       addItem(0, 'Node near toggle', onNear);
       addItem(0, 'Give adepts', onGiveAdepts);
       addItem(0, 'Upgrade sects', onUpgradeSects);
+      addItem(0, 'Trace Director toggle', onDirector);
+/*
+   next menu item:
       lastMenuY = -20;
       addItem(1, 'Trace Director toggle', onDirector);
+*/
     }
 
 

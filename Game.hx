@@ -50,6 +50,9 @@ class Game
 // constructor
   function new()
     {
+#if mydebug
+      isDebug = true;
+#end
       isNeverStarted = true;
       isFinished = true;
       this.turns = 0;

@@ -38,7 +38,7 @@ class Config
     {
 #if electron
       var val = Reflect.field(obj, name);
-      trace('get ' + name + ' = ' + val);
+//      trace('get ' + name + ' = ' + val);
       return val;
 #else
       return untyped getCookie(name);
@@ -52,7 +52,7 @@ class Config
 #if electron
       if (Reflect.field(obj, name) == val)
         return;
-      trace('set ' + name + ' ' + val);
+//      trace('set ' + name + ' ' + val);
       Reflect.setField(obj, name, val);
       Fs.writeFileSync('settings.json', Json.stringify(obj), 'utf8');
 #else
