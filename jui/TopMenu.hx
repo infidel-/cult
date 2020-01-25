@@ -101,7 +101,8 @@ class TopMenu
         y: 2,
         fontSize: 16,
         container: panel,
-        title: "Click to go to About page.",
+        // kludge to fix tooltip display
+        title: "Click&nbsp;to&nbsp;go&nbsp;to&nbsp;About&nbsp;page.",
         func: onAbout
         });
 
@@ -114,7 +115,8 @@ class TopMenu
         y: 30,
         fontSize: 10,
         container: panel,
-        title: "Click to set/unset advanced map mode (or press <span style=\"color:white\">A</span>).",
+        // kludge to fix tooltip display
+        title: "Click&nbsp;to&nbsp;toggle&nbsp;advanced&nbsp;map&nbsp;mode&nbsp;(or&nbsp;press&nbsp;<span style=\"color:white\">A</span>).",
         func: onAdvanced
         });
 

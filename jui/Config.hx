@@ -17,7 +17,7 @@ class Config
   public function new()
     {
 #if electron
-      trace('reading settings.json');
+//      trace('reading settings.json');
       obj = {
         hasPlayed: null,
         owner: null,
