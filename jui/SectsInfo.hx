@@ -8,10 +8,11 @@ class SectsInfo
   var ui: UI;
   var game: Game;
 
-  public var window: DivElement; // window element
-  public var list: DivElement; // list element
-  public var text: DivElement; // text element
-  public var menu: DivElement; // hovering menu element
+  var window: DivElement; // window element
+  var list: DivElement; // list element
+  var text: DivElement; // text element
+  var menu: DivElement; // hovering menu element
+  var bg: DivElement; // background element
   public var isVisible: Bool;
 
   var selectedNode: Node; // selected node
@@ -27,18 +28,16 @@ class SectsInfo
       selectedNodeID = 0;
 
       // window
-      window = Tools.window(
-        {
-          id: "windowSects",
-          center: true,
-          winW: UI.winWidth,
-          winH: UI.winHeight,
-          fontSize: 16,
-          bold: true,
-          w: 800,
-          h: 520,
-          z: 20
-        });
+      window = Tools.window({
+        id: "windowSects",
+        winW: UI.winWidth,
+        winH: UI.winHeight,
+        fontSize: 16,
+        bold: true,
+        w: 800,
+        h: 520,
+        z: 20
+      });
       window.style.display = 'none';
       window.style.padding = '5 5 5 5';
       window.style.border = '4px double #ffffff';
@@ -67,22 +66,20 @@ class SectsInfo
       window.appendChild(text);
 
       // hovering menu
-      menu = Tools.window(
-        {
-          id: "sectsMenuWindow",
-          center: true,
-          winW: UI.winWidth,
-          winH: UI.winHeight,
-          fontSize: 16,
-          w: 200,
-          h: 280,
-          z: 3000
-        });
+      menu = Tools.window({
+        id: "sectsMenuWindow",
+        winW: UI.winWidth,
+        winH: UI.winHeight,
+        fontSize: 16,
+        w: 200,
+        h: 280,
+        z: 3000
+      });
       menu.style.padding = '5px';
       menu.style.border = '1px solid';
       menu.style.opacity = '0.9';
 
-      // close button
+      bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
       var close = Tools.closeButton(window, 365, 493, 'infoClose');
       close.onclick = onClose;
     }
@@ -107,6 +104,7 @@ class SectsInfo
   public function onClose(event)
     {
       window.style.display = 'none';
+      bg.style.display = 'none';
       isVisible = false;
       list.innerHTML = '';
     }
@@ -246,6 +244,7 @@ class SectsInfo
         game.player.getMaxSects();
 
       window.style.display = 'inline';
+      bg.style.display = 'inline';
       isVisible = true;
     }
 

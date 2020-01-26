@@ -24,16 +24,14 @@ class SaveMenu
       isVisible = false;
 
       // save menu window
-      window = Tools.window(
-        {
-          id: "saveMenuWindow",
-          center: true,
-          winW: UI.winWidth,
-          winH: UI.winHeight,
-          w: 420,
-          h: 320,
-          z: 25
-        });
+      window = Tools.window({
+        id: "saveMenuWindow",
+        winW: UI.winWidth,
+        winH: UI.winHeight,
+        w: 420,
+        h: 320,
+        z: 25
+      });
 
       Tools.label({
         id: 'saveLabel',
@@ -43,7 +41,7 @@ class SaveMenu
         x: 35,
         y: 30,
         container: window
-        });
+      });
 
       // text field
       key = Tools.textfield({
@@ -54,7 +52,7 @@ class SaveMenu
         x: 85,
         y: 30,
         container: window
-        });
+      });
       key.onclick = onKeyClick;
 
       Tools.button({ // refresh button
@@ -66,7 +64,7 @@ class SaveMenu
         y: 30,
         container: window,
         func: onRefresh
-        });
+      });
 
       noKey = Tools.label({
         id: 'loadLabel2',
@@ -76,7 +74,7 @@ class SaveMenu
         x: 90,
         y: 150,
         container: window
-        });
+      });
 
       // save menu contents
       saves = new Array<Dynamic>();
@@ -93,7 +91,7 @@ class SaveMenu
             y: 70 + 40 * i,
             container: window,
             func: onSaveGame
-            });
+          });
           saveButtons.push(b);
           var b2 = Tools.button({
             id: 'del' + i,
@@ -104,7 +102,7 @@ class SaveMenu
             y: 70 + 40 * i,
             container: window,
             func: onDelGame
-            });
+          });
           delButtons.push(b2);
         }
 

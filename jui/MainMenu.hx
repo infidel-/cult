@@ -27,7 +27,6 @@ class MainMenu
       window = Tools.window(
         {
           id: "mainMenuWindow",
-          center: true,
           winW: UI.winWidth,
           winH: UI.winHeight,
           w: 420,
@@ -112,10 +111,7 @@ class MainMenu
         x: 35,
         y: 240,
         container: window,
-        func: function ()
-          {
-            Remote.getCurrentWindow().close();
-          }
+        func: onExit
         });
 #end
 /*
@@ -166,6 +162,7 @@ class MainMenu
         });
 */
       bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
+      bg.id = 'bgMainMenu';
 #if electron
       var y = 280;
 #else
@@ -186,6 +183,13 @@ class MainMenu
       saveButton.style.display =
         (game.isFinished ? 'none' : 'inline');
       isVisible = true;
+    }
+
+
+// exit game
+  function onExit(event: Dynamic)
+    {
+      Remote.getCurrentWindow().close();
     }
 
 
@@ -341,6 +345,7 @@ class MainMenu
 // key press
   public function onKey(e: Dynamic)
     {
+//      trace(e.keyCode);
       // new game - easy
       if (e.keyCode == 49) // 1
         onNewGameReal(0);
@@ -360,6 +365,10 @@ class MainMenu
       // multiplayer game
       else if (e.keyCode == 53) // 5
         onMultiplayerGame(null);
+
+      // quit game
+      else if (e.keyCode == 81) // q
+        onExit(null);
 /*
       // load game
       else if (e.keyCode == 52) // 4
@@ -370,8 +379,7 @@ class MainMenu
         onSaveGame(null);
 */
       // exit menu
-      else if (e.keyCode == 27
-      ) // ESC
+      else if (e.keyCode == 27 && !game.isNeverStarted) // ESC
         onClose(null);
     }
 
@@ -379,12 +387,8 @@ class MainMenu
 // hide main menu
   function onClose(event: Dynamic)
     {
-      if (game.isNeverStarted)
-        return;
-
       window.style.display = 'none';
       bg.style.display = 'none';
-//      close.style.display = 'none';
       saveButton.style.display = 'none';
       isVisible = false;
     }

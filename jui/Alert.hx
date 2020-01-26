@@ -1,6 +1,7 @@
 // alert window
 
 import js.html.DivElement;
+import js.Browser;
 
 class Alert
 {
@@ -18,17 +19,49 @@ class Alert
       ui = uivar;
       game = gvar;
       isVisible = false;
+    }
+
+
+
+// hide log
+  public function onClose(event)
+    {
+      window.style.display = 'none';
+      bg.style.display = 'none';
+      Browser.document.body.removeChild(window);
+      isVisible = false;
+    }
+
+
+// show alert
+  public function show(s: String, opts: _AlertOptions)
+    {
+      // set default options
+      if (opts == null)
+        opts = {
+          w: 600,
+          h: 250,
+          shadow: false,
+          shadowOpacity: 0.8,
+        }
+      if (opts.w == null)
+        opts.w = 600;
+      if (opts.h == null)
+        opts.h = 250;
+      if (opts.shadow == null)
+        opts.shadow = false;
+      if (opts.shadowOpacity == null)
+        opts.shadowOpacity = 0.8;
 
       // window
       window = Tools.window({
         id: "windowAlert",
-        center: true,
         winW: UI.winWidth,
         winH: UI.winHeight,
 //        fontSize: 16,
         bold: true,
-        w: 600,
-        h: 250,
+        w: opts.w,
+        h: opts.h,
         z: 25
       });
       window.style.display = 'none';
@@ -41,14 +74,15 @@ class Alert
       text.style.position = 'absolute';
       text.style.left = '10px';
       text.style.top = '10px';
-      text.style.width = '580px';
-      text.style.height = '200px';
+      text.style.width = (opts.w - 20) + 'px';
+      text.style.height = (opts.h - 50) + 'px';
       text.style.background = '#111';
       text.style.border = '1px solid #777';
       window.appendChild(text);
 
       // log close button
-      close = Tools.closeButton(window, 260, 215, 'alertClose');
+      close = Tools.closeButton(window,
+        Std.int(opts.w / 2) - 40, opts.h - 33, 'alertClose');
       close.onclick = onClose;
 
       bg = Tools.bg({
@@ -56,55 +90,20 @@ class Alert
         h: UI.winHeight,
         z: 24
       });
-    }
 
-
-// hide log
-  public function onClose(event)
-    {
-      window.style.display = 'none';
-      bg.style.display = 'none';
-      isVisible = false;
-    }
-
-
-// show alert
-//  public function show(s: String, ?opts: _AlertOptions = null)
-  public function show(s: String, ?shadow: Bool = false, ?shadowOpacity: Float = 0.8)
-    {
-/*
-      // set default options
-      if (opts == null)
-        opts = {
-          w: 580,
-          h: 200,
-          shadow: false,
-          shadowOpacity: 0.8,
-        }
-      if (opts.width == null)
-        opts.width = 580;
-      if (opts.height == null)
-        opts.height = 400;
-      if (opts.shadow == null)
-        opts.shadow = false;
-      if (shadowOpacity == null)
-        shadowOpacity = 0.8;
-*/
-
-      bg.style.opacity = '' + shadowOpacity;
+      bg.style.opacity = '' + opts.shadowOpacity;
       text.innerHTML = '<center>' + s + '</center>';
       window.style.display = 'inline';
-      bg.style.display =
-        (shadow ? 'inline' : 'none');
+      bg.style.display = (opts.shadow ? 'inline' : 'none');
       isVisible = true;
     }
 }
 
-/*
+
 typedef _AlertOptions = {
-  @:optional var w: Int,
-  @:optional var h: Int,
-  @:optional var shadow: Bool,
-  @:optional var shadowOpacity: Bool,
+  @:optional var w: Int;
+  @:optional var h: Int;
+  @:optional var shadow: Bool;
+  @:optional var shadowOpacity: Float;
 }
-*/
+

@@ -24,16 +24,14 @@ class LoadMenu
       isVisible = false;
 
       // load menu window
-      window = Tools.window(
-        {
-          id: "loadMenuWindow",
-          center: true,
-          winW: UI.winWidth,
-          winH: UI.winHeight,
-          w: 420,
-          h: 320,
-          z: 25
-        });
+      window = Tools.window({
+        id: "loadMenuWindow",
+        winW: UI.winWidth,
+        winH: UI.winHeight,
+        w: 420,
+        h: 320,
+        z: 25
+      });
 
       Tools.label({
         id: 'loadLabel',

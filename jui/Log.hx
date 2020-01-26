@@ -7,8 +7,9 @@ class Log
   var ui: UI;
   var game: Game;
 
-  public var window: DivElement; // window element
-  public var text: DivElement; // text element
+  var window: DivElement; // window element
+  var text: DivElement; // text element
+  var bg: DivElement; // background element
   public var isVisible: Bool;
 
   var logPrevTurn: Int; // number of previous turn
@@ -20,17 +21,15 @@ class Log
       isVisible = false;
 
       // window
-      window = Tools.window(
-        {
-          id: "windowLog",
-          center: true,
-          winW: UI.winWidth,
-          winH: UI.winHeight,
-          fontSize: 18,
-          w: 800,
-          h: 500,
-          z: 14
-        });
+      window = Tools.window({
+        id: "windowLog",
+        winW: UI.winWidth,
+        winH: UI.winHeight,
+        fontSize: 18,
+        w: 800,
+        h: 500,
+        z: 20
+      });
       window.style.display = 'none';
       window.style.background = '#333333';
       window.style.border = '4px double #ffffff';
@@ -47,7 +46,7 @@ class Log
       text.style.border = '1px solid #777';
       window.appendChild(text);
 
-      // log close button
+      bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
       var close = Tools.closeButton(window, 360, 465, 'logClose');
       close.onclick = onClose;
     }
@@ -57,6 +56,7 @@ class Log
   public function onClose(event)
     {
       window.style.display = 'none';
+      bg.style.display = 'none';
       isVisible = false;
     }
 
@@ -85,6 +85,7 @@ class Log
       text.innerHTML = game.player.logMessages;
       text.scrollTop = 10000;
       window.style.display = 'inline';
+      bg.style.display = 'inline';
       isVisible = true;
     }
 }

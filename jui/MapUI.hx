@@ -52,17 +52,15 @@ class MapUI
       screen.onmouseout = onMouseOut;
 
       // tooltip element
-      tooltip = Tools.window(
-        {
-          id: "mapTooltipWindow",
-          center: true,
-          winW: UI.winWidth,
-          winH: UI.winHeight,
-          fontSize: 16,
-          w: 200,
-          h: 280,
-          z: 3000
-        });
+      tooltip = Tools.window({
+        id: "mapTooltipWindow",
+        winW: UI.winWidth,
+        winH: UI.winHeight,
+        fontSize: 16,
+        w: 200,
+        h: 280,
+        z: 3000
+      });
       tooltip.style.padding = '5px';
       tooltip.style.border = '1px solid';
       tooltip.style.opacity = '0.9';

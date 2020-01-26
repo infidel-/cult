@@ -7,8 +7,9 @@ class Info
   var ui: UI;
   var game: Game;
 
-  public var window: DivElement; // window element
-  public var text: DivElement; // text element
+  var window: DivElement; // window element
+  var bg: DivElement; // background element
+  var text: DivElement; // text element
   public var isVisible: Bool;
 
 
@@ -19,18 +20,16 @@ class Info
       isVisible = false;
 
       // window
-      window = Tools.window(
-        {
-          id: "windowInfo",
-          center: true,
-          winW: UI.winWidth,
-          winH: UI.winHeight,
-          fontSize: 16,
-          bold: true,
-          w: 800,
-          h: 520,
-          z: 20
-        });
+      window = Tools.window({
+        id: "windowInfo",
+        winW: UI.winWidth,
+        winH: UI.winHeight,
+        fontSize: 16,
+        bold: true,
+        w: 800,
+        h: 520,
+        z: 20
+      });
       window.style.display = 'none';
       window.style.padding = '5 5 5 5';
       window.style.border = '4px double #ffffff';
@@ -46,7 +45,7 @@ class Info
       text.style.background = '#111';
       window.appendChild(text);
 
-      // close button
+      bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
       var close = Tools.closeButton(window, 365, 493, 'infoClose');
       close.onclick = onClose;
     }
@@ -56,6 +55,7 @@ class Info
   public function onClose(event)
     {
       window.style.display = 'none';
+      bg.style.display = 'none';
       isVisible = false;
     }
 
@@ -179,6 +179,7 @@ class Info
         }
 
       text.innerHTML = s;
+      bg.style.display = 'inline';
       window.style.display = 'inline';
       isVisible = true;
 

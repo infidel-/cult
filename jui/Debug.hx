@@ -9,6 +9,7 @@ class Debug
 
   var window: DivElement; // window element
   var menu: DivElement; // menu element
+  var bg: DivElement; // background element
   var buttons: Array<DivElement>;
   public var isVisible: Bool;
 
@@ -21,17 +22,15 @@ class Debug
       buttons = [];
 
       // debug window
-      window = Tools.window(
-        {
-          id: "debugWindow",
-          center: true,
-          winW: UI.winWidth,
-          winH: UI.winHeight,
-          fontSize: 18,
-          w: 800,
-          h: 500,
-          z: 20
-        });
+      window = Tools.window({
+        id: "debugWindow",
+        winW: UI.winWidth,
+        winH: UI.winHeight,
+        fontSize: 18,
+        w: 800,
+        h: 500,
+        z: 20
+      });
 
       // internals
       menu = js.Browser.document.createDivElement();
@@ -45,7 +44,7 @@ class Debug
       menu.style.border = '1px solid #777';
       window.appendChild(menu);
 
-      // log close button
+      bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
       var close = Tools.closeButton(window, 360, 465, 'debugClose');
       close.onclick = onClose;
 
@@ -56,6 +55,7 @@ class Debug
       addItem(0, 'Investigator: AI', onInvestigatorAI);
       addItem(0, 'Investigator: Player', onInvestigatorPlayer);
       addItem(0, 'Victory: Summon', onVictorySummon);
+      addItem(0, 'AI Victory: Summon', onVictorySummonAI);
       addItem(0, 'Total war', onTotalWar);
       addItem(0, 'Invisibility toggle', onToggleInvisible);
       addItem(0, 'Trace timing toggle', onTiming);
@@ -64,12 +64,8 @@ class Debug
       addItem(0, 'Node near toggle', onNear);
       addItem(0, 'Give adepts', onGiveAdepts);
       addItem(0, 'Upgrade sects', onUpgradeSects);
-      addItem(0, 'Trace Director toggle', onDirector);
-/*
-   next menu item:
       lastMenuY = -20;
       addItem(1, 'Trace Director toggle', onDirector);
-*/
     }
 
 
@@ -163,6 +159,13 @@ class Debug
   function onVictorySummon(event)
     {
       ui.finish(game.cults[0], "summon");
+    }
+
+
+// AI wins by summoning
+  function onVictorySummonAI(event)
+    {
+      ui.finish(game.cults[1], "summon");
     }
 
 
@@ -270,6 +273,7 @@ class Debug
   function onClose(event)
     {
       window.style.display = 'none';
+      bg.style.display = 'none';
       isVisible = false;
     }
 
@@ -278,6 +282,7 @@ class Debug
   public function show()
     {
       window.style.display = 'inline';
+      bg.style.display = 'inline';
       isVisible = true;
     }
 }

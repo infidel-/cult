@@ -77,16 +77,14 @@ class CustomMenu
       isVisible = false;
 
       // main menu window
-      window = Tools.window(
-        {
-          id: "customMenuWindow",
-          center: true,
-          winW: UI.winWidth,
-          winH: UI.winHeight,
-          w: 1000,
-          h: 500,
-          z: 20
-        });
+      window = Tools.window({
+        id: "customMenuWindow",
+        winW: UI.winWidth,
+        winH: UI.winHeight,
+        w: 1000,
+        h: 500,
+        z: 20
+      });
 
       Tools.label({
         id: 'titleLabel',
@@ -96,7 +94,7 @@ class CustomMenu
         x: 320,
         y: 10,
         container: window
-        });
+      });
 
       var divel = js.Browser.document.createElement("div");
       divel.style.background = '#030303';
@@ -138,7 +136,7 @@ class CustomMenu
               y: y,
               fontSize: 14,
               container: divel
-              });
+            });
           else el = Tools.textfield({
             id: info.name,
             text: '' + Reflect.field(Static.difficulty[2], info.name),
@@ -148,7 +146,7 @@ class CustomMenu
             y: y,
             fontSize: 14,
             container: divel
-            });
+          });
 
           // parameter note
           Tools.label({
@@ -161,7 +159,7 @@ class CustomMenu
             fontSize: 14,
             bold: false,
             container: divel
-            });
+          });
 
           y += 30;
 
@@ -177,7 +175,7 @@ class CustomMenu
         y: 460,
         container: window,
         func: onStartGame
-        });
+      });
 
       bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
       close = Tools.closeButton(window, 630, 460, 'customMenuClose');

@@ -47,16 +47,14 @@ class OptionsMenu
       isVisible = false;
 
       // window
-      window = Tools.window(
-        {
-          id: "optionMenuWindow",
-          center: true,
-          winW: UI.winWidth,
-          winH: UI.winHeight,
-          w: 1000,
-          h: 500,
-          z: 20
-        });
+      window = Tools.window({
+        id: "optionMenuWindow",
+        winW: UI.winWidth,
+        winH: UI.winHeight,
+        w: 1000,
+        h: 500,
+        z: 20
+      });
     }
 
 
@@ -109,6 +107,7 @@ class OptionsMenu
             {
               el = Tools.checkbox({
                 id: info.name,
+                text: '',
 //                text: '' + game.player.options.get(info.name),
                 w: 70,
                 h: 20,
@@ -116,7 +115,7 @@ class OptionsMenu
                 y: y,
                 fontSize: 14,
                 container: divel
-                });
+              });
               untyped el.checked = game.player.options.getBool(info.name);
             }
           else el = Tools.textfield({
@@ -128,7 +127,7 @@ class OptionsMenu
             y: y,
             fontSize: 14,
             container: divel
-            });
+          });
 
           // parameter note
           Tools.label({
@@ -141,7 +140,7 @@ class OptionsMenu
             fontSize: 14,
             bold: false,
             container: divel
-            });
+          });
 
           y += 30;
 
@@ -163,8 +162,6 @@ class OptionsMenu
 // close menu
   public function onClose(e: Dynamic)
     {
-      var dif: Dynamic = { level: -1 };
-
       // save all options for current player
       for (info in elementInfo)
         {

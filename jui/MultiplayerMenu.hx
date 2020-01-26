@@ -58,16 +58,14 @@ class MultiplayerMenu
       isVisible = false;
 
       // main menu window
-      window = Tools.window(
-        {
-          id: "mpMenuWindow",
-          center: true,
-          winW: UI.winWidth,
-          winH: UI.winHeight,
-          w: 450,
-          h: 220,
-          z: 20
-        });
+      window = Tools.window({
+        id: "mpMenuWindow",
+        winW: UI.winWidth,
+        winH: UI.winHeight,
+        w: 450,
+        h: 220,
+        z: 20
+      });
 
       Tools.label({
         id: 'titleLabel',
@@ -77,7 +75,7 @@ class MultiplayerMenu
         x: 50,
         y: 10,
         container: window
-        });
+      });
 
       var divel = js.Browser.document.createElement("div");
       divel.style.background = '#030303';
@@ -104,7 +102,7 @@ class MultiplayerMenu
             y: y,
             fontSize: 14,
             container: divel
-            });
+          });
 
           // parameter field
           var el: Element = null;
@@ -119,7 +117,7 @@ class MultiplayerMenu
               y: y,
               fontSize: 14,
               container: divel
-              });
+            });
           else if (info.type == 'select')
             {
               el = js.Browser.document.createElement("select");
@@ -149,7 +147,7 @@ class MultiplayerMenu
             y: y,
             fontSize: 14,
             container: divel
-            });
+          });
 
           y += 30;
 
@@ -165,7 +163,7 @@ class MultiplayerMenu
         y: 180,
         container: window,
         func: onStartGame
-        });
+      });
 
       bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
       close = Tools.closeButton(window, 320, 180, 'mpMenuClose');

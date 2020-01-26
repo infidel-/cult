@@ -13,17 +13,24 @@ class MainElectron
         {
           var win = new BrowserWindow({
             icon: __dirname + '/favicon.png',
-            width: 1058,
-            height: 695,
+            width: 1056,
+            height: 685,
             webPreferences: {
               nodeIntegration: true
             }
           });
+#if !mydebug
+          win.setMenu(null);
+#end
           win.on( closed, function() {
               win = null;
           });
           win.loadFile('app.html');
-//          win.webContents.openDevTools();
+/*
+#if mydebug
+          win.webContents.openDevTools();
+#end
+*/
         });
 
       App.on(window_all_closed, function(e) {

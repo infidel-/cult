@@ -404,7 +404,12 @@ class Game
           ui.updateStatus();
 
           if (difficulty.numPlayers > 1)
-            ui.alert("Your turn<br>" + player.fullName, true, 1);
+            ui.alert("Your turn<br>" + player.fullName, {
+              w: 400,
+              h: 120,
+              shadow: true,
+              shadowOpacity: 1,
+            });
         }
 
       // all cults are done, next turn
