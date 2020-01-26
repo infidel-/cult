@@ -258,7 +258,7 @@ class UI
         {
           msg += cult.fullName +
             " has completed the " + Static.rituals[0].name + ".<br><br>" +
-            untyped cult.info.summonFinish;
+            cult.info.summonFinish;
           msg += "<br><br><center><b>YOU LOSE</b></center>";
           track("loseGame diff:" + game.difficultyLevel, "summon", game.turns);
         }

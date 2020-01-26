@@ -28,7 +28,7 @@ class MainElectron
 
       App.on(window_all_closed, function(e) {
           if (Node.process.platform != 'darwin')
-            electron.main.App.quit();
+            App.quit();
       });
     }
 }

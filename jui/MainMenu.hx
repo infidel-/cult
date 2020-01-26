@@ -1,6 +1,9 @@
 // main menu class
 
 import js.html.DivElement;
+#if electron
+import electron.renderer.Remote;
+#end
 
 class MainMenu
 {
@@ -28,7 +31,11 @@ class MainMenu
           winW: UI.winWidth,
           winH: UI.winHeight,
           w: 420,
+#if electron
+          h: 320,
+#else
           h: 280,
+#end
           z: 20
         });
 
@@ -95,6 +102,22 @@ class MainMenu
         container: window,
         func: onMultiplayerGame
         });
+
+#if electron
+      Tools.button({
+        id: 'exitGame',
+        text: "EXIT",
+        w: 350,
+        h: 30,
+        x: 35,
+        y: 240,
+        container: window,
+        func: function ()
+          {
+            Remote.getCurrentWindow().close();
+          }
+        });
+#end
 /*
       Tools.button({
         id: 'createMult',
@@ -143,7 +166,12 @@ class MainMenu
         });
 */
       bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
-      close = Tools.closeButton(window, 160, 240, 'mainMenuClose');
+#if electron
+      var y = 280;
+#else
+      var y = 240;
+#end
+      close = Tools.closeButton(window, 180, y, 'mainMenuClose');
       close.onclick = onClose;
     }
 
@@ -153,8 +181,8 @@ class MainMenu
     {
       window.style.display = 'inline';
       bg.style.display = 'inline';
-//      close.style.visibility =
-//        (game.isFinished ? 'hidden' : 'visible');
+      close.style.visibility =
+        (game.isNeverStarted ? 'hidden' : 'visible');
       saveButton.style.display =
         (game.isFinished ? 'none' : 'inline');
       isVisible = true;
