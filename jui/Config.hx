@@ -11,6 +11,7 @@ class Config
     hasPlayed: String,
     owner: String,
     music: String,
+    musicVolume: String,
   }
 #end
 
@@ -22,6 +23,7 @@ class Config
         hasPlayed: null,
         owner: null,
         music: '1',
+        musicVolume: '100',
       };
       try {
         var s = Fs.readFileSync('settings.json', 'utf8');

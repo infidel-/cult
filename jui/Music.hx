@@ -8,6 +8,7 @@ extern class SoundManager implements Dynamic
   static function createSound(p1: Dynamic): Void;
   static function destroySound(p1: Dynamic): Void;
   static function stopAll(): Void;
+  static function setVolume(vol: Int): Void;
 }
 
 class Music
@@ -16,10 +17,15 @@ class Music
   public var isInited: Bool;
   var trackID: Int;
   var playlist: Array<Array<String>>;
+  var volume: Int;
 
   public function new(ui: UI)
     {
       this.ui = ui;
+      volume = 100;
+      var v = ui.config.get('musicVolume');
+      if (v != null)
+        volume = Std.parseInt(v);
       isInited = false;
       trackID = -1;
       playlist = [
@@ -178,7 +184,7 @@ class Music
       SoundManager.createSound({
         id: 'music',
         url: playlist[trackID][3],
-        volume: 100,
+        volume: volume,
       });
 
       SoundManager.play('music', { onfinish: random });
@@ -199,6 +205,36 @@ class Music
         return;
 
       play();
+    }
+
+
+// increase volume
+  public function increaseVolume()
+    {
+      var v = volume;
+      v += 10;
+      if (v > 100) 
+        v = 100;
+      if (v == volume)
+        return;
+      volume = v;
+      ui.config.set('musicVolume', '' + volume);
+      SoundManager.setVolume(volume);
+    }
+
+
+// decrease volume
+  public function decreaseVolume()
+    {
+      var v = volume;
+      v -= 10;
+      if (v < 0)
+        v = 0;
+      if (v == volume)
+        return;
+      volume = v;
+      ui.config.set('musicVolume', '' + volume);
+      SoundManager.setVolume(volume);
     }
 
 

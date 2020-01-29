@@ -157,6 +157,37 @@ class Status
 
       status.innerHTML = s;
 
+      Tools.button({
+        id: 'status.musicPlus',
+        text: '+',
+        w: 12,
+        h: 12,
+        x: 155,
+        y: 444,
+        fontSize: 10,
+        container: status,
+        title: "Click to increase music volume.",
+        func: function (ev: Dynamic)
+          {
+            ui.music.increaseVolume();
+          }
+        });
+      Tools.button({
+        id: 'status.musicMinus',
+        text: '-',
+        w: 12,
+        h: 12,
+        x: 174,
+        y: 444,
+        fontSize: 10,
+        container: status,
+        title: "Click to decrease music volume.",
+        func: function (ev: Dynamic)
+          {
+            ui.music.decreaseVolume();
+          }
+        });
+
       // setting events and tooltips
       for (i in 0...Game.followerNames.length)
         {
