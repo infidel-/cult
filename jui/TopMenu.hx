@@ -102,8 +102,23 @@ class TopMenu
         fontSize: 16,
         container: panel,
         // kludge to fix tooltip display
-        title: "Click&nbsp;to&nbsp;go&nbsp;to&nbsp;About&nbsp;page.",
-        func: onAbout
+        title: "Click&nbsp;to&nbsp;open&nbsp;About&nbsp;page.",
+        func: function(event: Dynamic)
+          {
+            ui.alert(
+              '<center style="font-size:19px;font-weight:bold">About</center><br>' +
+              'Code by Max Kowarski &lt;starinfidel@gmail.com&gt;<br>' +
+              'Texts by Phil Bordelon<br>' +
+              'Music by Jeremy Rice &lt;https://curious-inversions.bandcamp.com&gt;<br><br>' +
+              '<span style="font-size:12px">Unfortunately, due to the fact that the music sources were lost at some point, you cannot purchase the music you listen to in the game. But there\'s a lot of newer works on the Bandcamp page, please check it out.</span>', {
+              w: 750,
+              h: 300,
+              shadow: true,
+              center: false,
+              fontSize: 14,
+            });
+
+          }
         });
 
       Tools.button({
@@ -163,12 +178,6 @@ class TopMenu
       ui.map.isAdvanced = !ui.map.isAdvanced;
       game.player.options.set('mapAdvancedMode', ui.map.isAdvanced);
       ui.map.paint();
-    }
-
-// about game button
-  function onAbout(event: Dynamic)
-    {
-      Browser.window.open("http://code.google.com/p/cult/wiki/About");
     }
 
 

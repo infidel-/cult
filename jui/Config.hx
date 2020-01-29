@@ -21,7 +21,7 @@ class Config
       obj = {
         hasPlayed: null,
         owner: null,
-        music: null,
+        music: '1',
       };
       try {
         var s = Fs.readFileSync('settings.json', 'utf8');

@@ -143,8 +143,7 @@ class Status
       // music player
       s += "<fieldset id='musicplayer'>";
       s += "<legend>MUSIC</legend>";
-      s += "<div title='Click to go to album page.' id='status.track' " +
-        "style='text-align: center; background: #222; cursor:pointer; font-size:10px; color: #00ff00'>-<br>-<br>-</div>";
+      s += "<div id='status.track' style='text-align: center; background: #222; cursor:pointer; font-size:10px; color: #00ff00'>-<br>-<br>-</div>";
       s += "<center style='padding-top:0px'>";
       s += "<span class=button2 title='Play' id='status.play'>PLAY</span>&nbsp;&nbsp;";
       s += "<span class=button2 title='Pause' id='status.pause'>PAUSE</span>&nbsp;&nbsp;";
@@ -196,7 +195,6 @@ class Status
       e("status.pause").onclick = onPause;
       e("status.stop").onclick = onStop;
       e("status.random").onclick = onRandom;
-      e("status.track").onclick = onTrack;
       new JQuery('#status *').tooltip({ delay: 0 });
     }
 
@@ -222,12 +220,6 @@ class Status
   public function onRandom(event)
     {
       ui.music.random();
-    }
-
-
-  public function onTrack(event)
-    {
-      Browser.window.open(ui.music.getPage(), '');
     }
 
 

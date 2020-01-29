@@ -43,6 +43,7 @@ class Alert
           h: 250,
           shadow: false,
           shadowOpacity: 0.8,
+          center: true,
         }
       if (opts.w == null)
         opts.w = 600;
@@ -52,13 +53,15 @@ class Alert
         opts.shadow = false;
       if (opts.shadowOpacity == null)
         opts.shadowOpacity = 0.8;
+      if (opts.center == null)
+        opts.center = true;
 
       // window
       window = Tools.window({
         id: "windowAlert",
         winW: UI.winWidth,
         winH: UI.winHeight,
-//        fontSize: 16,
+        fontSize: opts.fontSize,
         bold: true,
         w: opts.w,
         h: opts.h,
@@ -74,8 +77,9 @@ class Alert
       text.style.position = 'absolute';
       text.style.left = '10px';
       text.style.top = '10px';
-      text.style.width = (opts.w - 20) + 'px';
-      text.style.height = (opts.h - 50) + 'px';
+      text.style.width = (opts.w - 30) + 'px';
+      text.style.height = (opts.h - 60) + 'px';
+      text.style.padding = '5px';
       text.style.background = '#111';
       text.style.border = '1px solid #777';
       window.appendChild(text);
@@ -92,7 +96,9 @@ class Alert
       });
 
       bg.style.opacity = '' + opts.shadowOpacity;
-      text.innerHTML = '<center>' + s + '</center>';
+      if (opts.center)
+        text.innerHTML = '<center>' + s + '</center>';
+      else text.innerHTML = s;
       window.style.display = 'inline';
       bg.style.display = (opts.shadow ? 'inline' : 'none');
       isVisible = true;
@@ -105,5 +111,7 @@ typedef _AlertOptions = {
   @:optional var h: Int;
   @:optional var shadow: Bool;
   @:optional var shadowOpacity: Float;
+  @:optional var center: Bool;
+  @:optional var fontSize: Int;
 }
 
