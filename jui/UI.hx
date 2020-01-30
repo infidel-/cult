@@ -245,7 +245,7 @@ class UI
 // finish game window (ffin)
   public function finish(cult: Cult, state)
     {
-      var msg = "<div style='text-size: 20px'><b>Game over</b></div><br>";
+      var msg = "<div style='text-size: 20px'><b>GAME OVER</b></div><br>";
       var w = 600;
       var h = 250;
 
@@ -255,7 +255,7 @@ class UI
             game.turns + " turns.";
           msg += "<br><br><center><b>YOU WIN</b></center>";
           track("winGame diff:" + game.difficultyLevel, "summon", game.turns);
-          h = 200;
+          h = 210;
         }
 
       else if (state == "summon" && cult.isAI)

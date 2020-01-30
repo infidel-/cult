@@ -168,7 +168,7 @@ class MainMenu
 #else
       var y = 240;
 #end
-      close = Tools.closeButton(window, 180, y, 'mainMenuClose');
+      close = Tools.closeButton(window, 169, y, 'mainMenuClose');
       close.onclick = onClose;
     }
 
