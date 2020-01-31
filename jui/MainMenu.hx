@@ -187,10 +187,12 @@ class MainMenu
 
 
 // exit game
+#if electron
   function onExit(event: Dynamic)
     {
       Remote.getCurrentWindow().close();
     }
+#end
 
 
 // custom game menu
@@ -366,9 +368,11 @@ class MainMenu
       else if (e.keyCode == 53) // 5
         onMultiplayerGame(null);
 
+#if electron
       // quit game
       else if (e.keyCode == 81) // q
         onExit(null);
+#end
 /*
       // load game
       else if (e.keyCode == 52) // 4

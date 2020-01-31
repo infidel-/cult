@@ -34,6 +34,7 @@ class UI
   public var top: TopMenu; // top menu block
   public var sects: SectsInfo; // sects info block
   public var options: OptionsMenu; // options block
+  public var manual: Manual; // ingame manual
 
 
   public function new(g)
@@ -62,6 +63,7 @@ class UI
       top = new TopMenu(this, game);
       sects = new SectsInfo(this, game);
       options = new OptionsMenu(this, game);
+      manual = new Manual(this, game);
       music.onRandom = status.onMusic;
 
       Browser.document.onkeyup = onKey;
@@ -110,7 +112,7 @@ class UI
       var windowOpen = ( loadMenu.isVisible || saveMenu.isVisible ||
         mainMenu.isVisible || debug.isVisible || alertWindow.isVisible ||
         logWindow.isVisible || info.isVisible || sects.isVisible ||
-        customMenu.isVisible );
+        customMenu.isVisible || manual.isVisible);
 
       if (loadMenu.isVisible) // load menu keys
         loadMenu.onKey(e);
@@ -157,6 +159,9 @@ class UI
           else if (options.isVisible)
             options.onClose(null);
 
+          else if (manual.isVisible)
+            manual.onClose(null);
+
           // open main menu
           else mainMenu.show();
         }
@@ -170,6 +175,9 @@ class UI
 
       else if (options.isVisible && e.keyCode == 79) // O
         options.onClose(null);
+
+      else if (manual.isVisible && e.keyCode == 77) // M
+        manual.onClose(null);
 
       else if (!windowOpen) // these work only without windows open
         {
@@ -193,9 +201,9 @@ class UI
           else if (e.keyCode == 76) // L
             top.onLog(null);
 
-          // main menu
+          // manual
           else if (e.keyCode == 77) // M
-            mainMenu.show();
+            manual.show();
 
           // options
           else if (e.keyCode == 79) // O

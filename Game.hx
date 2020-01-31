@@ -40,7 +40,6 @@ class Game
   public static var willPowerCost: Int = 2;
 
   public static var version = "DEV"; // game version
-  public static var manualVersion = "v5"; // game manual version
   public static var followerLevels = 3; // number of follower levels
   public static var numPowers = 3; // number of basic powers
   public static var upgradeCost = 3; // cost to upgrade follower
@@ -79,11 +78,12 @@ class Game
 
       // show starting message
       if (ui.config.get('hasPlayed') == null)
-        ui.alert("Welcome.<br><br>If this is your first time playing, please take the time to " +
-          "read the <a target=_blank href='https://github.com/infidel-/cult/blob/wiki/Manual_" + manualVersion +
-          ".md'>Manual</a> " +
-          "before playing. We are not responsible for horrific deaths caused by not reading the " +
-          "Manual. You have been warned.");
+        ui.alert("Welcome.<br><br>If this is your first time playing, do not hesitate to " +
+          "consult the Manual once you have any questions. " +
+          "We are not responsible for horrific deaths caused by ignoring the " +
+          "Manual. You have been warned.", {
+            shadow: true,
+          });
       ui.config.set('hasPlayed', '1');
 
       ui.track("startGame diff:" + newDifficulty);
