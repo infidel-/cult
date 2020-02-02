@@ -5,13 +5,6 @@ import js.Browser;
 import Alert;
 
 
-extern class JQDialog implements Dynamic
-{
-  static function notify(?p1: Dynamic, ?p2: Dynamic): Void;
-  static function alert(?p1: Dynamic, ?p2: Dynamic): Void;
-}
-
-
 class UI
 {
   var game: Game;
@@ -35,6 +28,7 @@ class UI
   public var sects: SectsInfo; // sects info block
   public var options: OptionsMenu; // options block
   public var manual: Manual; // ingame manual
+  public var messageWindow: Message;
 
 
   public function new(g)
@@ -64,6 +58,7 @@ class UI
       sects = new SectsInfo(this, game);
       options = new OptionsMenu(this, game);
       manual = new Manual(this, game);
+      messageWindow = new Message(this, game);
       music.onRandom = status.onMusic;
 
       Browser.document.onkeyup = onKey;
@@ -238,8 +233,7 @@ class UI
 // message box
   public inline function msg(s)
     {
-      e('jqDialog_close').style.visibility = 'hidden';
-      JQDialog.notify(s, 1);
+      messageWindow.show(s);
     }
 
 
@@ -322,7 +316,6 @@ class UI
       alert(msg, {
         w: w,
         h: h,
-        shadow: true
       });
     }
 

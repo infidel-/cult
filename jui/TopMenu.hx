@@ -138,7 +138,6 @@ class TopMenu
               '<span style="font-size:12px">Unfortunately, due to the fact that the music sources were lost at some point, you cannot purchase the music you listen to in the game. But there\'s a lot of newer works on the Bandcamp page, please check it out.</span>', {
               w: 750,
               h: 300,
-              shadow: true,
               center: false,
               fontSize: 14,
             });

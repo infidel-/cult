@@ -72,17 +72,14 @@ legend {
   color: white;
 }
 </style>
-<link rel="stylesheet" type="text/css" href="lib/jqdialog.css"/>
 <script src="lib/HTML.js"></script>
 <script src="lib/jquery-1.3.2.min.js"></script>
 <script src="lib/jquery.dimensions.min.js" type="text/javascript"></script>
 <script src="lib/jquery.tooltip.min.js" type="text/javascript"></script>
-<script src="lib/jqdialog.min.js" type="text/javascript"></script>
-<script src="lib2/soundmanager2-nodebug-jsmin.js" type="text/javascript"></script>
+<script src="lib/soundmanager2-nodebug-jsmin.js" type="text/javascript"></script>
 
 <script>
   var JQuery = jQuery;
-  var JQDialog = jqDialog;
   var SoundManager = soundManager;
 </script>
 <title>Evil Cult</title>
@@ -139,24 +136,15 @@ pageTracker._trackPageview();
 <script>
   soundManager.setup({
     debugMode: false,
-    url: "lib2/soundmanager2.swf",
-    onload: Game.instance.ui.music.init(),
-    onerror: function () {
-      window.alert("No music! Either you don't have Flash or it's blocked. Please solve this problem, as the music is great!");
-    },
+    waitForWindowLoad: true,
+    useHTML5Audio: true,
   });
 
-  if (jQuery.browser.msie == true)
-    window.alert("You seem to be using Internet Explorer. " +
-      "Unfortunately, the game cannot be finished in it due to bugs.");
-
   var musicTimer = setTimeout(function () {
-      if (!Game.instance.ui.music.isInited)
-        return;
-
-      Game.instance.ui.music.play();
-      clearTimeout(musicTimer);
-    }, 500);
+    Game.instance.ui.music.isInited = true;
+    Game.instance.ui.music.start();
+    clearTimeout(musicTimer);
+  }, 500);
 </script>
 
 

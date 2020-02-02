@@ -81,9 +81,7 @@ class Game
         ui.alert("Welcome.<br><br>If this is your first time playing, do not hesitate to " +
           "consult the Manual once you have any questions. " +
           "We are not responsible for horrific deaths caused by ignoring the " +
-          "Manual. You have been warned.", {
-            shadow: true,
-          });
+          "Manual. You have been warned.");
       ui.config.set('hasPlayed', '1');
 
       ui.track("startGame diff:" + newDifficulty);
@@ -407,7 +405,6 @@ class Game
             ui.alert("Your turn<br>" + player.fullName, {
               w: 400,
               h: 120,
-              shadow: true,
               shadowOpacity: 1,
             });
         }

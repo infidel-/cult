@@ -56,7 +56,8 @@ class Config
         return;
 //      trace('set ' + name + ' ' + val);
       Reflect.setField(obj, name, val);
-      Fs.writeFileSync('settings.json', Json.stringify(obj), 'utf8');
+      Fs.writeFileSync('settings.json',
+        Json.stringify(obj, null, '  '), 'utf8');
 #else
       return untyped setCookie(name, val,
         untyped __js__("new Date(2015, 0, 0, 0, 0, 0, 0)"));

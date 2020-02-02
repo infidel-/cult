@@ -60,7 +60,7 @@ class Alert
         opts = {
           w: 600,
           h: 250,
-          shadow: false,
+          shadow: true,
           shadowOpacity: 0.8,
           center: true,
         }
@@ -68,8 +68,10 @@ class Alert
         opts.w = 600;
       if (opts.h == null)
         opts.h = 250;
+      if (s.length < 46) // short messages - small window
+        opts.h = 90;
       if (opts.shadow == null)
-        opts.shadow = false;
+        opts.shadow = true;
       if (opts.shadowOpacity == null)
         opts.shadowOpacity = 0.8;
       if (opts.center == null)
@@ -89,7 +91,7 @@ class Alert
       window.style.background = '#222';
       window.style.border = '4px double #ffffff';
 
-      // log text
+      // text
       text = js.Browser.document.createDivElement();
       text.style.overflow = 'auto';
       text.style.position = 'absolute';
@@ -102,7 +104,7 @@ class Alert
       text.style.border = '1px solid #777';
       window.appendChild(text);
 
-      // log close button
+      // close button
       close = Tools.closeButton(window,
         Std.int(opts.w / 2) - 40, opts.h - 33, 'alertClose');
       close.onclick = onClose;
