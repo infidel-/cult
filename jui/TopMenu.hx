@@ -128,10 +128,11 @@ class TopMenu
             ui.alert(
               '<center style="font-size:19px;font-weight:bold">About</center><br>' +
               'Code by Max Kowarski &lt;starinfidel@gmail.com&gt;<br>' +
-              'Texts by Phil Bordelon<br>' +
 #if electron
+              'Texts by Phil Bordelon &lt;http://blortblort.org/&gt;<br>' +
               'Music by Jeremy Rice &lt;https://curious-inversions.bandcamp.com&gt;<br><br>' +
 #else
+              'Texts by Phil Bordelon &lt;<a target=_blank href="http://blortblort.org/">blortblort.org</a>&gt;<br>' +
               'Music by Jeremy Rice &lt;<a target=_blank href="https://curious-inversions.bandcamp.com">curious-inversions.bandcamp.com</a>&gt;<br><br>' +
 #end
               '<span style="font-size:12px">Unfortunately, due to the fact that the music sources were lost at some point, you cannot purchase the music you listen to in the game. But there\'s a lot of newer works on the Bandcamp page, please check it out.</span>', {

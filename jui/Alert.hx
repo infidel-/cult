@@ -8,6 +8,7 @@ class Alert
   var ui: UI;
   var game: Game;
 
+  var queue: List<{ msg: String, opts: _AlertOptions }>; // message queue
   var window: DivElement; // window element
   var text: DivElement; // text element
   var close: DivElement; // close button
@@ -19,23 +20,41 @@ class Alert
       ui = uivar;
       game = gvar;
       isVisible = false;
+      queue = new List();
     }
 
 
 
-// hide log
+// hide window
   public function onClose(event)
     {
       window.style.display = 'none';
       bg.style.display = 'none';
       Browser.document.body.removeChild(window);
       isVisible = false;
+
+      // messages in queue - show next message
+      if (queue.length > 0)
+        {
+          var x = queue.pop();
+          show(x.msg, x.opts);
+        }
     }
 
 
-// show alert
+// show window
   public function show(s: String, opts: _AlertOptions)
     {
+      // alert window already visible, push to queue
+      if (isVisible)
+        {
+          queue.add({
+            msg: s,
+            opts: opts
+          });
+          return;
+        }
+
       // set default options
       if (opts == null)
         opts = {
@@ -67,7 +86,6 @@ class Alert
         h: opts.h,
         z: 25
       });
-      window.style.display = 'none';
       window.style.background = '#222';
       window.style.border = '4px double #ffffff';
 

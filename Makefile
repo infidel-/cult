@@ -1,5 +1,5 @@
-all: clean cult.js
-#all: clean app.js-debug
+#all: clean cult.js
+all: clean app.js-debug
 .PHONY: app.js app.js-debug
 
 app.js:
