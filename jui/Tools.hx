@@ -112,6 +112,7 @@ class Tools
       b.style.height = params.h + 'px';
       b.style.left = params.x + 'px';
       b.style.top = params.y + 'px';
+      b.style.userSelect = 'none';
 //      b.style.textAlign = 'center';
       params.container.appendChild(b);
       return b;

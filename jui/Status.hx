@@ -26,6 +26,7 @@ class Status
       status.style.padding = '5px';
       status.style.fontSize = '12px';
       status.style.overflow = 'hidden';
+      status.style.userSelect = 'none';
 
       var s = "<div id='status.cult' style='padding:0 5 5 5; background: #111; height: 17; " +
         "font-weight: bold; font-size:15px; text-align:center;'>-</div>";
@@ -73,7 +74,7 @@ class Status
             "<div id='status.powerMark" + i + "' style='width:" + UI.markerWidth +
             "; height: " + UI.markerHeight +
             "; font-size: 12px; " +
-            "; background:#222; border:1px solid #777; color: " +
+            "background:#222; border:1px solid #777; color: " +
             UI.powerColors[i] + ";'>" +
             "<center><b>" + Game.powerShortNames[i] +
             "</b></center></div>" +
@@ -86,7 +87,7 @@ class Status
             "'>0</span>";
 
           // convert buttons
-            s += "<tr style='";
+          s += "<tr style='";
           if (i % 2 == 1)
             s += "background:#101010";
           s += "'><td colspan=4><table style='font-size:11px'>" +
@@ -143,7 +144,7 @@ class Status
       // music player
       s += "<fieldset id='musicplayer'>";
       s += "<legend>MUSIC</legend>";
-      s += "<div id='status.track' style='text-align: center; background: #222; cursor:pointer; font-size:10px; color: #00ff00'>-<br>-<br>-</div>";
+      s += "<div id='status.track' style='text-align: center; background: #222; font-size:10px; color: #00ff00; user-select: text'>-<br>-<br>-</div>";
       s += "<center style='padding-top:0px'>";
       s += "<span class=button2 title='Play' id='status.play'>PLAY</span>&nbsp;&nbsp;";
       s += "<span class=button2 title='Pause' id='status.pause'>PAUSE</span>&nbsp;&nbsp;";

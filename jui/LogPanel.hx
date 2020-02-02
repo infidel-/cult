@@ -73,6 +73,7 @@ class LogPanel
           e.style.color = col;
           e.style.fontWeight = 'bold';
           e.style.textAlign = 'center';
+          e.style.setProperty('-webkit-user-select', 'none');
           if (m.params != null && m.params.important)
             e.style.textDecoration = 'blink';
           e.innerHTML = sym;
