@@ -50,7 +50,7 @@ Don't forget that all of these rules also apply to the other three cults in play
 
 ### What are They? ###
 
-After a cult gains its first adept, there is a small chance each turn that an _investigator_ will become aware of its existence.  Having three or more adepts will add the current society awareness level to that chance, and having any priests in the cult will raise the chance even further.  Once an investigator is aware of a particular cult, he focuses on that one to the exclusion of all others.  His goal is simple: the destruction of the cult.
+After a cult gains its first adept, there is a small chance each turn that an _investigator_ will become aware of its existence. Each cultist contributes to this number, with adepts modifier being higher than neophytes' and each priest contributing heavily.  Once an investigator is aware of a particular cult, he focuses on that one to the exclusion of all others.  His goal is simple: the destruction of the cult.
 
 When an investigator first becomes aware of a cult, his _willpower_ is low; he has not gained enough knowledge about the cult to be completely resolved in his mission.  Every turn afterwards the investigator is likely to gain a point of willpower, and with every 3 points he gains a new _level_.  If he reaches 3rd level, with 9 willpower points, he becomes unstoppable.  The cult cannot destroy him, only repair the damage he wreaks.
 
