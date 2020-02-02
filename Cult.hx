@@ -597,8 +597,14 @@ class Cult
 // chance of gaining investigator
   public function getInvestigatorChance(): Int
     {
-      return Std.int((20 * priests + 5 * adepts + 0.5 * neophytes) *
-        difficulty.investigatorChance);
+      // chance depends on size
+      var x = (20 * priests + 5 * adepts + 0.5 * neophytes) *
+        difficulty.investigatorChance * // difficulty mod
+        (100.0 + awareness) / 100.0; // awareness mod
+      // on very low awareness we halve it
+      if (awareness <= 5)
+        x /= 2.0;
+      return Std.int(x);
     }
 
 

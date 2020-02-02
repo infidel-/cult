@@ -51,7 +51,7 @@ class Investigator
         w: will,
         l: level,
         h: (isHidden ? 1 : 0)
-        };
+      };
     }
 
 
@@ -83,7 +83,7 @@ class Investigator
       for (i in 0...(level + 1))
         killFollower();
 
-      // low awareness and no ritual, investigator cannot find out about members
+      // low awareness and no ritual, investigator does not gain willpower
       if (cult.awareness < 5 && !cult.isRitual)
         return;
 

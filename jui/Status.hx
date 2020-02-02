@@ -406,7 +406,14 @@ class Status
         }
 
       e("status.turns").innerHTML = "" + game.turns;
-      e("status.awareness").innerHTML = "" + game.player.awareness + "%";
+      var aw = e("status.awareness");
+      aw.innerHTML = "" + game.player.awareness + "%";
+      var col = 'white';
+      if (game.player.awareness >= 20)
+        col = '#ff2222';
+      else if (game.player.awareness >= 10)
+        col = '#ffff44';
+      aw.style.color = col;
 
       // lower awareness buttons visibility
       for (i in 0...Game.numPowers)
@@ -485,7 +492,8 @@ class Status
     "<li>The greater awareness is the harder it is to do anything:<br>" +
     "gain new followers, resources or make rituals.<br> " +
     "<li>Adepts can lower the society awareness using resources.<br>" +
-    "<li>The more adepts you have the more you can lower awareness each turn.";
+    "<li>The more adepts you have the more you can lower awareness each turn." +
+    "<li>With very low awareness the cult can stay undetected by an investigator.";
   static var tipLowerAwareness =
     "Your adepts can use resources to lower society awareness.";
   static var tipLowerWillpower =
