@@ -101,7 +101,7 @@ class TopMenu
         y: 2,
         fontSize: 16,
         container: panel,
-        title: "Click to open the manual (or press <span style=\"color:white\">M</span>).",
+        title: "Click&nbsp;to&nbsp;open&nbsp;the&nbsp;manual&nbsp;(or&nbsp;press&nbsp;<span style=\"color:white\">M</span>).",
         func: function(event: Dynamic)
           {
 #if electron

@@ -71,8 +71,9 @@ class Status
             s += "background:#101010";
           s += "'><td>" +
             // icon
-            "<div id='status.powerMark" + i + "' style='width:" + UI.markerWidth +
-            "; height: " + UI.markerHeight +
+            "<div id='status.powerMark" + i + "' style='width:" +
+            UI.vars.markerWidth +
+            "; height: " + UI.vars.markerHeight +
             "; font-size: 12px; " +
             "background:#222; border:1px solid #777; color: " +
             UI.powerColors[i] + ";'>" +

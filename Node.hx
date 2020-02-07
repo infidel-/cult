@@ -48,8 +48,8 @@ class Node
 
       x = newx;
       y = newy;
-      centerX = x + Math.round(UI.markerWidth / 2);
-      centerY = y + Math.round(UI.markerHeight / 2);
+      centerX = x + Math.round(UI.vars.markerWidth / 2);
+      centerY = y + Math.round(UI.vars.markerHeight / 2);
       generateAttributes();
 
       uiNode = new UINode(game, ui, this);
@@ -382,7 +382,7 @@ class Node
       for (n in links)
         if (n.owner == this.owner)
           {
-            var l = Line.create(ui.map, this.owner, n, this);
+            var l = Line.create(ui, this.owner, n, this);
             game.lines.add(l);
             n.lines.add(l);
             this.lines.add(l);
@@ -408,7 +408,7 @@ class Node
             nc = n;
           }
 
-      var l = Line.create(ui.map, this.owner, nc, this);
+      var l = Line.create(ui, this.owner, nc, this);
       game.lines.add(l);
       nc.lines.add(l);
       this.lines.add(l);

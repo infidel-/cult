@@ -35,6 +35,14 @@ class UI
     {
       game = g;
       config = new Config();
+
+      // pick mode
+      var url = Browser.window.location.href;
+      var isClassic = (StringTools.endsWith(url, 'index.html') ||
+        StringTools.endsWith(url, 'app-classic.html'));
+      classicMode = isClassic;
+      modernMode = !isClassic;
+      vars = (isClassic ? classicModeVars : modernModeVars);
     }
 
 
@@ -331,7 +339,7 @@ class UI
 // show colored cult name
   public static function cultName(i, info)
     {
-      return "<span style='color:" + UI.cultColors[i] + "'>" +
+      return "<span style='color:" + UI.vars.cultColors[i] + "'>" +
         info.name + "</span>";
     }
 
@@ -400,22 +408,90 @@ class UI
 
 // =========================== ui vars ================================
 
-  public static var powerColors: Array<String> =
-    [ "rgb(255, 0, 0)", "rgb(0, 255, 255)", "rgb(0, 255, 0)", "rgb(255, 255, 0)" ];
-//  public static var nodeColors: Array<String> =
-//    [ "rgb(0, 85, 0)", "rgb(1, 9, 85)", "rgb(86, 0, 83)", "rgb(80, 80, 0)" ];
-  public static var nodePixelColors: Array<Array<Int>> =
-    [ [ 85, 221, 85 ], [ 39, 39, 215 ], [ 224, 82, 202 ], [ 216, 225, 81 ],
-      [ 9, 136, 255 ], [ 96, 150, 18 ], [ 168, 87, 0 ], [ 153, 0, 9 ] ];
-  public static var nodeNeutralPixelColors: Array<Int> = [ 120, 120, 120 ];
-  public static var lineColors: Array<String> =
-    [ "#55dd55", "#2727D7", "#E052CA", "#D8E151",
-      "#0988ff", "#609612", "#a85700", "#990009"
-    ];
-  public static var cultColors: Array<String> =
-    [ "#00B400", "#2F43FD", "#B400AE", "#B4AE00",
-      "#0988ff", "#609612", "#a85700", "bb000b" ];
+  static var classicModeVars = {
+    cultColors: [
+      "#00B400",
+      "#2F43FD",
+      "#B400AE",
+      "#B4AE00",
+      "#0988ff",
+      "#609612",
+      "#a85700",
+      "bb000b"
+    ],
+    lineColors: [
+      "#55dd55",
+      "#2727D7",
+      "#E052CA",
+      "#D8E151",
+      "#0988ff",
+      "#609612",
+      "#a85700",
+      "#990009"
+    ],
+    nodePixelColors: [
+      [ 85, 221, 85 ],
+      [ 39, 39, 215 ],
+      [ 224, 82, 202 ],
+      [ 216, 225, 81 ],
+      [ 9, 136, 255 ],
+      [ 96, 150, 18 ],
+      [ 168, 87, 0 ],
+      [ 153, 0, 9 ]
+    ],
+    nodeNeutralPixelColors: [ 120, 120, 120 ],
+    markerWidth: 15,
+    markerHeight: 15,
+    scaleFactor: 1.0,
+  };
+  static var modernModeVars = {
+    cultColors: [
+      '#009933',
+      '#3300CC',
+      '#660099',
+      '#FF9900',
+      '#FF3300',
+      '#FF3366',
+      '#009999',
+      '#330000',
+      '#CCCCCC', // neutral
+    ],
+    lineColors: [ // same as cult
+      '#009933',
+      '#3300CC',
+      '#660099',
+      '#FF9900',
+      '#FF3300',
+      '#FF3366',
+      '#009999',
+      '#330000',
+    ],
+    nodePixelColors: [
+      [ 0, 153, 51 ],
+      [ 51, 0, 204 ],
+      [ 102, 0, 153 ],
+      [ 255, 153, 0 ],
+      [ 255, 51, 0 ],
+      [ 255, 51, 102 ],
+      [ 0, 153, 153 ],
+      [ 51, 0, 0 ]
+    ],
+    nodeNeutralPixelColors: [ 150, 150, 150 ],
+    markerWidth: 52,
+    markerHeight: 52,
+    scaleFactor: 1.0 * 52 / 15,
+  };
 
+  public static var powerColors: Array<String> = [
+    "rgb(255, 0, 0)",
+    "rgb(0, 255, 255)",
+    "rgb(0, 255, 0)",
+    "rgb(255, 255, 0)"
+  ];
+
+  public static var modernMode = true; // modern mode flag
+  public static var classicMode = false; // classic mode flag
+  public static var vars = modernModeVars;
 
   public static var winWidth = 1024;
   public static var winHeight = 630;
@@ -423,8 +499,6 @@ class UI
   public static var mapHeight = 580;
   public static var tooltipWidth = 100;
   public static var tooltipHeight = 80;
-  public static var markerWidth = 15;
-  public static var markerHeight = 15;
   public static var topHeight = 30;
 
 //  public static var nodeVisibility = 101;

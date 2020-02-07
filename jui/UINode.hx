@@ -1,5 +1,7 @@
 // node ui
 
+import js.html.CanvasRenderingContext2D;
+
 class UINode
 {
   var game: Game;
@@ -22,7 +24,7 @@ class UINode
 
 
 // paint node on map
-  public function paint(ctx: Dynamic)
+  public function paint(ctx: CanvasRenderingContext2D)
     {
       // node not visible to player
       if (!node.isVisible(game.player))
@@ -34,6 +36,7 @@ class UINode
           node.x > ui.map.viewRect.x + ui.map.viewRect.w ||
           node.y > ui.map.viewRect.y + ui.map.viewRect.h)
         return;
+//      game.startTimer('node paint');
 
       var key = '';
       var xx = node.x, yy = node.y,
@@ -59,13 +62,12 @@ class UINode
         {
 //          key = "cult" + node.owner.id;
           key = 'c';
-          text = "" + (node.level + 1);
+          text = '' + (node.level + 1);
           textColor = 'white';
           if (node.sect != null)
             text = 'S';
           if (!node.isKnown[game.player.id])
             text = '?';
-
         }
       else key = "neutral";
 
@@ -79,9 +81,9 @@ class UINode
           dd = 2;
 
           for (p in game.cults)
-            if (p.origin == node && !p.isDead && node.isKnown[game.player.id])
+            if (p.origin == node && !p.isDead &&
+                node.isKnown[game.player.id])
               {
-//                key = "origin" + p.id;
                 key = 'o';
                 dd = 4;
                 break;
@@ -107,8 +109,6 @@ class UINode
       for (n in game.player.highlightedNodes)
         if (n == node)
           {
-//            var img = ui.map.images.get('hl');
-//            ctx.drawImage(img, hlx, hly);
             ctx.drawImage(ui.map.nodeImage,
               0, 167, 37, 37,
               hlx, hly, 37, 37);
@@ -116,29 +116,40 @@ class UINode
           }
 
       // paint node image
-/*
-      var img = ui.map.images.get(key);
-      if (img == null)
-        {
-          trace('img bug: ' + key);
-          return;
-        }
-      ctx.drawImage(img, xx, yy);
-*/
       var a: Array<Int> = Reflect.field(imageKeys, key);
       var y0 = a[0];
       var w = a[1];
       var x0 = (node.owner != null ? node.owner.id * w : 0);
-      ctx.drawImage(ui.map.nodeImage,
-        x0, y0, w, w,
-        xx, yy, w, w);
+      
+      if (UI.classicMode)
+        {
+          ctx.drawImage(ui.map.nodeImage,
+            x0, y0, w, w,
+            xx, yy, w, w);
+//          ctx.fillStyle = 'red';
+//          ctx.fillRect(xx, yy, 20, 20);
 
-      // paint node symbol
-      ctx.fillStyle = textColor;
-      ctx.fillText(text, tx, ty);
+          // paint node symbol
+          ctx.fillStyle = textColor;
+          ctx.fillText(text, tx, ty);
+        }
+      else
+        {
+          var idx = 8;
+          if (node.owner != null)
+            idx = node.owner.id;
+          else text = '-';
+//          ctx.fillStyle = 'red';
+//          ctx.fillRect(xx, yy, 52, 52);
+          ctx.drawImage(
+            ui.map.nodeImages[idx], xx, yy);
+          ctx.drawImage(
+            ui.map.textImages[MapUI.textToIndex[text]], xx + 35, yy + 1);
+        }
 
       tempx = xx;
       tempy = yy;
+//      game.endTimer('node paint');
     }
 
 
@@ -259,10 +270,11 @@ class UINode
 
       if (node.owner != null) // cult info
         {
-          s += "<span style='color:" + UI.cultColors[node.owner.id] + "'>" +
+          s += "<span style='color:" + UI.vars.cultColors[node.owner.id] + "'>" +
             node.owner.name + "</span><br>";
           if (node.owner.origin == node && node.isKnown[game.player.id])
-            s += "<span style='color:" + UI.cultColors[node.owner.id] +
+            s += "<span style='color:" +
+              UI.vars.cultColors[node.owner.id] +
               "'>The Origin</span><br>";
           s += "<br>";
         }

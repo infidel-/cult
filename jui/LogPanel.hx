@@ -44,14 +44,14 @@ class LogPanel
           if (m.type == 'cult' || m.type == null) // cult-related message
             {
               var cult: Cult = m.obj;
-              col = UI.lineColors[cult.id];
+              col = UI.vars.lineColors[cult.id];
             }
           else if (m.type == 'cults') // messages relating to 2 cults
             {
               var cult: Cult = m.obj.c1;
               var cult2: Cult = m.obj.c2;
-              sym = "<span style='color:" + UI.lineColors[cult.id] + "'>!</span>" +
-                "<span style='color:" + UI.lineColors[cult2.id] + "'>!</span>";
+              sym = "<span style='color:" + UI.vars.lineColors[cult.id] + "'>!</span>" +
+                "<span style='color:" + UI.vars.lineColors[cult2.id] + "'>!</span>";
             }
           if (m.params != null && m.params.symbol != null)
              sym = m.params.symbol;

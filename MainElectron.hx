@@ -25,7 +25,8 @@ class MainElectron
           win.on( closed, function() {
               win = null;
           });
-          win.loadFile('app.html');
+          var isClassic = App.commandLine.hasSwitch('classic');
+          win.loadFile(isClassic ? 'app-classic.html' : 'app.html');
 /*
 #if mydebug
           win.webContents.openDevTools();

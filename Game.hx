@@ -1,5 +1,6 @@
 // game class for Cult
 
+import js.Browser;
 import Static;
 
 @:expose
@@ -68,6 +69,19 @@ class Game
           var t = Type.createInstance(cl, []);
           sectTasks.push(t);
         }
+
+      // apply modern mode difficulty fixes
+      if (UI.modernMode)
+        for (i in 0...Static.difficulty.length - 1)
+          {
+            var d = Static.difficulty[i];
+            d.mapWidth = Std.int(d.mapWidth * UI.vars.scaleFactor);
+            d.mapHeight = Std.int(d.mapHeight * UI.vars.scaleFactor);
+            d.nodeVisibilityRadius =
+              Std.int(d.nodeVisibilityRadius * UI.vars.scaleFactor);
+            d.nodeActivationRadius =
+              Std.int(d.nodeActivationRadius * UI.vars.scaleFactor);
+          }
     }
 
 
@@ -90,10 +104,10 @@ class Game
       difficultyLevel = newDifficulty;
       if (difficultyLevel >= 0)
         difficulty = Static.difficulty[difficultyLevel];
-      else
-        difficulty = newDif; // custom difficulty
+      else difficulty = newDif; // custom difficulty
       this.isFinished = false;
       this.turns = 0;
+      ui.map.initMinimap();
       ui.clearMap();
       ui.clearLog();
 
@@ -194,19 +208,22 @@ class Game
       while (true)
         {
           x = Math.round(20 + Math.random() *
-            (difficulty.mapWidth - UI.markerWidth - 40));
+            (difficulty.mapWidth - UI.vars.markerWidth - 40));
           y = Math.round(20 + Math.random() *
-            (difficulty.mapHeight - UI.markerHeight - 40));
+            (difficulty.mapHeight - UI.vars.markerHeight - 40));
 
           cnt++;
           if (cnt > 100)
-            return;
+            {
+              trace('could not spawn node');
+              return;
+            }
 
           // node
           var ok = 1;
           for (n in nodes)
-            if ((x - 30 < n.x && x + UI.markerWidth + 30 > n.x) &&
-                (y - 30 < n.y && y + UI.markerHeight + 30 > n.y))
+            if ((x - 30 < n.x && x + UI.vars.markerWidth + 30 > n.x) &&
+                (y - 30 < n.y && y + UI.vars.markerHeight + 30 > n.y))
               ok = 0;
 
           if (ok == 1)
@@ -290,7 +307,7 @@ class Game
           var startNode = getNode(l[0]);
           var endNode = getNode(l[1]);
           var cult = cults[l[2]];
-          var line = Line.create(ui.map, cult, startNode, endNode);
+          var line = Line.create(ui, cult, startNode, endNode);
           trace('TODO: load lines visibility bug!');
 //          if (l[3] == 1)
 //            line.setVisible(game.player, true);
@@ -445,7 +462,8 @@ class Game
   public inline function startTimer(name)
     {
       if (debugTime)
-        timerTime = Date.now().getTime();
+        timerTime = Browser.window.performance.now();
+//        timerTime = Date.now().getTime();
     }
 
 
@@ -453,7 +471,8 @@ class Game
   public inline function endTimer(name)
     {
       if (debugTime)
-        trace(name + ": " + (Date.now().getTime() - timerTime) + "ms");
+//        trace(name + ": " + (Date.now().getTime() - timerTime) + "ms");
+        trace(name + ": " + (Browser.window.performance.now() - timerTime) + "ms");
     }
 
 
@@ -468,7 +487,7 @@ class Game
 // =========================================
 
   // these are changed from debug menu
-  public static var debugTime = false; // show execution time of various parts
+  public static var debugTime = true; // show execution time of various parts
   public static var debugVis = false; // show node visibility for all cults
   public static var debugNear = false; // show "nearness" of all nodes
   public static var debugAI = false; // show AI debug messages

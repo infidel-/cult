@@ -2,6 +2,9 @@
 
 import js.Browser;
 import js.html.DivElement;
+import js.html.Image;
+import js.html.CanvasElement;
+import js.html.CanvasRenderingContext2D;
 
 typedef Rect =
 {
@@ -17,14 +20,20 @@ class MapUI
   var ui: UI;
   var game: Game;
 
-//  public var images: Hash<Dynamic>; // images array
-  public var fontImage: Dynamic; // bitmapped font image
-  public var nodeImage: Dynamic; // nodes imageset
+  public var fontImage: Image; // bitmapped font image
+  public var nodeImage: Image; // nodes imageset (classic)
+  var bgImage: Image; // map bg
   public var tooltip: DivElement;
-//  public var screen: Dynamic; // map element
   public var viewRect: Rect; // viewport x,y
   var isDrag: Bool; // is viewport being dragged?
   public var isAdvanced: Bool; // is advanced mode
+  var screen: CanvasElement;
+  var minimap: CanvasElement;
+
+  // modern mode
+  var firstTime: Bool;
+  public var nodeImages: Array<CanvasElement>; // node images
+  public var textImages: Array<CanvasElement>; // text images: S, 1, 2, 3
 
   public function new(uivar: UI, gvar: Game)
     {
@@ -32,9 +41,11 @@ class MapUI
       game = gvar;
       viewRect = { x:0, y:0, w:UI.mapWidth, h:UI.mapHeight };
       isAdvanced = false;
+      bgImage = null;
+      firstTime = true;
 
       // map display
-      var screen = UI.e("map");
+      screen = cast UI.e("map");
       screen.style.border = 'double #777 4px';
       screen.style.width = UI.mapWidth + 'px';
       screen.style.height = UI.mapHeight + 'px';
@@ -42,8 +53,6 @@ class MapUI
       screen.style.left = '240px';
       screen.style.top = (5 + UI.topHeight) + 'px';
       screen.style.overflow = 'hidden';
-      if (!(untyped screen).getContext)
-        Browser.window.alert("No canvas available. Please use a canvas-compatible browser like Mozilla Firefox 3.5+ or Google Chrome.");
 
       screen.onclick = onClick;
       screen.onmousemove = onMove;
@@ -69,17 +78,114 @@ class MapUI
     }
 
 
+// reinit minimap on new game
+  public function initMinimap()
+    {
+      if (minimap != null)
+        Browser.document.removeChild(minimap);
+      minimap = cast Browser.document.createElement('canvas');
+      minimap.width = Std.int(game.difficulty.mapWidth * 100.0 /
+        game.difficulty.mapHeight);
+      minimap.height = 100;
+      trace('init minimap ' + minimap.width + ',' + minimap.height);
+    }
+
+
 // load all game-related images
   function loadImages()
     {
-      nodeImage = untyped __js__("new Image()");
+      nodeImage = new Image();
       nodeImage.onload = onLoadImage;
       nodeImage.src = 'data/nodes.png';
 
-      fontImage = untyped __js__("new Image()");
+      fontImage = new Image();
       fontImage.onload = onLoadImage;
       fontImage.src = 'data/5x8.png';
+
+      if (UI.modernMode)
+        {
+          bgImage = new Image();
+          bgImage.onload = onLoadImage;
+          bgImage.src = 'data/bg.png';
+
+          // render node images
+          nodeImages = [];
+          for (i in 0...9)
+            {
+              var c: CanvasElement =
+                cast Browser.document.createElement('canvas');
+              c.width = 52;
+              c.height = 52;
+              var cx = Std.int(c.width / 2);
+              var cy = Std.int(c.height / 2);
+
+              var r = 26;
+              var n = c.getContext2d();
+
+              // outer circle
+              n.beginPath();
+              n.arc(cx, cy, r, 0, 2 * Math.PI);
+              n.fillStyle = UI.vars.cultColors[i];
+              n.fill();
+
+              // inner circle
+              n.beginPath();
+              n.arc(cx - 1, cy + 2, r - 5, 0, 2 * Math.PI);
+              n.fillStyle = '#f5efe1';
+              n.fill();
+
+              // outer circle (level)
+              var clx = 40, cly = 8, rs = 8;
+              n.beginPath();
+              n.arc(clx, cly, rs, 0, 2 * Math.PI);
+              n.fillStyle = UI.vars.cultColors[i];
+              n.fill();
+
+              // inner circle (level)
+              n.beginPath();
+              n.arc(clx, cly, rs - 1, 0, 2 * Math.PI);
+              n.fillStyle = '#f5efe1';
+              n.fill();
+
+              nodeImages[i] = c;
+            }
+        }
     }
+
+
+// generate text images
+  function loadTextImages()
+    {
+      // render text images
+      textImages = [];
+      var text = [ '?', 'S', '1', '2', '3', '-' ];
+      for (i in 0...text.length)
+        {
+          var c: CanvasElement =
+            cast Browser.document.createElement('canvas');
+          c.width = 11;
+          c.height = 13;
+          var r = c.getContext2d();
+          r.textBaseline = 'top';
+          r.textAlign = 'left';
+          r.font = 'bold 14px Mitr';
+//          r.fillStyle = 'red';
+//          r.fillRect(0, 0, c.width, c.height);
+          r.fillStyle = 'black';
+          r.fillText(text[i], (text[i] == '1' ? 2 : 1), 1);
+
+          textImages[i] = c;
+        }
+    }
+
+  public static var textToIndex = [
+    '?' => 0,
+    'S' => 1,
+    '1' => 2,
+    '2' => 3,
+    '3' => 4,
+    '-' => 5,
+  ];
 
 
   function onLoadImage()
@@ -97,19 +203,39 @@ class MapUI
 
       game.startTimer('map paint');
 
-      var el = untyped UI.e("map");
-      var ctx = el.getContext("2d");
-      ctx.fillStyle = "black";
-      ctx.fillRect(0, 0, UI.mapWidth, UI.mapHeight);
-      ctx.font = "14px Verdana";
+      // hack: generate text images on first real paint
+      // this is needed because font might not be loaded earlier
+      if (UI.modernMode && firstTime)
+        {
+          loadTextImages();
+          firstTime = false;
+        }
+
+//      game.startTimer('map paint 1');
+
+      var ctx = screen.getContext2d();
+      if (UI.modernMode)
+        ctx.drawImage(bgImage, 0, 0, UI.mapWidth, UI.mapHeight + 1);
+      else
+        {
+          ctx.fillStyle = "black";
+          ctx.fillRect(0, 0, UI.mapWidth, UI.mapHeight);
+          ctx.font = "14px Verdana";
+        }
+//      game.endTimer('map paint 1');
+//      game.startTimer('map paint 2');
 
       // paint visible lines
       for (l in game.lines)
-        l.paint(ctx, this, game.player.id);
+        l.paint(ctx, game.player.id);
+//      game.endTimer('map paint 2');
+//      game.startTimer('map paint 3');
 
       // paint visible nodes
       for (n in game.nodes)
         n.uiNode.paint(ctx);
+//      game.endTimer('map paint 3');
+//      game.startTimer('map paint 4');
 
       if (isAdvanced) // paint advanced node info
         {
@@ -117,58 +243,97 @@ class MapUI
           for (n in game.nodes)
             n.uiNode.paintAdvanced(ctx);
         }
-
+//      game.endTimer('map paint 4');
+//      game.startTimer('map paint 5');
       if (game.difficulty.mapWidth > UI.mapWidth ||
           game.difficulty.mapHeight > UI.mapHeight)
-        paintMinimap(ctx); // paint minimap
+        {
+          updateMinimap();
+          ctx.drawImage(minimap,
+            UI.mapWidth - minimap.width,
+            UI.mapHeight - minimap.height);
+        }
+//      game.endTimer('map paint 5');
+//      game.startTimer('map paint 6');
+
+/*
+      if (UI.modernMode)
+        for (i in 0...100)
+          {
+            var xx = 50 + Std.random(UI.mapWidth),
+              yy = 50 + Std.random(UI.mapHeight);
+            ctx.drawImage(
+              nodeImages[Std.random(4)], xx, yy);
+            ctx.drawImage(
+              textImages[Std.random(4)], xx + 35, yy + 1);
+  /-
+            ctx.font = '20px ChangaOne';
+            ctx.fillStyle = 'green';
+            ctx.fillText("Test 1 2 3 S", xx, yy);
+  -/
+          }
+*/
 
       game.endTimer('map paint');
     }
 
 
-// paint minimap
-  function paintMinimap(ctx: Dynamic)
+// update minimap
+// looks like caching is not necessary yet
+// (plus view frame has to be drawn every repaint)
+  function updateMinimap()
     {
-      var mw = 100, mh = 100,
-        mx = UI.mapWidth - mw, my = UI.mapHeight - mh;
+      var ctx = minimap.getContext2d();
+      ctx.clearRect(0, 0, minimap.width, minimap.height);
 
-      var xscale:Float = 1.0 * game.difficulty.mapWidth / mw;
-      var yscale:Float = 1.0 * game.difficulty.mapHeight / mh;
+      var xscale:Float = 1.0 * game.difficulty.mapWidth / minimap.width;
+      var yscale:Float = 1.0 * game.difficulty.mapHeight / minimap.height;
 
       // draw bg
       ctx.fillStyle = 'rgba(20,20,20,0.5)';
-      ctx.fillRect(mx, my, mw, mh);
+      ctx.fillRect(0, 0, minimap.width, minimap.height);
 
-      var imageData = ctx.getImageData(mx, my, mw, mh);
-      var pix: Array<Int> = imageData.data;
+      var imageData = ctx.getImageData(0, 0, minimap.width, minimap.height);
+      var pix = imageData.data;
 
+      var x = 0, y = 0, index = 0, color = null;
       for (n in game.nodes)
         if (n.isVisible(game.player))
           {
-            var x = Std.int(n.x / xscale);
-            var y = Std.int(n.y / yscale);
+            x = Std.int(n.x / xscale);
+            y = Std.int(n.y / yscale);
 
-            var index = (x + y * mw) * 4;
-            var color = UI.nodeNeutralPixelColors;
+            color = UI.vars.nodeNeutralPixelColors;
             if (n.owner != null)
-              color = UI.nodePixelColors[n.owner.id];
+              color = UI.vars.nodePixelColors[n.owner.id];
+
+            index = (x + y * minimap.width) * 4;
             pix[index] = color[0];
             pix[index + 1] = color[1];
             pix[index + 2] = color[2];
-/*
-            if (n.owner != null)
-              {
-              }
-*/
+            pix[index + 4] = color[0];
+            pix[index + 5] = color[1];
+            pix[index + 6] = color[2];
+            index = (x + (y + 1) * minimap.width) * 4;
+            pix[index] = color[0];
+            pix[index + 1] = color[1];
+            pix[index + 2] = color[2];
+            pix[index + 4] = color[0];
+            pix[index + 5] = color[1];
+            pix[index + 6] = color[2];
           }
 
-      ctx.putImageData(imageData, mx, my);
+      ctx.putImageData(imageData, 0, 0);
 
       // draw view frame
-      ctx.strokeStyle = 'rgb(100,100,100)';
+      ctx.strokeStyle =
+        (UI.classicMode ? 'rgb(100,100,100)' : 'rgb(200,200,200)');
       ctx.lineWidth = 1.0;
-      ctx.strokeRect(mx + viewRect.x / xscale, my + viewRect.y / yscale,
-        UI.mapWidth / xscale, UI.mapHeight / yscale);
+      ctx.strokeRect(
+        viewRect.x / xscale + 1,
+        viewRect.y / yscale + 1,
+        UI.mapWidth / xscale - 1,
+        UI.mapHeight / yscale - 1);
     }
 
 
@@ -233,14 +398,13 @@ class MapUI
           cnt++;
         }
 
-      var el = untyped UI.e("map");
-      var x = event.clientX - el.offsetLeft - 4 + js.Browser.document.body.scrollLeft;
-      var y = event.clientY - el.offsetTop - 6 + js.Browser.document.body.scrollTop;
+      var x = event.clientX - screen.offsetLeft - 4 + Browser.document.body.scrollLeft;
+      var y = event.clientY - screen.offsetTop - 6 + Browser.document.body.scrollTop;
 
-      if (x + 250 > js.Browser.window.innerWidth)
-        x = js.Browser.window.innerWidth - 250;
-      if (y + cnt * 20 + 50 > js.Browser.window.innerHeight)
-        y = js.Browser.window.innerHeight - cnt * 20 - 50;
+      if (x + 250 > Browser.window.innerWidth)
+        x = Browser.window.innerWidth - 250;
+      if (y + cnt * 20 + 50 > Browser.window.innerHeight)
+        y = Browser.window.innerHeight - cnt * 20 - 50;
 
       tooltip.style.left = x + 'px';
       tooltip.style.top = y + 'px';
@@ -317,23 +481,25 @@ class MapUI
 // get node from mouse event
   function getEventNode(event: Dynamic): Node
     {
-      // No game started yet
+      // game not started yet
       if (game.nodes == null)
         return null;
 
-      var el = untyped UI.e("map");
-      var x = event.clientX - el.offsetLeft - 4 + viewRect.x + js.Browser.document.body.scrollLeft;
-      var y = event.clientY - el.offsetTop - 6 + viewRect.y + js.Browser.document.body.scrollTop;
+      var x = event.clientX - screen.offsetLeft - 4 + viewRect.x +
+        Browser.document.body.scrollLeft;
+      var y = event.clientY - screen.offsetTop - 6 + viewRect.y +
+        Browser.document.body.scrollTop;
 
       // find which node the click was on
       var node = null;
+      var r = (UI.classicMode ? 10 : 26);
       for (n in game.nodes)
         {
           if (!n.isVisible(game.player))
             continue;
 
-          if (x > n.x - 10 && x <= n.x + 20 &&
-              y > n.y - 10 && y <= n.y + 20)
+          if (x >= n.x && x <= n.x + 2 * r &&
+              y >= n.y && y <= n.y + 2 * r)
             {
               node = n;
               break;
