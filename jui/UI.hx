@@ -5,6 +5,7 @@ import js.Browser;
 import Alert;
 
 
+@:expose
 class UI
 {
   var game: Game;
@@ -446,30 +447,30 @@ class UI
   };
   static var modernModeVars = {
     cultColors: [
-      '#009933',
-      '#3300CC',
-      '#660099',
-      '#FF9900',
-      '#FF3300',
-      '#FF3366',
-      '#009999',
-      '#330000',
-      '#CCCCCC', // neutral
+      '#009933', // green
+      '#3300CC', // blue
+      '#660099', // violet
+      '#FF9900', // orange
+      '#FF3300', // yellow
+      '#FF3366', // pink
+      '#009999', // cyan
+      '#330000', // red
+      '#BBBBBB', // neutral
     ],
     lineColors: [ // same as cult
-      '#009933',
-      '#3300CC',
-      '#660099',
-      '#FF9900',
-      '#FF3300',
-      '#FF3366',
-      '#009999',
-      '#330000',
+      '#009933', // green
+      '#3300CC', // blue
+      '#660099', // violet
+      '#FF9900', // orange
+      '#FF3300', // yellow
+      '#FF3366', // pink
+      '#009999', // cyan
+      '#330000', // red
     ],
     nodePixelColors: [
       [ 0, 153, 51 ],
-      [ 51, 0, 204 ],
-      [ 102, 0, 153 ],
+      [ 51, 60, 254 ],
+      [ 142, 0, 193 ],
       [ 255, 153, 0 ],
       [ 255, 51, 0 ],
       [ 255, 51, 102 ],
@@ -479,7 +480,7 @@ class UI
     nodeNeutralPixelColors: [ 150, 150, 150 ],
     markerWidth: 52,
     markerHeight: 52,
-    scaleFactor: 1.0 * 52 / 15,
+    scaleFactor: 3.4, // sqrt(52 * 52 + 52 * 52) / sqrt(15 * 15 + 15 * 15)
   };
 
   public static var powerColors: Array<String> = [

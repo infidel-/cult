@@ -39,7 +39,7 @@ class MapUI
     {
       ui = uivar;
       game = gvar;
-      viewRect = { x:0, y:0, w:UI.mapWidth, h:UI.mapHeight };
+      viewRect = { x: 0, y: 0, w: UI.mapWidth, h: UI.mapHeight };
       isAdvanced = false;
       bgImage = null;
       firstTime = true;
@@ -81,13 +81,11 @@ class MapUI
 // reinit minimap on new game
   public function initMinimap()
     {
-      if (minimap != null)
-        Browser.document.removeChild(minimap);
       minimap = cast Browser.document.createElement('canvas');
+      minimap.id = 'minimap';
       minimap.width = Std.int(game.difficulty.mapWidth * 100.0 /
         game.difficulty.mapHeight);
       minimap.height = 100;
-      trace('init minimap ' + minimap.width + ',' + minimap.height);
     }
 
 
@@ -286,11 +284,11 @@ class MapUI
       var ctx = minimap.getContext2d();
       ctx.clearRect(0, 0, minimap.width, minimap.height);
 
-      var xscale:Float = 1.0 * game.difficulty.mapWidth / minimap.width;
-      var yscale:Float = 1.0 * game.difficulty.mapHeight / minimap.height;
+      var xscale = 1.0 * game.difficulty.mapWidth / minimap.width;
+      var yscale = 1.0 * game.difficulty.mapHeight / minimap.height;
 
       // draw bg
-      ctx.fillStyle = 'rgba(20,20,20,0.5)';
+      ctx.fillStyle = 'rgba(20,20,20,0.65)';
       ctx.fillRect(0, 0, minimap.width, minimap.height);
 
       var imageData = ctx.getImageData(0, 0, minimap.width, minimap.height);
@@ -419,6 +417,11 @@ class MapUI
   var dragEventY: Int;
   public function onMouseDown(event: Dynamic)
     {
+      // map same size as screen or smaller
+      if (viewRect.w >= game.difficulty.mapWidth &&
+          viewRect.h >= game.difficulty.mapHeight)
+        return;
+
       isDrag = true;
       dragEventX = event.clientX;
       dragEventY = event.clientY;

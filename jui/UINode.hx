@@ -31,10 +31,12 @@ class UINode
         return;
 
       // node out of view rectangle
-      if (node.x < ui.map.viewRect.x - 20 ||
-          node.y < ui.map.viewRect.y - 20 ||
-          node.x > ui.map.viewRect.x + ui.map.viewRect.w ||
-          node.y > ui.map.viewRect.y + ui.map.viewRect.h)
+      if (node.x < ui.map.viewRect.x - UI.vars.markerWidth ||
+          node.y < ui.map.viewRect.y - UI.vars.markerHeight ||
+          node.x >
+            ui.map.viewRect.x + ui.map.viewRect.w + UI.vars.markerWidth ||
+          node.y >
+            ui.map.viewRect.y + ui.map.viewRect.h + UI.vars.markerHeight)
         return;
 //      game.startTimer('node paint');
 
@@ -167,7 +169,7 @@ class UINode
           node.y > ui.map.viewRect.y + ui.map.viewRect.h)
         return;
 
-      // Draw production indicators
+      // draw production indicators
       var productionIndicatorWidth = 6;
       var productionIndicatorHeight = 2;
       if (node.isGenerator && !node.isTempGenerator)
@@ -344,6 +346,20 @@ class UINode
                 node.powerGenerated[i] + "<br>";
           if (node.isTempGenerator)
             s += "Temporary<br>";
+        }
+
+      // find closest node distance
+      if (Game.isDebug)
+        {
+          var d = 1000000.0;
+          for (n in game.nodes)
+            if (n != this.node)
+              {
+                var dx = n.distance(this.node);
+                if (dx < d)
+                  d = dx;
+              }
+          s += 'DBG dist nearest : ' + Std.int(d) + '<br>';
         }
 
       return s;

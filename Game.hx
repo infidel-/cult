@@ -50,6 +50,16 @@ class Game
 // constructor
   function new()
     {
+      // apply modern mode difficulty fixes
+      if (UI.modernMode)
+        for (d in Static.difficulty)
+          {
+            d.mapWidth = Std.int(d.mapWidth * UI.vars.scaleFactor);
+            d.mapHeight = Std.int(d.mapHeight * UI.vars.scaleFactor);
+            d.nodeActivationRadius =
+              Std.int(d.nodeActivationRadius * UI.vars.scaleFactor);
+          }
+
 #if mydebug
       isDebug = true;
 #end
@@ -69,19 +79,6 @@ class Game
           var t = Type.createInstance(cl, []);
           sectTasks.push(t);
         }
-
-      // apply modern mode difficulty fixes
-      if (UI.modernMode)
-        for (i in 0...Static.difficulty.length - 1)
-          {
-            var d = Static.difficulty[i];
-            d.mapWidth = Std.int(d.mapWidth * UI.vars.scaleFactor);
-            d.mapHeight = Std.int(d.mapHeight * UI.vars.scaleFactor);
-            d.nodeVisibilityRadius =
-              Std.int(d.nodeVisibilityRadius * UI.vars.scaleFactor);
-            d.nodeActivationRadius =
-              Std.int(d.nodeActivationRadius * UI.vars.scaleFactor);
-          }
     }
 
 
@@ -110,6 +107,9 @@ class Game
       ui.map.initMinimap();
       ui.clearMap();
       ui.clearLog();
+
+      if (isDebug)
+        trace('nodeActivationRadius: ' + difficulty.nodeActivationRadius);
 
       this.lines = new List<Line>();
       this.nodes = new Array<Node>();
@@ -160,6 +160,26 @@ class Game
       for (i in 1...(difficulty.nodesCount + 1))
         spawnNode();
 
+      // clean nodes that do not have any links
+      var toRemove = new List();
+      for (node in nodes)
+        {
+          var ok = false;
+          for (n in nodes)
+            if (n != node &&
+                n.distance(node) < difficulty.nodeActivationRadius)
+              {
+                ok = true;
+                break;
+              }
+          if (!ok)
+            toRemove.add(node);
+        }
+      if (isDebug && toRemove.length > 0)
+        trace('nodes removed ' + toRemove);
+      for (n in toRemove)
+        nodes.remove(n);
+
       // make 15% of nodes generators
       var cnt: Int = Std.int(0.15 * difficulty.nodesCount);
       for (i in 0...cnt)
@@ -205,6 +225,8 @@ class Game
       // find node position
       var x = 0, y = 0;
       var cnt = 0;
+      var sx = UI.vars.markerWidth * 2;
+      var sy = UI.vars.markerHeight * 2;
       while (true)
         {
           x = Math.round(20 + Math.random() *
@@ -219,11 +241,13 @@ class Game
               return;
             }
 
-          // node
+          // check min distance to other nodes
           var ok = 1;
           for (n in nodes)
-            if ((x - 30 < n.x && x + UI.vars.markerWidth + 30 > n.x) &&
-                (y - 30 < n.y && y + UI.vars.markerHeight + 30 > n.y))
+            if ((x - sx < n.x &&
+                 x + UI.vars.markerWidth + sx > n.x) &&
+                (y - sy < n.y &&
+                 y + UI.vars.markerHeight + sy > n.y))
               ok = 0;
 
           if (ok == 1)

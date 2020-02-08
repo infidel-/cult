@@ -90,7 +90,21 @@ class Line
           }
       else
         {
-          // TODO: check vis!
+          // both nodes significantly out of view rect, can skip
+          var out = 0;
+          if (startNode.x < map.viewRect.x - 200 ||
+              startNode.y < map.viewRect.y - 200 ||
+              startNode.x + 200 > map.viewRect.x + map.viewRect.w + 200 ||
+              startNode.y + 200 > map.viewRect.y + map.viewRect.h + 200)
+            out++;
+          if (endNode.x < map.viewRect.x - 200 ||
+              endNode.y < map.viewRect.y - 200 ||
+              endNode.x + 200 > map.viewRect.x + map.viewRect.w + 200 ||
+              endNode.y + 200 > map.viewRect.y + map.viewRect.h + 200)
+            out++;
+          if (out == 2)
+            return;
+
           ctx.strokeStyle = UI.vars.cultColors[owner.id];
           ctx.lineWidth = 3;
           ctx.beginPath();
