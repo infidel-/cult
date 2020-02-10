@@ -22,12 +22,14 @@ class MapUI
 
   public var fontImage: Image; // bitmapped font image
   public var nodeImage: Image; // nodes imageset (classic)
-  var bgImage: Image; // map bg
+  public var bgImage: Image; // map bg
   public var tooltip: DivElement;
   public var viewRect: Rect; // viewport x,y
   var isDrag: Bool; // is viewport being dragged?
   public var isAdvanced: Bool; // is advanced mode
-  var screen: CanvasElement;
+  var map: CanvasElement;
+  var mapWidth: Float;
+  var mapHeight: Float;
   var minimap: CanvasElement;
 
   // modern mode
@@ -45,20 +47,24 @@ class MapUI
       firstTime = true;
 
       // map display
-      screen = cast UI.e("map");
-      screen.style.border = 'double #777 4px';
-      screen.style.width = UI.mapWidth + 'px';
-      screen.style.height = UI.mapHeight + 'px';
-      screen.style.position = 'absolute';
-      screen.style.left = '240px';
-      screen.style.top = (5 + UI.topHeight) + 'px';
-      screen.style.overflow = 'hidden';
+      map = cast UI.e("map");
+      map.style.border = 'double #777 4px';
+      map.style.width = UI.mapWidth + 'px';
+      map.style.height = UI.mapHeight + 'px';
+      map.style.position = 'absolute';
+      map.style.left = '240px';
+      map.style.top = (5 + UI.topHeight) + 'px';
+      map.style.overflow = 'hidden';
+      mapWidth = UI.mapWidth;
+      mapHeight = UI.mapHeight;
+      map.getContext2d().scale(Browser.window.devicePixelRatio,
+        Browser.window.devicePixelRatio);
 
-      screen.onclick = onClick;
-      screen.onmousemove = onMove;
-      screen.onmousedown = onMouseDown;
-      screen.onmouseup = onMouseUp;
-      screen.onmouseout = onMouseOut;
+      map.onclick = onClick;
+      map.onmousemove = onMove;
+      map.onmousedown = onMouseDown;
+      map.onmouseup = onMouseUp;
+      map.onmouseout = onMouseOut;
 
       // tooltip element
       tooltip = Tools.window({
@@ -211,13 +217,38 @@ class MapUI
 
 //      game.startTimer('map paint 1');
 
-      var ctx = screen.getContext2d();
+      var ctx = map.getContext2d();
       if (UI.modernMode)
-        ctx.drawImage(bgImage, 0, 0, UI.mapWidth, UI.mapHeight + 1);
+        {
+//          trace(mapWidth + ',' + mapHeight + ' : ' +
+//            bgImage.width + ',' + bgImage.height);
+          var w = 0.0, h = 0.0;
+          if (mapWidth < mapHeight)
+            {
+              w = mapWidth;
+              h = bgImage.height / (bgImage.width / mapWidth);
+              if (h < mapHeight)
+                {
+                  w = bgImage.width / (bgImage.height / mapHeight);
+                  h = mapHeight + 1;
+                }
+            }
+          else
+            {
+              w = bgImage.width / (bgImage.height / mapHeight);
+              h = mapHeight + 1;
+              if (w < mapWidth)
+                {
+                  w = mapWidth;
+                  h = bgImage.height / (bgImage.width / mapWidth);
+                }
+            }
+          ctx.drawImage(bgImage, 0, 0, w, h);
+        }
       else
         {
           ctx.fillStyle = "black";
-          ctx.fillRect(0, 0, UI.mapWidth, UI.mapHeight);
+          ctx.fillRect(0, 0, mapWidth, mapHeight);
           ctx.font = "14px Verdana";
         }
 //      game.endTimer('map paint 1');
@@ -243,13 +274,13 @@ class MapUI
         }
 //      game.endTimer('map paint 4');
 //      game.startTimer('map paint 5');
-      if (game.difficulty.mapWidth > UI.mapWidth ||
-          game.difficulty.mapHeight > UI.mapHeight)
+      if (game.difficulty.mapWidth > mapWidth ||
+          game.difficulty.mapHeight > mapHeight)
         {
           updateMinimap();
           ctx.drawImage(minimap,
-            UI.mapWidth - minimap.width,
-            UI.mapHeight - minimap.height);
+            mapWidth - minimap.width,
+            mapHeight - minimap.height);
         }
 //      game.endTimer('map paint 5');
 //      game.startTimer('map paint 6');
@@ -396,8 +427,8 @@ class MapUI
           cnt++;
         }
 
-      var x = event.clientX - screen.offsetLeft - 4 + Browser.document.body.scrollLeft;
-      var y = event.clientY - screen.offsetTop - 6 + Browser.document.body.scrollTop;
+      var x = event.clientX - map.offsetLeft - 4 + Browser.document.body.scrollLeft;
+      var y = event.clientY - map.offsetTop - 6 + Browser.document.body.scrollTop;
 
       if (x + 250 > Browser.window.innerWidth)
         x = Browser.window.innerWidth - 250;
@@ -417,7 +448,7 @@ class MapUI
   var dragEventY: Int;
   public function onMouseDown(event: Dynamic)
     {
-      // map same size as screen or smaller
+      // map same size as map or smaller
       if (viewRect.w >= game.difficulty.mapWidth &&
           viewRect.h >= game.difficulty.mapHeight)
         return;
@@ -488,9 +519,9 @@ class MapUI
       if (game.nodes == null)
         return null;
 
-      var x = event.clientX - screen.offsetLeft - 4 + viewRect.x +
+      var x = event.clientX - map.offsetLeft - 4 + viewRect.x +
         Browser.document.body.scrollLeft;
-      var y = event.clientY - screen.offsetTop - 6 + viewRect.y +
+      var y = event.clientY - map.offsetTop - 6 + viewRect.y +
         Browser.document.body.scrollTop;
 
       // find which node the click was on
@@ -516,5 +547,23 @@ class MapUI
 // clear map
   public function clear()
     {
+    }
+
+
+// resize map
+  public function resize()
+    {
+      var win = Browser.window;
+      var bw = Std.parseInt(map.style.borderWidth);
+      mapWidth = win.innerWidth - map.offsetLeft - 2 * bw - 8;
+      mapHeight = win.innerHeight - map.offsetTop - 2 * bw - 8;
+      map.width = Std.int(mapWidth);
+      map.height = Std.int(mapHeight);
+      map.style.width = mapWidth + 'px';
+      map.style.height = mapHeight + 'px';
+      viewRect.w = map.width;
+      viewRect.h = map.height;
+
+      paint();
     }
 }

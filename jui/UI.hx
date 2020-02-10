@@ -37,6 +37,8 @@ class UI
       game = g;
       config = new Config();
 
+      untyped  __js__("window.devicePixelRatio = 1;");
+
       // pick mode
       var url = Browser.window.location.href;
       var isClassic = (StringTools.endsWith(url, 'index.html') ||
@@ -71,40 +73,17 @@ class UI
       music.onRandom = status.onMusic;
 
       Browser.document.onkeyup = onKey;
-//      Browser.window.onresize = onResize;
+      Browser.window.onresize = onResize;
+      onResize(null); // once after game start
     }
 
-/*
+
 // on resizing document
   function onResize(event: Dynamic)
     {
-      var w = Browser.window.innerWidth;
-      var h = Browser.window.innerHeight;
-      if (w < 1050 || h < 680 ||
-          (!game.isFinished && game.difficulty != null && game.difficulty.mapWidth <= 780 &&
-            game.difficulty.mapHeight <= 580))
-        {
-          w = 1050;
-          h = 680;
-        }
-
-      var mw = w - 270;
-      var mh = h - UI.topHeight - 40;
-
-      var el = untyped e('map');
-      var ctx = el.getContext('2d');
-      el.width = mw;
-      el.height = mh;
-//      el.style.width = '' + mw;
-//      el.style.height = '' + mh;
-
-//      map.resize(w - 191, h - UI.topHeight);
-      trace(el.style.width + ' ' + el.style.height);
-//      trace(ctx.canvas.width + ' ' + ctx.canvas.height);
-      map.paint();
-      //Browser.window.innerWidth + " " + Browser.window.innerHeight);
+      map.resize();
     }
-*/
+
 
 // on key press
   function onKey(e: Dynamic)
