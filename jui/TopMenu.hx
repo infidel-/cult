@@ -135,7 +135,8 @@ class TopMenu
               'Texts by Phil Bordelon &lt;<a target=_blank href="http://blortblort.org/">blortblort.org</a>&gt;<br>' +
               'Music by Jeremy Rice &lt;<a target=_blank href="https://curious-inversions.bandcamp.com">curious-inversions.bandcamp.com</a>&gt;<br><br>' +
 #end
-              '<span style="font-size:12px">Unfortunately, due to the fact that the music sources were lost at some point, you cannot purchase the music you listen to in the game. But there\'s a lot of newer works on the Bandcamp page, please check it out.</span>', {
+              '<span style="font-size:12px">Unfortunately, due to the fact that the music sources were lost at some point, you cannot purchase the music you listen to in the game. But there\'s a lot of newer works on the Bandcamp page, please check it out.</span><br><br>' +
+              'Unceasing gratitude to the man who has acquainted us all with the blasphemous effulgence of cosmic horror - H.P.Lovecraft.', {
               w: 750,
               h: 300,
               center: false,

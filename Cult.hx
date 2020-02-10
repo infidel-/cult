@@ -634,7 +634,10 @@ class Cult
           }
 
       ui.alert(fullName + " has started the " + ritual.name + ".<br><br>" +
-        info.summonStart);
+        info.summonStart, {
+          w: 700,
+          h: 400,
+        });
       ui.log2(this, fullName + " has started the " + ritual.name + ".");
       if (!isAI)
         ui.updateStatus();

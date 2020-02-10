@@ -511,7 +511,7 @@ class Game
 // =========================================
 
   // these are changed from debug menu
-  public static var debugTime = true; // show execution time of various parts
+  public static var debugTime = false; // show execution time of various parts
   public static var debugVis = false; // show node visibility for all cults
   public static var debugNear = false; // show "nearness" of all nodes
   public static var debugAI = false; // show AI debug messages
