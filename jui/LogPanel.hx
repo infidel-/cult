@@ -21,12 +21,6 @@ class LogPanel
       // panel element
       panel = Browser.document.createDivElement();
       panel.id = 'logPanel';
-      panel.style.position = 'absolute';
-      panel.style.width = '20px';
-      panel.style.height = (UI.mapHeight + UI.topHeight + 8) + 'px';
-      panel.style.left = '217px';
-      panel.style.top = '5px';
-      panel.style.background = '#090909';
       Browser.document.body.appendChild(panel);
     }
 
@@ -114,6 +108,12 @@ class LogPanel
         }
     }
 
+
+// on resize
+  public function resize()
+    {
+      panel.style.height = (Browser.window.innerHeight - 10) + 'px';
+    }
 
 // clear log
   public function clear()

@@ -28,6 +28,7 @@ class MapUI
   var isDrag: Bool; // is viewport being dragged?
   public var isAdvanced: Bool; // is advanced mode
   var map: CanvasElement;
+  var mapBorder: DivElement;
   var mapWidth: Float;
   var mapHeight: Float;
   var minimap: CanvasElement;
@@ -41,26 +42,26 @@ class MapUI
     {
       ui = uivar;
       game = gvar;
-      viewRect = { x: 0, y: 0, w: UI.mapWidth, h: UI.mapHeight };
+      viewRect = {
+        x: 0,
+        y: 0,
+        w: 200,
+        h: 200,
+      };
       isAdvanced = false;
       bgImage = null;
       firstTime = true;
 
       // map display
+      mapBorder = cast UI.e("mapBorder");
       map = cast UI.e("map");
-      map.style.border = 'double #777 4px';
-      map.style.width = UI.mapWidth + 'px';
-      map.style.height = UI.mapHeight + 'px';
-      map.style.position = 'absolute';
-      map.style.left = '240px';
-      map.style.top = (5 + UI.topHeight) + 'px';
-      map.style.overflow = 'hidden';
-      mapWidth = UI.mapWidth;
-      mapHeight = UI.mapHeight;
-      map.getContext2d().scale(Browser.window.devicePixelRatio,
-        Browser.window.devicePixelRatio);
+      mapWidth = 200;
+      mapHeight = 200;
+//      map.getContext2d().scale(Browser.window.devicePixelRatio,
+//        Browser.window.devicePixelRatio);
 
       map.onclick = onClick;
+      map.addEventListener('click', onClick);
       map.onmousemove = onMove;
       map.onmousedown = onMouseDown;
       map.onmouseup = onMouseUp;
@@ -76,9 +77,6 @@ class MapUI
         h: 280,
         z: 3000
       });
-      tooltip.style.padding = '5px';
-      tooltip.style.border = '1px solid';
-      tooltip.style.opacity = '0.9';
 
       loadImages();
     }
@@ -289,8 +287,8 @@ class MapUI
       if (UI.modernMode)
         for (i in 0...100)
           {
-            var xx = 50 + Std.random(UI.mapWidth),
-              yy = 50 + Std.random(UI.mapHeight);
+            var xx = 50 + Std.random(mapWidth),
+              yy = 50 + Std.random(mapHeight);
             ctx.drawImage(
               nodeImages[Std.random(4)], xx, yy);
             ctx.drawImage(
@@ -361,8 +359,8 @@ class MapUI
       ctx.strokeRect(
         viewRect.x / xscale + 1,
         viewRect.y / yscale + 1,
-        UI.mapWidth / xscale - 1,
-        UI.mapHeight / yscale - 1);
+        mapWidth / xscale - 1,
+        mapHeight / yscale - 1);
     }
 
 
@@ -427,18 +425,17 @@ class MapUI
           cnt++;
         }
 
-      var x = event.clientX - map.offsetLeft - 4 + Browser.document.body.scrollLeft;
-      var y = event.clientY - map.offsetTop - 6 + Browser.document.body.scrollTop;
-
+      var mapRect = map.getBoundingClientRect();
+      var x = event.clientX - mapRect.x + 10;
+      var y = event.clientY - mapRect.y + 10;
       if (x + 250 > Browser.window.innerWidth)
         x = Browser.window.innerWidth - 250;
       if (y + cnt * 20 + 50 > Browser.window.innerHeight)
         y = Browser.window.innerHeight - cnt * 20 - 50;
 
+      tooltip.innerHTML = text;
       tooltip.style.left = x + 'px';
       tooltip.style.top = y + 'px';
-
-      tooltip.innerHTML = text;
       tooltip.style.height = (cnt * 20) + 'px';
       tooltip.style.display = 'inline';
     }
@@ -519,10 +516,9 @@ class MapUI
       if (game.nodes == null)
         return null;
 
-      var x = event.clientX - map.offsetLeft - 4 + viewRect.x +
-        Browser.document.body.scrollLeft;
-      var y = event.clientY - map.offsetTop - 6 + viewRect.y +
-        Browser.document.body.scrollTop;
+      var mapRect = map.getBoundingClientRect();
+      var x = event.clientX - mapRect.x + viewRect.x;
+      var y = event.clientY - mapRect.y + viewRect.y;
 
       // find which node the click was on
       var node = null;
@@ -553,10 +549,10 @@ class MapUI
 // resize map
   public function resize()
     {
-      var win = Browser.window;
       var bw = Std.parseInt(map.style.borderWidth);
-      mapWidth = win.innerWidth - map.offsetLeft - 2 * bw - 8;
-      mapHeight = win.innerHeight - map.offsetTop - 2 * bw - 8;
+      var panelRect = mapBorder.getBoundingClientRect();
+      mapWidth = panelRect.width - 18;
+      mapHeight = panelRect.height - 18;
       map.width = Std.int(mapWidth);
       map.height = Std.int(mapHeight);
       map.style.width = mapWidth + 'px';

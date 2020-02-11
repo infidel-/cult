@@ -1,3 +1,11 @@
+body {
+  background: black;
+  color: #d3d3d3;
+  font-size: 20px;
+  font-family: Verdana;
+  overflow: hidden;
+}
+
 #tooltip {
   font-family: sans-serif;
   position: absolute;
@@ -11,20 +19,18 @@
 }
 #tooltip h3, #tooltip div { margin: 0; }
 
+#mapTooltipWindow {
+  padding: 5px !important;
+  border: 1px solid !important;
+  opacity: 0.9 !important;
+}
+
 #musicplayer
 {
   bottom: 5px;
   margin-top: 10px;
   height: 75px;
   padding:0 5 0 5;
-}
-
-body {
-  background: black;
-  color: #d3d3d3;
-  font-size: 20px;
-  font-family: Verdana;
-  overflow: hidden;
 }
 
 a {
@@ -68,4 +74,40 @@ legend {
 .secttasks {
   background-color: #222;
   color: white;
+}
+
+#map {
+  border: double #777 4px;
+  width: 780px;
+  height: 580px;
+  position: absolute;
+  left: 240px;
+  top: 35px;
+  overflow: hidden;
+}
+
+#mapBorder {
+  position: absolute;
+  top: 32px;
+  left: 237px;
+  right: 4px;
+  bottom: 3px;
+}
+
+#topPanel {
+  width: 788px;
+  height: 26px;
+  left: 240px;
+  top: 5px;
+  background: #090909;
+  position: absolute;
+}
+
+#logPanel {
+  width: 20px;
+  height: 100px;
+  left: 217px;
+  top: 5px;
+  background: #090909;
+  position: absolute;
 }

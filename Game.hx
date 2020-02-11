@@ -176,7 +176,7 @@ class Game
             toRemove.add(node);
         }
       if (isDebug && toRemove.length > 0)
-        trace('nodes removed ' + toRemove);
+        trace(toRemove.length + 'nodes removed');
       for (n in toRemove)
         nodes.remove(n);
 
@@ -421,23 +421,26 @@ class Game
             c.checkVictory();
 
           // center map on new player
-          var x = 0, y = 0;
-          if (player.origin != null)
+          if (difficulty.numPlayers > 1)
             {
-              x = player.origin.x;
-              y = player.origin.y;
+              var x = 0, y = 0;
+              if (player.origin != null)
+                {
+                  x = player.origin.x;
+                  y = player.origin.y;
+                }
+              else
+                {
+                  // no origin, get eldest node
+                  var node = player.nodes.first();
+                  for (n in player.nodes)
+                    if (n.level > node.level)
+                      node = n;
+                  x = node.x;
+                  y = node.y;
+                }
+              ui.map.center(x, y);
             }
-          else
-            {
-              // no origin, get eldest node
-              var node = player.nodes.first();
-              for (n in player.nodes)
-                if (n.level > node.level)
-                  node = n;
-              x = node.x;
-              y = node.y;
-            }
-          ui.map.center(x, y);
 
           ui.logPanel.paint();
           ui.updateStatus();

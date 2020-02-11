@@ -82,6 +82,8 @@ class UI
   function onResize(event: Dynamic)
     {
       map.resize();
+      top.resize();
+      logPanel.resize();
     }
 
 
@@ -475,8 +477,6 @@ class UI
 
   public static var winWidth = 1024;
   public static var winHeight = 630;
-  public static var mapWidth = 780;
-  public static var mapHeight = 580;
   public static var tooltipWidth = 100;
   public static var tooltipHeight = 80;
   public static var topHeight = 30;

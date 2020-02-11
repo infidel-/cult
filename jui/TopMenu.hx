@@ -9,6 +9,9 @@ class TopMenu
   var game: Game;
 
   var panel: DivElement;
+  var manual: DivElement;
+  var about: DivElement;
+  var advanced: DivElement;
 
   public function new(uivar: UI, gvar: Game)
     {
@@ -18,12 +21,6 @@ class TopMenu
       // panel element
       panel = Browser.document.createDivElement();
       panel.id = 'topPanel';
-      panel.style.position = 'absolute';
-      panel.style.width = (UI.mapWidth + 8) + 'px';
-      panel.style.height = '26px';
-      panel.style.left = '240px';
-      panel.style.top = '5px';
-      panel.style.background = '#090909';
       Browser.document.body.appendChild(panel);
 
       Tools.button({
@@ -92,7 +89,7 @@ class TopMenu
           func: onDebug
         });
 
-      Tools.button({
+      manual = Tools.button({
         id: 'manual',
         text: "MANUAL",
         w: 84,
@@ -112,7 +109,7 @@ class TopMenu
           }
       });
 
-      Tools.button({
+      about = Tools.button({
         id: 'about',
         text: "ABOUT",
         w: 70,
@@ -145,7 +142,7 @@ class TopMenu
           }
       });
 
-      Tools.button({
+      advanced = Tools.button({
         id: 'advanced',
         text: "A",
         w: 12,
@@ -202,6 +199,24 @@ class TopMenu
       ui.map.isAdvanced = !ui.map.isAdvanced;
       game.player.options.set('mapAdvancedMode', ui.map.isAdvanced);
       ui.map.paint();
+    }
+
+
+// resize menu
+  public function resize()
+    {
+      var panelRect = panel.getBoundingClientRect();
+      panel.style.width = (Browser.window.innerWidth -
+        panelRect.left - 8) + 'px';
+      var x = Std.parseInt(panel.style.width) -
+        Std.parseInt(about.style.width) - 10;
+      about.style.left = x + 'px';
+      x -= (Std.parseInt(manual.style.width) + 20);
+      manual.style.left = x + 'px';
+
+      advanced.style.left = (Browser.window.innerWidth -
+        Std.parseInt(advanced.style.width) - panelRect.left -
+        10) + 'px';
     }
 
 

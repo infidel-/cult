@@ -1,3 +1,11 @@
+body {
+  background: #8db590;
+  color: #d3d3d3;
+  font-size: 20px;
+  font-family: Verdana;
+  overflow: hidden;
+}
+
 @font-face {
   font-family: 'Mitr';
   font-style: normal;
@@ -6,6 +14,7 @@
   src: url(./data/MitrRegular.woff2) format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+
 #tooltip {
   font-family: sans-serif;
   position: absolute;
@@ -19,20 +28,18 @@
 }
 #tooltip h3, #tooltip div { margin: 0; }
 
+#mapTooltipWindow {
+  padding: 5px !important;
+  border: 1px solid !important;
+  opacity: 0.9 !important;
+}
+
 #musicplayer
 {
   bottom: 5px;
   margin-top: 10px;
   height: 75px;
   padding:0 5 0 5;
-}
-
-body {
-  background: black;
-  color: #d3d3d3;
-  font-size: 20px;
-  font-family: Verdana;
-  overflow: hidden;
 }
 
 a {
@@ -76,4 +83,41 @@ legend {
 .secttasks {
   background-color: #222;
   color: white;
+}
+
+#map {
+  border: solid #4e7f7b 4px;
+  border-radius: 35px;
+  width: 780px;
+  height: 580px;
+  overflow: hidden;
+  margin: 5px;
+}
+
+#mapBorder {
+  position: absolute;
+  border-radius: 39px;
+  top: 32px;
+  left: 237px;
+  right: 4px;
+  bottom: 3px;
+  background: #272928;
+}
+
+#topPanel {
+  width: 788px;
+  height: 26px;
+  left: 240px;
+  top: 5px;
+  background: #8db590;
+  position: absolute;
+}
+
+#logPanel {
+  width: 20px;
+  height: 100px;
+  left: 217px;
+  top: 5px;
+  background: #8db590;
+  position: absolute;
 }
