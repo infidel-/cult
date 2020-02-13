@@ -9,6 +9,7 @@ class Status
   var game: Game;
 
   var status: DivElement; // element
+  var statusBorder: DivElement; // element
 
   public function new(uivar: UI, gvar: Game)
     {
@@ -16,25 +17,14 @@ class Status
       game = gvar;
 
       // status screen
+      statusBorder = cast UI.e("statusBorder");
       status = cast UI.e("status");
-      status.style.border = 'double #777 4px';
-      status.style.width = '191px';
-//      status.style.height = (UI.mapHeight + UI.topHeight - 10) + 'px';
-      status.style.height = (800 + UI.topHeight - 10) + 'px';
-      status.style.position = 'absolute';
-      status.style.left = '5px';
-      status.style.top = '5px';
-      status.style.padding = '5px';
-      status.style.fontSize = '12px';
-      status.style.overflow = 'hidden';
-      status.style.userSelect = 'none';
 
-      var s = "<div id='status.cult' style='padding:0 5 5 5; background: #111; height: 17; " +
-        "font-weight: bold; font-size:15px; text-align:center;'>-</div>";
+      var s = "<div id='status.cult'>-</div>";
 
       s += "<fieldset>";
       s += "<legend>FOLLOWERS</legend>";
-      s += "<table width=100% cellpadding=0 cellspacing=2 style='font-size:14px'>";
+      s += "<table class=statusTable cellpadding=0>";
 
       // followers
       for (i in 0...Game.followerNames.length)
@@ -43,13 +33,7 @@ class Status
             Game.followerNames[i] + "s";
 
           // icon
-          s += "<td><div id='status.upgrade" + i + "' " +
-            "style='cursor: pointer; width:12; height:12; " +
-            "background:#222; border:1px solid #777; " +
-            "color:lightgreen; " +
-            (i < Game.followerNames.length - 1 ? "" :
-              "text-decoration:blink; ") +
-            "text-align:center; font-size: 10px; font-weight: bold; '>";
+          s += "<td><div class=statusUpgrade id='status.upgrade" + i + "'>";
           if (i < Game.followerNames.length - 1)
             s += "+";
           else s += "!";
@@ -59,29 +43,32 @@ class Status
           s += "<td><span id='status.followers" + i +
           "' style='font-weight:bold;'>0</span>";
         }
-
       s += "</table></fieldset>";
 
-      s += "<fieldset><legend" +
-        " style='padding:0 5 0 5;'>RESOURCES</legend>" +
-        "<table width=100% cellpadding=0 cellspacing=0 style='font-size:14px'>";
+      s += "<fieldset><legend>RESOURCES</legend>" +
+        "<table class=statusTable cellpadding=0>";
       for (i in 0...(Game.numPowers + 1))
         {
           s += "<tr style='";
-          if (i % 2 == 1)
+          if (UI.classicMode && i % 2 == 1)
             s += "background:#101010";
-          s += "'><td>" +
-            // icon
-            "<div id='status.powerMark" + i + "' style='width:" +
-            UI.vars.markerWidth +
-            "; height: " + UI.vars.markerHeight +
-            "; font-size: 12px; " +
-            "background:#222; border:1px solid #777; color: " +
-            UI.powerColors[i] + ";'>" +
-            "<center><b>" + Game.powerShortNames[i] +
-            "</b></center></div>" +
+          s += "'><td>";
+          // icon
+          if (UI.classicMode)
+            {
+              s += "<div id='status.powerMark" + i + "' style='width:" +
+                UI.vars.markerWidth +
+                "; height: " + UI.vars.markerHeight +
+                "; font-size: 12px; " +
+                "background:#222; border:1px solid #777; color: " +
+                UI.vars.powerColors[i] + ";'>";
+                "<center><b>" + Game.powerShortNames[i] +
+                "</b></center></div>";
+            }
+          else s += "<img width=20 height=20 src='./data/power-" +
+            Game.powerNames[i].toLowerCase() + ".png'>";
           // name
-            "<td><b id='status.powerName" + i + "' " + UI.powerName(i) + "</b>" +
+          s += "<td><span class=powerText id='status.powerName" + i + "'>" + UI.powerName(i) + "</span>" +
           // level
             "<td><td><span id='status.power" +
             i + "'>0</span><br>" +
@@ -90,16 +77,16 @@ class Status
 
           // convert buttons
           s += "<tr style='";
-          if (i % 2 == 1)
+          if (UI.classicMode && i % 2 == 1)
             s += "background:#101010";
-          s += "'><td colspan=4><table style='font-size:11px'>" +
+          s += "'><td colspan=4><table class=statusResourceTable>" +
             "<tr><td width=20 halign=right>To";
-            for (ii in 0...Game.numPowers)
+          for (ii in 0...Game.numPowers)
             if (ii != i)
                 s += "<td><div id='status.convert" + i + ii + "' " +
                 "style='cursor: pointer; width:12; height:12; " +
                 "background:#222; border:1px solid #777; " +
-                "color:" + UI.powerColors[ii] + "; " +
+                "color:" + UI.vars.powerColors[ii] + "; " +
                 "text-align:center; font-size: 10px; font-weight: bold; '>" +
                 Game.powerShortNames[ii] + "</div>";
 
@@ -123,7 +110,7 @@ class Status
 
       s += "<fieldset>";
       s += "<legend>STATS</legend>";
-      s += "<table cellpadding=0 cellspacing=2 width=100% style='font-size:14px'>";
+      s += "<table class=statusTable cellpadding=0>";
 
       // awareness
       s += "<tr id='status.awRow' title='" + tipAwareness +
@@ -146,7 +133,7 @@ class Status
       // music player
       s += "<fieldset id='musicplayer'>";
       s += "<legend>MUSIC</legend>";
-      s += "<div id='status.track' style='text-align: center; background: #222; font-size:10px; color: #00ff00; user-select: text'>-<br>-<br>-</div>";
+      s += "<div id='status.track'>-<br>-<br>-</div>";
       s += "<center style='padding-top:0px'>";
       s += "<span class=button2 title='Play' id='status.play'>PLAY</span>&nbsp;&nbsp;";
       s += "<span class=button2 title='Pause' id='status.pause'>PAUSE</span>&nbsp;&nbsp;";
@@ -202,8 +189,11 @@ class Status
         }
       for (i in 0...(Game.numPowers + 1))
         {
-          e("status.powerMark" + i).title = tipPowers[i];
-          e("status.powerName" + i).title = tipPowers[i];
+          if (UI.classicMode)
+            {
+              e("status.powerMark" + i).title = tipPowers[i];
+              e("status.powerName" + i).title = tipPowers[i];
+            }
           for (ii in 0...Game.numPowers)
             if (i != ii)
               {
@@ -467,28 +457,38 @@ class Status
     }
 
 
+// on window resize
+  public function resize()
+    {
+      statusBorder.style.height = (Browser.window.innerHeight - 22) + 'px';
+      var panelRect = statusBorder.getBoundingClientRect();
+      status.style.height = (panelRect.height - 16) + 'px';
+    }
+
+
 // ===================== tips ===============
 
-  static var tipPowers: Array<String> =
-    [ UI.powerName(0) + " is needed to gain new followers.",
-      UI.powerName(1) + " is needed to gain new followers.",
-      UI.powerName(2) + " is needed to gain new followers.",
-      UI.powerName(3) + " are gathered by your neophytes.<br>" +
-      "They are needed for rituals to upgrade your<br>followers " +
-      "and also for the final ritual of summoning." ];
+  static var tipPowers: Array<String> = [
+    UI.powerName(0) + " is needed to gain new followers.",
+    UI.powerName(1) + " is needed to gain new followers.",
+    UI.powerName(2) + " is needed to gain new followers.",
+    UI.powerName(3) + " are gathered by your neophytes.<br>" +
+    "They are needed for rituals to upgrade your<br>followers " +
+    "and also for the final ritual of summoning."
+  ];
   static var tipConvert = "Cost to convert to ";
-  static var tipUpgrade: Array<String> =
-    [ "To gain an adept you need " + Game.upgradeCost +
-      " neophytes and 1 virgin.",
-      "To gain a priest you need " + Game.upgradeCost +
-      " adepts and 2 virgins.",
-      '',
-      ];
-  static var tipFollowers: Array<String> =
-    [ "Neophytes can find some virgins if they're lucky.",
-      "Adepts can lower society awareness and investigator's willpower.",
-      ''
-      ];
+  static var tipUpgrade: Array<String> = [
+    "To gain an adept you need " + Game.upgradeCost +
+    " neophytes and 1 virgin.",
+    "To gain a priest you need " + Game.upgradeCost +
+    " adepts and 2 virgins.",
+    '',
+  ];
+  static var tipFollowers: Array<String> = [
+    "Neophytes can find some virgins if they're lucky.",
+    "Adepts can lower society awareness and investigator's willpower.",
+    ''
+  ];
   static var tipTurns = "Shows the number of turns passed from the start.";
   static var tipAwareness =
     "Shows how much human society is aware of the cult.<br>" +

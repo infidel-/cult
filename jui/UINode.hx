@@ -53,7 +53,7 @@ class UINode
         if (node.power[i] > 0)
           {
             text = Game.powerShortNames[i];
-            textColor = UI.powerColors[i];
+            textColor = UI.vars.powerColors[i];
             isI = false;
             if (Game.powerShortNames[i] == "I")
               isI = true;
@@ -145,8 +145,13 @@ class UINode
 //          ctx.fillRect(xx, yy, 52, 52);
           ctx.drawImage(
             ui.map.nodeImages[idx], xx, yy);
+          var jobx = xx + 5;
+          if (ui.map.jobImages[node.imageID].src.indexOf("char-media-female.png") > 0)
+            jobx = xx - 5;
           ctx.drawImage(
-            ui.map.textImages[MapUI.textToIndex[text]], xx + 35, yy + 1);
+            ui.map.jobImages[node.imageID], jobx, yy + 6);
+          ctx.drawImage(
+            ui.map.textImages[MapUI.textToIndex[text]], xx + 39, yy + 1);
         }
 
       tempx = xx;
@@ -178,7 +183,7 @@ class UINode
             for (i in 0...Game.numPowers)
               if (node.powerGenerated[i] > 0)
                 {
-                  ctx.fillStyle = UI.powerColors[i];
+                  ctx.fillStyle = UI.vars.powerColors[i];
                   ctx.fillRect(
                     tempx + (tempd - 1) + i*(productionIndicatorWidth+1),
                     tempy - productionIndicatorHeight,
@@ -211,7 +216,7 @@ class UINode
               for (i in 0...Game.numPowers)
                 if (node.power[i] > 0)
                   {
-                    ctx.fillStyle = UI.powerColors[i];
+                    ctx.fillStyle = UI.vars.powerColors[i];
                     ctx.fillText(node.power[i], tempd + tempx - 3 + i * 7, tempy + temph + 11);
                   }
                 else
@@ -329,7 +334,7 @@ class UINode
         for (i in 0...Game.numPowers)
           if (node.power[i] > 0)
             {
-              s += "<b style='color:" + UI.powerColors[i] + "'>" +
+              s += "<b style='color:" + UI.vars.powerColors[i] + "'>" +
                 Game.powerNames[i] + "</b> " + node.power[i] + "<br>";
             }
       if (node.owner == null || node.owner.isAI)
@@ -341,7 +346,7 @@ class UINode
           s += "<br>Generates:<br>";
           for (i in 0...Game.numPowers)
              if (node.powerGenerated[i] > 0)
-                s += "<b style='color:" + UI.powerColors[i] + "'>" +
+                s += "<b style='color:" + UI.vars.powerColors[i] + "'>" +
                 Game.powerNames[i] + "</b> " +
                 node.powerGenerated[i] + "<br>";
           if (node.isTempGenerator)
@@ -385,4 +390,31 @@ class UINode
       neutral: [ 125, 17 ],
       neutralg: [ 144, 21 ],
     }
+
+  public static var jobImages: Array<String> = [
+    "char-official-male.png",
+    "char-media-female.png",
+//    "char-official-female.png",
+    "char-corporate-male.png",
+    "char-media-female.png",
+//    "char-corporate-female.png",
+    "char-media-female.png",
+    "char-media-female.png",
+//    "char-professor-male.png",
+//    "char-professor-female.png",
+    "char-media-female.png",
+    "char-media-female.png",
+//    "char-army-male.png",
+//    "char-army-female.png",
+    "char-media-female.png",
+//    "char-scientist-male.png",
+    "char-scientist-female.png",
+    "char-media-female.png",
+    "char-media-female.png",
+//    "char-politician-male.png",
+//    "char-politician-female.png",
+//    "char-media-male.png",
+    "char-media-female.png",
+    "char-media-female.png",
+  ];
 }

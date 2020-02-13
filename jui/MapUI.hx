@@ -37,6 +37,8 @@ class MapUI
   var firstTime: Bool;
   public var nodeImages: Array<CanvasElement>; // node images
   public var textImages: Array<CanvasElement>; // text images: S, 1, 2, 3
+//  public var jobImages: Array<CanvasElement>; // scaled job images
+  public var jobImages: Array<Image>; // loaded job images
 
   public function new(uivar: UI, gvar: Game)
     {
@@ -105,52 +107,67 @@ class MapUI
       fontImage.src = 'data/5x8.png';
 
       if (UI.modernMode)
+        loadImagesModern();
+    }
+
+
+  function loadImagesModern()
+    {
+      bgImage = new Image();
+      bgImage.onload = onLoadImage;
+      bgImage.src = 'data/bg.png';
+
+      // render node images
+      nodeImages = [];
+      for (i in 0...9)
         {
-          bgImage = new Image();
-          bgImage.onload = onLoadImage;
-          bgImage.src = 'data/bg.png';
+          var c: CanvasElement =
+            cast Browser.document.createElement('canvas');
+          c.width = UI.vars.markerWidth;
+          c.height = UI.vars.markerHeight;
+          var cx = Std.int(c.width / 2);
+          var cy = Std.int(c.height / 2);
 
-          // render node images
-          nodeImages = [];
-          for (i in 0...9)
-            {
-              var c: CanvasElement =
-                cast Browser.document.createElement('canvas');
-              c.width = 52;
-              c.height = 52;
-              var cx = Std.int(c.width / 2);
-              var cy = Std.int(c.height / 2);
+          var r = cx;
+          var n = c.getContext2d();
 
-              var r = 26;
-              var n = c.getContext2d();
+          // outer circle
+          n.beginPath();
+          n.arc(cx, cy, r, 0, 2 * Math.PI);
+          n.fillStyle = UI.vars.cultColors[i];
+          n.fill();
 
-              // outer circle
-              n.beginPath();
-              n.arc(cx, cy, r, 0, 2 * Math.PI);
-              n.fillStyle = UI.vars.cultColors[i];
-              n.fill();
+          // inner circle
+          n.beginPath();
+          n.arc(cx - 1, cy + 2, r - 5, 0, 2 * Math.PI);
+          n.fillStyle = '#f5efe1';
+          n.fill();
 
-              // inner circle
-              n.beginPath();
-              n.arc(cx - 1, cy + 2, r - 5, 0, 2 * Math.PI);
-              n.fillStyle = '#f5efe1';
-              n.fill();
+          // outer circle (level)
+          var clx = 44, cly = 8, rs = 8;
+          n.beginPath();
+          n.arc(clx, cly, rs, 0, 2 * Math.PI);
+          n.fillStyle = UI.vars.cultColors[i];
+          n.fill();
 
-              // outer circle (level)
-              var clx = 40, cly = 8, rs = 8;
-              n.beginPath();
-              n.arc(clx, cly, rs, 0, 2 * Math.PI);
-              n.fillStyle = UI.vars.cultColors[i];
-              n.fill();
+          // inner circle (level)
+          n.beginPath();
+          n.arc(clx, cly, rs - 1, 0, 2 * Math.PI);
+          n.fillStyle = '#f5efe1';
+          n.fill();
 
-              // inner circle (level)
-              n.beginPath();
-              n.arc(clx, cly, rs - 1, 0, 2 * Math.PI);
-              n.fillStyle = '#f5efe1';
-              n.fill();
+          nodeImages[i] = c;
+        }
 
-              nodeImages[i] = c;
-            }
+      // job images
+      jobImages = [];
+      for (name in UINode.jobImages)
+        {
+          var img = new Image();
+          img.src = 'data/' + name;
+          img.width = UI.vars.markerWidth;
+          img.height = UI.vars.markerHeight;
+          jobImages.push(img);
         }
     }
 
@@ -179,6 +196,26 @@ class MapUI
           textImages[i] = c;
         }
     }
+
+
+/*
+// scale loaded job images
+  function scaleJobImages()
+    {
+      jobImages = [];
+      for (img in jobImagesTemp)
+        {
+          var c: CanvasElement =
+            cast Browser.document.createElement('canvas');
+          c.width = 52;
+          c.height = 52;
+          var n = c.getContext2d();
+          n.drawImage(img, 0, 0, c.width, c.height);
+          jobImages.push(c);
+        }
+    }
+*/
+
 
   public static var textToIndex = [
     '?' => 0,
@@ -210,6 +247,7 @@ class MapUI
       if (UI.modernMode && firstTime)
         {
           loadTextImages();
+//          scaleJobImages();
           firstTime = false;
         }
 

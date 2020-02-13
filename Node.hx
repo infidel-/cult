@@ -10,7 +10,10 @@ class Node
 
   public var id: Int;
   public var name: String; // node name
-  public var job: String; // RL job
+  public var job: String; // job
+  public var gender: Bool;
+  public var jobID: Int;
+  public var imageID: Int;
   public var power: Array<Int>; // power to conquer: intimidation, persuasion, bribe
   public var powerGenerated: Array<Int>; // power generated each turn
   public var x: Int;
@@ -60,7 +63,10 @@ class Node
   public function generateAttributes()
     {
       name = GenName.generate();
-      job = jobs[Std.int(Math.random() * (jobs.length - 1))];
+      gender = (Std.random(2) == 0 ? false : true);
+      jobID = Std.random(jobs.length);
+      imageID = jobID * 2 + (gender ? 0 : 1);
+      job = jobs[jobID];
 
       isGenerator = false;
       isTempGenerator = false;
@@ -444,14 +450,13 @@ class Node
     }
 
 
-  static var jobs: Array<String> =
-    [
-      "Government official",
-      "Corporate worker",
-      "University professor",
-      "Army officer",
-      "Scientist",
-      "Politician",
-      "Media person"
-    ];
+  static var jobs: Array<String> = [
+    "Government official",
+    "Corporate worker",
+    "University professor",
+    "Army officer",
+    "Scientist",
+    "Politician",
+    "Media person"
+  ];
 }

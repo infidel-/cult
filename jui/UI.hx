@@ -81,9 +81,10 @@ class UI
 // on resizing document
   function onResize(event: Dynamic)
     {
+      status.resize();
+      logPanel.resize();
       map.resize();
       top.resize();
-      logPanel.resize();
     }
 
 
@@ -313,7 +314,7 @@ class UI
 // show colored power name
   public static function powerName(i, ?isShort: Bool)
     {
-      return "<span style='color:" + powerColors[i] + "'>" +
+      return "<span style='color:" + vars.powerColors[i] + "'>" +
         (isShort ? Game.powerShortNames[i] : Game.powerNames[i]) + "</span>";
     }
 
@@ -425,6 +426,12 @@ class UI
     markerWidth: 15,
     markerHeight: 15,
     scaleFactor: 1.0,
+    powerColors: [
+      "rgb(255, 0, 0)",
+      "rgb(0, 255, 255)",
+      "rgb(0, 255, 0)",
+      "rgb(255, 255, 0)"
+    ],
   };
   static var modernModeVars = {
     cultColors: [
@@ -459,17 +466,16 @@ class UI
       [ 51, 0, 0 ]
     ],
     nodeNeutralPixelColors: [ 150, 150, 150 ],
-    markerWidth: 52,
-    markerHeight: 52,
+    markerWidth: 60,
+    markerHeight: 60,
     scaleFactor: 3.4, // sqrt(52 * 52 + 52 * 52) / sqrt(15 * 15 + 15 * 15)
+    powerColors: [
+      "rgb(239, 85, 124)",
+      "rgb(102, 215, 239)",
+      "rgb(154, 219, 116)",
+      "rgb(218, 148, 229)"
+    ],
   };
-
-  public static var powerColors: Array<String> = [
-    "rgb(255, 0, 0)",
-    "rgb(0, 255, 255)",
-    "rgb(0, 255, 0)",
-    "rgb(255, 255, 0)"
-  ];
 
   public static var modernMode = true; // modern mode flag
   public static var classicMode = false; // classic mode flag

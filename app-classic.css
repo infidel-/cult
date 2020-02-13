@@ -43,6 +43,7 @@ fieldset {
 
 legend {
   color: white;
+  padding: 0 3 0 3;
 }
 
 .button {
@@ -111,3 +112,59 @@ legend {
   background: #090909;
   position: absolute;
 }
+
+#status {
+  border: double #777 4px;
+  width: 191px;
+  height: 300px;
+  left: 5px;
+  top: 5px;
+  padding: 5px;
+  font-size: 12px;
+  overflow: hidden;
+  user-select: none;
+}
+
+#status\.cult {
+  padding: 0 5 5 5;
+  background: #111;
+  height: 17;
+  font-weight: bold;
+  font-size: 15px;
+  text-align: center;
+}
+
+.statusUpgrade {
+  cursor: pointer;
+  width: 12;
+  height: 12;  
+  background: #222;
+  border: 1px solid #777;  
+  color: lightgreen;  
+  text-align: center;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.statusTable {
+  font-size: 14px;
+  width: 100%;
+}
+
+.statusResourceTable {
+  font-size: 11px;
+}
+
+.powerText {
+  font-weight: 1000;
+  vertical-align: middle;
+}
+
+#status\.track {
+  text-align: center;
+  background: #222;
+  font-size: 10px;
+  color: #00ff00;
+  user-select: text;
+}
+
