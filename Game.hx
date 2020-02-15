@@ -176,12 +176,12 @@ class Game
             toRemove.add(node);
         }
       if (isDebug && toRemove.length > 0)
-        trace(toRemove.length + 'nodes removed');
+        trace(toRemove.length + ' nodes removed');
       for (n in toRemove)
         nodes.remove(n);
 
       // make 15% of nodes generators
-      var cnt: Int = Std.int(0.15 * difficulty.nodesCount);
+      var cnt = Std.int(0.15 * difficulty.nodesCount);
       for (i in 0...cnt)
         {
           var nodeIndex = Math.round((difficulty.nodesCount - 1) * Math.random());

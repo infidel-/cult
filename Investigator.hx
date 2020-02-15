@@ -8,6 +8,7 @@ class Investigator
   var numTurn: Int;
 
   public var name: String;
+  public var gender: Bool; // false - male
   public var will: Int; // willpower
   public var level: Int; // investigator level
   public var isHidden: Bool; // is hidden?
@@ -17,7 +18,8 @@ class Investigator
       cult = c;
       this.ui = ui;
       this.game = g;
-      name = GenName.generate();
+      gender = (Std.random(2) == 0 ? false : true);
+      name = GenName.generate(gender);
       numTurn = 0;
       isHidden = true;
 

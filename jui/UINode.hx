@@ -143,13 +143,28 @@ class UINode
           else text = '-';
 //          ctx.fillStyle = 'red';
 //          ctx.fillRect(xx, yy, 52, 52);
+
+          // background
           ctx.drawImage(
             ui.map.nodeImages[idx], xx, yy);
-          var jobx = xx + 5;
-          if (ui.map.jobImages[node.imageID].src.indexOf("char-media-female.png") > 0)
-            jobx = xx - 5;
-          ctx.drawImage(
-            ui.map.jobImages[node.imageID], jobx, yy + 6);
+
+          // resource to acquire
+          if (node.owner != game.player &&
+              (node.isKnown[game.player.id] || node.owner == null))
+            for (i in 0...Game.numPowers)
+              if (node.power[i] > 0)
+                {
+                  ctx.drawImage(ui.map.powerImages[i],
+                    xx + 1, yy);
+                  break;
+                }
+
+          // job icon
+          ctx.drawImage(ui.map.jobImages[node.imageID],
+            xx + jobInfo[node.imageID].x,
+            yy + jobInfo[node.imageID].y + 6);
+
+          // level text
           ctx.drawImage(
             ui.map.textImages[MapUI.textToIndex[text]], xx + 39, yy + 1);
         }
@@ -267,8 +282,7 @@ class UINode
       if (node.owner != null && !node.owner.isInfoKnown[game.player.id] && !node.isKnown[game.player.id] &&
           node.owner != game.player)
         {
-          s += "<span style='color:#ff8888'>Use sect to gather cult<br>or node information.</span><br>";
-//          s += 'Use sects to gather cult<br>or node information.<br>';
+          s += "<span style='color:#ff8888'>Use sects to gather cult<br>or node information.</span><br>";
           if (node.owner == null || node.owner != game.player)
             s += "<br>Chance of success: <span style='color:white'>" +
               game.player.getGainChance(node) + "%</span><br>";
@@ -391,30 +405,80 @@ class UINode
       neutralg: [ 144, 21 ],
     }
 
-  public static var jobImages: Array<String> = [
-    "char-official-male.png",
-    "char-media-female.png",
-//    "char-official-female.png",
-    "char-corporate-male.png",
-    "char-media-female.png",
-//    "char-corporate-female.png",
-    "char-media-female.png",
-    "char-media-female.png",
-//    "char-professor-male.png",
-//    "char-professor-female.png",
-    "char-media-female.png",
-    "char-media-female.png",
-//    "char-army-male.png",
-//    "char-army-female.png",
-    "char-media-female.png",
+  public static var jobInfo = [
+    {
+      img: "char-official-male.png",
+      x: 3,
+      y: 0,
+    },
+    {
+      img: "char-official-female.png",
+      x: 2,
+      y: 0,
+    },
+    {
+      img: "char-corporate-male.png",
+      x: 8,
+      y: 0,
+    },
+    {
+      img: "char-corporate-female.png",
+      x: -5,
+      y: 0,
+    },
+    {
+      img: "char-professor-male.png",
+      x: 1,
+      y: 3,
+    },
+    {
+      img: "char-professor-female.png",
+      x: 8,
+      y: 0,
+    },
+    {
+      img: "char-army-male.png",
+      x: -1,
+      y: 0,
+    },
+    {
+      img: "char-army-female.png",
+      x: -4,
+      y: 0,
+    },
+    {
+      img: "char-media-female.png",
 //    "char-scientist-male.png",
-    "char-scientist-female.png",
-    "char-media-female.png",
-    "char-media-female.png",
+      x: -5,
+      y: 0,
+    },
+    {
+      img: "char-scientist-female.png",
+      x: -2,
+      y: 0,
+    },
+    {
+      img: "char-media-female.png",
 //    "char-politician-male.png",
+      x: -5,
+      y: 0,
+    },
+    {
+      img: "char-media-female.png",
 //    "char-politician-female.png",
+      x: -5,
+      y: 0,
+    },
+    {
+      img: "char-media-female.png",
 //    "char-media-male.png",
-    "char-media-female.png",
-    "char-media-female.png",
+      x: -5,
+      y: 0,
+    },
+    {
+      img: "char-media-female.png",
+      x: -5,
+      y: 0,
+    },
   ];
 }

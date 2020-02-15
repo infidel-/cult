@@ -37,8 +37,8 @@ class MapUI
   var firstTime: Bool;
   public var nodeImages: Array<CanvasElement>; // node images
   public var textImages: Array<CanvasElement>; // text images: S, 1, 2, 3
-//  public var jobImages: Array<CanvasElement>; // scaled job images
   public var jobImages: Array<Image>; // loaded job images
+  public var powerImages: Array<Image>; // loaded power images
 
   public function new(uivar: UI, gvar: Game)
     {
@@ -161,13 +161,24 @@ class MapUI
 
       // job images
       jobImages = [];
-      for (name in UINode.jobImages)
+      for (info in UINode.jobInfo)
         {
           var img = new Image();
-          img.src = 'data/' + name;
+          img.src = 'data/' + info.img;
           img.width = UI.vars.markerWidth;
           img.height = UI.vars.markerHeight;
           jobImages.push(img);
+        }
+
+      // job images
+      powerImages = [];
+      for (name in UI.vars.powerImages)
+        {
+          var img = new Image();
+          img.src = 'data/' + name;
+          img.width = 15;
+          img.height = 15;
+          powerImages.push(img);
         }
     }
 

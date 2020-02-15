@@ -432,6 +432,11 @@ class UI
       "rgb(0, 255, 0)",
       "rgb(255, 255, 0)"
     ],
+    powerImages: [
+      'power-intimidation.png',
+      'power-persuasion.png',
+      'power-bribery.png',
+    ],
   };
   static var modernModeVars = {
     cultColors: [
@@ -443,7 +448,7 @@ class UI
       '#FF3366', // pink
       '#009999', // cyan
       '#330000', // red
-      '#BBBBBB', // neutral
+      '#999999', // neutral
     ],
     lineColors: [ // same as cult
       '#009933', // green
@@ -468,12 +473,17 @@ class UI
     nodeNeutralPixelColors: [ 150, 150, 150 ],
     markerWidth: 60,
     markerHeight: 60,
-    scaleFactor: 3.4, // sqrt(52 * 52 + 52 * 52) / sqrt(15 * 15 + 15 * 15)
+    scaleFactor: 4.0, // sqrt(60 * 60 + 60 * 60) / sqrt(15 * 15 + 15 * 15)
     powerColors: [
       "rgb(239, 85, 124)",
       "rgb(102, 215, 239)",
       "rgb(154, 219, 116)",
       "rgb(218, 148, 229)"
+    ],
+    powerImages: [
+      'power-intimidation.png',
+      'power-persuasion.png',
+      'power-bribery.png',
     ],
   };
 
