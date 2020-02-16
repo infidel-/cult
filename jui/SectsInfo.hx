@@ -1,19 +1,14 @@
 // sects information ui
 
+import js.Browser;
 import js.html.DivElement;
 import sects.Sect;
 
-class SectsInfo
+class SectsInfo extends Window
 {
-  var ui: UI;
-  var game: Game;
-
-  var window: DivElement; // window element
   var list: DivElement; // list element
   var text: DivElement; // text element
   var menu: DivElement; // hovering menu element
-  var bg: DivElement; // background element
-  public var isVisible: Bool;
 
   var selectedNode: Node; // selected node
   var selectedNodeID: Int; // selected node id (to store when window closed)
@@ -21,55 +16,32 @@ class SectsInfo
 
   public function new(uivar: UI, gvar: Game)
     {
-      ui = uivar;
-      game = gvar;
-      isVisible = false;
+      super(uivar, gvar, 'sects', 800, 536, 20, 493);
+
       selectedNode = null;
       selectedNodeID = 0;
 
-      // window
-      window = Tools.window({
-        id: "windowSects",
-        winW: UI.winWidth,
-        winH: UI.winHeight,
-        fontSize: 16,
-        bold: true,
-        w: 800,
-        h: 520,
-        z: 20
-      });
-      window.style.display = 'none';
-      window.style.padding = '5 5 5 5';
-      window.style.border = '4px double #ffffff';
-
       // list
-      list = js.Browser.document.createDivElement();
-      list.style.overflow = 'auto';
-      list.style.position = 'absolute';
-      list.style.left = '10px';
-      list.style.top = '10px';
-      list.style.width = '790px';
-      list.style.height = '480px';
-      list.style.background = '#111';
-      window.appendChild(list);
+      var sectsBG = Browser.document.createDivElement();
+      sectsBG.id = 'sectsBGIMG';
+      window.appendChild(sectsBG);
+      var sectsFG = Browser.document.createDivElement();
+      sectsFG.id = 'sectsFG';
+      sectsFG.className = 'uiTextFG';
+      sectsBG.appendChild(sectsFG);
+      list = Browser.document.createDivElement();
+//      list.className = 'uiText';
+      list.style.userSelect = 'none';
+      sectsFG.appendChild(list);
 
       // info text
       text = js.Browser.document.createDivElement();
-      text.style.overflow = 'auto';
-      text.style.position = 'absolute';
-      text.style.textAlign = 'center';
-      text.style.left = '120px';
-      text.style.top = '498px';
-      text.style.width = '130px';
-      text.style.height = '20px';
-      text.style.background = '#111';
+      text.className = 'cultInfoLabel';
       window.appendChild(text);
 
       // hovering menu
       menu = Tools.window({
         id: "sectsMenuWindow",
-        winW: UI.winWidth,
-        winH: UI.winHeight,
         fontSize: 16,
         w: 200,
         h: 280,
@@ -78,15 +50,11 @@ class SectsInfo
       menu.style.padding = '5px';
       menu.style.border = '1px solid';
       menu.style.opacity = '0.9';
-
-      bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
-      var close = Tools.closeButton(window, 365, 493, 'infoClose');
-      close.onclick = onClose;
     }
 
 
 // key press
-  public function onKey(e: Dynamic)
+  public override function onKey(e: Dynamic)
     {
       // close current window
       if (e.keyCode == 27 || // Esc
@@ -97,16 +65,6 @@ class SectsInfo
           onClose(null);
           return;
         }
-    }
-
-
-// hide info
-  public function onClose(event)
-    {
-      window.style.display = 'none';
-      bg.style.display = 'none';
-      isVisible = false;
-      list.innerHTML = '';
     }
 
 
@@ -160,22 +118,22 @@ class SectsInfo
 
 
 // show info
-  public function show()
+  override function onShow()
     {
-      var s = '<table style="overflow:auto" cellspacing=3 cellpadding=3 width=100%>' +
+      var s = '<table class=uiListSects cellspacing=3 cellpadding=3>' +
         '<tr><th>Name<th>Leader<th>LVL<th>Size<th>Current Task<th>AI';
 
       for (sect in game.player.sects)
         {
-          s += '<tr style="background:black"><td>' + sect.name +
+          s += '<tr><td>' + sect.name +
 //            (Game.isDebug ? ' ' + sect.taskImportant : '') +
             '<td>' + sect.leader.name +
             '<td style="text-align:center">' + (sect.level + 1) +
             '<td style="text-align:center">' +
             sect.size + '/' + sect.getMaxSize() + ' (+' + sect.getGrowth() + ')' +
-            '<td style="te1xt-align:center">';
+            '<td>';
 
-          s += "<select class=secttasks onchange='Game.instance.ui.sects.onSelect(this.value)'>";
+          s += "<select class=selectOption onchange='Game.instance.ui.sects.onSelect(this.value)'>";
 //          "<option value=" + sect.leader.id + ".none>-- None --";
 
           for (t in game.sectTasks)
@@ -201,7 +159,7 @@ class SectsInfo
                       if (!ok)
                         continue;
 
-                      s += '<option class=secttasks value=' + sect.leader.id + '.' + t.id + '-' + c.id +
+                      s += '<option class=selectOption value=' + sect.leader.id + '.' + t.id + '-' + c.id +
                         (sect.task != null && sect.task.id == t.id &&
                           sect.taskTarget == c ? ' selected' : '') +
                         '>' + t.name + ': ' + c.name;
@@ -215,11 +173,11 @@ class SectsInfo
                   if (!ok)
                     continue;
 
-                  s += '<option class=secttasks value=' + sect.leader.id + '.' + t.id + '-0 ' +
+                  s += '<option class=selectOption value=' + sect.leader.id + '.' + t.id + '-0 ' +
                     (sect.task != null && sect.task.id == t.id ? ' selected' : '') +
                     '>' + t.name;
                 }
-              else s += '<option class=secttasks value=' + sect.leader.id + '.' + t.id + '-0' +
+              else s += '<option class=selectOption value=' + sect.leader.id + '.' + t.id + '-0' +
                 (sect.task != null && sect.task.id == t.id ? ' selected' : '') +
                 '>' + t.name;
 
@@ -266,14 +224,14 @@ class SectsInfo
 // get element shortcut
   public static inline function e(s)
     {
-      return js.Browser.document.getElementById(s);
+      return Browser.document.getElementById(s);
     }
 
 
 // create element shortcut
   public static inline function create(parent: Dynamic, s: String)
     {
-      var el = js.Browser.document.createElement(s);
+      var el = Browser.document.createElement(s);
       parent.appendChild(el);
       return el;
     }

@@ -54,22 +54,11 @@ class LogPanel
           var e = Browser.document.createDivElement();
           m.id = list.length;
           e.id = 'log.id' + list.length;
+          e.className = 'uiButton ' +
+            (m.old ? 'logPanelItemOld' : 'logPanelItemNew');
           untyped e.messageID = m.id;
-          e.style.position = 'absolute';
-          e.style.width = '18';
-          e.style.height = '18';
-          e.style.left = '0';
           e.style.top = '' + (list.length * 22);
-          e.style.background = (m.old ? '#050505' : '#151515');
-          e.style.border = (m.old ? '1px solid #999' : '1px solid #fff');
-          e.style.cursor = 'pointer';
-          e.style.fontSize = '15px';
           e.style.color = col;
-          e.style.fontWeight = 'bold';
-          e.style.textAlign = 'center';
-          e.style.setProperty('-webkit-user-select', 'none');
-          if (m.params != null && m.params.important)
-            e.style.textDecoration = 'blink';
           e.innerHTML = sym;
           panel.appendChild(e);
 
@@ -106,13 +95,6 @@ class LogPanel
           el.style.top = (cnt * 24) + 'px';
           cnt++;
         }
-    }
-
-
-// on resize
-  public function resize()
-    {
-      panel.style.height = (Browser.window.innerHeight - 10) + 'px';
     }
 
 // clear log

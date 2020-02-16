@@ -10,6 +10,7 @@ class Message
   var timer: Int;
 
   var window: DivElement; // window element
+  var border: DivElement; // border element
   var text: DivElement; // text element
   public var isVisible: Bool;
 
@@ -26,8 +27,8 @@ class Message
 // hide window
   public function onClose(event)
     {
-      window.style.display = 'none';
-      Browser.document.body.removeChild(window);
+      border.style.display = 'none';
+      Browser.document.body.removeChild(border);
       isVisible = false;
     }
 
@@ -55,33 +56,23 @@ class Message
 
       // window
       window = Tools.window({
-        id: "windowMessage",
-        winW: UI.winWidth,
-        winH: UI.winHeight,
-//        fontSize: opts.fontSize,
+        id: "message",
+        shadowLayer: 0,
         bold: true,
         w: w,
         h: h,
-        z: 30
+        z: 30,
       });
-      window.style.background = '#222';
-      window.style.border = '4px double #ffffff';
+      border = cast UI.e('messageBorder');
 
       // text
       text = js.Browser.document.createDivElement();
-      text.style.overflow = 'auto';
-      text.style.position = 'absolute';
-      text.style.left = '10px';
-      text.style.top = '10px';
-      text.style.width = (w - 30) + 'px';
-      text.style.height = (h - 30) + 'px';
-      text.style.padding = '5px';
-      text.style.background = '#111';
-      text.style.border = '1px solid #777';
+      text.className = 'uiText';
+      text.style.height = '52%';
       text.innerHTML = '<center>' + s + '</center>';
       window.appendChild(text);
 
-      window.style.display = 'inline';
+      border.style.display = 'inline';
       isVisible = true;
     }
 }

@@ -10,6 +10,7 @@ class Alert
 
   var queue: List<{ msg: String, opts: _AlertOptions }>; // message queue
   var window: DivElement; // window element
+  var border: DivElement; // border element
   var text: DivElement; // text element
   var close: DivElement; // close button
   var bg: DivElement; // background element
@@ -28,9 +29,10 @@ class Alert
 // hide window
   public function onClose(event)
     {
-      window.style.display = 'none';
+      border.style.display = 'none';
       bg.style.display = 'none';
-      Browser.document.body.removeChild(window);
+      Browser.document.body.removeChild(border);
+      Browser.document.body.removeChild(bg);
       isVisible = false;
 
       // messages in queue - show next message
@@ -79,48 +81,32 @@ class Alert
 
       // window
       window = Tools.window({
-        id: "windowAlert",
-        winW: UI.winWidth,
-        winH: UI.winHeight,
+        id: "alert",
+        shadowLayer: 24,
         fontSize: opts.fontSize,
         bold: true,
         w: opts.w,
         h: opts.h,
         z: 25
       });
-      window.style.background = '#222';
-      window.style.border = '4px double #ffffff';
+      border = cast UI.e('alertBorder');
+      bg = cast UI.e('alertBG');
 
       // text
-      text = js.Browser.document.createDivElement();
-      text.style.overflow = 'auto';
-      text.style.position = 'absolute';
-      text.style.left = '10px';
-      text.style.top = '10px';
-      text.style.width = (opts.w - 30) + 'px';
-      text.style.height = (opts.h - 60) + 'px';
-      text.style.padding = '5px';
-      text.style.background = '#111';
-      text.style.border = '1px solid #777';
+      text = Browser.document.createDivElement();
+      text.className = 'uiText';
       window.appendChild(text);
 
       // close button
-      close = Tools.closeButton(window,
-        Std.int(opts.w / 2) - 40, opts.h - 33, 'alertClose');
+      close = Tools.closeButton(window);
       close.onclick = onClose;
 
-      bg = Tools.bg({
-        w: UI.winWidth + 20,
-        h: UI.winHeight,
-        z: 24
-      });
-
-      bg.style.opacity = '' + opts.shadowOpacity;
       if (opts.center)
         text.innerHTML = '<center>' + s + '</center>';
       else text.innerHTML = s;
-      window.style.display = 'inline';
-      bg.style.display = (opts.shadow ? 'inline' : 'none');
+      text.style.height = '78%';
+      border.style.display = 'inline';
+      bg.style.display = 'inline';
       isVisible = true;
     }
 }

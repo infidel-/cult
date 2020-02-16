@@ -148,6 +148,11 @@ class UINode
           ctx.drawImage(
             ui.map.nodeImages[idx], xx, yy);
 
+          // job icon
+          ctx.drawImage(ui.map.jobImages[node.imageID],
+            xx + jobInfo[node.imageID].x,
+            yy + jobInfo[node.imageID].y + 6);
+
           // resource to acquire
           if (node.owner != game.player &&
               (node.isKnown[game.player.id] || node.owner == null))
@@ -158,11 +163,6 @@ class UINode
                     xx + 1, yy);
                   break;
                 }
-
-          // job icon
-          ctx.drawImage(ui.map.jobImages[node.imageID],
-            xx + jobInfo[node.imageID].x,
-            yy + jobInfo[node.imageID].y + 6);
 
           // level text
           ctx.drawImage(
@@ -279,10 +279,12 @@ class UINode
       for (i in 0...game.difficulty.numCults)
         s += node.isKnown[i] + "<br>";
 */
-      if (node.owner != null && !node.owner.isInfoKnown[game.player.id] && !node.isKnown[game.player.id] &&
+      if (node.owner != null &&
+          !node.owner.isInfoKnown[game.player.id] &&
+          !node.isKnown[game.player.id] &&
           node.owner != game.player)
         {
-          s += "<span style='color:#ff8888'>Use sects to gather cult<br>or node information.</span><br>";
+          s += "<span class=shadow style='color:var(--node-error-color)'>Use sects to gather cult<br>or node information.</span><br>";
           if (node.owner == null || node.owner != game.player)
             s += "<br>Chance of success: <span style='color:white'>" +
               game.player.getGainChance(node) + "%</span><br>";
@@ -301,12 +303,12 @@ class UINode
         }
 
       // name and job
-      s += "<span style='color:white'>" + node.name + "</span><br>";
+      s += "<span class=shadow style='color:white'>" + node.name + "</span><br>";
       s += node.job + "<br>";
 
       if (node.owner != null) // follower level
         s += "<b>" + (node.isKnown[game.player.id] ? Game.followerNames[node.level] : 'Unknown') +
-          "</b> <span style='color:white'>L" +
+          "</b> <span class=shadow style='color:white'>L" +
           (node.isKnown[game.player.id] ? '' + (node.level + 1) : '?') + "</span><br>";
       s += "<br>";
 
@@ -322,7 +324,7 @@ class UINode
             for (i in 0...Game.numPowers)
               if (game.player.power[i] < node.power[i])
                 {
-                  s += "<span style='color:#ff8888'>Not enough " + Game.powerNames[i] + "</span><br>";
+                  s += "<span class=shadow style='color:var(--node-error-color)'>Not enough " + Game.powerNames[i] + "</span><br>";
                   br = true;
                 }
 
@@ -336,7 +338,7 @@ class UINode
                   cnt++;
 
               if (cnt >= 3)
-                s += "<span style='color:#ff8888'>Generator has " + cnt + " links</span><br>";
+                s += "<span style='color:var(--node-error-color)'>Generator has " + cnt + " links</span><br>";
             }
 
           if (br)
@@ -347,12 +349,9 @@ class UINode
       if (node.owner == null || node.isKnown[game.player.id])
         for (i in 0...Game.numPowers)
           if (node.power[i] > 0)
-            {
-              s += "<b style='color:" + UI.vars.powerColors[i] + "'>" +
-                Game.powerNames[i] + "</b> " + node.power[i] + "<br>";
-            }
+            s += '<b>' + UI.powerName(i) + '</b> ' + node.power[i] + '<br>';
       if (node.owner == null || node.owner.isAI)
-        s += "Chance of success: <span style='color:white'>" +
+        s += "Chance of success: <span class=shadow style='color:white'>" +
           game.player.getGainChance(node) + "%</span><br>";
 
       if (node.isGenerator && (node.owner == null || node.isKnown[game.player.id]))
@@ -360,9 +359,7 @@ class UINode
           s += "<br>Generates:<br>";
           for (i in 0...Game.numPowers)
              if (node.powerGenerated[i] > 0)
-                s += "<b style='color:" + UI.vars.powerColors[i] + "'>" +
-                Game.powerNames[i] + "</b> " +
-                node.powerGenerated[i] + "<br>";
+               s += '<b>' + UI.powerName(i) + '</b> ' + node.powerGenerated[i] + '<br>';
           if (node.isTempGenerator)
             s += "Temporary<br>";
         }
@@ -378,7 +375,7 @@ class UINode
                 if (dx < d)
                   d = dx;
               }
-          s += 'DBG dist nearest : ' + Std.int(d) + '<br>';
+          s += 'DBG dist nearest: ' + Std.int(d) + '<br>';
         }
 
       return s;
@@ -447,9 +444,8 @@ class UINode
       y: 0,
     },
     {
-      img: "char-media-female.png",
-//    "char-scientist-male.png",
-      x: -5,
+      img: "char-scientist-male.png",
+      x: -4,
       y: 0,
     },
     {
@@ -458,21 +454,18 @@ class UINode
       y: 0,
     },
     {
-      img: "char-media-female.png",
-//    "char-politician-male.png",
-      x: -5,
+      img: "char-politician-male.png",
+      x: -2,
       y: 0,
     },
     {
-      img: "char-media-female.png",
-//    "char-politician-female.png",
-      x: -5,
+      img: "char-politician-female.png",
+      x: 5,
       y: 0,
     },
     {
-      img: "char-media-female.png",
-//    "char-media-male.png",
-      x: -5,
+      img: "char-media-male.png",
+      x: 8,
       y: 0,
     },
     {

@@ -1,9 +1,27 @@
+:root {
+  --main-bg-color: black;
+  --window-bg-color: #222;
+  --text-color: white;
+  --text-color-log-time: #888888;
+  --text-select-bg: #333333;
+  --text-font: "Verdana";
+  --node-error-color: #ff8888;
+}
+
 body {
-  background: black;
+  background: var(--main-bg-color);
   color: #d3d3d3;
   font-size: 20px;
-  font-family: Verdana;
+  font-family: var(--text-font);
   overflow: hidden;
+}
+
+input[type=textfield] {
+  background: var(--text-select-bg);
+  border: 1px outset #777;
+  color: var(--text-color);
+  padding-left: 5px;
+  position: absolute;
 }
 
 #tooltip {
@@ -42,11 +60,11 @@ fieldset {
 }
 
 legend {
-  color: white;
+  color: var(--text-color);
   padding: 0 3 0 3;
 }
 
-.button {
+.statusButton {
   border: outset 1px #777;
   cursor: pointer;
   background: #222;
@@ -55,13 +73,9 @@ legend {
   padding: 2;
 }
 
-.button2 {
-  border: outset 1px #777;
-  cursor: pointer;
-  background: #222;
-  font-weight: bold;
-  font-size: 6px;
-  padding: 2;
+.mainMenuButton {
+  height: 30px;
+  width: 350px;
 }
 
 .uiButton {
@@ -72,7 +86,16 @@ legend {
   text-align: center;
 }
 
-.secttasks {
+.musicButton2 {
+  border: outset 1px #777;
+  cursor: pointer;
+  background: #222;
+  font-weight: bold;
+  font-size: 6px;
+  padding: 2px;
+}
+
+.selectOption {
   background-color: #222;
   color: white;
 }
@@ -106,7 +129,7 @@ legend {
 
 #logPanel {
   width: 20px;
-  height: 100px;
+  height: 98.7%;
   left: 217px;
   top: 5px;
   background: #090909;
@@ -115,14 +138,14 @@ legend {
 
 #status {
   border: double #777 4px;
-  width: 191px;
-  height: 300px;
-  left: 5px;
-  top: 5px;
-  padding: 5px;
   font-size: 12px;
+  height: 99.3%;
+  left: 5px;
   overflow: hidden;
+  padding: 5px;
+  top: 5px;
   user-select: none;
+  width: 191px;
 }
 
 #status\.cult {
@@ -132,6 +155,14 @@ legend {
   font-weight: bold;
   font-size: 15px;
   text-align: center;
+}
+
+#status\.awareness {
+  font-weight: bold;
+}
+
+#status\.turns {
+  font-weight: bold;
 }
 
 .statusUpgrade {
@@ -147,11 +178,13 @@ legend {
 }
 
 .statusTable {
+  color: var(--text-color);
   font-size: 14px;
   width: 100%;
 }
 
 .statusResourceTable {
+  color: var(--text-color);
   font-size: 11px;
 }
 
@@ -161,10 +194,80 @@ legend {
 }
 
 #status\.track {
+  color: var(--text-color);
   text-align: center;
   background: #222;
   font-size: 10px;
   color: #00ff00;
   user-select: text;
+}
+
+.logPanelItemOld {
+  background: #050505;
+  border: 1px solid #999;
+  width: 18px;
+  height: 18px;
+}
+
+.logPanelItemNew {
+  background: #151515;
+  border: 1px solid #fff;
+  width: 18px;
+  height: 18px;
+}
+
+.uiWindowBorder {
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.uiWindow {
+  position: absolute;
+  background: var(--window-bg-color);
+  border: 4px double #ffffff; 
+}
+
+.uiText {
+  background: #111;
+  border: 1px solid #777;
+  height: 78%;
+  margin: 1%;
+  overflow: auto;
+  padding: 1%;
+  position: relative;
+  width: 96%;
+}
+
+.uiBG {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0px;
+  top: 0px;
+  opacity: 0.8;
+  background: #000;
+}
+
+.cultInfoLabel {
+  background: #111;
+  bottom: 3%;
+  color: var(--text-color);
+  left: 14%;
+  position: absolute;
+}
+
+.cultInfoInv1 {
+  font-size: 12px;
+  color: #999999;
+}
+
+.cultInfoInv2 {
+  color: white;
+}
+
+.uiListSects>tr {
+  background: black;
 }
 

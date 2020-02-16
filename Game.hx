@@ -67,6 +67,12 @@ class Game
       isFinished = true;
       this.turns = 0;
       ui = new UI(this);
+    }
+
+
+// init game
+  public function init()
+    {
       ui.init();
       director = new Director(this, ui);
       sectAdvisor = new sects.Advisor(this);
@@ -508,6 +514,7 @@ class Game
   static function main()
     {
       instance = new Game();
+      instance.init();
     }
 
 

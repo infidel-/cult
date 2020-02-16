@@ -1,5 +1,6 @@
 // options menu class
 
+import js.Browser;
 import js.html.DivElement;
 import js.html.Element;
 
@@ -12,76 +13,51 @@ typedef OptionInfo =
 };
 
 
-class OptionsMenu
+class OptionsMenu extends Window
 {
-  var ui: UI;
-  var game: Game;
-
-  var window: DivElement; // window element
-  var bg: DivElement; // background element
-  var close: DivElement; // close button element
-  public var isVisible: Bool;
   var elements: List<Element>; // ui elements
+  var contents: DivElement;
 
-  static var elementInfo: Array<OptionInfo> =
-    [
+  static var elementInfo: Array<OptionInfo> = [
 /*
       { name: 'investigatorTurnVisible', type: 'int', title: 'Investigator: Turn to become visible',
         note: 'Turn on which new investigator becomes visible' },
       { name: 'investigatorGainWill', type: 'float', title: 'Investigator: Chance of gaining will',
         note: 'Higher value raises chance of investigator gaining will' },
 */
-      { name: 'mapAdvancedMode', type: 'bool', title: 'Advanced map mode',
-        note: 'Displays additional node information on map' },
-      { name: 'logPanelSkipSects', type: 'bool', title: 'No sect messages in log panel',
-        note: 'Will not show sect messages in log panel' },
-      { name: 'sectAdvisor', type: 'bool', title: 'Sect advisor',
-        note: 'Sect advisor will automatically give tasks to sects depending on the situation' },
-    ];
+    { name: 'mapAdvancedMode', type: 'bool', title: 'Advanced map mode',
+      note: 'Displays additional node information on map' },
+    { name: 'logPanelSkipSects', type: 'bool', title: 'No sect messages in log panel',
+      note: 'Will not show sect messages in log panel' },
+    { name: 'sectAdvisor', type: 'bool', title: 'Sect advisor',
+      note: 'Sect advisor will automatically give tasks to sects depending on the situation' },
+  ];
 
 
   public function new(uivar: UI, gvar: Game)
     {
-      ui = uivar;
-      game = gvar;
-      isVisible = false;
-
-      // window
-      window = Tools.window({
-        id: "optionMenuWindow",
-        winW: UI.winWidth,
-        winH: UI.winHeight,
-        w: 1000,
-        h: 500,
-        z: 20
-      });
-    }
-
-
-// show main menu
-  public function show()
-    {
-      window.innerHTML = '';
+      super(uivar, gvar, 'options', 800, 536, 20, 493);
 
       Tools.label({
         id: 'titleLabel',
         text: 'Game Options',
-        w: 300,
+        w: 158,
         h: 30,
-        x: 420,
+        x: null,
         y: 10,
         container: window
-        });
+      });
 
-      var divel = js.Browser.document.createDivElement();
-      divel.style.background = '#030303';
-      divel.style.left = '10';
-      divel.style.top = '40';
-      divel.style.width = '980';
-      divel.style.height = '400';
-      divel.style.position = 'absolute';
-      divel.style.overflow = 'auto';
-      window.appendChild(divel);
+      contents = Browser.document.createDivElement();
+      contents.className = 'uiText';
+      window.appendChild(contents);
+    }
+
+
+// show main menu
+  override function onShow()
+    {
+      contents.innerHTML = '';
 
       elements = new List();
       var y = 10;
@@ -92,12 +68,12 @@ class OptionsMenu
           Tools.label({
             id: 'label' + info.name,
             text: info.title,
-            w: 300,
+            w: 240,
             h: 20,
             x: 10,
             y: y,
             fontSize: 14,
-            container: divel
+            container: contents
             });
 
           // parameter field
@@ -110,11 +86,11 @@ class OptionsMenu
                 text: '',
 //                text: '' + game.player.options.get(info.name),
                 w: 70,
-                h: 20,
-                x: 320,
+                h: null,
+                x: 240,
                 y: y,
                 fontSize: 14,
-                container: divel
+                container: contents
               });
               untyped el.checked = game.player.options.getBool(info.name);
             }
@@ -123,44 +99,34 @@ class OptionsMenu
             text: '' + game.player.options.get(info.name),
             w: 70,
             h: 20,
-            x: 320,
+            x: 240,
             y: y,
             fontSize: 14,
-            container: divel
+            container: contents
           });
 
           // parameter note
           Tools.label({
             id: 'note' + info.name,
             text: info.note,
-            w: 540,
+            w: 450,
             h: 20,
-            x: 410,
+            x: 310,
             y: y,
             fontSize: 14,
             bold: false,
-            container: divel
+            container: contents
           });
 
           y += 30;
 
           elements.add(el);
         }
-
-      bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
-      close = Tools.closeButton(window, 460, 460, 'optionMenuClose');
-      close.onclick = onClose;
-
-      // make window visible
-      window.style.display = 'inline';
-      bg.style.display = 'inline';
-      close.style.display = 'inline';
-      isVisible = true;
     }
 
 
 // close menu
-  public function onClose(e: Dynamic)
+  override function onCloseHook()
     {
       // save all options for current player
       for (info in elementInfo)
@@ -191,24 +157,14 @@ class OptionsMenu
         }
 
       game.applyPlayerOptions(); // apply player options
-      realClose();
     }
 
 
 // key press
-  public function onKey(e: Dynamic)
+  public override function onKey(e: Dynamic)
     {
       // exit menu
       if (e.keyCode == 27) // ESC
         onClose(null);
-    }
-
-
-  function realClose()
-    {
-      window.style.display = 'none';
-      bg.style.display = 'none';
-      close.style.display = 'none';
-      isVisible = false;
     }
 }

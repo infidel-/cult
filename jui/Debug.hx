@@ -1,52 +1,23 @@
 // debug menu
 
+import js.Browser;
 import js.html.DivElement;
 
-class Debug
+class Debug extends Window
 {
-  var ui: UI;
-  var game: Game;
-
-  var window: DivElement; // window element
   var menu: DivElement; // menu element
-  var bg: DivElement; // background element
   var buttons: Array<DivElement>;
-  public var isVisible: Bool;
 
 
   public function new(uivar: UI, gvar: Game)
     {
-      ui = uivar;
-      game = gvar;
-      isVisible = false;
+      super(uivar, gvar, 'debug', 800, 536, 20, 493);
       buttons = [];
 
-      // debug window
-      window = Tools.window({
-        id: "debugWindow",
-        winW: UI.winWidth,
-        winH: UI.winHeight,
-        fontSize: 18,
-        w: 800,
-        h: 500,
-        z: 20
-      });
-
       // internals
-      menu = js.Browser.document.createDivElement();
-      menu.style.overflow = 'auto';
-      menu.style.position = 'absolute';
-      menu.style.left = '10px';
-      menu.style.top = '10px';
-      menu.style.width = '780px';
-      menu.style.height = '450px';
-      menu.style.background = '#0b0b0b';
-      menu.style.border = '1px solid #777';
+      menu = Browser.document.createDivElement();
+      menu.className = 'uiText';
       window.appendChild(menu);
-
-      bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
-      var close = Tools.closeButton(window, 360, 465, 'debugClose');
-      close.onclick = onClose;
 
       lastMenuY = -20;
       menuItem = 0;
@@ -231,7 +202,7 @@ class Debug
         sym = menuItem - 9 + 65 + 32;
       var b = Tools.button({
         id: 'menuItem' + lastMenuY,
-        fontSize: 14,
+        fontSize: 12,
         bold: false,
         text: String.fromCharCode(sym) + " " + title,
         w: 200,
@@ -248,7 +219,7 @@ class Debug
 
 
 // key press
-  public function onKey(e: Dynamic)
+  public override function onKey(e: Dynamic)
     {
       // close current window
       if (e.keyCode == 27 || // Esc
@@ -266,23 +237,5 @@ class Debug
             b.onclick(null);
             break;
           }
-    }
-
-
-// hide widget
-  function onClose(event)
-    {
-      window.style.display = 'none';
-      bg.style.display = 'none';
-      isVisible = false;
-    }
-
-
-// show widget
-  public function show()
-    {
-      window.style.display = 'inline';
-      bg.style.display = 'inline';
-      isVisible = true;
     }
 }

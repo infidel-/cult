@@ -71,14 +71,14 @@ class MapUI
 
       // tooltip element
       tooltip = Tools.window({
-        id: "mapTooltipWindow",
-        winW: UI.winWidth,
-        winH: UI.winHeight,
+        id: "mapTooltip",
         fontSize: 16,
-        w: 200,
-        h: 280,
-        z: 3000
+        w: null,
+        h: null,
+        z: 3000,
+        border: false,
       });
+      tooltip.style.display = 'none';
 
       loadImages();
     }
@@ -485,7 +485,8 @@ class MapUI
       tooltip.innerHTML = text;
       tooltip.style.left = x + 'px';
       tooltip.style.top = y + 'px';
-      tooltip.style.height = (cnt * 20) + 'px';
+      tooltip.style.width = null;
+      tooltip.style.height = null;
       tooltip.style.display = 'inline';
     }
 

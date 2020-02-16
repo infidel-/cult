@@ -1,42 +1,26 @@
 // main menu class
 
+import js.Browser;
 import js.html.DivElement;
 #if electron
 import electron.renderer.Remote;
 #end
 
-class MainMenu
+class MainMenu extends Window
 {
-  var ui: UI;
-  var game: Game;
-
-  var window: DivElement; // window element
-  var bg: DivElement; // background element
-  var close: DivElement; // close button element
-  var saveButton: Dynamic; // save button element
-  public var isVisible: Bool;
-
-
   public function new(uivar: UI, gvar: Game)
     {
-      ui = uivar;
-      game = gvar;
-      isVisible = false;
-
-      // main menu window
-      window = Tools.window(
-        {
-          id: "mainMenuWindow",
-          winW: UI.winWidth,
-          winH: UI.winHeight,
-          w: 420,
 #if electron
-          h: 320,
+      var h = 324;
+      var closeY = 280;
 #else
-          h: 280,
+      var h = 280;
+      var closeY = 240;
 #end
-          z: 20
-        });
+      super(uivar, gvar, 'mainMenu', 420, h, 20, closeY);
+
+//      var x = (UI.classicMode ? 35 : 48);
+      var x = 35;
 
       Tools.label({
         id: 'titleLabel',
@@ -46,25 +30,27 @@ class MainMenu
         x: 130,
         y: 10,
         container: window
-        });
+      });
 
       // main menu contents
       Tools.button({
         id: 'newGameEasy',
         text: "START NEW GAME - EASY",
-        w: 350,
-        h: 30,
-        x: 35,
+        className: 'uiButton statusButton mainMenuButton',
+        w: null,
+        h: null,
+        x: x,
         y: 40,
         container: window,
         func: onNewGame
-        });
+      });
       Tools.button({
         id: 'newGameNormal',
         text: "START NEW GAME - NORMAL",
-        w: 350,
-        h: 30,
-        x: 35,
+        className: 'uiButton statusButton mainMenuButton',
+        w: null,
+        h: null,
+        x: x,
         y: 80,
         container: window,
         func: onNewGame
@@ -72,9 +58,10 @@ class MainMenu
       Tools.button({
         id: 'newGameHard',
         text: "START NEW GAME - HARD",
-        w: 350,
-        h: 30,
-        x: 35,
+        className: 'uiButton statusButton mainMenuButton',
+        w: null,
+        h: null,
+        x: x,
         y: 120,
         container: window,
         func: onNewGame
@@ -83,9 +70,10 @@ class MainMenu
       Tools.button({
         id: 'customGame',
         text: "CUSTOM GAME",
-        w: 350,
-        h: 30,
-        x: 35,
+        className: 'uiButton statusButton mainMenuButton',
+        w: null,
+        h: null,
+        x: x,
         y: 160,
         container: window,
         func: onCustomGame
@@ -94,9 +82,10 @@ class MainMenu
       Tools.button({
         id: 'customGame',
         text: "MULTIPLAYER GAME",
-        w: 350,
-        h: 30,
-        x: 35,
+        className: 'uiButton statusButton mainMenuButton',
+        w: null,
+        h: null,
+        x: x,
         y: 200,
         container: window,
         func: onMultiplayerGame
@@ -106,9 +95,10 @@ class MainMenu
       Tools.button({
         id: 'exitGame',
         text: "EXIT",
-        w: 350,
-        h: 30,
-        x: 35,
+        className: 'uiButton statusButton mainMenuButton',
+        w: null,
+        h: null,
+        x: x,
         y: 240,
         container: window,
         func: onExit
@@ -120,7 +110,7 @@ class MainMenu
         text: "CREATE MULT",
         w: 150,
         h: 30,
-        x: 35,
+        x: x,
         y: 200,
         container: window,
         func: onCreateMult
@@ -138,14 +128,14 @@ class MainMenu
         });
 */
 
-      saveButton = { style: {} };
+//      saveButton = { style: {} };
 /*
       Tools.button({
         id: 'loadGame',
         text: "LOAD GAME",
         w: 350,
         h: 30,
-        x: 35,
+        x: x,
         y: 160,
         container: window,
         func: onLoadGame
@@ -155,34 +145,19 @@ class MainMenu
         text: "SAVE GAME",
         w: 350,
         h: 30,
-        x: 35,
+        x: x,
         y: 200,
         container: window,
         func: onSaveGame
         });
 */
-      bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
-      bg.id = 'bgMainMenu';
-#if electron
-      var y = 280;
-#else
-      var y = 240;
-#end
-      close = Tools.closeButton(window, 169, y, 'mainMenuClose');
-      close.onclick = onClose;
     }
 
 
-// show main menu
-  public function show()
+  override function onShow()
     {
-      window.style.display = 'inline';
-      bg.style.display = 'inline';
       close.style.visibility =
         (game.isNeverStarted ? 'hidden' : 'visible');
-      saveButton.style.display =
-        (game.isFinished ? 'none' : 'inline');
-      isVisible = true;
     }
 
 
@@ -345,7 +320,7 @@ class MainMenu
 
 
 // key press
-  public function onKey(e: Dynamic)
+  public override function onKey(e: Dynamic)
     {
 //      trace(e.keyCode);
       // new game - easy
@@ -385,15 +360,5 @@ class MainMenu
       // exit menu
       else if (e.keyCode == 27 && !game.isNeverStarted) // ESC
         onClose(null);
-    }
-
-
-// hide main menu
-  function onClose(event: Dynamic)
-    {
-      window.style.display = 'none';
-      bg.style.display = 'none';
-      saveButton.style.display = 'none';
-      isVisible = false;
     }
 }

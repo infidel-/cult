@@ -23,6 +23,8 @@ class TopMenu
       panel.id = 'topPanel';
       Browser.document.body.appendChild(panel);
 
+      var fontSize = (UI.classicMode ? 16 : 14);
+      var buttonHeight = (UI.classicMode ? 20 : 16);
       Tools.button({
         id: 'cults',
         text: "CULTS",
@@ -30,9 +32,9 @@ class TopMenu
         h: buttonHeight,
         x: 20,
         y: 2,
-        fontSize: 16,
+        fontSize: fontSize,
         container: panel,
-        title: "Click to view cults information (or press <span style=\"color:white\">C</span>).",
+        title: "Click to view cults information (or press <span class=shadow style=\"color:white\">C</span>).",
         func: onCults
       });
 
@@ -43,9 +45,9 @@ class TopMenu
         h: buttonHeight,
         x: 110,
         y: 2,
-        fontSize: 16,
+        fontSize: fontSize,
         container: panel,
-        title: "Click to view sects controlled by your cult (or press <span style=\"color:white\">S</span>).",
+        title: "Click to view sects controlled by your cult (or press <span class=shadow style=\"color:white\">S</span>).",
         func: onSects
       });
 
@@ -56,9 +58,9 @@ class TopMenu
         h: buttonHeight,
         x: 200,
         y: 2,
-        fontSize: 16,
+        fontSize: fontSize,
         container: panel,
-        title: "Click to view message log (or press <span style=\"color:white\">L</span>).",
+        title: "Click to view message log (or press <span class=shadow style=\"color:white\">L</span>).",
         func: onLog
       });
 
@@ -69,9 +71,9 @@ class TopMenu
         h: buttonHeight,
         x: 290,
         y: 2,
-        fontSize: 16,
+        fontSize: fontSize,
         container: panel,
-        title: "Click to view options (or press <span style=\"color:white\">O</span>).",
+        title: "Click to view options (or press <span class=shadow style=\"color:white\">O</span>).",
         func: onOptions
       });
 
@@ -83,9 +85,9 @@ class TopMenu
           h: buttonHeight,
           x: 410,
           y: 2,
-          fontSize: 16,
+          fontSize: fontSize,
           container: panel,
-          title: "Click to open debug menu (or press <span style=\"color:white\">D</span>).",
+          title: "Click to open debug menu (or press <span class=shadow style=\"color:white\">D</span>).",
           func: onDebug
         });
 
@@ -96,9 +98,9 @@ class TopMenu
         h: buttonHeight,
         x: 597,
         y: 2,
-        fontSize: 16,
+        fontSize: fontSize,
         container: panel,
-        title: "Click&nbsp;to&nbsp;open&nbsp;the&nbsp;manual&nbsp;(or&nbsp;press&nbsp;<span style=\"color:white\">M</span>).",
+        title: "Click&nbsp;to&nbsp;open&nbsp;the&nbsp;manual&nbsp;(or&nbsp;press&nbsp;<span class=shadow style=\"color:white\">M</span>).",
         func: function(event: Dynamic)
           {
 #if electron
@@ -116,7 +118,7 @@ class TopMenu
         h: buttonHeight,
         x: 700,
         y: 2,
-        fontSize: 16,
+        fontSize: fontSize,
         container: panel,
         // kludge to fix tooltip display
         title: "Click&nbsp;to&nbsp;open&nbsp;About&nbsp;page.",
@@ -152,12 +154,11 @@ class TopMenu
         fontSize: 10,
         container: panel,
         // kludge to fix tooltip display
-        title: "Click&nbsp;to&nbsp;toggle&nbsp;advanced&nbsp;map&nbsp;mode&nbsp;(or&nbsp;press&nbsp;<span style=\"color:white\">A</span>).",
+        title: "Click&nbsp;to&nbsp;toggle&nbsp;advanced&nbsp;map&nbsp;mode&nbsp;(or&nbsp;press&nbsp;<span class=shadow style=\"color:white\">A</span>).",
         func: onAdvanced
       });
-
-//      s += "<div class=button style='position: absolute; z-index: 20; top: 30; left: 240;' title='" + tipMainMenu +
-//        "' id='status.mainMenu'>A</div>";
+      if (UI.modernMode)
+        advanced.style.top = '25px';
     }
 
 
@@ -209,7 +210,7 @@ class TopMenu
       panel.style.width = (Browser.window.innerWidth -
         panelRect.left - 8) + 'px';
       var x = Std.parseInt(panel.style.width) -
-        Std.parseInt(about.style.width) - 10;
+        Std.parseInt(about.style.width) - 30;
       about.style.left = x + 'px';
       x -= (Std.parseInt(manual.style.width) + 20);
       manual.style.left = x + 'px';
@@ -218,7 +219,4 @@ class TopMenu
         Std.parseInt(advanced.style.width) - panelRect.left -
         10) + 'px';
     }
-
-
-  static var buttonHeight = 20;
 }

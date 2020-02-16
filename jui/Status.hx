@@ -108,18 +108,17 @@ class Status
         }
       s += "</table></fieldset>";
 
+      s += '<div id=statusBG><div id=statusFG>';
       s += "<fieldset>";
       s += "<legend>STATS</legend>";
       s += "<table class=statusTable cellpadding=0>";
 
       // awareness
       s += "<tr id='status.awRow' title='" + tipAwareness +
-        "'><td>Awareness<td><span id='status.awareness' " +
-        "style='font-weight:bold'>0</span>";
+        "'><td>Awareness<td><span id='status.awareness'>0</span>";
       // turns
       s += "<tr id='status.tuRow' title='" + tipTurns +
-        "'><td>Turns<td><span id='status.turns' " +
-        "style='font-weight:bold'>0</span>";
+        "'><td>Turns<td><span id='status.turns'>0</span>";
 
       s += "</table></fieldset>";
 
@@ -127,33 +126,35 @@ class Status
 
       // buttons
       s += "<span title='" + tipEndTurn +
-        "' id='status.endTurn' class=button>END TURN</span> ";
+        "' id='status.endTurn' class='uiButton statusButton'>END TURN</span> ";
       s += "</center>";
 
       // music player
       s += "<fieldset id='musicplayer'>";
       s += "<legend>MUSIC</legend>";
       s += "<div id='status.track'>-<br>-<br>-</div>";
-      s += "<center style='padding-top:0px'>";
-      s += "<span class=button2 title='Play' id='status.play'>PLAY</span>&nbsp;&nbsp;";
-      s += "<span class=button2 title='Pause' id='status.pause'>PAUSE</span>&nbsp;&nbsp;";
-      s += "<span class=button2 title='Stop' id='status.stop'>STOP</span>&nbsp;&nbsp;";
-      s += "<span class=button2 title='Random track' id='status.random'>RANDOM</span>";
+      s += "<center style='padding-top:2px'>";
+      s += "<span class='uiButton statusButton musicButton2' title='Play' id='status.play'>PLAY</span>&nbsp;&nbsp;";
+      s += "<span class='uiButton statusButton musicButton2' title='Pause' id='status.pause'>PAUSE</span>&nbsp;&nbsp;";
+      s += "<span class='uiButton statusButton musicButton2' title='Stop' id='status.stop'>STOP</span>&nbsp;&nbsp;";
+      s += "<span class='uiButton statusButton musicButton2' title='Random track' id='status.random'>RANDOM</span>";
       s += "</center></fieldset>";
 
       // buttons 2
-      s += "<center style='padding-top:12px;'><span class=button title='" + tipMainMenu +
+      s += "<center style='padding-top:12px;'><span class='uiButton statusButton' title='" + tipMainMenu +
         "' id='status.mainMenu'>MAIN MENU</span></center>";
+      s += '</div></div>';
 
       status.innerHTML = s;
 
       Tools.button({
         id: 'status.musicPlus',
         text: '+',
+        className: 'uiButton statusButton musicButton',
         w: 12,
         h: 12,
-        x: 155,
-        y: 444,
+        x: (UI.classicMode ? 155 : 139),
+        y: (UI.classicMode ? 444 : 453),
         fontSize: 10,
         container: status,
         title: "Click to increase music volume.",
@@ -165,10 +166,11 @@ class Status
       Tools.button({
         id: 'status.musicMinus',
         text: '-',
+        className: 'uiButton statusButton musicButton',
         w: 12,
         h: 12,
-        x: 174,
-        y: 444,
+        x: (UI.classicMode ? 179 : 159),
+        y: (UI.classicMode ? 444 : 453),
         fontSize: 10,
         container: status,
         title: "Click to decrease music volume.",
@@ -341,7 +343,7 @@ class Status
       for (i in 0...(Game.numPowers + 1))
         {
           var s = tipPowers[i] +
-            "<br>Chance to gain each unit: <span style='color:white'>" +
+            "<br>Chance to gain each unit: <span class=shadow style='color:white'>" +
             game.player.getResourceChance() + "%</span>";
           updateTip("status.powerMark" + i, s);
           updateTip("status.powerName" + i, s);
@@ -457,15 +459,6 @@ class Status
     }
 
 
-// on window resize
-  public function resize()
-    {
-      statusBorder.style.height = (Browser.window.innerHeight - 22) + 'px';
-      var panelRect = statusBorder.getBoundingClientRect();
-      status.style.height = (panelRect.height - 16) + 'px';
-    }
-
-
 // ===================== tips ===============
 
   static var tipPowers: Array<String> = [
@@ -501,6 +494,6 @@ class Status
     "Your adepts can use resources to lower society awareness.";
   static var tipLowerWillpower =
     "Your adepts can use resources to lower willpower of an investigator.<br>Cost: ";
-  static var tipEndTurn = "Click to end current turn (or press <span style=\"color:white\">E</span>).";
-  static var tipMainMenu = "Click to open main menu (or press <span style=\"color:white\">ESC</span>).";
+  static var tipEndTurn = "Click to end current turn (or press <span class=shadow style=\"color:white\">E</span>).";
+  static var tipMainMenu = "Click to open main menu (or press <span class=shadow style=\"color:white\">ESC</span>).";
 }

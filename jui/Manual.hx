@@ -3,53 +3,21 @@
 import js.node.Fs;
 import js.Node.__dirname;
 #end
+import js.Browser;
 import js.html.DivElement;
 
-class Manual
+class Manual extends Window
 {
-  var ui: UI;
-  var game: Game;
-
-  var window: DivElement; // window element
   var text: DivElement; // text element
-  var bg: DivElement; // background element
-  public var isVisible: Bool;
 
   public function new(uivar: UI, gvar: Game)
     {
-      ui = uivar;
-      game = gvar;
-      isVisible = false;
+      super(uivar, gvar, 'manual', 800, 536, 20, 493);
 
-      // window
-      window = Tools.window({
-        id: "windowManual",
-        winW: UI.winWidth,
-        winH: UI.winHeight,
-        fontSize: 14,
-        w: 800,
-        h: 500,
-        z: 20
-      });
-      window.style.display = 'none';
-      window.style.background = '#333333';
-      window.style.border = '4px double #ffffff';
-
-      text = js.Browser.document.createDivElement();
-      text.style.overflow = 'auto';
-      text.style.position = 'absolute';
-      text.style.left = '10px';
-      text.style.top = '10px';
-      text.style.width = '770px';
-      text.style.height = '440px';
-      text.style.padding = '5px';
-      text.style.background = '#0b0b0b';
-      text.style.border = '1px solid #777';
+      text = Browser.document.createDivElement();
+      text.className = 'uiText';
+      text.style.fontSize = '14px';
       window.appendChild(text);
-
-      bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
-      var close = Tools.closeButton(window, 360, 465, 'logClose');
-      close.onclick = onClose;
 
       // load manual text
 #if electron
@@ -153,21 +121,9 @@ class Manual
     }
 
 
-// hide window
-  public function onClose(event)
-    {
-      window.style.display = 'none';
-      bg.style.display = 'none';
-      isVisible = false;
-    }
-
-
 // show log
-  public function show()
+  override function onShow()
     {
       text.scrollTop = 0;
-      window.style.display = 'inline';
-      bg.style.display = 'inline';
-      isVisible = true;
     }
 }

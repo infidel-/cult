@@ -3,69 +3,14 @@
 import js.html.DivElement;
 import js.html.Element;
 
-typedef MPUIInfo =
+class MultiplayerMenu extends Window
 {
-  var name: String; // element name (and parameter name too)
-  var title: String; // parameter title
-  var type: String; // parameter type
-  var params: Dynamic; // additional parameters
-};
-
-class MultiplayerMenu
-{
-  var ui: UI;
-  var game: Game;
-
-  var window: DivElement; // window element
-  var bg: DivElement; // background element
-  var close: DivElement; // close button element
-  public var isVisible: Bool;
   var difElements: List<Element>; // ui elements
-
-  static var difElementInfo: Array<MPUIInfo> =
-    [
-      {
-        name: 'numCults',
-        type: 'int',
-        title: 'Number of cults (2-8)',
-        params: null
-      },
-      {
-        name: 'numPlayers',
-        type: 'int',
-        title: 'Number of human players (1-8)',
-        params: null
-      },
-      {
-        name: 'difficulty',
-        type: 'select',
-        title: 'Game difficulty',
-        params: [ 'Easy', 'Normal', 'Hard' ]
-      },
-      {
-        name: 'mapSize',
-        type: 'select',
-        title: 'Map size',
-        params: [ 'Small', 'Medium', 'Large', 'Huge' ]
-      },
-    ];
 
 
   public function new(uivar: UI, gvar: Game)
     {
-      ui = uivar;
-      game = gvar;
-      isVisible = false;
-
-      // main menu window
-      window = Tools.window({
-        id: "mpMenuWindow",
-        winW: UI.winWidth,
-        winH: UI.winHeight,
-        w: 450,
-        h: 220,
-        z: 20
-      });
+      super(uivar, gvar, 'multiMenu', 450, 236, 20, 493);
 
       Tools.label({
         id: 'titleLabel',
@@ -73,18 +18,15 @@ class MultiplayerMenu
         w: 350,
         h: 30,
         x: 50,
-        y: 10,
+        y: 5,
         container: window
       });
 
       var divel = js.Browser.document.createElement("div");
-      divel.style.background = '#030303';
-      divel.style.left = '10';
-      divel.style.top = '40';
-      divel.style.width = '430';
-      divel.style.height = '130';
-      divel.style.position = 'absolute';
-      divel.style.overflow = 'none';
+      divel.className = 'uiText';
+      divel.style.top = '12.5%';
+      divel.style.width = '95.6%';
+      divel.style.height = '67%';
       window.appendChild(divel);
 
       difElements = new List();
@@ -112,8 +54,8 @@ class MultiplayerMenu
               id: info.name,
               text: '' + Reflect.field(Static.difficulty[2], info.name),
               w: 100,
-              h: 20,
-              x: 320,
+              h: null,
+              x: 310,
               y: y,
               fontSize: 14,
               container: divel
@@ -122,18 +64,16 @@ class MultiplayerMenu
             {
               el = js.Browser.document.createElement("select");
               el.id = info.name;
-              el.style.width = '100';
-              el.style.height = '20';
-              el.style.left = '320';
+              el.className = 'selectOption';
+              el.style.width = '100px';
+              el.style.left = '310px';
               el.style.top = '' + y;
               el.style.fontSize = '14px';
               el.style.position = 'absolute';
-              el.style.color = '#ffffff';
-              el.style.background = '#111';
-              var s = "<select class=secttasks onchange='Game.instance.ui.mpMenu.onSelect(this.value)'>";
+              var s = "<select class=selectOption onchange='Game.instance.ui.mpMenu.onSelect(this.value)'>";
               var list: Array<String> = info.params;
               for (item in list)
-                s += '<option class=secttasks>' + item;
+                s += '<option class=selectOption>' + item;
               s += '</select>';
               el.innerHTML = s;
               divel.appendChild(el);
@@ -142,8 +82,8 @@ class MultiplayerMenu
             id: info.name,
             text: '' + Reflect.field(Static.difficulty[2], info.name),
             w: 100,
-            h: 20,
-            x: 320,
+            h: null,
+            x: 310,
             y: y,
             fontSize: 14,
             container: divel
@@ -154,20 +94,23 @@ class MultiplayerMenu
           difElements.add(el);
         }
 
-      Tools.button({
+      var b = Tools.button({
         id: 'startMultiplayerGame',
         text: "Start",
         w: 80,
-        h: 25,
-        x: 100,
-        y: 180,
+        h: null,
+        x: null,
+        y: null,
         container: window,
         func: onStartGame
       });
+      b.style.left = '33%';
+      b.style.bottom = '3%';
+      b.style.transform = 'translate(-50%)';
 
-      bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
-      close = Tools.closeButton(window, 320, 180, 'mpMenuClose');
-      close.onclick = onClose;
+      close.style.left = '66%';
+      close.style.bottom = '3%';
+      close.style.transform = 'translate(-50%)';
     }
 
 
@@ -273,22 +216,13 @@ class MultiplayerMenu
 
       game.restart(-1, dif);
 
-      realClose();
-    }
-
-
-// show main menu
-  public function show()
-    {
-      window.style.display = 'inline';
-      bg.style.display = 'inline';
-      close.style.display = 'inline';
-      isVisible = true;
+      onClose(null);
+      ui.mainMenu.onClose(null);
     }
 
 
 // key press
-  public function onKey(e: Dynamic)
+  public override function onKey(e: Dynamic)
     {
       // exit menu
       if (e.keyCode == 27) // ESC
@@ -296,20 +230,45 @@ class MultiplayerMenu
     }
 
 
-  function realClose()
-    {
-      window.style.display = 'none';
-      bg.style.display = 'none';
-      close.style.display = 'none';
-      isVisible = false;
-    }
-
-
 // hide main menu
-  function onClose(event: Dynamic)
+  override function onCloseHook()
     {
-      realClose();
-
       ui.mainMenu.show();
     }
+
+
+  static var difElementInfo: Array<MPUIInfo> = [
+    {
+      name: 'numCults',
+      type: 'int',
+      title: 'Number of cults (2-8)',
+      params: null
+    },
+    {
+      name: 'numPlayers',
+      type: 'int',
+      title: 'Number of human players (1-8)',
+      params: null
+    },
+    {
+      name: 'difficulty',
+      type: 'select',
+      title: 'Game difficulty',
+      params: [ 'Easy', 'Normal', 'Hard' ]
+    },
+    {
+      name: 'mapSize',
+      type: 'select',
+      title: 'Map size',
+      params: [ 'Small', 'Medium', 'Large', 'Huge' ]
+    },
+  ];
 }
+
+typedef MPUIInfo =
+{
+  var name: String; // element name (and parameter name too)
+  var title: String; // parameter title
+  var type: String; // parameter type
+  var params: Dynamic; // additional parameters
+};

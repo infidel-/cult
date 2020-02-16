@@ -1,67 +1,27 @@
 // ui for cult info
 
+import js.Browser;
 import js.html.DivElement;
 
-class Info
+class Info extends Window
 {
-  var ui: UI;
-  var game: Game;
-
-  var window: DivElement; // window element
-  var bg: DivElement; // background element
   var text: DivElement; // text element
-  public var isVisible: Bool;
 
 
   public function new(uivar: UI, gvar: Game)
     {
-      ui = uivar;
-      game = gvar;
-      isVisible = false;
-
-      // window
-      window = Tools.window({
-        id: "windowInfo",
-        winW: UI.winWidth,
-        winH: UI.winHeight,
-        fontSize: 16,
-        bold: true,
-        w: 800,
-        h: 520,
-        z: 20
-      });
-      window.style.display = 'none';
-      window.style.padding = '5 5 5 5';
-      window.style.border = '4px double #ffffff';
+      super(uivar, gvar, 'cultInfo', 800, 536, 20, 493);
 
       // info text
-      text = js.Browser.document.createDivElement();
-      text.style.overflow = 'auto';
-      text.style.position = 'absolute';
-      text.style.left = '10px';
-      text.style.top = '10px';
-      text.style.width = '780px';
-      text.style.height = '480px';
-      text.style.background = '#111';
+      text = Browser.document.createDivElement();
+      text.className = 'uiText';
+      text.style.fontSize = '16px';
       window.appendChild(text);
-
-      bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
-      var close = Tools.closeButton(window, 365, 493, 'infoClose');
-      close.onclick = onClose;
-    }
-
-
-// hide info
-  public function onClose(event)
-    {
-      window.style.display = 'none';
-      bg.style.display = 'none';
-      isVisible = false;
     }
 
 
 // show info
-  public function show()
+  override function onShow()
     {
       var s = '';
 
@@ -72,7 +32,7 @@ class Info
 //            continue;
 
           // name
-          s += '<div style="' + (i == 0 ? 'background:#333333' :
+          s += '<div class="cultInfoBlock" style="' + (i == 0 ? 'background:var(--text-select-bg)' :
             '') +
             '">';
           if (p.isDead)
@@ -96,14 +56,14 @@ class Info
           // investigator info
           if (p.hasInvestigator && p.isInfoKnown[game.player.id])
             {
-              s += "<span style='font-size: 12px; color: #999999'>Investigator <span style='color: white'>" +
+              s += "<span class=cultInfoInv1>Investigator <span class=cultInfoInv2>" +
                 p.investigator.name + "</span>";
               if (!p.investigator.isHidden)
                 s += ": Level " + (p.investigator.level + 1) +
                 ', Willpower ' + p.investigator.will;
               s += '</span>';
               if (p.investigator.isHidden)
-                s += " <span style='color:#ffffff'>--- Hidden ---</span>";
+                s += " <span class=cultInfoInv2>--- Hidden ---</span>";
               s += '<br>';
             }
           if (Game.isDebug && p.investigatorTimeout > 0 && p.isInfoKnown[game.player.id])

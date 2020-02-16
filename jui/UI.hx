@@ -81,8 +81,6 @@ class UI
 // on resizing document
   function onResize(event: Dynamic)
     {
-      status.resize();
-      logPanel.resize();
       map.resize();
       top.resize();
     }
@@ -312,9 +310,9 @@ class UI
 
 
 // show colored power name
-  public static function powerName(i, ?isShort: Bool)
+  public static function powerName(i, ?isShort: Bool = false)
     {
-      return "<span style='color:" + vars.powerColors[i] + "'>" +
+      return "<span class=shadow style='color:" + vars.powerColors[i] + "'>" +
         (isShort ? Game.powerShortNames[i] : Game.powerNames[i]) + "</span>";
     }
 
@@ -322,7 +320,7 @@ class UI
 // show colored cult name
   public static function cultName(i, info)
     {
-      return "<span style='color:" + UI.vars.cultColors[i] + "'>" +
+      return "<span class=shadow style='color:" + UI.vars.cultColors[i] + "'>" +
         info.name + "</span>";
     }
 
@@ -443,7 +441,7 @@ class UI
       '#009933', // green
       '#3300CC', // blue
       '#660099', // violet
-      '#FF9900', // orange
+      '#ff9900', // orange
       '#FF3300', // yellow
       '#FF3366', // pink
       '#009999', // cyan
@@ -454,7 +452,7 @@ class UI
       '#009933', // green
       '#3300CC', // blue
       '#660099', // violet
-      '#FF9900', // orange
+      '#ff9900', // orange
       '#FF3300', // yellow
       '#FF3366', // pink
       '#009999', // cyan
@@ -464,7 +462,7 @@ class UI
       [ 0, 153, 51 ],
       [ 51, 60, 254 ],
       [ 142, 0, 193 ],
-      [ 255, 153, 0 ],
+      [ 255, 151, 0 ],
       [ 255, 51, 0 ],
       [ 255, 51, 102 ],
       [ 0, 153, 153 ],

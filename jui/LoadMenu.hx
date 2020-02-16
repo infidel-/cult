@@ -26,8 +26,6 @@ class LoadMenu
       // load menu window
       window = Tools.window({
         id: "loadMenuWindow",
-        winW: UI.winWidth,
-        winH: UI.winHeight,
         w: 420,
         h: 320,
         z: 25
@@ -107,8 +105,8 @@ class LoadMenu
           delButtons.push(b2);
         }
 
-      bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
-      close = Tools.closeButton(window, 180, 280, 'loadMenuClose');
+      bg = Tools.bg();
+      close = Tools.closeButton(window);
       close.onclick = onClose;
     }
 

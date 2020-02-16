@@ -26,8 +26,6 @@ class SaveMenu
       // save menu window
       window = Tools.window({
         id: "saveMenuWindow",
-        winW: UI.winWidth,
-        winH: UI.winHeight,
         w: 420,
         h: 320,
         z: 25
@@ -106,8 +104,8 @@ class SaveMenu
           delButtons.push(b2);
         }
 
-      bg = Tools.bg({ w: UI.winWidth + 20, h: UI.winHeight});
-      close = Tools.closeButton(window, 180, 280, 'saveMenuClose');
+      bg = Tools.bg();
+      close = Tools.closeButton(window);
       close.onclick = onClose;
     }
 
