@@ -6,6 +6,10 @@
   --text-select-bg: #333333;
   --text-font: "Verdana";
   --node-error-color: #ff8888;
+  --power-color-0: rgb(255, 0, 0);
+  --power-color-1: rgb(0, 255, 255);
+  --power-color-2: rgb(0, 255, 0);
+  --power-color-3: rgb(255, 255, 0);
 }
 
 body {

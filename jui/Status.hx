@@ -20,7 +20,9 @@ class Status
       statusBorder = cast UI.e("statusBorder");
       status = cast UI.e("status");
 
-      var s = "<div id='status.cult'>-</div>";
+      var s = '';
+      s += '<div id=statusBG><div id=statusFG>';
+      s += "<div id='status.cult'>-</div>";
 
       s += "<fieldset>";
       s += "<legend>FOLLOWERS</legend>";
@@ -60,8 +62,8 @@ class Status
                 UI.vars.markerWidth +
                 "; height: " + UI.vars.markerHeight +
                 "; font-size: 12px; " +
-                "background:#222; border:1px solid #777; color: " +
-                UI.vars.powerColors[i] + ";'>";
+                "background:#222; border:1px solid #777; color: var(--power-color-" +
+                i + ");'>";
                 "<center><b>" + Game.powerShortNames[i] +
                 "</b></center></div>";
             }
@@ -83,10 +85,10 @@ class Status
             "<tr><td width=20 halign=right>To";
           for (ii in 0...Game.numPowers)
             if (ii != i)
-                s += "<td><div id='status.convert" + i + ii + "' " +
+              s += "<td><div id='status.convert" + i + ii + "' " +
                 "style='cursor: pointer; width:12; height:12; " +
                 "background:#222; border:1px solid #777; " +
-                "color:" + UI.vars.powerColors[ii] + "; " +
+                "color: var(--power-color-" + ii + "); " +
                 "text-align:center; font-size: 10px; font-weight: bold; '>" +
                 Game.powerShortNames[ii] + "</div>";
 
@@ -108,7 +110,6 @@ class Status
         }
       s += "</table></fieldset>";
 
-      s += '<div id=statusBG><div id=statusFG>';
       s += "<fieldset>";
       s += "<legend>STATS</legend>";
       s += "<table class=statusTable cellpadding=0>";

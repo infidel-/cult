@@ -6,6 +6,10 @@
   --text-select-bg: #33333330;
   --text-font: "Fredoka One";
   --node-error-color: #fe6868;
+  --power-color-0: rgb(239, 85, 124);
+  --power-color-1: rgb(92, 227, 255);
+  --power-color-2: rgb(114, 255, 77);
+  --power-color-3: rgb(218, 148, 229);
 }
 
 body {
@@ -69,11 +73,11 @@ input[type=text] {
   background-color: #a2d3c3;
   border-radius: 20px;
   border: solid 2px #4b4b4b;
+  box-shadow: black 0px 0px 3px;
   color: var(--text-color);
   letter-spacing: 0.03em;
   opacity: 0.9 !important;
   padding: 5px !important;
-/*  text-shadow: .5px .5px 1px black;*/
   user-select: none;
 }
 
@@ -112,7 +116,7 @@ legend {
   margin: 0px;
   padding: 0px;
   text-align: center;
-  text-shadow: 0px 0px 6px #212121;
+  text-shadow: 1px 1px 1px #212121;
   text-transform: uppercase;
   user-select: none;
 }
@@ -121,7 +125,7 @@ legend {
   box-shadow: 3px 3px 3px #6d817a !important;
   letter-spacing: 0.08em !important;
   padding: 5px !important;
-  text-shadow: 0px 0px 4px #565656 !important;
+  text-shadow: 1px 1px 1px #565656 !important;
 }
 
 .musicButton {
@@ -132,13 +136,15 @@ legend {
 .musicButton2 {
   box-shadow: 1px 1px 1px #6d817a !important;
   font-size: 8px;
+  letter-spacing: 0.13em !important;
   padding: 1px !important;
-  text-shadow: none !important;
+  text-shadow: 1.3px 1.2px 1px #565656 !important;
 }
 
 .mainMenuButton {
   font-size: 18px;
   padding: 3px !important;
+  text-shadow: 1px 1px 1.5px #212121 !important;
   width: 320px;
 }
 
@@ -207,13 +213,16 @@ legend {
 }
 
 #statusBG {
+/*
   background: url(data/status-bg.png) no-repeat;
+  background: url(data/status-bg9.png) no-repeat;
+*/
   height: 100%;
 }
 
 #statusFG {
   height: 100%;
-  background: #a1c0b0c9;
+/*  background: #a1c0b0c9; */
 }
 
 #status\.cult {
@@ -378,10 +387,21 @@ div::-webkit-scrollbar-thumb {
 }
 
 #sectsBGIMG {
+/*
   background-image: url(data/sect-bg15.png);
   background-repeat: no-repeat;
   background-position: 56% 12%;
   background-size: 107%;
+
+  background-image: url(data/sect-bg16.png);
+  background-repeat: no-repeat;
+  background-position: 56% 199%;
+  background-size: 113%;
+*/
+  background-image: url(data/sect-bg17.png);
+  background-repeat: no-repeat;
+  background-position: 56% 41%;
+  background-size: 100%;
   width: 98%;
   margin: 1%;
   border-radius: 25px;
@@ -397,3 +417,15 @@ div::-webkit-scrollbar-thumb {
   overflow-y: auto;
   position: relative;
 }
+
+#logBGIMG {
+  background-image: url(data/sect-bg17.png);
+  background-repeat: no-repeat;
+  background-position: 56% 41%;
+  background-size: 100%;
+  width: 98%;
+  margin: 1%;
+  border-radius: 25px;
+  border: 1px solid #777;
+}
+

@@ -53,7 +53,7 @@ class UINode
         if (node.power[i] > 0)
           {
             text = Game.powerShortNames[i];
-            textColor = UI.vars.powerColors[i];
+            textColor = 'var(--power-color-' + i + ')';
             isI = false;
             if (Game.powerShortNames[i] == "I")
               isI = true;
@@ -198,7 +198,7 @@ class UINode
             for (i in 0...Game.numPowers)
               if (node.powerGenerated[i] > 0)
                 {
-                  ctx.fillStyle = UI.vars.powerColors[i];
+                  ctx.fillStyle = 'var(--power-color-' + i + ')';
                   ctx.fillRect(
                     tempx + (tempd - 1) + i*(productionIndicatorWidth+1),
                     tempy - productionIndicatorHeight,
@@ -293,10 +293,10 @@ class UINode
 
       if (node.owner != null) // cult info
         {
-          s += "<span style='color:" + UI.vars.cultColors[node.owner.id] + "'>" +
-            node.owner.name + "</span><br>";
-          if (node.owner.origin == node && node.isKnown[game.player.id])
-            s += "<span style='color:" +
+          s += UI.cultName(node.owner.id, node.owner.info) + '<br>';
+          if (node.owner.origin == node &&
+              node.isKnown[game.player.id])
+            s += "<span class=shadow style='color:" +
               UI.vars.cultColors[node.owner.id] +
               "'>The Origin</span><br>";
           s += "<br>";
@@ -338,7 +338,7 @@ class UINode
                   cnt++;
 
               if (cnt >= 3)
-                s += "<span style='color:var(--node-error-color)'>Generator has " + cnt + " links</span><br>";
+                s += "<span class=shadow style='color:var(--node-error-color)'>Generator has " + cnt + " links</span><br>";
             }
 
           if (br)

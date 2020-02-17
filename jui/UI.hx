@@ -3,6 +3,7 @@
 
 import js.Browser;
 import Alert;
+import Static;
 
 
 @:expose
@@ -310,15 +311,15 @@ class UI
 
 
 // show colored power name
-  public static function powerName(i, ?isShort: Bool = false)
+  public static function powerName(i: Int, ?isShort: Bool = false)
     {
-      return "<span class=shadow style='color:" + vars.powerColors[i] + "'>" +
+      return "<span class=shadow style='color:var(--power-color-" + i + ")'>" +
         (isShort ? Game.powerShortNames[i] : Game.powerNames[i]) + "</span>";
     }
 
 
 // show colored cult name
-  public static function cultName(i, info)
+  public static function cultName(i: Int, info: CultInfo)
     {
       return "<span class=shadow style='color:" + UI.vars.cultColors[i] + "'>" +
         info.name + "</span>";
@@ -424,12 +425,6 @@ class UI
     markerWidth: 15,
     markerHeight: 15,
     scaleFactor: 1.0,
-    powerColors: [
-      "rgb(255, 0, 0)",
-      "rgb(0, 255, 255)",
-      "rgb(0, 255, 0)",
-      "rgb(255, 255, 0)"
-    ],
     powerImages: [
       'power-intimidation.png',
       'power-persuasion.png',
@@ -472,12 +467,6 @@ class UI
     markerWidth: 60,
     markerHeight: 60,
     scaleFactor: 4.0, // sqrt(60 * 60 + 60 * 60) / sqrt(15 * 15 + 15 * 15)
-    powerColors: [
-      "rgb(239, 85, 124)",
-      "rgb(102, 215, 239)",
-      "rgb(154, 219, 116)",
-      "rgb(218, 148, 229)"
-    ],
     powerImages: [
       'power-intimidation.png',
       'power-persuasion.png',

@@ -14,11 +14,19 @@ class Log extends Window
       super(uivar, gvar, 'log', 800, 536, 20, 493);
 
       // log text
+      var logBG = Browser.document.createDivElement();
+      logBG.id = 'logBGIMG';
+      window.appendChild(logBG);
+      var logFG = Browser.document.createDivElement();
+      logFG.id = 'logFG';
+      logFG.className = 'uiTextFG';
+      logBG.appendChild(logFG);
       text = Browser.document.createDivElement();
-      text.className = 'uiText';
+//      text.className = 'uiText';
       text.style.fontSize = '16px';
+      text.style.padding = '10px';
       text.id = 'logText';
-      window.appendChild(text);
+      logFG.appendChild(text);
     }
 
 
