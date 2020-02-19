@@ -81,7 +81,7 @@ class Tools
         container: container
       });
       b.style.left = '50%';
-      b.style.bottom = '3%';
+      b.style.bottom = '9px';
       b.style.transform = 'translate(-50%)';
 
       return b;

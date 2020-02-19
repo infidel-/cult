@@ -10,6 +10,11 @@
   --power-color-1: rgb(92, 227, 255);
   --power-color-2: rgb(114, 255, 77);
   --power-color-3: rgb(218, 148, 229);
+  --awareness-text-color-0: white;
+  --awareness-text-color-1: #e3e32b;
+  --awareness-text-color-2: #ff5858;
+  --awareness-color: #e8e45f;
+  --willpower-color: #dca655;
 }
 
 body {
@@ -233,18 +238,42 @@ legend {
 
 #status\.awareness {
   text-shadow: 1px 1px 1px black;
+  letter-spacing: 0.05em;
+}
+
+#status\.musicPlus {
+  font-size: 10px;
+  height: 12px;
+  left: 134px;
+  position: relative;
+  top: -72px;
+  width: 12px;
+}
+
+#status\.musicMinus {
+  font-size: 10px;
+  height: 12px;
+  left: 154px;
+  position: relative;
+  top: -88px;
+  width: 12px;
+}
+
+.statusConvert {
+  box-shadow: 1px 1px 2px #41514b;
+  cursor: pointer;
+  font-size: 13px;
+  height: 15px;
+  text-align: center;
+  width: 15px;
 }
 
 .statusUpgrade {
-  cursor: pointer;
-  width: 12;
-  height: 12;  
-  background: #222;
-  border: 1px solid #777;  
-  color: lightgreen;
-  text-align: center;
-  font-size: 10px;
-  font-weight: bold;
+  color: #d5f2d5;
+}
+
+.statusNumber {
+  letter-spacing: 0.05em;
 }
 
 .statusTable {
@@ -325,7 +354,7 @@ legend {
   border-radius: 25px;
   border: 1px solid #777;
   color: var(--text-color);
-  height: 86%;
+  height: calc(100% - 60px);
   margin: 1%;
   overflow-x: hidden;
   overflow-y: auto;
@@ -366,7 +395,7 @@ div::-webkit-scrollbar-thumb {
 }
 
 .cultInfoLabel {
-  bottom: 3%;
+  bottom: 7px;
   color: var(--text-color);
   left: 14%;
   position: absolute;
@@ -400,7 +429,7 @@ div::-webkit-scrollbar-thumb {
 */
   background-image: url(data/sect-bg17.png);
   background-repeat: no-repeat;
-  background-position: 56% 41%;
+  background-position: 56% 31%;
   background-size: 100%;
   width: 98%;
   margin: 1%;
@@ -412,14 +441,14 @@ div::-webkit-scrollbar-thumb {
   background: #b2ddc9de;
   border-radius: 25px;
   color: var(--text-color);
-  height: 89.2%;
+  height: calc(100% - 46px);
   overflow-x: hidden;
   overflow-y: auto;
   position: relative;
 }
 
 #logBGIMG {
-  background-image: url(data/sect-bg17.png);
+  background-image: url(data/log-bg3.png);
   background-repeat: no-repeat;
   background-position: 56% 41%;
   background-size: 100%;

@@ -68,7 +68,8 @@ class Message
       // text
       text = js.Browser.document.createDivElement();
       text.className = 'uiText';
-      text.style.height = '52%';
+      text.style.width = 'width: 95.6%';
+      text.style.height = 'calc(100% - 16px)';
       text.innerHTML = '<center>' + s + '</center>';
       window.appendChild(text);
 

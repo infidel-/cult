@@ -104,7 +104,6 @@ class Alert
       if (opts.center)
         text.innerHTML = '<center>' + s + '</center>';
       else text.innerHTML = s;
-      text.style.height = '78%';
       border.style.display = 'inline';
       bg.style.display = 'inline';
       isVisible = true;

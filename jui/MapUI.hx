@@ -63,7 +63,6 @@ class MapUI
 //        Browser.window.devicePixelRatio);
 
       map.onclick = onClick;
-      map.addEventListener('click', onClick);
       map.onmousemove = onMove;
       map.onmousedown = onMouseDown;
       map.onmouseup = onMouseUp;

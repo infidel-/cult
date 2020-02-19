@@ -478,15 +478,5 @@ class UI
   public static var classicMode = false; // classic mode flag
   public static var vars = modernModeVars;
 
-  public static var winWidth = 1024;
-  public static var winHeight = 630;
-  public static var tooltipWidth = 100;
-  public static var tooltipHeight = 80;
-  public static var topHeight = 30;
-
-//  public static var nodeVisibility = 101;
-  public static var colAwareness = "#ff9999";
-  public static var colWillpower = "#bbbbbb";
-
   public static var maxSaves:Int = 5; // max number of saves displayed
 }

@@ -35,15 +35,17 @@ class Status
             Game.followerNames[i] + "s";
 
           // icon
-          s += "<td><div class=statusUpgrade id='status.upgrade" + i + "'>";
+          s += "<td><div class='uiButton statusConvert statusUpgrade' id='status.upgrade" + i + "'>";
           if (i < Game.followerNames.length - 1)
             s += "+";
           else s += "!";
           s += "</div>";
 
           // number
-          s += "<td><span id='status.followers" + i +
-          "' style='font-weight:bold;'>0</span>";
+          s += "<td><span class='" +
+            (i == 1 ? 'shadow statusNumber' : 'statusNumber') +
+            "' id='status.followers" + i +
+          "'>0</span>";
         }
       s += "</table></fieldset>";
 
@@ -85,26 +87,18 @@ class Status
             "<tr><td width=20 halign=right>To";
           for (ii in 0...Game.numPowers)
             if (ii != i)
-              s += "<td><div id='status.convert" + i + ii + "' " +
-                "style='cursor: pointer; width:12; height:12; " +
-                "background:#222; border:1px solid #777; " +
-                "color: var(--power-color-" + ii + "); " +
-                "text-align:center; font-size: 10px; font-weight: bold; '>" +
+              s += "<td><div class='uiButton statusConvert' id='status.convert" + i + ii + "' " +
+                "style='color: var(--power-color-" + ii + ");'>" +
                 Game.powerShortNames[ii] + "</div>";
 
           // not for virgins
           if (i != 3)
             {
-              s += "<td><div id='status.lowerAwareness" + i + "' " +
-                "style='cursor: pointer; width:12; height:12; " +
-                "background:#222; border:1px solid #777; " +
-                "color:" + UI.colAwareness + "; " +
-                "text-align:center; font-size: 10px; font-weight: bold; '>A</div>";
-              s += "<td halign=right><div id='status.lowerWillpower" + i + "' " +
-                "style='cursor: pointer; width:12; height:12; " +
-                "background:#222; border:1px solid #777; " +
-                "color:" + UI.colWillpower + "; " +
-                "text-align:center; font-size: 10px; font-weight: bold; '>W</div>";
+              s += "<td><div class='uiButton statusConvert' id='status.lowerAwareness" + i + "' " +
+                "style='color:var(--awareness-color);'>A</div>";
+              s += "<td halign=right>" +
+                "<div class='uiButton statusConvert' id='status.lowerWillpower" + i + "' " +
+                "style='color:var(--willpower-color);'>W</div>";
             }
           s += "</table>";
         }
@@ -148,38 +142,39 @@ class Status
 
       status.innerHTML = s;
 
-      Tools.button({
+      var player: DivElement = cast UI.e('musicplayer');
+      var b = Tools.button({
         id: 'status.musicPlus',
         text: '+',
         className: 'uiButton statusButton musicButton',
-        w: 12,
-        h: 12,
-        x: (UI.classicMode ? 155 : 139),
-        y: (UI.classicMode ? 444 : 453),
-        fontSize: 10,
-        container: status,
+        w: null,
+        h: null,
+        x: null,
+        y: null,
+        container: player,
         title: "Click to increase music volume.",
         func: function (ev: Dynamic)
           {
             ui.music.increaseVolume();
           }
         });
-      Tools.button({
+      b.style.position = null;
+      var b = Tools.button({
         id: 'status.musicMinus',
         text: '-',
         className: 'uiButton statusButton musicButton',
-        w: 12,
-        h: 12,
-        x: (UI.classicMode ? 179 : 159),
-        y: (UI.classicMode ? 444 : 453),
-        fontSize: 10,
-        container: status,
+        w: null,
+        h: null,
+        x: null,
+        y: null,
+        container: player,
         title: "Click to decrease music volume.",
         func: function (ev: Dynamic)
           {
             ui.music.decreaseVolume();
           }
         });
+      b.style.position = null;
 
       // setting events and tooltips
       for (i in 0...Game.followerNames.length)
@@ -353,7 +348,7 @@ class Status
         {
           updateTip("status.follower" + i, tipFollowers[i]);
           updateTip("status.upgrade" + i, tipUpgrade[i] +
-            "<br>Chance of success: <span style='color:white'>" +
+            "<br>Chance of success: <span class=shadow style='color:white'>" +
             game.player.getUpgradeChance(i) + "%</span>");
         }
       updateTip("status.followers1",
@@ -404,12 +399,12 @@ class Status
       e("status.turns").innerHTML = "" + game.turns;
       var aw = e("status.awareness");
       aw.innerHTML = "" + game.player.awareness + "%";
-      var col = 'white';
+      var col = 0;
       if (game.player.awareness >= 20)
-        col = '#ff2222';
+        col = 2;
       else if (game.player.awareness >= 10)
-        col = '#ffff44';
-      aw.style.color = col;
+        col = 1;
+      aw.style.color = 'var(--awareness-text-color-' + col + ')';
 
       // lower awareness buttons visibility
       for (i in 0...Game.numPowers)

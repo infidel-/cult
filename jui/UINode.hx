@@ -286,7 +286,7 @@ class UINode
         {
           s += "<span class=shadow style='color:var(--node-error-color)'>Use sects to gather cult<br>or node information.</span><br>";
           if (node.owner == null || node.owner != game.player)
-            s += "<br>Chance of success: <span style='color:white'>" +
+            s += "<br>Chance of success: <span class=shadow style='color:white'>" +
               game.player.getGainChance(node) + "%</span><br>";
           return s;
         }
