@@ -145,8 +145,9 @@ class UINode
 //          ctx.fillRect(xx, yy, 52, 52);
 
           // background
-          ctx.drawImage(
-            ui.map.nodeImages[idx], xx, yy);
+          if (node.isGenerator)
+            ctx.drawImage(ui.map.nodeImagesGenerator[idx], xx, yy);
+          else ctx.drawImage(ui.map.nodeImages[idx], xx, yy);
 
           // job icon
           ctx.drawImage(ui.map.jobImages[node.imageID],

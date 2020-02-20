@@ -36,6 +36,7 @@ class MapUI
   // modern mode
   var firstTime: Bool;
   public var nodeImages: Array<CanvasElement>; // node images
+  public var nodeImagesGenerator: Array<CanvasElement>;
   public var textImages: Array<CanvasElement>; // text images: S, 1, 2, 3
   public var jobImages: Array<Image>; // loaded job images
   public var powerImages: Array<Image>; // loaded power images
@@ -110,7 +111,8 @@ class MapUI
     }
 
 
-  function loadImagesModern()
+// render node images for modern mode
+  public function loadImagesModern()
     {
       bgImage = new Image();
       bgImage.onload = onLoadImage;
@@ -156,6 +158,58 @@ class MapUI
           n.fill();
 
           nodeImages[i] = c;
+        }
+
+      // render generator node images
+      nodeImagesGenerator = [];
+      for (i in 0...9)
+        {
+          var c: CanvasElement =
+            cast Browser.document.createElement('canvas');
+          c.width = UI.vars.markerWidth;
+          c.height = UI.vars.markerHeight;
+          var cx = Std.int(c.width / 2);
+          var cy = Std.int(c.height / 2);
+
+          var r = cx;
+          var n = c.getContext2d();
+
+          // outer circle
+          n.beginPath();
+          n.arc(cx, cy, r, 0, 2 * Math.PI);
+          n.fillStyle = UI.vars.cultColors[i];
+          n.fill();
+
+          // middle circle
+          n.beginPath();
+          n.arc(cx - 1, cy + 2, r - 5, 0, 2 * Math.PI);
+          n.fillStyle = '#ffffff40';
+          if (UI.modernGeneratorColors[i] != null)
+            n.fillStyle = '#ffffff' + UI.modernGeneratorColors[i][1];
+          n.fill();
+
+          // inner circle
+          n.beginPath();
+          n.arc(cx - 3, cy + 6, r - 12, 0, 2 * Math.PI);
+          n.fillStyle = '#ffffff70';
+          if (UI.modernGeneratorColors[i] != null)
+            n.fillStyle = '#ffffff' + UI.modernGeneratorColors[i][2];
+          n.fill();
+
+          // outer circle (level)
+          var clx = 44, cly = 8, rs = 8;
+          n.beginPath();
+          n.arc(clx, cly, rs, 0, 2 * Math.PI);
+          n.fillStyle = UI.vars.cultColors[i];
+          n.fill();
+
+          // inner circle (level)
+          n.beginPath();
+          n.arc(clx, cly, rs - 1, 0, 2 * Math.PI);
+          n.fillStyle = '#f5efe1';
+          n.fill();
+
+          nodeImagesGenerator[i] = c;
         }
 
       // job images

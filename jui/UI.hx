@@ -473,6 +473,17 @@ class UI
       'power-bribery.png',
     ],
   };
+  public static var modernGeneratorColors = [
+    null, // green
+    null, // blue
+    null, // violet
+    [ null, 'a0', 'c0' ], // orange
+    [ null, 'a0', 'c0' ], // yellow
+    [ null, 'b0', 'd0' ], // pink
+    null, // cyan
+    null, // red
+    [ null, '70', 'c0' ], // neutral
+  ];
 
   public static var modernMode = true; // modern mode flag
   public static var classicMode = false; // classic mode flag
