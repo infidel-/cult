@@ -8,7 +8,7 @@
   --text-color-log-time: #674a17;
   --text-select-bg: #33333330;
   --text-font: MavenPro;
-  --advanced-mode-font: 14px MavenPro;
+  --advanced-mode-font: 16px MavenPro;
   --node-error-color: #fe6868;
   --power-color-0: rgb(239, 85, 124);
   --power-color-1: rgb(92, 227, 255);
@@ -363,7 +363,7 @@ legend {
   height: 16px;
   left: 2px;
   position: absolute;
-  text-shadow: 0px 0px 2px white;
+  text-shadow: 1px 1px 1px #606060;
   width: 16px;
 }
 
@@ -374,7 +374,7 @@ legend {
   height: 16px;
   left: 2px;
   position: absolute;
-  text-shadow: 0px 0px 2px white;
+  text-shadow: 1px 1px 1px #606060;
   width: 16px;
 }
 
@@ -474,9 +474,9 @@ div::-webkit-scrollbar-thumb {
   background-position: 56% 199%;
   background-size: 113%;
 */
-  background-image: url(data/sect-bg17.png);
+  background-image: url(data/sect-bg18.png);
   background-repeat: no-repeat;
-  background-position: 56% 31%;
+  background-position: 56% 234%;
   background-size: 100%;
   width: 98%;
   margin: 1%;

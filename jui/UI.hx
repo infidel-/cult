@@ -437,34 +437,34 @@ class UI
   static var modernModeVars = {
     cultColors: [
       '#009933', // green
-      '#3300CC', // blue
-      '#660099', // violet
-      '#ff9900', // orange
-      '#FF3300', // yellow
       '#FF3366', // pink
       '#009999', // cyan
+      '#ff9900', // orange
+      '#FF3300', // yellow
+      '#3300CC', // blue
+      '#660099', // violet
       '#330000', // red
       '#999999', // neutral
     ],
     lineColors: [ // same as cult
       '#009933', // green
-      '#3300CC', // blue
-      '#660099', // violet
-      '#ff9900', // orange
-      '#FF3300', // yellow
       '#FF3366', // pink
       '#009999', // cyan
+      '#ff9900', // orange
+      '#FF3300', // yellow
+      '#3300CC', // blue
+      '#660099', // violet
       '#330000', // red
     ],
     nodePixelColors: [
-      [ 0, 153, 51 ],
-      [ 51, 60, 254 ],
-      [ 142, 0, 193 ],
-      [ 255, 151, 0 ],
-      [ 255, 51, 0 ],
-      [ 255, 51, 102 ],
-      [ 0, 153, 153 ],
-      [ 51, 0, 0 ]
+      [ 0, 153, 51 ], // green
+      [ 255, 51, 102 ], // pink
+      [ 0, 153, 153 ], // cyan
+      [ 255, 151, 0 ], // orange
+      [ 255, 51, 0 ], // yellow
+      [ 51, 60, 254 ], // blue
+      [ 142, 0, 193 ], // violet
+      [ 51, 0, 0 ] // red
     ],
     nodeNeutralPixelColors: [ 150, 150, 150 ],
     markerWidth: 60,
@@ -478,12 +478,12 @@ class UI
   ];
   public static var modernGeneratorColors = [
     null, // green
-    null, // blue
-    null, // violet
-    [ null, 'a0', 'c0' ], // orange
-    [ null, 'a0', 'c0' ], // yellow
     [ null, 'b0', 'd0' ], // pink
     null, // cyan
+    [ null, 'a0', 'c0' ], // orange
+    [ null, 'a0', 'c0' ], // yellow
+    null, // blue
+    null, // violet
     null, // red
     [ null, '70', 'c0' ], // neutral
   ];

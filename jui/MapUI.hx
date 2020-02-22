@@ -36,6 +36,7 @@ class MapUI
   // modern mode
   var firstTime: Bool;
   public var nodeImages: Array<CanvasElement>; // node images
+  public var nodeHL: Image; // node highlight image
   public var nodeImagesGenerator: Array<CanvasElement>;
   public var textImages: Array<CanvasElement>; // text images: S, 1, 2, 3
   public var jobImages: Array<Image>; // loaded job images
@@ -229,7 +230,7 @@ class MapUI
           jobImages.push(img);
         }
 
-      // job images
+      // power icons
       powerImages = [];
       for (name in UI.modernPowerImages)
         {
@@ -239,6 +240,13 @@ class MapUI
           img.height = 15;
           powerImages.push(img);
         }
+
+      // node highlight image
+      nodeHL = new Image();
+      nodeHL.src = 'data/highlight.png';
+      nodeHL.width = 80;
+      nodeHL.height = 80;
+      jobImages.push(nodeHL);
     }
 
 

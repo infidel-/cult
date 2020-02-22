@@ -1,5 +1,4 @@
 // node ui
-
 import js.html.CanvasRenderingContext2D;
 
 class UINode
@@ -111,9 +110,11 @@ class UINode
       for (n in game.player.highlightedNodes)
         if (n == node)
           {
-            ctx.drawImage(ui.map.nodeImage,
-              0, 167, 37, 37,
-              hlx, hly, 37, 37);
+            if (UI.classicMode)
+              ctx.drawImage(ui.map.nodeImage,
+                0, 167, 37, 37,
+                hlx, hly, 37, 37);
+            else ctx.drawImage(ui.map.nodeHL, hlx, hly);
             break;
           }
 
@@ -151,7 +152,7 @@ class UINode
 
           // job icon
           var imageID = node.imageID;
-          if (key == 'o' || key == 'op')
+          if (key == 'o' || key == 'op') // origin
             imageID = 14;
           ctx.drawImage(ui.map.jobImages[imageID],
             xx + jobInfo[imageID].x,
@@ -159,6 +160,7 @@ class UINode
 
           // resource to acquire
           if (node.owner != game.player &&
+              !ui.map.isAdvanced &&
               (node.isKnown[game.player.id] || node.owner == null))
             for (i in 0...Game.numPowers)
               if (node.power[i] > 0)
@@ -197,66 +199,90 @@ class UINode
       var productionIndicatorWidth = 6;
       var productionIndicatorHeight = 2;
       if (node.isGenerator && !node.isTempGenerator)
-        if (node.owner != game.player || node.isKnown[game.player.id])
+        if (node.owner != game.player ||
+            node.isKnown[game.player.id])
           {
+            var j = 0;
             for (i in 0...Game.numPowers)
               if (node.powerGenerated[i] > 0)
                 {
+                  if (node.powerGenerated[i] == 0)
+                    continue;
                   ctx.fillStyle = ui.map.powerColors[i];
-                  ctx.fillRect(
-                    tempx + (tempd - 1) +
-                    i * (productionIndicatorWidth + 1),
-                    tempy - productionIndicatorHeight,
-                    productionIndicatorWidth,
-                    productionIndicatorHeight);
+                  if (UI.classicMode)
+                    ctx.fillRect(
+                      tempx + (tempd - 1) +
+                      i * (productionIndicatorWidth + 1),
+                      tempy - productionIndicatorHeight,
+                      productionIndicatorWidth,
+                      productionIndicatorHeight);
+                  else 
+                    {
+                      ctx.shadowColor = 'black';
+                      ctx.fillText(roman[node.powerGenerated[i]],
+                        tempx + 62,
+                        tempy + 26 + j * 16);
+                      ctx.shadowColor = 'transparent';
+                    }
+                  j++;
                 }
           }
 
-      // chance to gain node
       if (node.owner != game.player)
         {
+          // chance to gain node
           var ch = game.player.getGainChance(node);
           if (UI.classicMode)
             ui.map.paintText(ctx, [ Std.int(ch / 10), ch % 10, 10 ], 0,
                tempx + tempd + 1, tempy - 11);
           else
             {
-              ctx.fillStyle = '#333333';
+              ctx.fillStyle = "#402b2b";
               ctx.shadowOffsetX = 1;
               ctx.shadowOffsetY = 1;
-              ctx.shadowBlur = 0.5;
-              ctx.shadowColor = '#777777';
+              ctx.shadowBlur = 1;
+              ctx.shadowColor = "#84aa9d";
               ctx.fillText(ch + '%', tempx + 13, tempy - 4);
               ctx.shadowColor = 'transparent';
-
             }
-/*
-          ctx.fillStyle = 'white';
-          ctx.fillText(game.player.getGainChance(node) + '%', tempx - 3, tempy - 4);
-*/
 
+          // resources to conquer
           if (node.owner == null || node.isKnown[game.player.id])
             {
+              var j = 0;
               for (i in 0...Game.numPowers)
-                if (node.power[i] > 0)
-                  ui.map.paintText(ctx, [ node.power[i] ], i + 1,
-                    tempd + tempx + i * 6, tempy + temph + 3);
-                else
-                  ui.map.paintText(ctx, [ 10 ], i + 1,
-                    tempd + tempx + i * 6, tempy + temph + 3);
-/*
-              for (i in 0...Game.numPowers)
-                if (node.power[i] > 0)
-                  {
-                    ctx.fillStyle = UI.vars.powerColors[i];
-                    ctx.fillText(node.power[i], tempd + tempx - 3 + i * 7, tempy + temph + 11);
-                  }
-                else
-                  {
-                    ctx.fillStyle = '#333';
-                    ctx.fillText('-', tempd + tempx - 3 + i * 7, tempy + temph + 11);
-                  }
-*/
+                {
+                  if (node.power[i] == 0)
+                    continue;
+                  if (UI.classicMode)
+                    {
+                      if (node.power[i] > 0)
+                        ui.map.paintText(ctx, [ node.power[i] ], j + 1,
+                          tempd + tempx + j * 6, tempy + temph + 3);
+                      else
+                        ui.map.paintText(ctx, [ 10 ], i + 1,
+                          tempd + tempx + j * 6, tempy + temph + 3);
+                    }
+                  else
+                    {
+                      ctx.shadowColor = 'black';
+  /*
+                      ctx.beginPath();
+                      ctx.arc(tempd + tempx - 13,
+                        tempy + temph - 5 + j * 13, 5, 0, 2 * Math.PI);
+                      ctx.fillStyle = ui.map.powerColors[i];
+                      ctx.fill();
+  */
+                      ctx.fillStyle = ui.map.powerColors[i];
+                      var s = roman[node.power[i]];
+                      var w = ctx.measureText(s).width;
+                      ctx.fillText(s,
+                        tempx - 4 - w,
+                        tempy + 26 + j * 16);
+                      ctx.shadowColor = 'transparent';
+                    }
+                  j++;
+                }
             }
         }
     }
@@ -495,5 +521,9 @@ class UINode
       x: 3,
       y: 0,
     },
+  ];
+
+  static var roman = [
+    '', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X',
   ];
 }
