@@ -38,6 +38,7 @@ class OptionsMenu extends Window
     {
       super(uivar, gvar, 'options', 800, 536, 20, 493);
 
+/*
       Tools.label({
         id: 'titleLabel',
         text: 'Game Options',
@@ -47,6 +48,7 @@ class OptionsMenu extends Window
         y: 10,
         container: window
       });
+*/
 
       contents = Browser.document.createDivElement();
       contents.className = 'uiText';
