@@ -95,7 +95,7 @@ class Cult
       this.investigatorTimeout = 0;
       this.difficulty = game.difficulty;
       this.logMessages = '';
-      this.logPanelMessages = new List<LogPanelMessage>();
+      this.logPanelMessages = new List();
     }
 
 
@@ -904,7 +904,7 @@ class Cult
 
       // log messages
       var text = fullName + " has declared war against " + cult.fullName + ".";
-      var m:LogPanelMessage = {
+      var m: LogPanelMessage = {
         id: -1,
         old: false,
         type: 'cults',
@@ -912,7 +912,7 @@ class Cult
         obj: { c1: this, c2: cult },
         turn: game.turns + 1,
         params: {}
-        };
+      };
       for (c in game.cults)
         if (this.isInfoKnown[c.id] || cult.isInfoKnown[c.id] ||
             this.isDiscovered[c.id] || cult.isDiscovered[c.id])
@@ -934,7 +934,7 @@ class Cult
 
       // log messages
       var text = fullName + " has made peace with " + cult.fullName + ".";
-      var m:LogPanelMessage = {
+      var m: LogPanelMessage = {
         id: -1,
         old: false,
         type: 'cults',
@@ -942,7 +942,7 @@ class Cult
         obj: { c1: this, c2: cult },
         turn: game.turns + 1,
         params: {}
-        };
+      };
       for (c in game.cults)
         if (this.isInfoKnown[c.id] || cult.isInfoKnown[c.id] ||
             this.isDiscovered[c.id] || cult.isDiscovered[c.id])

@@ -321,7 +321,7 @@ class UI
 // show colored cult name
   public static function cultName(i: Int, info: CultInfo)
     {
-      return "<span class=shadow style='color:" + UI.vars.cultColors[i] + "'>" +
+      return "<span class='cultText shadow' style='color:" + UI.vars.cultColors[i] + "'>" +
         info.name + "</span>";
     }
 
@@ -370,6 +370,14 @@ class UI
   public static inline function e(s)
     {
       return Browser.document.getElementById(s);
+    }
+
+
+// get CSS variable
+  public static inline function getVar(s: String): String
+    {
+      return Browser.window.getComputedStyle(
+        Browser.document.documentElement).getPropertyValue(s);
     }
 
 
@@ -425,11 +433,6 @@ class UI
     markerWidth: 15,
     markerHeight: 15,
     scaleFactor: 1.0,
-    powerImages: [
-      'power-intimidation.png',
-      'power-persuasion.png',
-      'power-bribery.png',
-    ],
   };
   static var modernModeVars = {
     cultColors: [
@@ -467,12 +470,12 @@ class UI
     markerWidth: 60,
     markerHeight: 60,
     scaleFactor: 4.0, // sqrt(60 * 60 + 60 * 60) / sqrt(15 * 15 + 15 * 15)
-    powerImages: [
-      'power-intimidation.png',
-      'power-persuasion.png',
-      'power-bribery.png',
-    ],
   };
+  public static var modernPowerImages = [
+    'power-intimidation',
+    'power-persuasion',
+    'power-bribery',
+  ];
   public static var modernGeneratorColors = [
     null, // green
     null, // blue

@@ -42,9 +42,7 @@ class Status
           s += "</div>";
 
           // number
-          s += "<td><span class='" +
-            (i == 1 ? 'shadow statusNumber' : 'statusNumber') +
-            "' id='status.followers" + i +
+          s += "<td><span class='statusNumber' id='status.followers" + i +
           "'>0</span>";
         }
       s += "</table></fieldset>";
@@ -70,10 +68,11 @@ class Status
                 "</b></center></div>";
             }
           else s += "<img width=20 height=20 src='./data/power-" +
-            Game.powerNames[i].toLowerCase() + ".png'>";
+            Game.powerNames[i].toLowerCase() + "-status.png'>";
           // name
           s += "<td><span class=powerText id='status.powerName" + i + "'>" + UI.powerName(i) + "</span>" +
-          // level
+
+            // level
             "<td><td><span id='status.power" +
             i + "'>0</span><br>" +
             "<span style='font-size:10px' id='status.powerMod" + i +
@@ -378,9 +377,22 @@ class Status
               var adepts = game.player.adepts - game.player.adeptsUsed;
               if (adepts < 0)
                 adepts = 0;
-              s = "<span style='color:#55dd55'>" + adepts + "</span>";
+              s = '' + adepts;
+
+//              s = "<span style='color:var(--adepts-color)'>" + adepts + "</span>";
             }
-          e("status.followers" + i).innerHTML = s;
+          var el = e("status.followers" + i);
+          el.innerHTML = s;
+          if (i == 1 && game.player.adepts > 0)
+            {
+              el.style.color = 'var(--adepts-color)';
+              el.className = 'shadow statusNumber';
+            }
+          else
+            {
+              el.style.color = 'var(--text-color)';
+              el.className = 'statusNumber';
+            }
         }
 
       // update powers
@@ -389,11 +401,19 @@ class Status
           e("status.power" + i).innerHTML =
             "<b>" + game.player.power[i] + "</b>";
           if (i == 3)
-            e("status.powerMod3").innerHTML = " +0-" +
-              game.player.maxVirgins();
+            {
+              var t = ' +0';
+              if (game.player.maxVirgins() > 0)
+                t = ' +0-' + game.player.maxVirgins();
+              e("status.powerMod3").innerHTML = t;
+            }
           else
-            e("status.powerMod" + i).innerHTML =
-              " +0-" + game.player.powerMod[i];
+            {
+              var t = ' +0';
+              if (game.player.powerMod[i] > 0)
+                t = ' +0-' + game.player.powerMod[i];
+              e("status.powerMod" + i).innerHTML = t;
+            }
         }
 
       e("status.turns").innerHTML = "" + game.turns;
@@ -404,7 +424,9 @@ class Status
         col = 2;
       else if (game.player.awareness >= 10)
         col = 1;
-      aw.style.color = 'var(--awareness-text-color-' + col + ')';
+      aw.style.background = 'var(--awareness-text-color-' + col + ')';
+      if (col > 0)
+        aw.className = 'blinking';
 
       // lower awareness buttons visibility
       for (i in 0...Game.numPowers)

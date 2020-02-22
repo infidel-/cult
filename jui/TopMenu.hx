@@ -23,16 +23,14 @@ class TopMenu
       panel.id = 'topPanel';
       Browser.document.body.appendChild(panel);
 
-      var fontSize = (UI.classicMode ? 16 : 14);
-      var buttonHeight = (UI.classicMode ? 20 : 16);
       Tools.button({
         id: 'cults',
         text: "CULTS",
+        className: 'topButton uiButton',
         w: 70,
-        h: buttonHeight,
+        h: null,
         x: 20,
-        y: 2,
-        fontSize: fontSize,
+        y: null,
         container: panel,
         title: "Click to view cults information (or press <span class=shadow style=\"color:white\">C</span>).",
         func: onCults
@@ -41,11 +39,11 @@ class TopMenu
       Tools.button({
         id: 'sects',
         text: "SECTS",
+        className: 'topButton uiButton',
         w: 70,
-        h: buttonHeight,
+        h: null,
         x: 110,
-        y: 2,
-        fontSize: fontSize,
+        y: null,
         container: panel,
         title: "Click to view sects controlled by your cult (or press <span class=shadow style=\"color:white\">S</span>).",
         func: onSects
@@ -54,11 +52,11 @@ class TopMenu
       Tools.button({
         id: 'log',
         text: "LOG",
+        className: 'topButton uiButton',
         w: 70,
-        h: buttonHeight,
+        h: null,
         x: 200,
-        y: 2,
-        fontSize: fontSize,
+        y: null,
         container: panel,
         title: "Click to view message log (or press <span class=shadow style=\"color:white\">L</span>).",
         func: onLog
@@ -67,11 +65,11 @@ class TopMenu
       Tools.button({
         id: 'options',
         text: "OPTIONS",
+        className: 'topButton uiButton',
         w: 100,
-        h: buttonHeight,
+        h: null,
         x: 290,
-        y: 2,
-        fontSize: fontSize,
+        y: null,
         container: panel,
         title: "Click to view options (or press <span class=shadow style=\"color:white\">O</span>).",
         func: onOptions
@@ -81,11 +79,11 @@ class TopMenu
         Tools.button({
           id: 'debug',
           text: "DEBUG",
+          className: 'topButton uiButton',
           w: 70,
-          h: buttonHeight,
+          h: null,
           x: 410,
-          y: 2,
-          fontSize: fontSize,
+          y: null,
           container: panel,
           title: "Click to open debug menu (or press <span class=shadow style=\"color:white\">D</span>).",
           func: onDebug
@@ -94,11 +92,11 @@ class TopMenu
       manual = Tools.button({
         id: 'manual',
         text: "MANUAL",
+        className: 'topButton uiButton',
         w: 84,
-        h: buttonHeight,
+        h: null,
         x: 597,
-        y: 2,
-        fontSize: fontSize,
+        y: null,
         container: panel,
         title: "Click&nbsp;to&nbsp;open&nbsp;the&nbsp;manual&nbsp;(or&nbsp;press&nbsp;<span class=shadow style=\"color:white\">M</span>).",
         func: function(event: Dynamic)
@@ -114,11 +112,11 @@ class TopMenu
       about = Tools.button({
         id: 'about',
         text: "ABOUT",
+        className: 'topButton uiButton',
         w: 70,
-        h: buttonHeight,
+        h: null,
         x: 700,
-        y: 2,
-        fontSize: fontSize,
+        y: null,
         container: panel,
         // kludge to fix tooltip display
         title: "Click&nbsp;to&nbsp;open&nbsp;About&nbsp;page.",

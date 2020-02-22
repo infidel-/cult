@@ -33,8 +33,8 @@ class LogPanel
       for (m in game.player.logPanelMessages)
         {
           // choose symbol/color pair
-          var sym = '!';
-          var col = 'white';
+          var sym = '';
+          var col = '#e7e7e7';
           if (m.type == 'cult' || m.type == null) // cult-related message
             {
               var cult: Cult = m.obj;
@@ -44,8 +44,8 @@ class LogPanel
             {
               var cult: Cult = m.obj.c1;
               var cult2: Cult = m.obj.c2;
-              sym = "<span style='color:" + UI.vars.lineColors[cult.id] + "'>!</span>" +
-                "<span style='color:" + UI.vars.lineColors[cult2.id] + "'>!</span>";
+              sym = "<span style='color:" + UI.vars.lineColors[cult.id] + "'>I</span>" +
+                "<span style='color:" + UI.vars.lineColors[cult2.id] + "'>I</span>";
             }
           if (m.params != null && m.params.symbol != null)
              sym = m.params.symbol;
@@ -56,9 +56,10 @@ class LogPanel
           e.id = 'log.id' + list.length;
           e.className = 'uiButton ' +
             (m.old ? 'logPanelItemOld' : 'logPanelItemNew');
+          e.style.background = col;
           untyped e.messageID = m.id;
           e.style.top = '' + (list.length * 22);
-          e.style.color = col;
+//          e.style.color = col;
           e.innerHTML = sym;
           panel.appendChild(e);
 

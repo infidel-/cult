@@ -5,6 +5,7 @@
   --text-color-log-time: #888888;
   --text-select-bg: #333333;
   --text-font: "Verdana";
+  --advanced-mode-font: "11px Verdana";
   --node-error-color: #ff8888;
   --power-color-0: rgb(255, 0, 0);
   --power-color-1: rgb(0, 255, 255);
@@ -15,6 +16,7 @@
   --awareness-text-color-2: #ff5858;
   --awareness-color: #ff9999;
   --willpower-color: #bbbbbb;
+  --adepts-color: #55dd55;
 }
 
 body {
@@ -71,6 +73,12 @@ fieldset {
 legend {
   color: var(--text-color);
   padding: 0 3 0 3;
+}
+
+.topButton {
+  font-size: 16px;
+  height: 20px;
+  top: 2px;
 }
 
 .statusButton {

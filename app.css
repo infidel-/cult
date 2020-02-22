@@ -1,20 +1,25 @@
 :root {
-  --main-bg-color: #8db590;
-  --window-bg-color: #a1c0b0;
+  --main-bg-color: #f9dfbb;
+  --window-bg-color: #f9dfbb;
+  --border-color-0: #9c1361;
+  --border-color-1: #ec9c3b;
+  --border-color-2: #90015d;
   --text-color: #222d25;
   --text-color-log-time: #674a17;
   --text-select-bg: #33333330;
-  --text-font: "Fredoka One";
+  --text-font: MavenPro;
+  --advanced-mode-font: 14px MavenPro;
   --node-error-color: #fe6868;
   --power-color-0: rgb(239, 85, 124);
   --power-color-1: rgb(92, 227, 255);
   --power-color-2: rgb(114, 255, 77);
   --power-color-3: rgb(218, 148, 229);
-  --awareness-text-color-0: white;
-  --awareness-text-color-1: #e3e32b;
-  --awareness-text-color-2: #ff5858;
-  --awareness-color: #e8e45f;
-  --willpower-color: #dca655;
+  --awareness-text-color-0: var(--window-bg-color);
+  --awareness-text-color-1: #ecf634;
+  --awareness-text-color-2: #ff5959;
+  --awareness-color: #c3cf04;
+  --willpower-color: #d37f00;
+  --adepts-color: #7ef555;
 }
 
 body {
@@ -51,11 +56,29 @@ input[type=text] {
 }
 
 @font-face {
-  font-family: 'Fredoka One';
+  font-family: 'MavenPro';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 700;
   font-display: swap;
-  src: url(./data/FredokaOne-Regular.woff2) format('woff2');
+  src: url(./data/MavenProFull.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'MavenPro';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(./data/MavenProFull.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'MavenPro';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url(./data/MavenProFull.woff2) format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
@@ -109,52 +132,53 @@ legend {
 }
 
 .uiButton {
-  background: #54ab81;
+  background: #fbcb62;
   border-radius: 10px;
-  border: solid 2px #51a07a;
-  box-shadow: 3px 3px 1px #41514b;
-  color: #defff4;
+  border: solid 2px #dbac45;
+  box-shadow: 3px 3px 1px #8f7f5c;
+  color: #5c3d3d;
   cursor: pointer;
   font-family: var(--text-font);
   font-size: 14px;
-  letter-spacing: 0.09em;
   margin: 0px;
   padding: 0px;
   text-align: center;
-  text-shadow: 1px 1px 1px #212121;
   text-transform: uppercase;
   user-select: none;
 }
 
+.topButton {
+  height: 17px;
+  top: 0px;
+}
+
 .statusButton {
-  box-shadow: 3px 3px 3px #6d817a !important;
+  box-shadow: 3px 3px 3px #81786d !important;
   letter-spacing: 0.08em !important;
   padding: 5px !important;
-  text-shadow: 1px 1px 1px #565656 !important;
 }
 
 .musicButton {
-  box-shadow: 1px 1px 1px #6d817a !important;
+  box-shadow: 1px 1px 1px #81786d !important;
   padding: 0px !important;
 }
 
 .musicButton2 {
-  box-shadow: 1px 1px 1px #6d817a !important;
+  box-shadow: 1px 1px 1px #81786d !important;
+  color: #382c2c;
   font-size: 8px;
   letter-spacing: 0.13em !important;
   padding: 1px !important;
-  text-shadow: 1.3px 1.2px 1px #565656 !important;
 }
 
 .mainMenuButton {
   font-size: 18px;
   padding: 3px !important;
-  text-shadow: 1px 1px 1.5px #212121 !important;
   width: 320px;
 }
 
 .selectOption {
-  background-color: #a2d3c3;
+  background-color: #feb757;
   border-radius: 10px;
   border: solid 2px #4b4b4b;
   color: var(--text-color);
@@ -169,11 +193,12 @@ legend {
   left: 246px;
   right: 4px;
   bottom: 3px;
-  background: #272928;
+  background: var(--border-color-0);
 }
 
 #map {
-  border: solid #4e7f7b 4px;
+  background: #a6e8d3;
+  border: solid var(--border-color-1) 4px;
   border-radius: 35px;
   width: 780px;
   height: 580px;
@@ -186,14 +211,14 @@ legend {
   height: 26px;
   left: 245px;
   top: 5px;
-  background: #8db590;
+  background: var(--window-bg-color);
   position: absolute;
 }
 
 #status {
   background: var(--window-bg-color);
   border-radius: 15px;
-  border: solid #4e7f7b 4px;
+  border: solid var(--border-color-1) 4px;
   font-family: var(--text-font);
   font-size: 12px;
   height: 99.3%;
@@ -213,8 +238,8 @@ legend {
   left: 3px;
   border-radius: 20px;
   width: 202px;
-  height: 97%;
-  background: #272928;
+  bottom: 3px;
+  background: var(--border-color-0);
 }
 
 #statusBG {
@@ -232,13 +257,14 @@ legend {
 
 #status\.cult {
   padding: 3px;
-  font-size: 15px;
+  font-size: 17px;
   text-align: center;
 }
 
 #status\.awareness {
-  text-shadow: 1px 1px 1px black;
-  letter-spacing: 0.05em;
+  border: solid 1px #9696966e;
+  border-radius: 11px;
+  padding: 3px;
 }
 
 #status\.musicPlus {
@@ -246,6 +272,7 @@ legend {
   height: 12px;
   left: 134px;
   position: relative;
+  text-shadow: 0px 0px 1px black;
   top: -72px;
   width: 12px;
 }
@@ -255,6 +282,7 @@ legend {
   height: 12px;
   left: 154px;
   position: relative;
+  text-shadow: 0px 0px 1px black;
   top: -88px;
   width: 12px;
 }
@@ -262,29 +290,31 @@ legend {
 .statusConvert {
   box-shadow: 1px 1px 2px #41514b;
   cursor: pointer;
-  font-size: 13px;
-  height: 15px;
+  font-size: 15px;
+  height: 18px;
   text-align: center;
-  width: 15px;
+  text-shadow: 1px 1px 1px #404040;
+  width: 18px;
 }
 
 .statusUpgrade {
-  color: #d5f2d5;
 }
 
 .statusNumber {
-  letter-spacing: 0.05em;
 }
 
 .statusTable {
   color: var(--text-color);
-  font-size: 14px;
+  font-size: 15px;
   width: 100%;
 }
 
 .statusResourceTable {
   color: var(--text-color);
   font-size: 11px;
+}
+
+.cultText {
 }
 
 .powerText {
@@ -312,8 +342,9 @@ legend {
 }
 
 .logPanelItemOld {
-  border: 2px solid #447f6a;
-  box-shadow: 1px 1px 3px #41514b;
+  border: 2px solid #b18f4e;
+  box-shadow: 1px 1px 3px #514b41;
+  color: white;
   height: 16px;
   left: 2px;
   position: absolute;
@@ -322,8 +353,9 @@ legend {
 }
 
 .logPanelItemNew {
-  border: 2px solid #b2e5d3;
-  box-shadow: 1px 1px 3px #41514b;
+  border: 2px solid #4a392a;
+  box-shadow: 1px 1px 3px #514b41;
+  color: white;
   height: 16px;
   left: 2px;
   position: absolute;
@@ -332,7 +364,7 @@ legend {
 }
 
 .uiWindowBorder {
-  background: #90015d;
+  background: var(--border-color-2);
   border-radius: 39px;
   left: 50%;
   position: absolute;
@@ -345,12 +377,12 @@ legend {
   left: 4px;
   top: 4px;
   background: var(--window-bg-color);
-  border: solid #4e7f7b 4px;
+  border: solid var(--border-color-1) 4px;
   border-radius: 35px;
 }
 
 .uiText {
-  background: #b2ddc9;
+  background: #ecbd7d;
   border-radius: 25px;
   border: 1px solid #777;
   color: var(--text-color);
@@ -438,7 +470,7 @@ div::-webkit-scrollbar-thumb {
 }
 
 .uiTextFG {
-  background: #b2ddc9de;
+  background: #ecbd7dde;
   border-radius: 25px;
   color: var(--text-color);
   height: calc(100% - 46px);
@@ -456,5 +488,15 @@ div::-webkit-scrollbar-thumb {
   margin: 1%;
   border-radius: 25px;
   border: 1px solid #777;
+}
+
+.blinking {
+  animation: blinkingText 2s infinite;
+}
+
+@keyframes blinkingText {
+  0% { color: black; }
+  50% { color: #828282; }
+  100% { color: black; }
 }
 

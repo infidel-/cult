@@ -177,7 +177,7 @@ class UINode
 
 
 // paint advanced node info
-  public function paintAdvanced(ctx: Dynamic)
+  public function paintAdvanced(ctx: CanvasRenderingContext2D)
     {
       // node not visible to player
       if (!node.isVisible(game.player))
@@ -194,14 +194,15 @@ class UINode
       var productionIndicatorWidth = 6;
       var productionIndicatorHeight = 2;
       if (node.isGenerator && !node.isTempGenerator)
-        if (node.owner == null || node.isKnown[game.player.id])
+        if (node.owner != game.player || node.isKnown[game.player.id])
           {
             for (i in 0...Game.numPowers)
               if (node.powerGenerated[i] > 0)
                 {
-                  ctx.fillStyle = 'var(--power-color-' + i + ')';
+                  ctx.fillStyle = ui.map.powerColors[i];
                   ctx.fillRect(
-                    tempx + (tempd - 1) + i*(productionIndicatorWidth+1),
+                    tempx + (tempd - 1) +
+                    i * (productionIndicatorWidth + 1),
                     tempy - productionIndicatorHeight,
                     productionIndicatorWidth,
                     productionIndicatorHeight);
@@ -212,8 +213,20 @@ class UINode
       if (node.owner != game.player)
         {
           var ch = game.player.getGainChance(node);
-          ui.map.paintText(ctx, [ Std.int(ch / 10), ch % 10, 10 ], 0,
-             tempx + tempd + 1, tempy - 11);
+          if (UI.classicMode)
+            ui.map.paintText(ctx, [ Std.int(ch / 10), ch % 10, 10 ], 0,
+               tempx + tempd + 1, tempy - 11);
+          else
+            {
+              ctx.fillStyle = '#333333';
+              ctx.shadowOffsetX = 1;
+              ctx.shadowOffsetY = 1;
+              ctx.shadowBlur = 0.5;
+              ctx.shadowColor = '#777777';
+              ctx.fillText(ch + '%', tempx + 13, tempy - 4);
+              ctx.shadowColor = 'transparent';
+
+            }
 /*
           ctx.fillStyle = 'white';
           ctx.fillText(game.player.getGainChance(node) + '%', tempx - 3, tempy - 4);

@@ -40,6 +40,7 @@ class MapUI
   public var textImages: Array<CanvasElement>; // text images: S, 1, 2, 3
   public var jobImages: Array<Image>; // loaded job images
   public var powerImages: Array<Image>; // loaded power images
+  public var powerColors: Array<String>; // css vars cached
 
   public function new(uivar: UI, gvar: Game)
     {
@@ -54,6 +55,11 @@ class MapUI
       isAdvanced = false;
       bgImage = null;
       firstTime = true;
+
+      // get power colors for canvas
+      powerColors = [];
+      for (i in 0...Game.numPowers)
+        powerColors[i] = UI.getVar('--power-color-' + i);
 
       // map display
       mapBorder = cast UI.e("mapBorder");
@@ -225,10 +231,10 @@ class MapUI
 
       // job images
       powerImages = [];
-      for (name in UI.vars.powerImages)
+      for (name in UI.modernPowerImages)
         {
           var img = new Image();
-          img.src = 'data/' + name;
+          img.src = 'data/' + name + '-map.png';
           img.width = 15;
           img.height = 15;
           powerImages.push(img);
@@ -368,7 +374,7 @@ class MapUI
 
       if (isAdvanced) // paint advanced node info
         {
-          ctx.font = "11px Verdana";
+          ctx.font = UI.getVar('--advanced-mode-font');
           for (n in game.nodes)
             n.uiNode.paintAdvanced(ctx);
         }
@@ -467,7 +473,8 @@ class MapUI
 
 
 // paint bitmapped text
-  public function paintText(ctx: Dynamic, syms: Array<Int>, row: Int, x: Int, y: Int)
+  public function paintText(ctx: CanvasRenderingContext2D,
+      syms: Array<Int>, row: Int, x: Int, y: Int)
     {
       var i = 0;
       for (ch in syms)
