@@ -19,18 +19,20 @@ class MainMenu extends Window
 #end
       super(uivar, gvar, 'mainMenu', 420, h, 20, closeY);
 
-//      var x = (UI.classicMode ? 35 : 48);
-      var x = 35;
-
       Tools.label({
-        id: 'titleLabel',
-        text: 'Evil Cult ' + Game.version,
+        id: 'mainMenuTitle',
+        text: 'EVIL&nbsp;&nbsp;CULT <span id=titleVersion>' + Game.version + '</span>',
         w: 260,
         h: 30,
-        x: 130,
-        y: 10,
+        x: null,
+        y: null,
+        fontSize: null,
         container: window
       });
+
+//      var x = (UI.classicMode ? 35 : 48);
+      var x = 35;
+      var y = 47;
 
       // main menu contents
       Tools.button({
@@ -40,10 +42,11 @@ class MainMenu extends Window
         w: null,
         h: null,
         x: x,
-        y: 40,
+        y: y,
         container: window,
         func: onNewGame
       });
+      y += 40;
       Tools.button({
         id: 'newGameNormal',
         text: "START NEW GAME - NORMAL",
@@ -51,10 +54,11 @@ class MainMenu extends Window
         w: null,
         h: null,
         x: x,
-        y: 80,
+        y: y,
         container: window,
         func: onNewGame
-        });
+      });
+      y += 40;
       Tools.button({
         id: 'newGameHard',
         text: "START NEW GAME - HARD",
@@ -62,10 +66,11 @@ class MainMenu extends Window
         w: null,
         h: null,
         x: x,
-        y: 120,
+        y: y,
         container: window,
         func: onNewGame
-        });
+      });
+      y += 40;
 
       Tools.button({
         id: 'customGame',
@@ -74,10 +79,11 @@ class MainMenu extends Window
         w: null,
         h: null,
         x: x,
-        y: 160,
+        y: y,
         container: window,
         func: onCustomGame
-        });
+      });
+      y += 40;
 
       Tools.button({
         id: 'customGame',
@@ -86,10 +92,11 @@ class MainMenu extends Window
         w: null,
         h: null,
         x: x,
-        y: 200,
+        y: y,
         container: window,
         func: onMultiplayerGame
-        });
+      });
+      y += 40;
 
 #if electron
       Tools.button({
@@ -99,10 +106,10 @@ class MainMenu extends Window
         w: null,
         h: null,
         x: x,
-        y: 240,
+        y: y,
         container: window,
         func: onExit
-        });
+      });
 #end
 /*
       Tools.button({

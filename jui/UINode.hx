@@ -150,9 +150,12 @@ class UINode
           else ctx.drawImage(ui.map.nodeImages[idx], xx, yy);
 
           // job icon
-          ctx.drawImage(ui.map.jobImages[node.imageID],
-            xx + jobInfo[node.imageID].x,
-            yy + jobInfo[node.imageID].y + 6);
+          var imageID = node.imageID;
+          if (key == 'o' || key == 'op')
+            imageID = 14;
+          ctx.drawImage(ui.map.jobImages[imageID],
+            xx + jobInfo[imageID].x,
+            yy + jobInfo[imageID].y + 6);
 
           // resource to acquire
           if (node.owner != game.player &&
@@ -485,6 +488,11 @@ class UINode
     {
       img: "char-media-female.png",
       x: -5,
+      y: 0,
+    },
+    {
+      img: "char-origin.png",
+      x: 3,
       y: 0,
     },
   ];

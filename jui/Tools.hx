@@ -99,8 +99,8 @@ class Tools
         params.bold = true;
       if (params.bold && UI.classicMode)
         b.style.fontWeight = "bold";
-      if (params.fontSize == null)
-        params.fontSize = 20;
+//      if (params.fontSize == null)
+//        params.fontSize = 20;
       b.style.fontSize = params.fontSize + 'px'; 
       b.style.position = 'absolute';
       if (UI.modernMode)
@@ -110,9 +110,11 @@ class Tools
       b.style.height = params.h + 'px';
       if (params.x != null)
         b.style.left = params.x + 'px';
+/*
       else b.style.left =
         Std.int((Std.parseInt(params.container.style.width) -
           Std.parseInt(b.style.width)) / 2) + 'px';
+*/
       b.style.top = params.y + 'px';
       b.style.userSelect = 'none';
       b.style.color = 'var(--text-color)';
