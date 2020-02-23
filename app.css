@@ -17,8 +17,8 @@
   --awareness-text-color-0: var(--window-bg-color);
   --awareness-text-color-1: #ecf634;
   --awareness-text-color-2: #ff5959;
-  --awareness-color: #c3cf04;
-  --willpower-color: #d37f00;
+  --awareness-color: #5c3d3d;
+  --willpower-color: #5c3d3d;
   --adepts-color: #7ef555;
 }
 
@@ -344,6 +344,11 @@ legend {
   padding-top: 2px;
   text-align: center;
   user-select: text;
+}
+
+#status\.lowerAwareness0, #status\.lowerAwareness1, #status\.lowerAwareness2,
+#status\.lowerWillpower0, #status\.lowerWillpower1, #status\.lowerWillpower2 {
+  text-shadow: none;
 }
 
 #logPanel {

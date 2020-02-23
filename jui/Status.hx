@@ -35,7 +35,7 @@ class Status
             Game.followerNames[i] + "s";
 
           // icon
-          s += "<td><div class='uiButton statusConvert statusUpgrade' id='status.upgrade" + i + "'>";
+          s += "<td><div class='uiButton statusConvert statusUpgrade' id='status.upgrade" + i + "' style='visibility: hidden;'>";
           if (i < Game.followerNames.length - 1)
             s += "+";
           else s += "!";
@@ -87,17 +87,17 @@ class Status
           for (ii in 0...Game.numPowers)
             if (ii != i)
               s += "<td><div class='uiButton statusConvert' id='status.convert" + i + ii + "' " +
-                "style='color: var(--power-color-" + ii + ");'>" +
+                "style='color: var(--power-color-" + ii + "); visibility: hidden;'>" +
                 Game.powerShortNames[ii] + "</div>";
 
           // not for virgins
           if (i != 3)
             {
               s += "<td><div class='uiButton statusConvert' id='status.lowerAwareness" + i + "' " +
-                "style='color:var(--awareness-color);'>A</div>";
+                "style='color:var(--awareness-color); visibility: hidden;'>A</div>";
               s += "<td halign=right>" +
                 "<div class='uiButton statusConvert' id='status.lowerWillpower" + i + "' " +
-                "style='color:var(--willpower-color);'>W</div>";
+                "style='color:var(--willpower-color); visibility: hidden;'>W</div>";
             }
           s += "</table>";
         }
@@ -425,8 +425,7 @@ class Status
       else if (game.player.awareness >= 10)
         col = 1;
       aw.style.background = 'var(--awareness-text-color-' + col + ')';
-      if (col > 0)
-        aw.className = 'blinking';
+      aw.className = (col > 0 ? 'blinking' : '');
 
       // lower awareness buttons visibility
       for (i in 0...Game.numPowers)
