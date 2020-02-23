@@ -149,9 +149,6 @@ class Game
             {
               p = new Cult(this, ui, id, infoID);
 
-              // starting player options
-              p.options.set('sectAdvisor', true);
-
               numPlayersLeft--;
             }
           else p = new AI(this, ui, id, infoID);
@@ -201,6 +198,19 @@ class Game
       // choose and setup starting nodes
       for (p in cults)
         p.setOrigin();
+
+      // update player options from config
+      if (difficulty.numPlayers == 1)
+        for (info in OptionsMenu.elementInfo)
+          {
+            var val: Dynamic = null;
+            if (info.type == 'bool')
+              val = ui.config.getBool(info.name);
+            else if (info.type == 'int')
+              val = ui.config.getInt(info.name);
+
+            player.options.set(info.name, val);
+          }
 
 //      ui.map.paint();
       ui.map.center(player.origin.x, player.origin.y);
@@ -483,9 +493,6 @@ class Game
 // apply current player options
   public function applyPlayerOptions()
     {
-      ui.map.isAdvanced = player.options.getBool('mapAdvancedMode');
-//      trace(player.id + ' ' + ui.map.isAdvanced);
-
       ui.map.paint();
     }
 

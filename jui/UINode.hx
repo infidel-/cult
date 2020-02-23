@@ -160,7 +160,7 @@ class UINode
 
           // resource to acquire
           if (node.owner != game.player &&
-              !ui.map.isAdvanced &&
+              !game.player.options.getBool('mapAdvancedMode') &&
               (node.isKnown[game.player.id] || node.owner == null))
             for (i in 0...Game.numPowers)
               if (node.power[i] > 0)

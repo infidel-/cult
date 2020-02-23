@@ -26,7 +26,6 @@ class MapUI
   public var tooltip: DivElement;
   public var viewRect: Rect; // viewport x,y
   var isDrag: Bool; // is viewport being dragged?
-  public var isAdvanced: Bool; // is advanced mode
   var map: CanvasElement;
   var mapBorder: DivElement;
   var mapWidth: Float;
@@ -53,7 +52,6 @@ class MapUI
         w: 200,
         h: 200,
       };
-      isAdvanced = false;
       bgImage = null;
       firstTime = true;
 
@@ -380,7 +378,8 @@ class MapUI
 //      game.endTimer('map paint 3');
 //      game.startTimer('map paint 4');
 
-      if (isAdvanced) // paint advanced node info
+      // paint advanced node info
+      if (game.player.options.getBool('mapAdvancedMode'))
         {
           ctx.font = UI.getVar('--advanced-mode-font');
           for (n in game.nodes)
@@ -525,7 +524,8 @@ class MapUI
           return;
         }
 
-      if (isAdvanced) // no tooltips in advanced mode
+      // no tooltips in advanced mode
+      if (game.player.options.getBool('mapAdvancedMode'))
         return;
 
       // render tooltip for this node

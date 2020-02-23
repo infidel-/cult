@@ -2,11 +2,15 @@
 
 class Options
 {
+  var game: Game;
+  var ui: UI;
   var cult: Cult;
   var list: Map<String, Dynamic>; // player options
 
-  public function new(c: Cult)
+  public function new(game: Game, ui: UI, c: Cult)
     {
+      this.game = game;
+      this.ui = ui;
       cult = c;
       list = new Map();
     }
@@ -19,6 +23,9 @@ class Options
       if (val == false)
         list.remove(key);
       else list.set(key, val);
+
+      if (game.difficulty.numPlayers == 1)
+        ui.config.set(key, '' + val);
     }
 
 

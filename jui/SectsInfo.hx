@@ -130,7 +130,8 @@ class SectsInfo extends Window
             '<td>' + sect.leader.name +
             '<td style="text-align:center">' + (sect.level + 1) +
             '<td style="text-align:center">' +
-            sect.size + '/' + sect.getMaxSize() + ' (+' + sect.getGrowth() + ')' +
+            sect.size + '/' + sect.getMaxSize() +
+            ' <span class=uiListSectsPlus>(+' + sect.getGrowth() + ')</span>' +
             '<td>';
 
           s += "<select class=selectOption onchange='Game.instance.ui.sects.onSelect(this.value)'>";

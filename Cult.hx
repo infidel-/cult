@@ -66,7 +66,7 @@ class Cult
       this.name = this.info.name;
       this.isAI = false;
       this.highlightedNodes = new List<Node>();
-      this.options = new Options(this);
+      this.options = new Options(game, ui, this);
 
       isDiscovered = [];
       isInfoKnown = [];

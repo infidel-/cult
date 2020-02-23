@@ -9,7 +9,9 @@ class Config
 #if electron
   var obj: {
     hasPlayed: String,
-    owner: String,
+    logPanelSkipSects: String,
+    mapAdvancedMode: String,
+    sectAdvisor: String,
     music: String,
     musicVolume: String,
   }
@@ -21,9 +23,11 @@ class Config
 //      trace('reading settings.json');
       obj = {
         hasPlayed: null,
-        owner: null,
+        logPanelSkipSects: 'false',
+        mapAdvancedMode: 'false',
         music: '1',
         musicVolume: '100',
+        sectAdvisor: 'true',
       };
       try {
         var s = Fs.readFileSync('settings.json', 'utf8');
@@ -45,6 +49,28 @@ class Config
 #else
       return untyped getCookie(name);
 #end
+    }
+
+
+// get a int variable
+  public function getInt(name: String): Int
+    {
+      var str = get(name);
+      if (str == null)
+        return 0;
+
+      return Std.parseInt(str);
+    }
+
+
+// get a bool variable
+  public function getBool(name: String): Bool
+    {
+      var str = get(name);
+      if (str == null)
+        return false;
+
+      return (str == 'true');
     }
 
 

@@ -195,8 +195,8 @@ class TopMenu
 
   public function onAdvanced(event)
     {
-      ui.map.isAdvanced = !ui.map.isAdvanced;
-      game.player.options.set('mapAdvancedMode', ui.map.isAdvanced);
+      game.player.options.set('mapAdvancedMode',
+        !game.player.options.getBool('mapAdvancedMode'));
       ui.map.paint();
     }
 

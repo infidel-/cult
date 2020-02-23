@@ -18,19 +18,31 @@ class OptionsMenu extends Window
   var elements: List<Element>; // ui elements
   var contents: DivElement;
 
-  static var elementInfo: Array<OptionInfo> = [
+  public static var elementInfo: Array<OptionInfo> = [
 /*
       { name: 'investigatorTurnVisible', type: 'int', title: 'Investigator: Turn to become visible',
         note: 'Turn on which new investigator becomes visible' },
       { name: 'investigatorGainWill', type: 'float', title: 'Investigator: Chance of gaining will',
         note: 'Higher value raises chance of investigator gaining will' },
 */
-    { name: 'mapAdvancedMode', type: 'bool', title: 'Advanced map mode',
-      note: 'Displays additional node information on map' },
-    { name: 'logPanelSkipSects', type: 'bool', title: 'No sect messages in log panel',
-      note: 'Will not show sect messages in log panel' },
-    { name: 'sectAdvisor', type: 'bool', title: 'Sect advisor',
-      note: 'Sect advisor will automatically give tasks to sects depending on the situation' },
+    {
+      name: 'mapAdvancedMode',
+      type: 'bool',
+      title: 'Advanced map mode',
+      note: 'Displays additional node information on map'
+    },
+    {
+      name: 'logPanelSkipSects',
+      type: 'bool',
+      title: 'No sect messages in log panel',
+      note: 'Will not show sect messages in log panel'
+    },
+    {
+      name: 'sectAdvisor',
+      type: 'bool',
+      title: 'Sect advisor',
+      note: 'Sect advisor will automatically give tasks to sects depending on the situation'
+    },
   ];
 
 
@@ -151,6 +163,10 @@ class OptionsMenu extends Window
 
           // save option
           game.player.options.set(info.name, value);
+
+          // save to config in single player
+          if (game.difficulty.numPlayers == 1)
+            ui.config.set(info.name, '' + value);
 
           // sect advisor off, clear task importance flag
           if (info.name == 'sectAdvisor' && !value)
