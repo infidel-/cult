@@ -102,7 +102,7 @@ input[type=text] {
   padding: 5px;
   position: absolute;
   user-select: none;
-  z-index: 3000;
+  z-index: 1000;
 }
 #tooltip h3, #tooltip div { margin: 0; }
 
@@ -116,6 +116,7 @@ input[type=text] {
   opacity: 0.9 !important;
   padding: 5px !important;
   user-select: none;
+  z-index: 1000;
 }
 
 #musicplayer

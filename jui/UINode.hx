@@ -80,22 +80,23 @@ class UINode
         {
           key += "g";
           dd = 2;
-
-          for (p in game.cults)
-            if (p.origin == node && !p.isDead &&
-                node.isKnown[game.player.id])
-              {
-                key = 'o';
-                dd = 4;
-                break;
-              }
-          if (node.isProtected)
-            key += "p";
-          xx -= dd;
-          yy -= dd;
-          temph += dd * 2;
-          tempd = dd;
         }
+
+      for (p in game.cults)
+        if (p.origin == node && !p.isDead &&
+            node.isKnown[game.player.id])
+          {
+            key = 'o';
+            dd = 4;
+            break;
+          }
+      if (node.isProtected)
+        key += "p";
+      xx -= dd;
+      yy -= dd;
+      temph += dd * 2;
+      tempd = dd;
+
       if (isI) // "I" symbol needs to be centered
         tx += 2;
 

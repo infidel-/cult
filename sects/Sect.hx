@@ -193,13 +193,15 @@ class Sect
 
 
 // ======================= Sect Tasks ============================
-  public static var taskClasses: Array<Dynamic> =
-    [ 
-      DoNothingTask,
-      CultGeneralInfoTask, CultNodeInfoTask,
-      CultResourceInfoTask, CultSabotageRitualTask,
-      InvSearchTask, InvConfuseTask,
-    ];
+  public static var taskClasses: Array<Dynamic> = [
+    DoNothingTask,
+    CultGeneralInfoTask,
+    CultNodeInfoTask,
+    CultResourceInfoTask,
+    CultSabotageRitualTask,
+    InvSearchTask,
+    InvConfuseTask,
+  ];
 
 
   static var names0 = [

@@ -49,9 +49,10 @@ input[type=textfield] {
 #tooltip h3, #tooltip div { margin: 0; }
 
 #mapTooltipWindow {
-  padding: 5px !important;
   border: 1px solid !important;
   opacity: 0.9 !important;
+  padding: 5px !important;
+  z-index: 1000;
 }
 
 #musicplayer

@@ -196,7 +196,8 @@ class Cult
       node.update();
 
       if (!isAI)
-        ui.log2(this, node.name + " becomes the leader of a sect " + sect.name + ".",
+        ui.log2(this, node.name +
+          " becomes the leader of a sect called " + sect.name + ".",
           { type: 'sect' });
     }
 
@@ -840,13 +841,22 @@ class Cult
               cnt++;
 
           if (cnt >= 3)
-            return "hasLinks";
+            {
+              if (!isAI)
+                ui.alert("Generator has " + cnt + " links.");
+              return "hasLinks";
+            }
         }
 
       // check for power
       for (i in 0...Game.numPowers)
         if (power[i] < node.power[i])
-          return "notEnoughPower";
+          {
+            if (!isAI)
+              ui.alert("Not enough resources.");
+
+            return "notEnoughPower";
+          }
 
       // subtract power
       for (i in 0...Game.numPowers)
