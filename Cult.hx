@@ -750,7 +750,7 @@ class Cult
             }
 
       // neophytes bring in some virgins
-      var value = Std.int(Math.random() * maxVirgins());
+      var value = Std.random(maxVirgins() + 1);
       virgins += value;
       adeptsUsed = 0;
 
@@ -860,7 +860,7 @@ class Cult
 
       // subtract power
       for (i in 0...Game.numPowers)
-        power[i] = Math.round(power[i] - node.power[i]);
+        power[i] = power[i] - node.power[i];
 
       // failure chance
       if (100 * Math.random() > getGainChance(node))

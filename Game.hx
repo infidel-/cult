@@ -187,7 +187,7 @@ class Game
       var cnt = Std.int(0.15 * difficulty.nodesCount);
       for (i in 0...cnt)
         {
-          var nodeIndex = Math.round((difficulty.nodesCount - 1) * Math.random());
+          var nodeIndex = Std.random(nodes.length);
           var node = nodes[nodeIndex];
 
           node.makeGenerator();

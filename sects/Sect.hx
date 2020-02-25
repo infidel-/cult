@@ -148,9 +148,22 @@ class Sect
   public function getGrowth(): Int
     {
       if (size < getMaxSize())
-        return 1 + Std.int(size / 10);
+        return 1 + Std.int(size / 8);
       else return 0;
     }
+/*
+OLD:
+  19: 103
+  36: 540
+  43: 1059 
+x = 10; for (let i = 0; i < 37; i++) { x += 1 + Math.floor(x / 10); console.log(i + ': ' + ); };
+
+NEW:
+  16:106
+  29:510
+  35:1037
+x = 10; for (let i = 0; i < 37; i++) { x += 1 + Math.floor(x / 8); console.log(i + ': ' + ); };
+*/
 
 
 // act on current task - called on each new turn

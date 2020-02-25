@@ -69,11 +69,14 @@ class Investigator
 
       // hidden for X turns after appearance
       var turnVisible = cult.difficulty.investigatorTurnVisible;
-      if (cult.isAI && turnVisible > 0) // AI always find out on the 2rd turn
+      // AI always finds out on the 2rd turn
+      if (cult.isAI && turnVisible > 0)
         turnVisible = 2;
       if (isHidden && numTurn > turnVisible)
         {
-          ui.log2(cult, cult.fullName + " has found out the investigator's location.", { symbol: 'I' });
+          ui.log2(cult, cult.fullName +
+            " has found out the investigator's location.",
+            { symbol: 'I' });
           isHidden = false;
         }
       if (will >= 9) // becomes hidden again on gaining enough willpower
@@ -137,7 +140,7 @@ class Investigator
             node = n;
           }
       else
-      // get random follower
+        // get random follower
         for (n in cult.nodes)
           {
             if (n.level > level || n.isProtected)
@@ -150,10 +153,12 @@ class Investigator
           }
       if (node == null)
         return;
-      if (node == cult.origin && Math.random() > 0.3) // rarely attacks origin in any case
+      // rarely attacks origin in any case
+      if (node == cult.origin && Math.random() > 0.3)
         return;
 
-      ui.log2(cult, "The investigator revealed the " + cult.fullName + " follower.", { symbol: 'I' });
+      ui.log2(cult, "The investigator revealed the " + cult.fullName +
+        " follower.", { symbol: 'I' });
       if (node.sect != null) // destroy sect
         cult.removeSect(node);
       node.generateAttributes(); // regen node
@@ -197,7 +202,7 @@ class Investigator
       if (cult.awareness <= 5)
         chance = Std.int(20 * cult.difficulty.investigatorKill);
       else if (cult.awareness <= 10)
-        chance = Std.int(65 * cult.difficulty.investigatorKill);
+        chance = Std.int(50 * cult.difficulty.investigatorKill);
       else chance = Std.int(70 * cult.difficulty.investigatorKill);
 
       for (sect in cult.sects) // decrease chance with each sect
