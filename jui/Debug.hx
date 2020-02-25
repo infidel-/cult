@@ -210,8 +210,11 @@ class Debug extends Window
         x: 10 + row * 210,
         y: lastMenuY,
         container: menu,
-        func: func
-        });
+        func: function(event) {
+          func(event);
+          ui.map.paint();
+        }
+      });
       untyped b.name = String.fromCharCode(sym);
       buttons.push(b);
       menuItem++;

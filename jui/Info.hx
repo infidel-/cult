@@ -71,32 +71,7 @@ class Info extends Window
 
           // debug info
           if (Game.isDebug)
-            {
-              s += "<span style='font-size: 10px'>";
-              for (i in 0...p.power.length)
-                {
-                  s += UI.powerName(i, true) + ": " + p.power[i] + " (";
-                  if (i < 3)
-                    s += p.getResourceChance() + "%) ";
-                  else s += (p.neophytes / 4 - 0.5) + ") ";
-                }
-              s += "<span title='Awareness'>A: " + p.awareness + "%</span> ";
-              s += "<span title='Chance of summoning'>ROS: " + p.getUpgradeChance(2) + "%</span> ";
-              if (!p.hasInvestigator)
-                s += "<span title='Chance of investigator appearing'>IAC: " +
-                  p.getInvestigatorChance() + "%</span> ";
-              if (p.hasInvestigator)
-                {
-                  s += "<span title='Chance of investigator reveal'>IRC: " +
-                    p.investigator.getKillChance() + "%</span> ";
-                  s += "<span title='Chance of investigator willpower raise'>IWC: " +
-                    p.investigator.getGainWillChance() + "%</span> ";
-                }
-              s += "<span title='Cult Power'>PWR: " +
-                game.director.getCultPower(p) + "</span> ";
-              s += 'Dif: ' + p.difficulty.level;
-              s += "</span><br>";
-            }
+            s += getDebugInfo(p, false);
 
           // ritual
           if (p.isRitual && p.isInfoKnown[game.player.id])
@@ -173,6 +148,48 @@ class Info extends Window
                   }
               };
         }
+    }
+
+
+// form debug info string
+  public function getDebugInfo(p: Cult, status: Bool): String
+    {
+      var s = "<span style='font-size: 10px'>";
+      for (i in 0...p.power.length)
+        {
+          s += UI.powerName(i, true) + ": " + p.power[i] + " (";
+          if (i < 3)
+            s += p.getResourceChance() + "%), ";
+          else s += p.maxVirgins() + "), ";
+          if (status)
+            s += '<br>';
+        }
+      s += "<span title='Awareness'>A: " + p.awareness + "%</span>, ";
+      if (status)
+        s += '<br>';
+      s += "<span title='Chance of summoning'>ROS: " + p.getUpgradeChance(2) + "%</span>, ";
+      if (status)
+        s += '<br>';
+      if (!p.hasInvestigator)
+        s += "<span title='Chance of investigator appearing'>IAC: " +
+          p.getInvestigatorChance() + "%</span>, ";
+      if (p.hasInvestigator)
+        {
+          s += "<span title='Chance of investigator reveal'>IRC: " +
+            p.investigator.getKillChance() + "%</span>, ";
+          s += "<span title='Chance of lowering investigator willpower'>IWLC: " +
+            p.investigator.getGainWillChance() + "%</span>, ";
+          s += "<span title='Chance of investigator willpower raise'>IWC: " +
+            p.getLowerWillChance() + "%</span>, ";
+        }
+      if (status)
+        s += '<br>';
+      s += "<span title='Cult Power'>PWR:&nbsp;" +
+        game.director.getCultPower(p) + "</span>, ";
+      s += 'Dif: ' + p.difficulty.level;
+      s += "</span><br>";
+
+      return s;
     }
 
 

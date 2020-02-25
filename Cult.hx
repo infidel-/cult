@@ -380,6 +380,16 @@ class Cult
     }
 
 
+// lower investigator willpower chance
+  public function getLowerWillChance(): Int
+    {
+      var failChance = 30 * difficulty.investigatorWillpower;
+      if (investigator.name == "Randolph Carter") // wink-wink
+        failChance += 10;
+      return Std.int(100 - failChance);
+    }
+
+
 // lower investigator willpower
   public function lowerWillpower(pwr)
     {
@@ -391,10 +401,7 @@ class Cult
       adeptsUsed++;
 
       // chance of failure
-      var failChance = 30 * difficulty.investigatorWillpower;
-      if (investigator.name == "Randolph Carter") // wink-wink
-        failChance += 10;
-      if (100 * Math.random() < failChance)
+      if (Std.random(100) > getLowerWillChance())
         {
           if (!isAI)
             {
@@ -786,9 +793,12 @@ class Cult
     }
 
 
-  public inline function maxVirgins(): Int
+  public function maxVirgins(): Int
     {
-      return Std.int(neophytes / 4 - 0.5);
+      var x = Std.int(neophytes / 4 - 0.5);
+      if (x < 0)
+        return 0;
+      return x;
     }
 
 

@@ -460,6 +460,7 @@ class Game
 
           ui.logPanel.paint();
           ui.updateStatus();
+          ui.map.paint();
 
           if (difficulty.numPlayers > 1)
             ui.alert("Your turn<br>" + player.fullName, {

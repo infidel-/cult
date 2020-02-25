@@ -137,6 +137,8 @@ class Status
       // buttons 2
       s += "<center style='padding-top:12px;'><span class='uiButton statusButton' title='" + tipMainMenu +
         "' id='status.mainMenu'>MAIN MENU</span></center>";
+      if (Game.isDebug)
+        s += '<div id=status.debug></div>';
       s += '</div></div>';
 
       status.innerHTML = s;
@@ -459,6 +461,9 @@ class Status
         " priests and " + game.difficulty.numSummonVirgins + " virgins.<br>" +
         "<li>The more society is aware of the cult the harder it is to " +
         "summon Elder God.");
+
+      if (Game.isDebug)
+        e('status.debug').innerHTML = ui.info.getDebugInfo(game.player, true);
     }
 
 
