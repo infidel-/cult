@@ -237,7 +237,7 @@ class Static
       {
         id: "summoning",
         name: "Final Ritual",
-        points: 9,
+        points: 10,
         note: "Upon completion this cult will reign over the world unchallenged."
       }
     ];

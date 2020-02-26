@@ -541,3 +541,17 @@ div::-webkit-scrollbar-thumb {
   font-family: MavenPro;
   font-size: 17px;
 }
+
+.messageText {
+  background: #ecbd7d;
+  border-radius: 25px;
+  border: solid 2px #4b4b4b;
+  box-shadow: black 0px 0px 1px;
+  color: var(--text-color);
+  left: 50%;
+  padding: 1%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 30;
+}

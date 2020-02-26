@@ -49,11 +49,11 @@ class CultSabotageRitualTask extends Task
       var pts = 0;
       while (true)
         {
-          cnt += 150; // 150 points per try
+          cnt += 100; // 100 points per try
           if (cnt >= points)
             break;
 
-          if (Math.random() * 100 > 65) // chance of success
+          if (Math.random() * 100 > 75) // chance of success
             continue;
 
           c.ritualPoints += 1;

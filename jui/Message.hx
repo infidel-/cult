@@ -9,8 +9,6 @@ class Message
   var game: Game;
   var timer: Int;
 
-  var window: DivElement; // window element
-  var border: DivElement; // border element
   var text: DivElement; // text element
   public var isVisible: Bool;
 
@@ -27,8 +25,7 @@ class Message
 // hide window
   public function onClose(event)
     {
-      border.style.display = 'none';
-      Browser.document.body.removeChild(border);
+      Browser.document.body.removeChild(text);
       isVisible = false;
     }
 
@@ -52,28 +49,13 @@ class Message
       timer = Browser.window.setTimeout(runTimer, 1500);
 
       var w = 11 * (s.length + 4) + 40;
-      var h = 60;
 
-      // window
-      window = Tools.window({
-        id: "message",
-        shadowLayer: 0,
-        bold: true,
-        w: w,
-        h: h,
-        z: 30,
-      });
-      border = cast UI.e('messageBorder');
+      text = Browser.document.createDivElement();
+      text.className = 'messageText';
+      text.innerHTML = s;
+      Browser.document.body.appendChild(text);
 
-      // text
-      text = js.Browser.document.createDivElement();
-      text.className = 'uiText';
-      text.style.width = 'width: 95.6%';
-      text.style.height = 'calc(100% - 16px)';
-      text.innerHTML = '<center>' + s + '</center>';
-      window.appendChild(text);
-
-      border.style.display = 'inline';
+      text.style.display = 'inline';
       isVisible = true;
     }
 }
