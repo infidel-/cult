@@ -1006,7 +1006,8 @@ class Cult
       if (isRitual)
         {
           isRitual = false;
-          ui.log2(this, "The execution of " + ritual.name + " has been stopped.");
+          ui.log2(this, "The execution of " + ritual.name +
+            " has been stopped.", { symbol: 'X' });
 
           game.failSectTasks(); // fail all appropriate sect tasks
         }
@@ -1029,7 +1030,7 @@ class Cult
         {
           if (nodes.length > 0)
             ui.log2(this, "Destroying the origin of " + fullName +
-              " has left it completely paralyzed.");
+              " has left it completely paralyzed.", { symbol: 'X' });
           isParalyzed = true;
 
           if (hasInvestigator) // remove investigator
@@ -1037,7 +1038,8 @@ class Cult
               killInvestigator();
               if (nodes.length > 0)
                 ui.log2(this, "The investigator of the " + fullName +
-                  " has disappeared thinking the cult is finished.");
+                  " has disappeared thinking the cult is finished.",
+                  { symbol: 'I' });
             }
         }
       else
@@ -1077,7 +1079,8 @@ class Cult
       if (this.nodes.length > 0 || isDead)
         return;
 
-      ui.log2(this, fullName + " has been destroyed, forgotten by time.");
+      ui.log2(this, fullName + " has been destroyed, forgotten by time.",
+        { symbol: 'X' });
       ui.map.paint();
 
       isDead = true;

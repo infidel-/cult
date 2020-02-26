@@ -61,6 +61,7 @@ class Debug extends Window
               if (Math.random() < 0.2)
                 game.player.activate(n2);
           }
+      game.player.awareness = 0;
     }
 
 

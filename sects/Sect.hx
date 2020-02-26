@@ -181,8 +181,8 @@ x = 10; for (let i = 0; i < 37; i++) { x += 1 + Math.floor(x / 8); console.log(i
       else level = 2;
 
       if (level != oldlevel && !cult.isAI)
-        ui.log2(cult, name + ' has gained a new level.',
-          { type: 'sect' });
+        ui.log2(cult, name + ' has gained a new level (new tasks available!).',
+          { type: 'sect', symbol: 's' });
 
       if (task == null) // no task
         return;

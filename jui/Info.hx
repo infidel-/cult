@@ -79,7 +79,7 @@ class Info extends Window
               var turns = Std.int(p.ritualPoints / p.priests);
               if (p.ritualPoints % p.priests > 0)
                 turns += 1;
-              s += "Casting <span title='" + p.ritual.note +
+              s += "Casting <span class=shadow title='" + p.ritual.note +
                 "' id='info.ritual" + i +
                 "' style='color:#ffaaaa'>" + p.ritual.name +
                 "</span>, " + (p.ritual.points - p.ritualPoints) + "/" +
@@ -120,6 +120,10 @@ class Info extends Window
 
       for (i in 0...game.difficulty.numCults)
         {
+          var p = game.cults[i];
+
+          new JQuery('#info\\.ritual' + i).tooltip({ delay: 0 });
+
 /*
           if (!game.cults[i].isDiscovered || !game.cults[i].isInfoKnown)
             continue;
