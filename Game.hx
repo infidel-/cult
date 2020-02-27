@@ -82,7 +82,7 @@ class Game
       sectTasks = new Array<sects.Task>();
       for (cl in sects.Sect.taskClasses)
         {
-          var t = Type.createInstance(cl, []);
+          var t = Type.createInstance(cl, [ this, ui ]);
           sectTasks.push(t);
         }
     }

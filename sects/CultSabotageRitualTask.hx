@@ -4,9 +4,9 @@ package sects;
 
 class CultSabotageRitualTask extends Task
 {
-  public function new()
+  public function new(g: Game, ui: UI)
     {
-      super();
+      super(g, ui);
       id = 'cultSabotageRitual';
       name = 'Sabotage ritual';
       type = 'cult';
@@ -39,7 +39,7 @@ class CultSabotageRitualTask extends Task
 
 
 // on task complete
-  public override function complete(game: Game, ui: UI, cult: Cult, sect: Sect, points: Int)
+  public override function complete(cult: Cult, sect: Sect, points: Int)
     {
       var c:Cult = sect.taskTarget;
       if (!c.isRitual || c.ritualPoints >= c.ritual.points)

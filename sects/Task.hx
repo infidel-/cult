@@ -4,6 +4,9 @@ package sects;
 
 class Task
 {
+  var game: Game;
+  var ui: UI;
+
   public var id: String; // task string id
   public var type: String; // task target type (for ui)
   public var name: String; // task name
@@ -11,8 +14,10 @@ class Task
   public var points: Int; // amount of points needed to complete (0: complete on next turn)
   public var isInfinite: Bool; // is task neverending? (if true, finish() will be called each turn)
 
-  public function new()
+  public function new(g: Game, ui: UI)
     {
+      this.game = g;
+      this.ui = ui;
       id = '_empty';
       type = '';
       name = '';
@@ -38,7 +43,7 @@ class Task
 
 
 // on task complete
-  public function complete(game: Game, ui: UI, cult: Cult, sect: Sect, points: Int)
+  public function complete(cult: Cult, sect: Sect, points: Int)
     {
       trace('default complete(), should not be called!');
     }
@@ -48,6 +53,6 @@ class Task
   inline function log(cult: Cult, m: String)
     {
       cult.log(m);
-      cult.logPanelShort(m);
+      cult.logPanelShort(m, { symbol: 's' });
     }
 }

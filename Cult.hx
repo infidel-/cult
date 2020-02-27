@@ -1145,7 +1145,7 @@ class Cult
 
 
 // add message to log panel (short)
-  public inline function logPanelShort(s: String)
+  public inline function logPanelShort(s: String, ?params:Dynamic = null)
     {
       logPanel({
         id: -1,
@@ -1154,8 +1154,8 @@ class Cult
         text: s,
         obj: this,
         turn: game.turns + 1,
-        params: {}
-        });
+        params: (params == null ? {} : params)
+      });
     }
 
 

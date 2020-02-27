@@ -152,7 +152,9 @@ class SectsInfo extends Window
                 {
                   for (c in game.cults)
                     {
-                      if (c == game.player || !c.isDiscovered[game.player.id] || c.isDead)
+                      if (c == game.player ||
+                          !c.isDiscovered[game.player.id] ||
+                          c.isDead)
                         continue;
 
                       // check start conditions
@@ -167,8 +169,8 @@ class SectsInfo extends Window
                     }
                 }
 
-              // investigator type task
-              else if (t.type == 'investigator')
+              // untargeted task
+              else if (t.type == 'investigator' || t.type == 'info')
                 {
                   var ok = t.check(game.player, sect, null);
                   if (!ok)

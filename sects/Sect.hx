@@ -191,7 +191,7 @@ x = 10; for (let i = 0; i < 37; i++) { x += 1 + Math.floor(x / 8); console.log(i
       if (taskPoints < task.points)
         return;
 
-      task.complete(game, ui, cult, this, taskPoints);
+      task.complete(cult, this, taskPoints);
       taskPoints = 0;
 
       // clean task on finish

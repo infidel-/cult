@@ -4,9 +4,9 @@ package sects;
 
 class InvConfuseTask extends Task
 {
-  public function new()
+  public function new(g: Game, ui: UI)
     {
-      super();
+      super(g, ui);
       id = 'invConfuse';
       name = 'Confuse investigator';
       type = 'investigator';
@@ -36,7 +36,7 @@ class InvConfuseTask extends Task
 
 
 // on task complete
-  public override function complete(game: Game, ui: UI, cult: Cult, sect: Sect, points: Int)
+  public override function complete(cult: Cult, sect: Sect, points: Int)
     {
       if (cult.investigator == null)
         return;

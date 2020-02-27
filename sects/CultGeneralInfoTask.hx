@@ -4,12 +4,12 @@ package sects;
 
 class CultGeneralInfoTask extends Task
 {
-  public function new()
+  public function new(g: Game, ui: UI)
     {
-      super();
+      super(g, ui);
       id = 'cultGeneralInfo';
       name = 'Cult information';
-      type = 'cult';
+      type = 'info';
       points = 30;
     }
 
@@ -17,24 +17,42 @@ class CultGeneralInfoTask extends Task
 // check if this task is available for this target
   public override function check(cult: Cult, sect: Sect, target: Dynamic): Bool
     {
-      var c: Cult = target;
-      if (cult == c || c.isInfoKnown[cult.id])
-        return false;
+      // check for unknown cults
+      for (c in game.cults)
+        {
+          if (c == cult ||
+              !c.isDiscovered[cult.id] ||
+              c.isInfoKnown[cult.id])
+            continue;
 
-      return true;
+          return true;
+        }
+
+      return false;
     }
 
 
 // on task complete
-  public override function complete(game: Game, ui: UI, cult: Cult, sect: Sect, points: Int)
+  public override function complete(cult: Cult, sect: Sect, points: Int)
     {
-      var c:Cult = sect.taskTarget;
-      c.isInfoKnown[cult.id] = true;
-  
-      log(cult, 'Task completed: Information about ' + c.fullName + ' gathered.');
+      // pick first unknown cult
+      for (c in game.cults)
+        {
+          if (c == cult ||
+              !c.isDiscovered[cult.id] ||
+              c.isInfoKnown[cult.id])
+            continue;
 
+          c.isInfoKnown[cult.id] = true;
+
+          log(cult, 'Task completed: Information about ' + c.fullName + ' gathered.');
+
+/*
       for (n in c.nodes)
         if (n.isVisible(c))
           n.update();
+*/
+          break;
+        }
     }
 }

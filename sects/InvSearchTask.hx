@@ -4,9 +4,9 @@ package sects;
 
 class InvSearchTask extends Task
 {
-  public function new()
+  public function new(g: Game, ui: UI)
     {
-      super();
+      super(g, ui);
       id = 'invSearch';
       name = 'Search for investigator';
       type = 'investigator';
@@ -35,7 +35,7 @@ class InvSearchTask extends Task
 
 
 // on task complete
-  public override function complete(game: Game, ui: UI, cult: Cult, sect: Sect, points: Int)
+  public override function complete(cult: Cult, sect: Sect, points: Int)
     {
       if (cult.investigator == null || !cult.investigator.isHidden)
         return;

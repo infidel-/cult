@@ -4,9 +4,9 @@ package sects;
 
 class CultNodeInfoTask extends Task
 {
-  public function new()
+  public function new(g: Game, ui: UI)
     {
-      super();
+      super(g, ui);
       id = 'cultNodeInfo';
       name = 'Cult nodes';
       type = 'cult';
@@ -27,7 +27,7 @@ class CultNodeInfoTask extends Task
 
 
 // on task complete
-  public override function complete(game: Game, ui: UI, cult: Cult, sect: Sect, points: Int)
+  public override function complete(cult: Cult, sect: Sect, points: Int)
     {
       var c:Cult = sect.taskTarget;
 

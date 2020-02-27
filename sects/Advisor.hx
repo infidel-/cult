@@ -23,7 +23,8 @@ class Advisor
 
 
 // helper: find best sect for task
-  function findBestSectForTask(cult: Cult, id: String, taskVeryImportant: Bool): Sect
+  function findBestSectForTask(cult: Cult, id: String,
+      taskVeryImportant: Bool): Sect
     {
       // get task info
       var task = null;
@@ -106,11 +107,13 @@ class Advisor
       // check if all cults info is known
       for (c2 in game.cults)
         {
-          if (c2 == cult || !c2.isDiscovered[cult.id] || c2.isInfoKnown[cult.id])
+          if (c2 == cult ||
+              !c2.isDiscovered[cult.id] ||
+              c2.isInfoKnown[cult.id])
             continue;
 
           // check if some sect is on that task
-          if (cultHasSectOnTask(cult, 'cultGeneralInfo', c2))
+          if (cultHasSectOnTask(cult, 'cultGeneralInfo'))
             continue;
 
           // info unknown, set some sect on task
@@ -118,7 +121,7 @@ class Advisor
           if (s == null)
             break;
 //          trace('setTaskByID ' + c2.name);
-          s.setTaskByID('cultGeneralInfo', c2);
+          s.setTaskByID('cultGeneralInfo');
           s.taskImportant = true;
         }
 
