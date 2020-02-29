@@ -126,22 +126,19 @@ class Advisor
         }
 
       // default task - node info on random cult
-      // find appropriate cults
-      var temp = [];
+      // check if we have any live known cults
+      var ok = false;
       for (c in game.cults)
         if (c != cult && c.isDiscovered[cult.id] && !c.isDead)
-          temp.push(c.id);
-
-      // no cults available, do nothing
-      if (temp.length == 0)
+          {
+            ok = true;
+            break;
+          }
+      if (!ok)
         return;
 
       for (s in cult.sects)
         if (!s.taskImportant && s.isAdvisor)
-          {
-            // find random cult and set a task to it
-            var cultTarget = game.cults[temp[Std.random(temp.length)]];
-            s.setTaskByID('cultNodeInfo', cultTarget);
-          }
+          s.setTaskByID('cultNodeInfo');
     }
 }

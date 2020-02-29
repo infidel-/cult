@@ -275,7 +275,6 @@ class Status
         return;
 
       var lvl = Std.parseInt(Tools.getTarget(event).id.substr(14, 1));
-
       game.player.upgrade(lvl);
     }
 
