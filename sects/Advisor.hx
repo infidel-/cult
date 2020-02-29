@@ -85,6 +85,8 @@ class Advisor
           if (!cultHasSectOnTask(cult, 'invSearch'))
             {
               var s = findBestSectForTask(cult, 'invSearch', true);
+              if (s == null)
+                return;
               s.setTaskByID('invSearch');
               s.taskImportant = true;
             }

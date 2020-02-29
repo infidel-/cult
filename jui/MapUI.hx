@@ -26,6 +26,7 @@ class MapUI
   public var tooltip: DivElement;
   public var viewRect: Rect; // viewport x,y
   var isDrag: Bool; // is viewport being dragged?
+  var ignoreClick: Bool; // ignore next mouse click?
   var map: CanvasElement;
   var mapBorder: DivElement;
   var mapWidth: Float;
@@ -54,6 +55,8 @@ class MapUI
       };
       bgImage = null;
       firstTime = true;
+      isDrag = false;
+      ignoreClick = false;
 
       // get power colors for canvas
       powerColors = [];
@@ -514,6 +517,7 @@ class MapUI
           rectBounds(); // put rect into map bounds
 
           paint();
+          ignoreClick = true;
           return;
         }
 
@@ -590,6 +594,11 @@ class MapUI
 // on clicking map
   public function onClick(event: Dynamic)
     {
+      if (ignoreClick)
+        {
+          ignoreClick = false;
+          return;
+        }
       if (game.isFinished)
         return;
 
