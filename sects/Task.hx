@@ -27,6 +27,13 @@ class Task
     }
 
 
+// get task name
+  public function getName(sect: Sect)
+    {
+      return name;
+    }
+
+
 // can this task be activated by this sect?
   public function check(cult: Cult, sect: Sect, target: Dynamic): Bool
     {

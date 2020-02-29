@@ -165,7 +165,7 @@ class SectsInfo extends Window
                       s += '<option class=selectOption value=' + sect.leader.id + '.' + t.id + '-' + c.id +
                         (sect.task != null && sect.task.id == t.id &&
                           sect.taskTarget == c ? ' selected' : '') +
-                        '>' + t.name + ': ' + c.name;
+                        '>' + t.getName(sect) + ': ' + c.name;
                     }
                 }
 
@@ -178,11 +178,11 @@ class SectsInfo extends Window
 
                   s += '<option class=selectOption value=' + sect.leader.id + '.' + t.id + '-0 ' +
                     (sect.task != null && sect.task.id == t.id ? ' selected' : '') +
-                    '>' + t.name;
+                    '>' + t.getName(sect);
                 }
               else s += '<option class=selectOption value=' + sect.leader.id + '.' + t.id + '-0' +
                 (sect.task != null && sect.task.id == t.id ? ' selected' : '') +
-                '>' + t.name;
+                '>' + t.getName(sect);
 
               // points
               if (sect.task != null && sect.task.id == t.id &&

@@ -197,17 +197,24 @@ class Cult
 
       if (!isAI)
         ui.log2(this, node.name +
-          " becomes the leader of a sect called " + sect.name + ".",
+          " becomes the puppeteer of a sect called " + sect.name + ".",
           { type: 'sect' });
     }
 
 
 // remove a sect
-  public function removeSect(node: Node)
+  public function removeSect(node: Node, src: String)
     {
-      ui.log2(this, "Sect " + node.sect.name + " has been destroyed without leadership.",
-        { type: 'sect' });
+      var text = node.sect.name;
+      if (src == 'investigator')
+        text += ' has dispersed without proper inspiration.';
+      else if (src == 'sacrifice')
+        text += ' was sacrificed to discourage the investigator.';
+      else if (src == 'attack')
+        text += ' was disbanded when its puppeteer has left the cult.';
+      ui.log2(this, text, { type: 'sect', symbol: 's' });
       sects.remove(node.sect);
+      node.sect.leader = null;
       node.sect = null;
       node.update();
     }
@@ -411,23 +418,14 @@ class Cult
           return;
         }
 
-      investigator.will -= 1;
-
-      // kill investigator
-      if (investigator.will <= 0)
-        {
-          ui.log2(this, "The investigator of the " + fullName +
-            " has disappeared.", { symbol: 'I' });
-          killInvestigator();
-        }
-
+      investigator.lowerWillpower(1);
       if (!isAI)
         ui.updateStatus();
     }
 
 
 // remove investigator for this cult
-  function killInvestigator()
+  public function killInvestigator()
     {
       investigator = null;
       hasInvestigator = false;
@@ -889,7 +887,7 @@ class Cult
 
       // lose sect
       if (node.sect != null)
-        node.owner.removeSect(node);
+        node.owner.removeSect(node, 'attack');
 
       // save prev owner
       node.setOwner(this);

@@ -160,7 +160,7 @@ class Investigator
       ui.log2(cult, "The investigator revealed the " + cult.fullName +
         " follower.", { symbol: 'I' });
       if (node.sect != null) // destroy sect
-        cult.removeSect(node);
+        cult.removeSect(node, 'investigator');
       node.generateAttributes(); // regen node
       node.removeOwner(); // clean ownership
 
@@ -168,6 +168,20 @@ class Investigator
       for (c in game.cults)
         if (node.isVisible(c))
           c.highlightNode(node);
+    }
+
+
+// lower willpower with adept or sect
+  public function lowerWillpower(val: Int)
+    {
+      will -= val;
+      if (will > 0)
+        return;
+
+      // kill investigator
+      ui.log2(cult, "The investigator of the " + cult.fullName +
+        " has disappeared.", { symbol: 'I' });
+      cult.killInvestigator();
     }
 
 

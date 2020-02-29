@@ -1,17 +1,23 @@
-// confuse investigator
+// sacrifice sect
 
 package sects;
 
-class InvConfuseTask extends Task
+class InvSacrificeTask extends Task
 {
   public function new(g: Game, ui: UI)
     {
       super(g, ui);
-      id = 'invConfuse';
-      name = 'Confuse investigator';
+      id = 'invSacrifice';
+      name = 'Sacrifice to investigator';
       type = 'investigator';
-      isInfinite = true;
-      points = 0;
+      points = 100;
+      level = 1;
+    }
+
+// get task name
+  public override function getName(sect: Sect)
+    {
+      return name + ' (-' + will[sect.level] + ' WP)';
     }
 
 
@@ -28,7 +34,8 @@ class InvConfuseTask extends Task
 // check for task failure
   public override function checkFailure(sect: Sect): Bool
     {
-      if (!sect.cult.hasInvestigator || sect.cult.investigator.isHidden)
+      if (!sect.cult.hasInvestigator ||
+          sect.cult.investigator.isHidden)
         return true;
 
       return false;
@@ -41,6 +48,10 @@ class InvConfuseTask extends Task
       if (!cult.hasInvestigator)
         return;
     
-      // all modifiers are in Investigator.hx
+      cult.investigator.lowerWillpower(will[level]);
+      cult.removeSect(sect.leader, 'sacrifice');
     }
+
+
+  static var will = [ 0, 5, 10 ];
 }

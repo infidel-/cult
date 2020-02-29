@@ -37,7 +37,7 @@ class InvSearchTask extends Task
 // on task complete
   public override function complete(cult: Cult, sect: Sect, points: Int)
     {
-      if (cult.investigator == null || !cult.investigator.isHidden)
+      if (!cult.hasInvestigator || !cult.investigator.isHidden)
         return;
 
 /*
