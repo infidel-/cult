@@ -171,8 +171,8 @@ x = 10; for (let i = 0; i < 37; i++) { x += 1 + Math.floor(x / 8); console.log(i
     {
       // sect growth
       size += getGrowth();
-      if (size > 1000)
-        size = 1000;
+      if (size > getMaxSize())
+        size = getMaxSize();
       var oldlevel = level;
       if (size < 100)
         level = 0;

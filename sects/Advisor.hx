@@ -106,6 +106,27 @@ class Advisor
           return;
         }
 
+      // sabotage ritual (focus on one if multiple)
+      var ritualCult = null;
+      for (c in game.cults)
+        if (c != cult && c.isRitual && c.ritual.id == 'summoning')
+          {
+            ritualCult = c;
+            break;
+          }
+      if (ritualCult != null)
+        {
+          for (s in cult.sects)
+            if ((s.task == null || !s.taskImportant) &&
+                s.isAdvisor)
+              {
+                s.setTaskByID('cultSabotageRitual', ritualCult);
+                s.taskImportant = true;
+              }
+
+          return;
+        }
+
       // check if all cults info is known
       for (c2 in game.cults)
         {
