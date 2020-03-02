@@ -31,10 +31,6 @@ class Sect
       taskPoints = 0;
       taskImportant = false;
       size = 10;
-      if (l.level == 1)
-        size = 50;
-      else if (l.level == 2)
-        size = 90;
       level = 0;
 
       name = generateName();
@@ -145,24 +141,34 @@ class Sect
     }
 
 
+  static var growth = [ 12, 8, 6 ];
   public function getGrowth(): Int
     {
       if (size < getMaxSize())
-        return 1 + Std.int(size / 8);
+        return 1 + Std.int(size / growth[leader.level]);
       else return 0;
     }
 /*
 OLD:
   19: 103
   36: 540
-  43: 1059 
+  // 43: 1059 
 x = 10; for (let i = 0; i < 37; i++) { x += 1 + Math.floor(x / 10); console.log(i + ': ' + ); };
 
-NEW:
-  16:106
-  29:510
-  35:1037
-x = 10; for (let i = 0; i < 37; i++) { x += 1 + Math.floor(x / 8); console.log(i + ': ' + ); };
+NEW (skip 2 to get correct turn):
+x = 10; for (let i = 2; i < 37; i++) { x += 1 + Math.floor(x / 8); console.log(i + ': ' + ); };
+neophyte (10, x/12):
+  25:106
+  44:506
+  // 53:1047
+adept (10, x/8):
+  18:106
+  31:510
+  // 37:1037
+priest (10, x/6):
+  14:100
+  25:557
+  // 29:1034
 */
 
 
@@ -220,6 +226,7 @@ x = 10; for (let i = 0; i < 37; i++) { x += 1 + Math.floor(x / 8); console.log(i
     InvSearchTask,
     InvConfuseTask,
     InvSacrificeTask,
+    HarvestTask,
   ];
 
 

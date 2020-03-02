@@ -212,7 +212,10 @@ class Cult
         text += ' was sacrificed to discourage the investigator.';
       else if (src == 'attack')
         text += ' was disbanded when its puppeteer has left the cult.';
-      ui.log2(this, text, { type: 'sect', symbol: 's' });
+      else if (src == 'harvest')
+        text += ' was harvested for resources.';
+      if (src != null)
+        ui.log2(this, text, { type: 'sect', symbol: 's' });
       sects.remove(node.sect);
       node.sect.leader = null;
       node.sect = null;
