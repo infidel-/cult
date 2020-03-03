@@ -118,7 +118,7 @@ class Advisor
         {
           for (s in cult.sects)
             if ((s.task == null || !s.taskImportant) &&
-                s.isAdvisor)
+                s.isAdvisor && s.level >= 1)
               {
                 s.setTaskByID('cultSabotageRitual', ritualCult);
                 s.taskImportant = true;
@@ -161,7 +161,7 @@ class Advisor
         return;
 
       for (s in cult.sects)
-        if (!s.taskImportant && s.isAdvisor)
+        if ((s.task == null || !s.taskImportant) && s.isAdvisor)
           s.setTaskByID('cultNodeInfo');
     }
 }
