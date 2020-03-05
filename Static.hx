@@ -231,15 +231,24 @@ class Static
 
 // ======================== Rituals ==========================
 
-  public static var rituals: Array<RitualInfo> =
+  public static var rituals: Map<String, RitualInfo> =
     [
-      // the first one is reserved for ritual of summoning!
-      {
-        id: "summoning",
-        name: "Final Ritual",
+      'summoning' => {
+        id: 'summoning',
+        name: 'Final Ritual',
+        virgins: 9, // replaced by difficulty.numSummonVirgins
+        priests: 3,
         points: 10,
-        note: "Upon completion this cult will reign over the world unchallenged."
-      }
+        note: 'Upon completion this cult will reign over the world unchallenged.'
+      },
+      'unveiling' => {
+        id: 'unveiling',
+        name: 'Ritual of Unveiling',
+        virgins: 5,
+        priests: 1,
+        points: 3,
+        note: 'Upon completion this cult will reign over the world unchallenged.'
+      },
     ];
 }
 
@@ -250,6 +259,8 @@ typedef RitualInfo =
     var id: String; // string id of ritual (for use in code)
     var name: String; // ritual name
     var note: String; // ritual description
+    var virgins: Int; // used virgins
+    var priests: Int; // min priests needed
     var points: Int; // points for completion
   };
 

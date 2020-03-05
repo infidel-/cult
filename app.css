@@ -307,6 +307,12 @@ legend {
   color: var(--text-color);
 }
 
+#status-ritual-unveiling {
+  position: absolute;
+  left: 99px;
+  top: 92px;
+}
+
 .statusConvert {
   box-shadow: 1px 1px 2px #41514b;
   cursor: pointer;

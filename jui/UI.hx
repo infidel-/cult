@@ -253,8 +253,8 @@ class UI
       else if (state == "summon" && cult.isAI)
         {
           msg += cult.fullName +
-            " has completed the " + Static.rituals[0].name + ".<br><br>" +
-            cult.info.summonFinish;
+            " has completed the " + Static.rituals['summoning'].name +
+            ".<br><br>" + cult.info.summonFinish;
           msg += "<br><br><center><b>YOU LOSE</b></center>";
           track("loseGame diff:" + game.difficultyLevel, "summon", game.turns);
           w = 700;

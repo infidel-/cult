@@ -175,6 +175,12 @@ legend {
   text-align: center;
 }
 
+#status-ritual-unveiling {
+  position: absolute;
+  left: 99px;
+  top: 92px;
+}
+
 #status\.awareness {
   font-weight: bold;
 }

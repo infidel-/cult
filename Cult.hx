@@ -198,7 +198,7 @@ class Cult
       if (!isAI)
         ui.log2(this, node.name +
           " becomes the puppeteer of a sect called " + sect.name + ".",
-          { type: 'sect' });
+          { type: 'sect', symbol: 's' });
     }
 
 
@@ -462,8 +462,51 @@ class Cult
         return (getNumFollowers(level) >= Game.upgradeCost &&
           virgins >= level + 1);
       else return
-        (priests >= Game.upgradeCost && virgins >= game.difficulty.numSummonVirgins &&
+        (priests >= Static.rituals['summoning'].priests &&
+         virgins >= game.difficulty.numSummonVirgins &&
          !isRitual);
+    }
+
+
+// cult can start this ritual?
+  public function canStartRitual(id: String): Bool
+    {
+      var info = Static.rituals[id];
+      if (isRitual || priests < info.priests || virgins < info.virgins)
+        return false;
+
+      // all origins are known
+      if (id == 'unveiling')
+        {
+          for (c in game.cults)
+            if (c.origin != null && !c.origin.isKnown[this.id])
+              return true;
+          return false;
+        }
+
+      return true;
+    }
+
+
+// start ritual by id
+  public function startRitual(id: String)
+    {
+      // player is already in ritual
+      if (isRitual)
+        {
+          ui.alert("You must first finish the current ritual before starting another.");
+          return;
+        }
+
+      var info = Static.rituals[id];
+      virgins -= info.virgins;
+      ritual = info;
+      ritualPoints = ritual.points;
+      isRitual = true;
+      ui.log2(this, fullName + " has started the " + ritual.name + ".",
+        { symbol: 'R' });
+      if (!isAI)
+        ui.updateStatus();
     }
 
 
@@ -631,7 +674,7 @@ class Cult
       isRitual = true;
       for (c in game.cults)
         isInfoKnown[c.id] = true;
-      ritual = Static.rituals[0];
+      ritual = Static.rituals['summoning'];
       ritualPoints = ritual.points;
 
       // every cult starts war with this one
@@ -647,7 +690,8 @@ class Cult
           w: 700,
           h: 400,
         });
-      ui.log2(this, fullName + " has started the " + ritual.name + ".");
+      ui.log2(this, fullName + " has started the " + ritual.name + ".",
+        { symbol: 'R' });
       if (!isAI)
         ui.updateStatus();
     }
@@ -658,8 +702,32 @@ class Cult
     {
       if (ritual.id == "summoning")
         summonFinish();
+      else if (ritual.id == "unveiling")
+        {
+          ui.log2(this, fullName + ' has finished the ' + ritual.name + '.',
+            { symbol: 'R' });
+          unveilingFinish();
+        }
 
       isRitual = false;
+    }
+
+
+// finish unveiling
+  function unveilingFinish()
+    {
+      if (!isAI)
+        ui.alert(fullName + ' has finished the ' + ritual.name +
+          '. All cult origins are revealed.',
+          { h: 130 });
+
+      for (c in game.cults)
+        if (c.origin != null)
+          {
+            c.origin.setVisible(this, true);
+            c.origin.isKnown[this.id] = true;
+          }
+      ui.map.paint();
     }
 
 
@@ -682,16 +750,18 @@ class Cult
             {
               ui.alert("The stars were not properly aligned. The high priest goes insane.");
               ui.log2(this, fullName + " has failed to perform the " +
-                Static.rituals[0].name + ".");
+                Static.rituals['summoning'].name + ".",
+              { symbol: 'R' });
               ui.updateStatus();
             }
           else
             {
               ui.alert(fullName +
-                " has failed to perform the " + Static.rituals[0].name + ".<br><br>" +
+                " has failed to perform the " + Static.rituals['summoning'].name + ".<br><br>" +
                 info.summonFail);
               ui.log2(this, fullName + " has failed the " +
-                Static.rituals[0].name + ".");
+                Static.rituals['summoning'].name + ".",
+                { symbol: 'R' });
             }
           return;
         }

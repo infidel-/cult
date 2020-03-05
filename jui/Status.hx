@@ -26,6 +26,10 @@ class Status
 
       s += "<fieldset>";
       s += "<legend>FOLLOWERS</legend>";
+
+      // unveiling ritual button
+      s += "<div class='uiButton statusConvert statusUpgrade' id='status-ritual-unveiling' style='visibility: hidden;'>U</div>";
+
       s += "<table class=statusTable cellpadding=0>";
 
       // followers
@@ -186,6 +190,7 @@ class Status
           c.title = tipUpgrade[i];
           c.style.visibility = 'hidden';
         }
+      e('status-ritual-unveiling').onclick = onRitual;
       for (i in 0...(Game.numPowers + 1))
         {
           if (UI.classicMode)
@@ -276,6 +281,17 @@ class Status
 
       var lvl = Std.parseInt(Tools.getTarget(event).id.substr(14, 1));
       game.player.upgrade(lvl);
+    }
+
+
+// ritual button
+  function onRitual(event: Dynamic)
+    {
+      if (game.isFinished)
+        return;
+
+      var id = Tools.getTarget(event).id.substr(14);
+      game.player.startRitual(id);
     }
 
 
@@ -450,16 +466,21 @@ class Status
       for (i in 0...Game.followerNames.length)
         e("status.upgrade" + i).style.visibility =
           (game.player.canUpgrade(i) ? 'visible' : 'hidden');
+      e("status-ritual-unveiling").style.visibility =
+        (game.player.canStartRitual('unveiling') ? 'visible' : 'hidden');
 
       updateTip("status.follower2",
-        "3 priests and " + game.difficulty.numSummonVirgins +
-          " virgins are needed to summon the Elder God.");
+        Static.rituals['summoning'].priests + " priests and " +
+        game.difficulty.numSummonVirgins +
+        " virgins are needed to summon the Elder God.");
       updateTip("status.upgrade2",
-        "To perform the " + Static.rituals[0].name +
-        " you need " + Game.upgradeCost +
+        "To perform the " + Static.rituals['summoning'].name +
+        " you need " + Static.rituals['summoning'].priests +
         " priests and " + game.difficulty.numSummonVirgins + " virgins.<br>" +
         "<li>The more society is aware of the cult the harder it is to " +
         "summon Elder God.");
+      updateTip('status-ritual-unveiling',
+        'The ritual of Unveiling will show all cult origins upon completion.');
 
       if (Game.isDebug)
         e('status.debug').innerHTML = ui.info.getDebugInfo(game.player, true);
