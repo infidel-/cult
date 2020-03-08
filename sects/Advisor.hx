@@ -123,8 +123,6 @@ class Advisor
                 s.setTaskByID('cultSabotageRitual', ritualCult);
                 s.taskImportant = true;
               }
-
-          return;
         }
 
       // check if all cults info is known
