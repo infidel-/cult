@@ -5,6 +5,10 @@ import js.Browser;
 import Alert;
 import Static;
 
+#if electron
+import js.node.Fs;
+#end
+
 
 @:expose
 class UI
@@ -40,6 +44,8 @@ class UI
 
       untyped  __js__("window.devicePixelRatio = 1;");
 
+      Browser.window.onerror = onError;
+
       // pick mode
       var url = Browser.window.location.href;
       var isClassic = (StringTools.endsWith(url, 'index.html') ||
@@ -47,6 +53,25 @@ class UI
       classicMode = isClassic;
       modernMode = !isClassic;
       vars = (isClassic ? classicModeVars : modernModeVars);
+    }
+
+
+  function onError(msg: Dynamic, url: String, line: Int, col: Int, err: Dynamic): Bool
+    {
+      var d = Date.now();
+      var l = d.getHours() + ':' +
+        (d.getMinutes() < 10 ? '0' : '') + d.getMinutes() + ':' +
+        (d.getSeconds() < 10 ? '0' : '') + d.getSeconds() + ' ' +
+        msg + ', ' + err.stack + ', line ' + line + ', col ' + col + '\n';
+      trace(l);
+#if electron
+      try {
+        Fs.appendFileSync('log.txt', l);
+      }
+      catch (e: Dynamic)
+        {}
+#end
+      return false;
     }
 
 
