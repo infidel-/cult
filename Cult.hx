@@ -1131,8 +1131,8 @@ class Cult
 // since AI dont actually stash resources, we generate stash based on cult size
   function gainStash(from: Cult)
     {
-//      if (Std.random(100) > 30)
-//        return;
+      if (Std.random(100) > 30)
+        return;
 
       var text = fullName +
         ' has acquired a stash of resources with the origin of ' +
