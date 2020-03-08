@@ -163,8 +163,9 @@ class Info extends Window
         {
           s += UI.powerName(i, true) + ": " + p.power[i] + " (";
           if (i < 3)
-            s += p.getResourceChance() + "%), ";
-          else s += p.maxVirgins() + "), ";
+            s += '+0-' + p.powerMod[i] + ', ' +
+              p.getResourceChance() + "%), ";
+          else s += '+0-' + p.maxVirgins() + "), ";
           if (status)
             s += '<br>';
         }

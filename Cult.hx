@@ -1045,7 +1045,7 @@ class Cult
 
 
 // lose node to new owner (who is null in the case of losing)
-  public function loseNode(node: Node, ?cult: Cult)
+  public function loseNode(node: Node, ?cult: Cult = null)
     {
       // raise public awareness
       awareness++;
@@ -1058,7 +1058,7 @@ class Cult
 
       // converting the origin
       if (origin == node)
-        loseOrigin();
+        loseOrigin(cult);
 
       node.update();
 
@@ -1068,7 +1068,7 @@ class Cult
 
 
 // lose origin
-  public function loseOrigin()
+  public function loseOrigin(cult: Cult)
     {
       if (nodes.length > 0)
         ui.log2(this, fullName + " has lost its Origin.");
@@ -1119,6 +1119,42 @@ class Cult
             fullName + ".");
           origin.update();
           ui.map.paint();
+        }
+
+      // attacker can gain cult stash
+      if (cult != null)
+        cult.gainStash(this);
+    }
+
+
+// attacker can gain cult stash on conquering origin
+// since AI dont actually stash resources, we generate stash based on cult size
+  function gainStash(from: Cult)
+    {
+//      if (Std.random(100) > 30)
+//        return;
+
+      var text = fullName +
+        ' has acquired a stash of resources with the origin of ' +
+        from.fullName;
+      text += (isAI ? '.' : ': ');
+      var sum = 0;
+      for (i in 0...3)
+        sum += (i + 1) * getNumFollowers(i);
+      var val = Std.int(sum / 4);
+      if (val == 0)
+        return;
+      var id = Std.random(3);
+      if (Std.random(100) < 25)
+        id = 3;
+      if (!isAI)
+        text += val + ' ' + UI.powerName(id) + '.';
+      power[id] += val;
+      ui.log2(from, text);
+      if (!isAI)
+        {
+          ui.alert(text, { h: 110 });
+          ui.status.update();
         }
     }
 
