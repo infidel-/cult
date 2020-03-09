@@ -121,7 +121,7 @@ class SectsInfo extends Window
   override function onShow()
     {
       var s = '<table class=uiListSects cellspacing=3 cellpadding=3>' +
-        '<tr><th>Name<th>Leader<th>LVL<th>Size<th>Current Task<th>AI';
+        '<tr><th>Name<th>Puppeteer<th>LVL<th>Size<th>Current Task<th>AI';
 
       for (sect in game.player.sects)
         {

@@ -12,16 +12,19 @@ class Alert
   var window: DivElement; // window element
   var border: DivElement; // border element
   var text: DivElement; // text element
-  var close: DivElement; // close button
   var bg: DivElement; // background element
+  var yesFunc: Void -> Void; // current yes/no handler
+  public var isYesNo: Bool;
   public var isVisible: Bool;
 
   public function new(uivar: UI, gvar: Game)
     {
       ui = uivar;
       game = gvar;
+      isYesNo = false;
       isVisible = false;
       queue = new List();
+      yesFunc = null;
     }
 
 
@@ -41,6 +44,15 @@ class Alert
           var x = queue.pop();
           show(x.msg, x.opts);
         }
+    }
+
+
+// yes button pressed
+  public function onYes(event)
+    {
+      if (yesFunc != null)
+        yesFunc();
+      onClose(event);
     }
 
 
@@ -66,6 +78,9 @@ class Alert
           shadowOpacity: 0.8,
           center: true,
         }
+      if (opts.yesNo)
+        isYesNo = true;
+      else isYesNo = false;
       if (opts.w == null)
         opts.w = 600;
       if (opts.h == null)
@@ -97,9 +112,28 @@ class Alert
       text.className = 'uiText';
       window.appendChild(text);
 
-      // close button
-      close = Tools.closeButton(window);
-      close.onclick = onClose;
+      // yes/no dialog
+      if (opts.yesNo != null)
+        {
+          var yes = Tools.closeButton(window);
+          yes.innerHTML = 'Yes';
+          yes.style.left = '33%';
+          yes.onclick = onYes;
+          yesFunc = opts.onYes;
+
+          var no = Tools.closeButton(window);
+          no.innerHTML = 'No';
+          no.style.left = '66%';
+          no.onclick = onClose;
+        }
+      else
+        {
+          // close button
+          var close = Tools.closeButton(window);
+          close.onclick = onClose;
+          if (queue.length > 0)
+            close.innerHTML = 'Next';
+        }
 
       if (opts.center)
         text.innerHTML = '<center>' + s + '</center>';
@@ -118,5 +152,7 @@ typedef _AlertOptions = {
   @:optional var shadowOpacity: Float;
   @:optional var center: Bool;
   @:optional var fontSize: Int;
+  @:optional var yesNo: Bool;
+  @:optional var onYes: Void -> Void;
 }
 

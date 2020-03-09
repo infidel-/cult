@@ -606,7 +606,23 @@ class MapUI
       if (node == null)
         return;
 
-      game.player.activate(node);
+      // tutorial: do not allow clicking nodes on first turn
+      if (game.isTutorial && game.turns == 0)
+        {
+//          game.tutorial.play('');
+          return;
+        }
+
+      // activate node and run tutorial hooks
+      var ret = game.player.activate(node);
+      if (ret == 'ok')
+        {
+          game.tutorial.play('gainNode');
+          if (game.player.origin.isProtected)
+            game.tutorial.play('originProtected');
+          if (game.player.awareness >= 10)
+            game.tutorial.play('awareness');
+        }
       paint();
     }
 

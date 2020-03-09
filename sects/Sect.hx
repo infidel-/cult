@@ -189,8 +189,13 @@ priest (10, x/6):
       else level = 2;
 
       if (level != oldlevel && !cult.isAI)
-        ui.log2(cult, name + ' has gained a new level (new tasks available!).',
-          { type: 'sect', symbol: 's' });
+        {
+          ui.log2(cult,
+            name + ' has gained a new level (new tasks available!).',
+            { type: 'sect', symbol: 's' });
+          if (level == 1)
+            game.tutorial.play('sectLevel2');
+        }
 
       if (task == null) // no task
         return;

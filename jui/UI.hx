@@ -176,6 +176,15 @@ class UI
           else mainMenu.show();
         }
 
+      // close yes/no dialog with yes
+      else if (alertWindow.isVisible && alertWindow.isYesNo)
+        {
+          if (e.keyCode == 49) // 1
+            alertWindow.onYes(null);
+          else if (e.keyCode == 50) // 2
+            alertWindow.onClose(null);
+        }
+
       // close window
       else if (logWindow.isVisible && e.keyCode == 76) // L
         logWindow.onClose(null);

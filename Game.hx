@@ -14,11 +14,13 @@ class Game
   public var cults: Array<Cult>;
   public var currentPlayerID: Int; // ID of current player's turn
   public var player: Cult;
+  public var tutorial: Tutorial;
   public var sectTasks: Array<sects.Task>; // available sect tasks
 
   public var turns: Int; // turns passed
   public var isNeverStarted: Bool; // game never started?
   public var isFinished: Bool; // game finished?
+  public var isTutorial: Bool; // game is in tutorial mode?
   public var difficultyLevel: Int; // game difficulty (0: easy, 1: normal, 2: hard, -1: custom)
   public var difficulty: DifficultyInfo; // link to difficulty info
 
@@ -65,6 +67,7 @@ class Game
 #end
       isNeverStarted = true;
       isFinished = true;
+      isTutorial = false;
       this.turns = 0;
       ui = new UI(this);
     }
@@ -88,17 +91,30 @@ class Game
     }
 
 
+// enable and start the tutorial
+  function onTutorialStart()
+    {
+      isTutorial = true;
+      tutorial.play('start');
+    }
+
+
 // restart a game
   public function restart(newDifficulty: Int, ?newDif: DifficultyInfo)
     {
       isNeverStarted = false;
+      isTutorial = false;
+      tutorial = new Tutorial(this, ui);
 
       // show starting message
       if (ui.config.get('hasPlayed') == null)
         ui.alert("Welcome.<br><br>If this is your first time playing, do not hesitate to " +
-          "consult the Manual once you have any questions. " +
+          "consult the Manual if you have any questions. " +
           "We are not responsible for horrific deaths caused by ignoring the " +
           "Manual. You have been warned.");
+      if (UI.modernMode)
+        ui.alert("Start the tutorial?",
+          { yesNo: true, onYes: onTutorialStart });
       ui.config.set('hasPlayed', '1');
 
       ui.track("startGame diff:" + newDifficulty);
@@ -478,6 +494,11 @@ class Game
           director.turn();
           endTurn();
         }
+
+      // tutorial hooks
+      tutorial.play('endTurn');
+      if (player.awareness >= 10)
+        tutorial.play('awareness');
     }
 
 

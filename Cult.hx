@@ -199,6 +199,10 @@ class Cult
         ui.log2(this, node.name +
           " becomes the puppeteer of a sect called " + sect.name + ".",
           { type: 'sect', symbol: 's' });
+
+      // tutorial
+      if (!isAI)
+        game.tutorial.play('gainSect');
     }
 
 
@@ -435,6 +439,9 @@ class Cult
       investigatorTimeout = 3;
 
       game.failSectTasks(); // fail all tasks for that investigator
+
+      if (!isAI)
+        game.tutorial.play('investigatorDead');
     }
 
 
@@ -577,6 +584,17 @@ class Cult
         }
 
       ui.map.paint();
+
+      // tutorial hooks
+      if (!isAI)
+        {
+          if (adepts >= 1)
+            game.tutorial.play('gainAdept');
+          if (adepts >= 3)
+            game.tutorial.play('gain3Adepts');
+          if (priests >= 1)
+            game.tutorial.play('gainPriest');
+        }
     }
 
 
@@ -694,6 +712,8 @@ class Cult
         { symbol: 'R' });
       if (!isAI)
         ui.updateStatus();
+      if (isAI)
+        game.tutorial.play('enemyFinalRitual');
     }
 
 
@@ -798,6 +818,10 @@ class Cult
 
           if (!isAI)
             ui.updateStatus();
+
+          // tutorial
+          if (!isAI)
+            game.tutorial.play('investigator');
         }
 
       if (investigatorTimeout > 0)
@@ -934,7 +958,7 @@ class Cult
         if (power[i] < node.power[i])
           {
             if (!isAI)
-              ui.alert("Not enough resources.");
+              ui.alert("Not enough resources of needed type.");
 
             return "notEnoughPower";
           }
@@ -1112,6 +1136,9 @@ class Cult
                   " has disappeared thinking the cult is finished.",
                   { symbol: 'I' });
             }
+
+          if (!isAI)
+            game.tutorial.play('cultParalyzed');
         }
       else
         {
@@ -1237,6 +1264,8 @@ class Cult
       cult.isDiscovered[this.id] = true;
       this.isDiscovered[cult.id] = true;
       ui.log2(this, fullName + " has discovered the existence of " + cult.fullName + ".");
+      if (!isAI)
+        game.tutorial.play('discoverCult');
     }
 
 

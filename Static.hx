@@ -247,7 +247,7 @@ class Static
         virgins: 5,
         priests: 1,
         points: 3,
-        note: 'Upon completion this cult will reign over the world unchallenged.'
+        note: 'The ritual of Unveiling will show all cult origins upon completion. Requires 1 priest and 5 virgins to perform.',
       },
     ];
 }

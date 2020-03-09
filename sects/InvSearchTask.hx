@@ -51,5 +51,7 @@ class InvSearchTask extends Task
 
       cult.investigator.isHidden = false;
       log(cult, 'Task completed: Investigator found.');
+
+      game.tutorial.play('investigatorFound');
     }
 }
