@@ -1018,7 +1018,7 @@ class Cult
       wars[cult.id] = true;
 
       // log messages
-      var text = fullName + " has declared war against " + cult.fullName + ".";
+      var text = fullName + " has started a war against " + cult.fullName + ".";
       var m: LogPanelMessage = {
         id: -1,
         old: false,
@@ -1035,6 +1035,9 @@ class Cult
             c.log(text);
             c.logPanel(m);
           }
+
+      if (!cult.isAI)
+        ui.alert(text, { h: 110 });
     }
 
 

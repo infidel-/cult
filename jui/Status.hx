@@ -480,7 +480,7 @@ class Status
         "<li>The more society is aware of the cult the harder it is to " +
         "summon Elder God.");
       updateTip('status-ritual-unveiling',
-          Static.rituals['summoning'].note);
+          Static.rituals['unveiling'].note);
 
       if (Game.isDebug)
         e('status.debug').innerHTML = ui.info.getDebugInfo(game.player, true);

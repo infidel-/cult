@@ -173,7 +173,8 @@ class UI
             manual.onClose(null);
 
           // open main menu
-          else mainMenu.show();
+          else if (e.keyCode == 27)
+            mainMenu.show();
         }
 
       // close yes/no dialog with yes
