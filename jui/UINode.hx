@@ -52,7 +52,7 @@ class UINode
         if (node.power[i] > 0)
           {
             text = Game.powerShortNames[i];
-            textColor = 'var(--power-color-' + i + ')';
+            textColor = UI.getVar('--power-color-' + i);
             isI = false;
             if (Game.powerShortNames[i] == "I")
               isI = true;

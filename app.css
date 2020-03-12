@@ -1,6 +1,8 @@
 :root {
   --main-bg-color: #f9dfbb;
   --window-bg-color: #f9dfbb;
+  --map-margin-x: 18;
+  --map-margin-y: 18;
   --border-color-0: #9c1361;
   --border-color-1: #ec9c3b;
   --border-color-2: #90015d;
@@ -9,6 +11,7 @@
   --text-select-bg: #33333330;
   --text-font: MavenPro;
   --advanced-mode-font: 16px MavenPro;
+  --advanced-mode-margin-x: 10;
   --node-error-color: #fe6868;
   --power-color-0: rgb(239, 85, 124);
   --power-color-1: rgb(92, 227, 255);
@@ -20,6 +23,8 @@
   --awareness-color: #5c3d3d;
   --willpower-color: #5c3d3d;
   --adepts-color: #7ef555;
+  --close-button-bottom: 9px;
+  --alert-window-min-height: 90;
 }
 
 body {

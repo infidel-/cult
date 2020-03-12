@@ -52,6 +52,7 @@ class Game
 // constructor
   function new()
     {
+      ui = new UI(this);
       // apply modern mode difficulty fixes
       if (UI.modernMode)
         for (d in Static.difficulty)
@@ -60,6 +61,8 @@ class Game
             d.mapHeight = Std.int(d.mapHeight * UI.vars.scaleFactor);
             d.nodeActivationRadius =
               Std.int(d.nodeActivationRadius * UI.vars.scaleFactor);
+            trace('HERE!');
+            trace(d.nodeActivationRadius);
           }
 
 #if mydebug
@@ -69,7 +72,6 @@ class Game
       isFinished = true;
       isTutorial = false;
       this.turns = 0;
-      ui = new UI(this);
     }
 
 

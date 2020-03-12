@@ -86,7 +86,7 @@ class Alert
       if (opts.h == null)
         opts.h = 250;
       if (s.length < 46) // short messages - small window
-        opts.h = 90;
+        opts.h = UI.getVarInt('--alert-window-min-height');
       if (opts.shadow == null)
         opts.shadow = true;
       if (opts.shadowOpacity == null)

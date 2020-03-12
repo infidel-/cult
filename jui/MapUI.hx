@@ -694,8 +694,10 @@ class MapUI
     {
       var bw = Std.parseInt(map.style.borderWidth);
       var panelRect = mapBorder.getBoundingClientRect();
-      mapWidth = panelRect.width - 18;
-      mapHeight = panelRect.height - 18;
+      var marginx = UI.getVarInt('--map-margin-x');
+      var marginy = UI.getVarInt('--map-margin-y');
+      mapWidth = panelRect.width - marginx;
+      mapHeight = panelRect.height - marginy;
       map.width = Std.int(mapWidth);
       map.height = Std.int(mapHeight);
       map.style.width = mapWidth + 'px';

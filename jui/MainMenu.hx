@@ -30,9 +30,9 @@ class MainMenu extends Window
         container: window
       });
 
-//      var x = (UI.classicMode ? 35 : 48);
-      var x = 35;
-      var y = 47;
+      var x = (UI.classicMode ? 26 : 36);
+      var y = (UI.classicMode ? 40 : 47);
+      var d = (UI.classicMode ? 38 : 40);
 
       // main menu contents
       Tools.button({
@@ -46,7 +46,7 @@ class MainMenu extends Window
         container: window,
         func: onNewGame
       });
-      y += 40;
+      y += d;
       Tools.button({
         id: 'newGameNormal',
         text: "START NEW GAME - NORMAL",
@@ -58,7 +58,7 @@ class MainMenu extends Window
         container: window,
         func: onNewGame
       });
-      y += 40;
+      y += d;
       Tools.button({
         id: 'newGameHard',
         text: "START NEW GAME - HARD",
@@ -70,7 +70,7 @@ class MainMenu extends Window
         container: window,
         func: onNewGame
       });
-      y += 40;
+      y += d;
 
       Tools.button({
         id: 'customGame',
@@ -83,7 +83,7 @@ class MainMenu extends Window
         container: window,
         func: onCustomGame
       });
-      y += 40;
+      y += d;
 
       Tools.button({
         id: 'customGame',
@@ -96,7 +96,7 @@ class MainMenu extends Window
         container: window,
         func: onMultiplayerGame
       });
-      y += 40;
+      y += d;
 
 #if electron
       Tools.button({

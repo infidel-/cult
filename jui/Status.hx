@@ -52,7 +52,8 @@ class Status
       s += "</table></fieldset>";
 
       s += "<fieldset><legend>RESOURCES</legend>" +
-        "<table class=statusTable cellpadding=0>";
+        '<table class=statusTable cellpadding=0';
+      s += (UI.modernMode ? '>' : " cellspacing=0>");
       for (i in 0...(Game.numPowers + 1))
         {
           s += "<tr style='";
@@ -62,14 +63,8 @@ class Status
           // icon
           if (UI.classicMode)
             {
-              s += "<div id='status.powerMark" + i + "' style='width:" +
-                UI.vars.markerWidth +
-                "; height: " + UI.vars.markerHeight +
-                "; font-size: 12px; " +
-                "background:#222; border:1px solid #777; color: var(--power-color-" +
-                i + ");'>";
-                "<center><b>" + Game.powerShortNames[i] +
-                "</b></center></div>";
+              s += "<div class='status.powerMark' id='status.powerMark" + i + "' style='color: var(--power-color-" + i + ");'>" +
+                Game.powerShortNames[i] + "</div>";
             }
           else s += "<img width=20 height=20 src='./data/power-" +
             Game.powerNames[i].toLowerCase() + "-status.png'>";
@@ -441,7 +436,9 @@ class Status
         col = 2;
       else if (game.player.awareness >= 10)
         col = 1;
-      aw.style.background = 'var(--awareness-text-color-' + col + ')';
+      if (UI.modernMode)
+        aw.style.background = 'var(--awareness-text-color-' + col + ')';
+      else aw.style.color = 'var(--awareness-text-color-' + col + ')';
       aw.className = (col > 0 ? 'blinking' : '');
 
       // lower awareness buttons visibility

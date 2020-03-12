@@ -1,11 +1,14 @@
 :root {
   --main-bg-color: black;
   --window-bg-color: #222;
+  --map-margin-x: 10;
+  --map-margin-y: 12;
   --text-color: white;
   --text-color-log-time: #888888;
   --text-select-bg: #333333;
   --text-font: "Verdana";
   --advanced-mode-font: "11px Verdana";
+  --advanced-mode-margin-x: 8;
   --node-error-color: #ff8888;
   --power-color-0: rgb(255, 0, 0);
   --power-color-1: rgb(0, 255, 255);
@@ -17,12 +20,14 @@
   --awareness-color: #ff9999;
   --willpower-color: #bbbbbb;
   --adepts-color: #55dd55;
+  --close-button-bottom: 6px;
+  --alert-window-min-height: 95;
 }
 
 body {
   background: var(--main-bg-color);
   color: #d3d3d3;
-  font-size: 20px;
+  font-size: 18px;
   font-family: var(--text-font);
   overflow: hidden;
 }
@@ -92,8 +97,9 @@ legend {
 }
 
 .mainMenuButton {
-  height: 30px;
+  height: 27px;
   width: 350px;
+  font-size: 20px;
 }
 
 .uiButton {
@@ -118,22 +124,19 @@ legend {
   color: white;
 }
 
+#mapBorder {
+  position: absolute;
+  top: 34px;
+  left: 240px;
+  right: 4px;
+  bottom: 3px;
+}
+
 #map {
   border: double #777 4px;
   width: 780px;
   height: 580px;
-  position: absolute;
-  left: 240px;
-  top: 35px;
   overflow: hidden;
-}
-
-#mapBorder {
-  position: absolute;
-  top: 32px;
-  left: 237px;
-  right: 4px;
-  bottom: 3px;
 }
 
 #topPanel {
@@ -157,13 +160,33 @@ legend {
 #status {
   border: double #777 4px;
   font-size: 12px;
-  height: 99.3%;
-  left: 5px;
+  height: 100%;
+  left: -4px;
   overflow: hidden;
   padding: 5px;
-  top: 5px;
+  position: relative;
+  top: -6px;
   user-select: none;
-  width: 191px;
+  width: 189px;
+}
+
+#statusBorder {
+  position: absolute;
+  padding: 6px;
+  top: 6px;
+  left: 3px;
+  width: 202px;
+  bottom: 13px;
+}
+
+.status\.powerMark {
+  background:#222;
+  border: 1px solid #777;
+  font-size: 12px;
+  font-weight: bold;
+  height: 15px;
+  text-align: center;
+  width: 15px;
 }
 
 #status\.cult {
@@ -182,7 +205,9 @@ legend {
 }
 
 #status\.awareness {
+  border-radius: 7px;
   font-weight: bold;
+  padding: 2px;
 }
 
 #status\.turns {
@@ -236,6 +261,7 @@ legend {
 .logPanelItemOld {
   background: #050505;
   border: 1px solid #999;
+  position: absolute;
   width: 18px;
   height: 18px;
 }
@@ -243,6 +269,7 @@ legend {
 .logPanelItemNew {
   background: #151515;
   border: 1px solid #fff;
+  position: absolute;
   width: 18px;
   height: 18px;
 }
@@ -300,6 +327,16 @@ legend {
 
 .uiListSects>tr {
   background: black;
+}
+
+.blinking {
+  animation: blinkingText 3s infinite;
+}
+
+@keyframes blinkingText {
+  0% { background: black; }
+  50% { background: #202020; }
+  100% { background: black; }
 }
 
 #mainMenuTitle {

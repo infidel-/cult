@@ -429,6 +429,13 @@ class UI
     }
 
 
+// get CSS variable as int
+  public static inline function getVarInt(s: String): Int
+    {
+      return Std.parseInt(getVar(s));
+    }
+
+
 // track stuff through google analytics
   public inline function track(action: String, ?label: String, ?value: Int)
     {

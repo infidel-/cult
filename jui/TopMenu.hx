@@ -148,7 +148,7 @@ class TopMenu
         w: 12,
         h: 12,
         x: 774,
-        y: 30,
+        y: 29,
         fontSize: 10,
         container: panel,
         // kludge to fix tooltip display
@@ -213,8 +213,9 @@ class TopMenu
       x -= (Std.parseInt(manual.style.width) + 20);
       manual.style.left = x + 'px';
 
+      var marginx = UI.getVarInt('--advanced-mode-margin-x');
       advanced.style.left = (Browser.window.innerWidth -
         Std.parseInt(advanced.style.width) - panelRect.left -
-        10) + 'px';
+        marginx) + 'px';
     }
 }
