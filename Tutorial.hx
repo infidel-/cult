@@ -14,6 +14,15 @@ class Tutorial
     }
 
 
+// disable tutorial by tag
+  public function disable(tag: String)
+    {
+      if (!game.isTutorial)
+        return;
+      tags[tag] = true;
+    }
+
+
 // play tutorial part by its tag if it hasn't already played'
   public function play(tag: String)
     {
@@ -109,6 +118,12 @@ class Tutorial
       "You have discovered one of the other cults I've been talking about. They are ruthless, psychopathic and willing to bring the end of the world as we know it. Just like you are.",
       'Your sects will first automatically gather information about the cult size and then will go on to research every new cult follower you uncover.',
       'Leave your sects to gather information and plan for eventual hostilities. After all, only one cult will be the one to lead the Earth into glorious new age (hopefully, yours).',
+    ],
+
+    'discoverCultNoSects' => [
+      "You have discovered one of the other cults I've been talking about. They are ruthless, psychopathic and willing to bring the end of the world as we know it. Just like you are.",
+      'You cannot get any information about other cults unless you have sects. They will automatically gather information about the cult size and then will go on to research every new cult follower you uncover.',
+      'Expand carefully to at least 4 followers to get a sect and plan for eventual hostilities. After all, only one cult will be the one to lead the Earth into glorious new age (hopefully, yours).',
     ],
 
     'cultParalyzed' => [

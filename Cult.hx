@@ -799,7 +799,10 @@ class Cult
       if (isParalyzed && paralyzedTurns > 3)
         {
           unParalyze();
-          ui.log2(this, fullName + " has gained an origin and is no longer paralyzed.");
+          var text = fullName + " has gained an origin and is no longer paralyzed.";
+          ui.log2(this, text);
+          if (!isAI)
+            ui.alert(text, { h: 110 });
         }
 
       // if a cult has any adepts, each turn it has a
@@ -1268,7 +1271,18 @@ class Cult
       this.isDiscovered[cult.id] = true;
       ui.log2(this, fullName + " has discovered the existence of " + cult.fullName + ".");
       if (!isAI)
-        game.tutorial.play('discoverCult');
+        {
+          if (sects.length > 0)
+            {
+              game.tutorial.play('discoverCult');
+              game.tutorial.disable('discoverCultNoSects');
+            }
+          else
+            {
+              game.tutorial.play('discoverCultNoSects');
+              game.tutorial.disable('discoverCult');
+            }
+        }
     }
 
 
