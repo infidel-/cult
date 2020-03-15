@@ -125,16 +125,16 @@ legend {
 
 </span>
 -->
-<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-7261859-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-7261859-1');
 </script>
-<script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("UA-7261859-1");
-pageTracker._trackPageview();
-} catch(err) {}
-</script>
+
 <script type="text/javascript" src="cult.js"></script>
 <script>
   soundManager.setup({
@@ -149,7 +149,6 @@ pageTracker._trackPageview();
     clearTimeout(musicTimer);
   }, 500);
 </script>
-
 
 </body>
 </html>

@@ -802,7 +802,8 @@ class Cult
           var text = fullName + " has gained an origin and is no longer paralyzed.";
           ui.log2(this, text);
           if (!isAI)
-            ui.alert(text, { h: 110 });
+            ui.alert(text,
+              { h: UI.getVarInt('--alert-window-height-2lines') });
         }
 
       // if a cult has any adepts, each turn it has a
@@ -1040,7 +1041,8 @@ class Cult
           }
 
       if (!cult.isAI)
-        ui.alert(text, { h: 110 });
+        ui.alert(text,
+          { h: UI.getVarInt('--alert-window-height-2lines') });
     }
 
 
@@ -1186,7 +1188,8 @@ class Cult
       ui.log2(from, text);
       if (!isAI)
         {
-          ui.alert(text, { h: 110 });
+          ui.alert(text,
+            { h: UI.getVarInt('--alert-window-height-2lines') });
           ui.status.update();
         }
     }

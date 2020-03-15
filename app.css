@@ -25,6 +25,7 @@
   --adepts-color: #7ef555;
   --close-button-bottom: 9px;
   --alert-window-min-height: 90;
+  --alert-window-height-2lines: 110;
 }
 
 body {
@@ -467,6 +468,7 @@ div::-webkit-scrollbar-thumb {
   color: var(--text-color);
   left: 14%;
   position: absolute;
+  user-select: none;
 }
 
 .cultInfoInv1 {
@@ -517,6 +519,7 @@ div::-webkit-scrollbar-thumb {
   overflow-x: hidden;
   overflow-y: auto;
   position: relative;
+  user-select: none;
 }
 
 #logBGIMG {

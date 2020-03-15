@@ -30,8 +30,8 @@ class SectsInfo extends Window
       sectsFG.className = 'uiTextFG';
       sectsBG.appendChild(sectsFG);
       list = Browser.document.createDivElement();
+      list.id = 'sectsList';
 //      list.className = 'uiText';
-      list.style.userSelect = 'none';
       sectsFG.appendChild(list);
 
       // info text
@@ -125,7 +125,7 @@ class SectsInfo extends Window
 
       for (sect in game.player.sects)
         {
-          s += '<tr><td>' + sect.name +
+          s += '<tr class=uiListSectsRow><td>' + sect.name +
 //            (Game.isDebug ? ' ' + sect.taskImportant : '') +
             '<td>' + sect.leader.name +
             '<td style="text-align:center">' + (sect.level + 1) +

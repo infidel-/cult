@@ -34,18 +34,20 @@ class LogPanel
         {
           // choose symbol/color pair
           var sym = '';
-          var col = '#e7e7e7';
+          var col = (UI.modernMode ? '#d6d6d6' : '#303030');
           if (m.type == 'cult' || m.type == null) // cult-related message
             {
               var cult: Cult = m.obj;
-              col = UI.vars.lineColors[cult.id];
+              col = UI.vars.lineColors[cult.id] +
+                (UI.modernMode ? 'e0' : 'b0');
             }
           else if (m.type == 'cults') // messages relating to 2 cults
             {
               var cult: Cult = m.obj.c1;
               var cult2: Cult = m.obj.c2;
-              sym = "<span style='color:" + UI.vars.lineColors[cult.id] + "'>I</span>" +
-                "<span style='color:" + UI.vars.lineColors[cult2.id] + "'>I</span>";
+              var ch = (UI.modernMode ? 'I' : '!');
+              sym = "<span class=shadow style='color:" + UI.vars.lineColors[cult.id] + "'>" + ch + "</span>" +
+                "<span class=shadow style='color:" + UI.vars.lineColors[cult2.id] + "'>" + ch + "</span>";
             }
           if (m.params != null && m.params.symbol != null)
              sym = m.params.symbol;
@@ -54,7 +56,7 @@ class LogPanel
           var e = Browser.document.createDivElement();
           m.id = list.length;
           e.id = 'log.id' + list.length;
-          e.className = 'uiButton ' +
+          e.className = 'uiButton shadow ' +
             (m.old ? 'logPanelItemOld' : 'logPanelItemNew');
           e.style.background = col;
           untyped e.messageID = m.id;

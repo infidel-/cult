@@ -22,6 +22,7 @@
   --adepts-color: #55dd55;
   --close-button-bottom: 6px;
   --alert-window-min-height: 95;
+  --alert-window-height-2lines: 120;
 }
 
 body {
@@ -157,6 +158,18 @@ legend {
   position: absolute;
 }
 
+#logText
+{
+  overflow: auto;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 743px;
+  height: 450px;
+  background: #0b0b0b;
+  border: 1px solid #777777;
+}
+
 #status {
   border: double #777 4px;
   font-size: 12px;
@@ -210,6 +223,29 @@ legend {
   padding: 2px;
 }
 
+#status\.musicPlus {
+  font-size: 8px;
+  height: 9px;
+  left: 134px;
+  position: relative;
+  top: -70px;
+  width: 9px;
+}
+
+#status\.musicMinus {
+  font-size: 8px;
+  height: 9px;
+  left: 154px;
+  position: relative;
+  top: -85px;
+  width: 9px;
+}
+
+#status\.debug {
+  padding: 20px 5px 0px 5px;
+  color: var(--text-color);
+}
+
 #status\.turns {
   font-weight: bold;
 }
@@ -244,6 +280,10 @@ legend {
   font-size: 11px;
 }
 
+.cultText {
+  font-weight: bold;
+}
+
 .powerText {
   font-weight: 1000;
   vertical-align: middle;
@@ -258,20 +298,30 @@ legend {
   user-select: text;
 }
 
+.shadow {
+  text-shadow: 0.5px 0.5px 0.5px black;
+}
+
 .logPanelItemOld {
   background: #050505;
   border: 1px solid #999;
+  color: white;
+  font-size: 13px;
+  font-weight: bold;
+  height: 18px;
   position: absolute;
   width: 18px;
-  height: 18px;
 }
 
 .logPanelItemNew {
   background: #151515;
   border: 1px solid #fff;
+  color: white;
+  font-size: 13px;
+  font-weight: bold;
+  height: 18px;
   position: absolute;
   width: 18px;
-  height: 18px;
 }
 
 .uiWindowBorder {
@@ -290,12 +340,21 @@ legend {
 .uiText {
   background: #111;
   border: 1px solid #777;
-  height: calc(100% - 55px);
+  height: calc(100% - 62px);
   margin: 1%;
   overflow: auto;
   padding: 1%;
   position: relative;
   width: 96%;
+}
+
+.uiTextFG {
+  color: var(--text-color);
+  height: calc(100% - 37px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+  user-select: none;
 }
 
 .uiBG {
@@ -314,6 +373,7 @@ legend {
   color: var(--text-color);
   left: 14%;
   position: absolute;
+  user-select: none;
 }
 
 .cultInfoInv1 {
@@ -325,7 +385,11 @@ legend {
   color: white;
 }
 
-.uiListSects>tr {
+.uiListSects {
+  padding: 5px;
+}
+
+.uiListSectsRow {
   background: black;
 }
 
@@ -342,4 +406,16 @@ legend {
 #mainMenuTitle {
   left: 130px;
   top: 10px;
+}
+
+.messageText {
+  background: #242424;
+  border: solid 2px #848484;
+  color: var(--text-color);
+  left: 50%;
+  padding: 1%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 30;
 }

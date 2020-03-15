@@ -630,14 +630,14 @@ class MapUI
 // put view rectangle into map bounds
   function rectBounds()
     {
-      if (viewRect.x < 0)
-        viewRect.x = 0;
-      if (viewRect.y < 0)
-        viewRect.y = 0;
       if (viewRect.x + viewRect.w > game.difficulty.mapWidth)
         viewRect.x = game.difficulty.mapWidth - viewRect.w;
       if (viewRect.y + viewRect.h > game.difficulty.mapHeight)
         viewRect.y = game.difficulty.mapHeight - viewRect.h;
+      if (viewRect.x < 0)
+        viewRect.x = 0;
+      if (viewRect.y < 0)
+        viewRect.y = 0;
     }
 
 
@@ -704,6 +704,17 @@ class MapUI
       map.style.height = mapHeight + 'px';
       viewRect.w = map.width;
       viewRect.h = map.height;
+
+      if (game.isNeverStarted)
+        return;
+
+      // reset view x,y when map is smaller than viewport
+      if (game.difficulty.mapWidth <= mapWidth && 
+          game.difficulty.mapHeight <= mapHeight)
+        {
+          viewRect.x = 0;
+          viewRect.y = 0;
+        }
 
       paint();
     }

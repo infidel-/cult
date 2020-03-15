@@ -61,8 +61,7 @@ class Game
             d.mapHeight = Std.int(d.mapHeight * UI.vars.scaleFactor);
             d.nodeActivationRadius =
               Std.int(d.nodeActivationRadius * UI.vars.scaleFactor);
-            trace('HERE!');
-            trace(d.nodeActivationRadius);
+//            trace(d.nodeActivationRadius);
           }
 
 #if mydebug

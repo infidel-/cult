@@ -41,7 +41,8 @@ class HarvestTask extends Task
       text += val + ' ' + UI.powerName(id) + '.';
       cult.power[id] += val;
       log(cult, text);
-      ui.alert(text, { h: 110 });
+      ui.alert(text,
+        { h: UI.getVarInt('--alert-window-height-2lines') });
     }
 
 
