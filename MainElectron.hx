@@ -11,8 +11,10 @@ class MainElectron
     {
       App.on(ready, function(e)
         {
+          var isClassic = App.commandLine.hasSwitch('classic');
           var win = new BrowserWindow({
-            icon: __dirname + '/favicon.png',
+            icon: __dirname + '/' +
+              (isClassic ? 'favicon-classic.png' : 'favicon.png'),
             width: 1056,
             height: 685,
             webPreferences: {
@@ -25,7 +27,6 @@ class MainElectron
           win.on( closed, function() {
               win = null;
           });
-          var isClassic = App.commandLine.hasSwitch('classic');
           win.loadFile(isClassic ? 'app-classic.html' : 'app.html');
 /*
 #if mydebug

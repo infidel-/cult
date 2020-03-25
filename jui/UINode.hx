@@ -519,8 +519,8 @@ class UINode
     },
     {
       img: "char-origin.png",
-      x: 3,
-      y: 0,
+      x: -4,
+      y: -10,
     },
   ];
 

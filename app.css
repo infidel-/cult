@@ -490,18 +490,7 @@ div::-webkit-scrollbar-thumb {
 }
 
 #sectsBGIMG {
-/*
-  background-image: url(data/sect-bg15.png);
-  background-repeat: no-repeat;
-  background-position: 56% 12%;
-  background-size: 107%;
-
-  background-image: url(data/sect-bg16.png);
-  background-repeat: no-repeat;
-  background-position: 56% 199%;
-  background-size: 113%;
-*/
-  background-image: url(data/sect-bg18.png);
+  background-image: url(data/sect-bg.png);
   background-repeat: no-repeat;
   background-position: 56% 234%;
   background-size: 100%;
@@ -523,9 +512,9 @@ div::-webkit-scrollbar-thumb {
 }
 
 #logBGIMG {
-  background-image: url(data/log-bg3.png);
+  background-image: url(data/log-bg.png);
   background-repeat: no-repeat;
-  background-position: 56% 41%;
+  background-position: 56% 65%;
   background-size: 100%;
   width: 98%;
   margin: 1%;

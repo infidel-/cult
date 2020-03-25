@@ -42,7 +42,7 @@ class Game
   public static var powerConversionCost: Array<Int> = [2, 2, 2, 1];
   public static var willPowerCost: Int = 2;
 
-  public static var version = "DEV"; // game version
+  public static var version = "v6"; // game version
   public static var followerLevels = 3; // number of follower levels
   public static var numPowers = 3; // number of basic powers
   public static var upgradeCost = 3; // cost to upgrade follower
