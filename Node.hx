@@ -206,6 +206,14 @@ class Node
     }
 
 
+// calculate distance between this node and the other one
+  public function distanceXY(xx: Int, yy: Int): Float
+    {
+      return Math.sqrt((xx - x) * (xx - x) +
+        (yy - y) * (yy - y));
+    }
+
+
 // set/unset generator flag
   public function setGenerator(isgen: Bool)
     {

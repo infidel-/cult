@@ -245,12 +245,13 @@ class Game
       // fill adjacent node lists
       for (n in nodes)
         for (n2 in nodes)
-          if (n != n2 && n.distance(n2) < difficulty.nodeActivationRadius)
+          if (n != n2 && n.distance(n2) <= difficulty.nodeActivationRadius)
             {
               n.links.remove(n2);
               n.links.add(n2);
             }
     }
+
 
 // spawn new node (fsp)
   public function spawnNode()
@@ -260,6 +261,7 @@ class Game
       var cnt = 0;
       var sx = UI.vars.markerWidth * 2;
       var sy = UI.vars.markerHeight * 2;
+      var d = UI.vars.markerWidth * 2;
       while (true)
         {
           x = Math.round(20 + Math.random() *
@@ -277,11 +279,17 @@ class Game
           // check min distance to other nodes
           var ok = 1;
           for (n in nodes)
+            if (n.distanceXY(x, y) < d)
+/*
             if ((x - sx < n.x &&
                  x + UI.vars.markerWidth + sx > n.x) &&
                 (y - sy < n.y &&
                  y + UI.vars.markerHeight + sy > n.y))
+*/
+            {
               ok = 0;
+              break;
+            }
 
           if (ok == 1)
             break;

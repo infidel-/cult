@@ -662,6 +662,7 @@ class MapUI
       var mapRect = map.getBoundingClientRect();
       var x = event.clientX - mapRect.x + viewRect.x;
       var y = event.clientY - mapRect.y + viewRect.y;
+//      trace(Std.int(x),Std.int(y));
 
       // find which node the click was on
       var node = null;

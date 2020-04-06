@@ -304,12 +304,13 @@ class UINode
       var s = "";
       if (Game.debugNear)
         {
-          s += "Node " + node.id + "<br>";
+          s += 'Node ' + node.id + ' (' + node.x + ',' + node.y + ')<br>';
+          s += 'Links: ';
           for (n in node.links)
-            s += n.id + "<br>";
+            s += n.id + " ";
           if (node.isProtected)
-            s += "Protected<br>";
-          else s += "Unprotected<br>";
+            s += "<br>Protected<br>";
+          else s += "<br>Unprotected<br>";
         }
 
       if (Game.debugVis)
@@ -408,9 +409,10 @@ class UINode
             s += "Temporary<br>";
         }
 
-      // find closest node distance
+      // debug info
       if (Game.isDebug)
         {
+          // find closest node distance
           var d = 1000000.0;
           for (n in game.nodes)
             if (n != this.node)
@@ -420,6 +422,7 @@ class UINode
                   d = dx;
               }
           s += 'DBG dist nearest: ' + Std.int(d) + '<br>';
+
         }
 
       return s;
