@@ -10,7 +10,8 @@
   --text-color-log-time: #674a17;
   --text-select-bg: #33333330;
   --text-font: MavenPro;
-  --advanced-mode-font: 16px MavenPro;
+  --advanced-mode-font-size: 16px;
+  --advanced-mode-font: MavenPro;
   --advanced-mode-margin-x: 10;
   --node-error-color: #fe6868;
   --power-color-0: rgb(239, 85, 124);

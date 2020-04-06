@@ -5,6 +5,8 @@ import js.html.DivElement;
 import js.html.Image;
 import js.html.CanvasElement;
 import js.html.CanvasRenderingContext2D;
+import js.html.WheelEvent;
+import js.html.MouseEvent;
 
 typedef Rect =
 {
@@ -26,7 +28,6 @@ class MapUI
   public var tooltip: DivElement;
   public var viewRect: Rect; // viewport x,y
   var isDrag: Bool; // is viewport being dragged?
-  var ignoreClick: Bool; // ignore next mouse click?
   var map: CanvasElement;
   var mapBorder: DivElement;
   var mapWidth: Float;
@@ -42,6 +43,8 @@ class MapUI
   public var jobImages: Array<Image>; // loaded job images
   public var powerImages: Array<Image>; // loaded power images
   public var powerColors: Array<String>; // css vars cached
+  public var zoom: Float; // map zoom (on top of base map scale factor)
+  var minZoom: Float; // min value for zoom
 
   public function new(uivar: UI, gvar: Game)
     {
@@ -56,7 +59,8 @@ class MapUI
       bgImage = null;
       firstTime = true;
       isDrag = false;
-      ignoreClick = false;
+      zoom = 1.0;
+      minZoom = 0.25;
 
       // get power colors for canvas
       powerColors = [];
@@ -72,10 +76,17 @@ class MapUI
 //        Browser.window.devicePixelRatio);
 
       map.onclick = onClick;
-      map.onmousemove = onMove;
+      map.onmousemove = onMouseMove;
       map.onmousedown = onMouseDown;
       map.onmouseup = onMouseUp;
       map.onmouseout = onMouseOut;
+      Browser.document.onmouseout = function(event: MouseEvent)
+        {
+          if (event.relatedTarget == null)
+            isDrag = false;
+        }
+      if (UI.modernMode)
+        map.onwheel = onWheel;
 
       // tooltip element
       tooltip = Tools.window({
@@ -226,8 +237,8 @@ class MapUI
         {
           var img = new Image();
           img.src = 'data/' + info.img;
-          img.width = UI.vars.markerWidth;
-          img.height = UI.vars.markerHeight;
+          img.width = info.w;
+          img.height = info.h;
           jobImages.push(img);
         }
 
@@ -384,7 +395,9 @@ class MapUI
       // paint advanced node info
       if (game.player.options.getBool('mapAdvancedMode'))
         {
-          ctx.font = UI.getVar('--advanced-mode-font');
+          var fontSize = Std.int(zoom *
+            UI.getVarInt('--advanced-mode-font-size'));
+          ctx.font = fontSize + 'px ' + UI.getVar('--advanced-mode-font');
           for (n in game.nodes)
             n.uiNode.paintAdvanced(ctx);
         }
@@ -477,8 +490,8 @@ class MapUI
       ctx.strokeRect(
         viewRect.x / xscale + 1,
         viewRect.y / yscale + 1,
-        mapWidth / xscale - 1,
-        mapHeight / yscale - 1);
+        mapWidth / xscale / zoom - 1,
+        mapHeight / yscale / zoom - 1);
     }
 
 
@@ -503,30 +516,62 @@ class MapUI
     }
 
 
-// on moving over map
-  public function onMove(event: Dynamic)
+// scrolling wheel
+  public function onWheel(event: WheelEvent)
     {
+      if (game.difficulty.mapWidth > game.difficulty.mapHeight)
+        minZoom = 1.0 * viewRect.w / game.difficulty.mapWidth;
+      else minZoom = 1.0 * viewRect.h / game.difficulty.mapHeight;
+      if (minZoom > 1.0)
+        minZoom = 1.0;
+
+      var d = 0;
+      if (event != null)
+        d = (event.deltaY < 0 ? 1 : -1);
+      var oldzoom = zoom;
+      zoom += 0.05 * d;
+      if (zoom < minZoom)
+        zoom = minZoom;
+      if (zoom > 1.0)
+        zoom = 1.0;
+      if (zoom == oldzoom)
+        return;
+
+      rectBounds(); // put rect into map bounds
+      paint();
+    }
+
+
+// on moving over map
+  public function onMouseMove(event: MouseEvent)
+    {
+      // clear drag and selection
+      if (event.buttons == 0)
+        isDrag = false;
+      if (event.buttons > 0)
+        Browser.window.getSelection().empty();
       if (isDrag)
         {
-          viewRect.x -= Std.int(event.clientX - dragEventX);
-          viewRect.y -= Std.int(event.clientY - dragEventY);
+          map.style.cursor = 'grabbing';
+          viewRect.x -= Std.int((event.clientX - dragEventX) / zoom);
+          viewRect.y -= Std.int((event.clientY - dragEventY) / zoom);
 
           dragEventX = event.clientX;
           dragEventY = event.clientY;
 
           rectBounds(); // put rect into map bounds
-
           paint();
-          ignoreClick = true;
           return;
         }
 
       var node = getEventNode(event);
       if (node == null)
         {
+          map.style.cursor = 'grab';
           hideTooltip();
           return;
         }
+      map.style.cursor = 'pointer';
 
       // no tooltips in advanced mode
       if (game.player.options.getBool('mapAdvancedMode'))
@@ -563,13 +608,18 @@ class MapUI
     }
 
 
+// press and hold
   var dragEventX: Int;
   var dragEventY: Int;
-  public function onMouseDown(event: Dynamic)
+  public function onMouseDown(event: MouseEvent)
     {
       // map same size as map or smaller
       if (viewRect.w >= game.difficulty.mapWidth &&
           viewRect.h >= game.difficulty.mapHeight)
+        return;
+
+      // do not allow drag start when on node
+      if (getEventNode(event) != null)
         return;
 
       isDrag = true;
@@ -578,27 +628,21 @@ class MapUI
     }
 
 
-  public function onMouseUp(event: Dynamic)
+  public function onMouseUp(event: MouseEvent)
     {
       isDrag = false;
     }
 
 
-  public function onMouseOut(event: Dynamic)
+  public function onMouseOut(event: MouseEvent)
     {
-      isDrag = false;
       hideTooltip();
     }
 
 
 // on clicking map
-  public function onClick(event: Dynamic)
+  public function onClick(event: MouseEvent)
     {
-      if (ignoreClick)
-        {
-          ignoreClick = false;
-          return;
-        }
       if (game.isFinished)
         return;
 
@@ -630,10 +674,14 @@ class MapUI
 // put view rectangle into map bounds
   function rectBounds()
     {
-      if (viewRect.x + viewRect.w > game.difficulty.mapWidth)
-        viewRect.x = game.difficulty.mapWidth - viewRect.w;
-      if (viewRect.y + viewRect.h > game.difficulty.mapHeight)
-        viewRect.y = game.difficulty.mapHeight - viewRect.h;
+      if ((viewRect.x * ui.map.zoom + viewRect.w) >
+          game.difficulty.mapWidth * ui.map.zoom)
+        viewRect.x = Std.int((game.difficulty.mapWidth * ui.map.zoom -
+          viewRect.w) / ui.map.zoom);
+      if (viewRect.y * ui.map.zoom + viewRect.h >
+          game.difficulty.mapHeight * ui.map.zoom)
+        viewRect.y = Std.int((game.difficulty.mapHeight * ui.map.zoom -
+          viewRect.h) / ui.map.zoom);
       if (viewRect.x < 0)
         viewRect.x = 0;
       if (viewRect.y < 0)
@@ -653,20 +701,20 @@ class MapUI
 
 
 // get node from mouse event
-  function getEventNode(event: Dynamic): Node
+  function getEventNode(event: MouseEvent): Node
     {
       // game not started yet
       if (game.nodes == null)
         return null;
 
       var mapRect = map.getBoundingClientRect();
-      var x = event.clientX - mapRect.x + viewRect.x;
-      var y = event.clientY - mapRect.y + viewRect.y;
+      var x = (event.clientX - mapRect.x) / zoom + viewRect.x;
+      var y = (event.clientY - mapRect.y) / zoom + viewRect.y;
 //      trace(Std.int(x),Std.int(y));
 
       // find which node the click was on
       var node = null;
-      var r = (UI.classicMode ? 10 : 26);
+      var r = (UI.classicMode ? 10 : 32);
       for (n in game.nodes)
         {
           if (!n.isVisible(game.player))
@@ -717,6 +765,7 @@ class MapUI
           viewRect.y = 0;
         }
 
+      onWheel(null);
       paint();
     }
 }

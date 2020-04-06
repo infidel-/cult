@@ -6,8 +6,9 @@
   --text-color: white;
   --text-color-log-time: #888888;
   --text-select-bg: #333333;
-  --text-font: "Verdana";
-  --advanced-mode-font: "11px Verdana";
+  --text-font: Verdana;
+  --advanced-mode-font-size: 11px;
+  --advanced-mode-font: Verdana;
   --advanced-mode-margin-x: 8;
   --node-error-color: #ff8888;
   --power-color-0: rgb(255, 0, 0);

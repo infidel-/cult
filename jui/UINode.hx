@@ -30,12 +30,7 @@ class UINode
         return;
 
       // node out of view rectangle
-      if (node.x < ui.map.viewRect.x - UI.vars.markerWidth ||
-          node.y < ui.map.viewRect.y - UI.vars.markerHeight ||
-          node.x >
-            ui.map.viewRect.x + ui.map.viewRect.w + UI.vars.markerWidth ||
-          node.y >
-            ui.map.viewRect.y + ui.map.viewRect.h + UI.vars.markerHeight)
+      if (!inViewRect(UI.vars.markerWidth))
         return;
 //      game.startTimer('node paint');
 
@@ -115,7 +110,11 @@ class UINode
               ctx.drawImage(ui.map.nodeImage,
                 0, 167, 37, 37,
                 hlx, hly, 37, 37);
-            else ctx.drawImage(ui.map.nodeHL, hlx, hly);
+            else ctx.drawImage(ui.map.nodeHL,
+              hlx * ui.map.zoom,
+              hly * ui.map.zoom,
+              ui.map.nodeHL.width * ui.map.zoom,
+              ui.map.nodeHL.height * ui.map.zoom);
             break;
           }
 
@@ -147,17 +146,23 @@ class UINode
 //          ctx.fillRect(xx, yy, 52, 52);
 
           // background
-          if (node.isGenerator)
-            ctx.drawImage(ui.map.nodeImagesGenerator[idx], xx, yy);
-          else ctx.drawImage(ui.map.nodeImages[idx], xx, yy);
+          var img = (node.isGenerator ?
+            ui.map.nodeImagesGenerator[idx] :
+            ui.map.nodeImages[idx]);
+          ctx.drawImage(img, xx * ui.map.zoom, yy * ui.map.zoom,
+            img.width * ui.map.zoom,
+            img.height * ui.map.zoom);
 
           // job icon
           var imageID = node.imageID;
           if (key == 'o' || key == 'op') // origin
             imageID = 14;
-          ctx.drawImage(ui.map.jobImages[imageID],
-            xx + jobInfo[imageID].x,
-            yy + jobInfo[imageID].y + 6);
+          var img = ui.map.jobImages[imageID];
+          ctx.drawImage(img,
+            (xx + jobInfo[imageID].x) * ui.map.zoom,
+            (yy + jobInfo[imageID].y + 6) * ui.map.zoom,
+            img.width * ui.map.zoom,
+            img.height * ui.map.zoom);
 
           // resource to acquire
           if (node.owner != game.player &&
@@ -166,14 +171,21 @@ class UINode
             for (i in 0...Game.numPowers)
               if (node.power[i] > 0)
                 {
-                  ctx.drawImage(ui.map.powerImages[i],
-                    xx + 1, yy);
+                  var img = ui.map.powerImages[i];
+                  ctx.drawImage(img,
+                    (xx + 1) * ui.map.zoom, yy * ui.map.zoom,
+                    img.width * ui.map.zoom,
+                    img.height * ui.map.zoom);
                   break;
                 }
 
           // level text
-          ctx.drawImage(
-            ui.map.textImages[MapUI.textToIndex[text]], xx + 39, yy + 1);
+          var img = ui.map.textImages[MapUI.textToIndex[text]];
+          ctx.drawImage(img,
+              (xx + 39) * ui.map.zoom,
+              (yy + 1) * ui.map.zoom,
+              img.width * ui.map.zoom,
+              img.height * ui.map.zoom);
         }
 
       tempx = xx;
@@ -190,10 +202,7 @@ class UINode
         return;
 
       // node out of view rectangle
-      if (node.x < ui.map.viewRect.x - 20 ||
-          node.y < ui.map.viewRect.y - 20 ||
-          node.x > ui.map.viewRect.x + ui.map.viewRect.w ||
-          node.y > ui.map.viewRect.y + ui.map.viewRect.h)
+      if (!inViewRect(UI.vars.markerWidth))
         return;
 
       // draw production indicators
@@ -221,8 +230,8 @@ class UINode
                     {
                       ctx.shadowColor = 'black';
                       ctx.fillText(roman[node.powerGenerated[i]],
-                        tempx + 62,
-                        tempy + 26 + j * 16);
+                        ui.map.zoom * (tempx + 62),
+                        ui.map.zoom * (tempy + 26 + j * 16));
                       ctx.shadowColor = 'transparent';
                     }
                   j++;
@@ -243,7 +252,9 @@ class UINode
               ctx.shadowOffsetY = 1;
               ctx.shadowBlur = 1;
               ctx.shadowColor = "#84aa9d";
-              ctx.fillText(ch + '%', tempx + 13, tempy - 4);
+              ctx.fillText(ch + '%',
+                ui.map.zoom * (tempx + 13),
+                ui.map.zoom * (tempy - 4));
               ctx.shadowColor = 'transparent';
             }
 
@@ -278,14 +289,32 @@ class UINode
                       var s = roman[node.power[i]];
                       var w = ctx.measureText(s).width;
                       ctx.fillText(s,
-                        tempx - 4 - w,
-                        tempy + 26 + j * 16);
+                        ui.map.zoom * (tempx - 4 - w),
+                        ui.map.zoom * (tempy + 26 + j * 16));
                       ctx.shadowColor = 'transparent';
                     }
                   j++;
                 }
             }
         }
+    }
+
+
+// check if this node is in view
+  public function inViewRect(border: Int): Bool
+    {
+      if (node.x * ui.map.zoom <
+            (ui.map.viewRect.x - border) * ui.map.zoom ||
+          node.y * ui.map.zoom <
+            (ui.map.viewRect.y - border) * ui.map.zoom ||
+          node.x * ui.map.zoom >
+            (ui.map.viewRect.x * ui.map.zoom + ui.map.viewRect.w +
+             UI.vars.markerWidth * ui.map.zoom) ||
+          node.y * ui.map.zoom >
+            (ui.map.viewRect.y + ui.map.viewRect.h +
+             UI.vars.markerHeight * ui.map.zoom))
+        return false;
+      return true;
     }
 
 
@@ -454,76 +483,106 @@ class UINode
       img: "char-official-male.png",
       x: 3,
       y: 0,
+      w: 52,
+      h: 52,
     },
     {
       img: "char-official-female.png",
       x: 2,
       y: 0,
+      w: 52,
+      h: 52,
     },
     {
       img: "char-corporate-male.png",
       x: 8,
       y: 0,
+      w: 52,
+      h: 52,
     },
     {
       img: "char-corporate-female.png",
       x: -5,
       y: 0,
+      w: 52,
+      h: 52,
     },
     {
       img: "char-professor-male.png",
       x: 1,
       y: 3,
+      w: 52,
+      h: 52,
     },
     {
       img: "char-professor-female.png",
       x: 8,
       y: 0,
+      w: 52,
+      h: 52,
     },
     {
       img: "char-army-male.png",
       x: -1,
       y: 0,
+      w: 52,
+      h: 52,
     },
     {
       img: "char-army-female.png",
       x: -4,
       y: 0,
+      w: 52,
+      h: 52,
     },
     {
       img: "char-scientist-male.png",
       x: -4,
       y: 0,
+      w: 52,
+      h: 52,
     },
     {
       img: "char-scientist-female.png",
       x: -2,
       y: 0,
+      w: 52,
+      h: 52,
     },
     {
       img: "char-politician-male.png",
       x: -2,
       y: 0,
+      w: 52,
+      h: 52,
     },
     {
       img: "char-politician-female.png",
       x: 5,
       y: 0,
+      w: 52,
+      h: 52,
     },
     {
       img: "char-media-male.png",
       x: 8,
       y: 0,
+      w: 52,
+      h: 52,
     },
     {
       img: "char-media-female.png",
       x: -5,
       y: 0,
+      w: 52,
+      h: 52,
     },
     {
       img: "char-origin.png",
       x: -4,
       y: -10,
+      w: 68,
+      h: 61,
     },
   ];
 
