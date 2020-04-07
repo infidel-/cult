@@ -182,7 +182,9 @@ class OptionsMenu extends Window
               s.taskImportant = false;
         }
 
-      ui.setFullscreen(game.player.options.getBool('fullscreen'));
+      var fs = game.player.options.getBool('fullscreen');
+      if (ui.fullscreen != fs)
+        ui.setFullscreen(fs);
       game.applyPlayerOptions(); // apply player options
     }
 

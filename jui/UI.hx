@@ -36,7 +36,7 @@ class UI
   public var options: OptionsMenu; // options block
   public var manual: Manual; // ingame manual
   public var messageWindow: Message;
-  var fullscreen: Bool;
+  public var fullscreen: Bool;
 
 
   public function new(g)
