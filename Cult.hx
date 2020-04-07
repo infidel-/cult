@@ -230,31 +230,11 @@ class Cult
 // setup random starting node
   public function setOrigin()
     {
-      // find appropriate node
-      var index = -1;
-      while (true)
-        {
-          index = Math.round((game.nodes.length - 1) * Math.random());
-          var node = game.nodes[index];
+      // change method on the difficulty setting
+      if (game.difficulty.numCults == 4)
+        setupOriginFair();
+      else setupOriginRandom();
 
-          if (node.owner != null)
-            continue;
-
-          // check for close nodes
-          var ok = 1;
-          for (p in game.cults)
-            if (p.origin != null &&
-                node.distance(p.origin) < difficulty.nodeActivationRadius + 50)
-              {
-                ok = 0;
-                break;
-              }
-          if (ok == 0)
-            continue;
-
-          break;
-        }
-      origin = game.nodes[index];
       origin.owner = this;
       if (!isAI || game.difficulty.isOriginKnown)
         origin.isKnown[this.id] = true;
@@ -290,6 +270,56 @@ class Cult
       // remove close generators on hard for player
       if (!isAI && game.difficultyLevel == 2)
         removeCloseGenerators();
+    }
+
+
+// pick an origin fairly
+  function setupOriginFair()
+    {
+      // split map into four quadrants, pick unused and set origin there
+      // pick unused quadrant
+      var quad = game.freeQuadrants[Std.random(game.freeQuadrants.length)];
+      game.freeQuadrants.remove(quad);
+
+      // get all nodes in this quadrant
+      var tmp = [];
+      for (n in game.nodes)
+        if (quad.x1 <= n.x && quad.y1 <= n.y &&
+            n.x <= quad.x2 && n.y <= quad.y2)
+          tmp.push(n);
+      var node = tmp[Std.random(tmp.length)];
+      origin = node;
+    }
+
+
+// pick a random node as an origin
+  function setupOriginRandom()
+    {
+      // find appropriate node
+      var index = -1;
+      while (true)
+        {
+          index = Math.round((game.nodes.length - 1) * Math.random());
+          var node = game.nodes[index];
+
+          if (node.owner != null)
+            continue;
+
+          // check for close nodes
+          var ok = 1;
+          for (p in game.cults)
+            if (p.origin != null &&
+                node.distance(p.origin) < difficulty.nodeActivationRadius + 50)
+              {
+                ok = 0;
+                break;
+              }
+          if (ok == 0)
+            continue;
+
+          origin = game.nodes[index];
+          return;
+        }
     }
 
 

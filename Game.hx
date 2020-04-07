@@ -23,6 +23,7 @@ class Game
   public var isTutorial: Bool; // game is in tutorial mode?
   public var difficultyLevel: Int; // game difficulty (0: easy, 1: normal, 2: hard, -1: custom)
   public var difficulty: DifficultyInfo; // link to difficulty info
+  public var freeQuadrants: Array<{ x1: Int, y1: Int, x2: Int, y2: Int }>; // used during origin location selection
 
   // index of the last node/cult (for id generation)
   var lastNodeIndex: Int;
@@ -180,7 +181,7 @@ class Game
       for (i in 1...(difficulty.nodesCount + 1))
         spawnNode();
 
-      // clean nodes that do not have any links
+      // clear nodes that do not have any links
       var toRemove = new List();
       for (node in nodes)
         {
@@ -213,8 +214,39 @@ class Game
       updateLinks(); // update adjacent node links
 
       // choose and setup starting nodes
-      for (p in cults)
-        p.setOrigin();
+      // init quadrants first
+      freeQuadrants = [];
+      for (i in 0...4)
+        if (i == 0)
+          freeQuadrants.push({
+            x1: 0,
+            y1: 0,
+            x2: Std.int(difficulty.mapWidth / 2),
+            y2: Std.int(difficulty.mapHeight / 2),
+          });
+        else if (i == 1)
+          freeQuadrants.push({
+            x1: Std.int(difficulty.mapWidth / 2),
+            y1: 0,
+            x2: difficulty.mapWidth,
+            y2: Std.int(difficulty.mapHeight / 2),
+          });
+        else if (i == 2)
+          freeQuadrants.push({
+            x1: 0,
+            y1: Std.int(difficulty.mapHeight / 2),
+            x2: Std.int(difficulty.mapWidth / 2),
+            y2: difficulty.mapHeight,
+          });
+        else if (i == 3)
+          freeQuadrants.push({
+            x1: Std.int(difficulty.mapWidth / 2),
+            y1: Std.int(difficulty.mapHeight / 2),
+            x2: difficulty.mapWidth,
+            y2: difficulty.mapHeight,
+          });
+      for (c in cults)
+        c.setOrigin();
 
       // update player options from config
       if (difficulty.numPlayers == 1)
