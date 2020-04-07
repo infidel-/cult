@@ -556,6 +556,7 @@ class Game
 // apply current player options
   public function applyPlayerOptions()
     {
+      ui.setFullscreen(player.options.getBool('fullscreen'));
       ui.map.paint();
     }
 

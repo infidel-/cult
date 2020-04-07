@@ -2,6 +2,7 @@
 // js version
 
 import js.Browser;
+import js.html.KeyboardEvent;
 import Alert;
 import Static;
 
@@ -35,12 +36,14 @@ class UI
   public var options: OptionsMenu; // options block
   public var manual: Manual; // ingame manual
   public var messageWindow: Message;
+  var fullscreen: Bool;
 
 
   public function new(g)
     {
       game = g;
       config = new Config();
+      fullscreen = false;
 
       untyped  __js__("window.devicePixelRatio = 1;");
 
@@ -113,16 +116,24 @@ class UI
 
 
 // on key press
-  function onKey(e: Dynamic)
+  function onKey(e: KeyboardEvent): Bool
     {
 //      var key = (Browser.window.event) ? Browser.window.event.keyCode : event.keyCode;
       var key = e.keyCode;
 //      trace(key);
 
-      var windowOpen = ( loadMenu.isVisible || saveMenu.isVisible ||
-        mainMenu.isVisible || debug.isVisible || alertWindow.isVisible ||
-        logWindow.isVisible || info.isVisible || sects.isVisible ||
-        customMenu.isVisible || manual.isVisible);
+      var windowOpen = (
+        loadMenu.isVisible ||
+        saveMenu.isVisible ||
+        mainMenu.isVisible ||
+        debug.isVisible ||
+        alertWindow.isVisible ||
+        logWindow.isVisible ||
+        info.isVisible ||
+        sects.isVisible ||
+        customMenu.isVisible ||
+        manual.isVisible
+      );
 
       if (loadMenu.isVisible) // load menu keys
         loadMenu.onKey(e);
@@ -152,7 +163,7 @@ class UI
         {
           // Enter disabled in Sects info
           if (e.keyCode == 13 && sects.isVisible)
-            return;
+            return true;
 
           if (alertWindow.isVisible)
             alertWindow.onClose(null);
@@ -174,7 +185,12 @@ class UI
 
           // open main menu
           else if (e.keyCode == 27)
-            mainMenu.show();
+            {
+              // since browser forces fullscreen off here, fix state
+              fullscreen = false;
+              game.player.options.set('fullscreen', false);
+              mainMenu.show();
+            }
         }
 
       // close yes/no dialog with yes
@@ -217,6 +233,10 @@ class UI
           else if (e.keyCode == 69) // E
             status.onEndTurn(null);
 
+          // fullscreen
+          else if (e.keyCode == 70) // F
+            setFullscreen(!fullscreen);
+
           // log
           else if (e.keyCode == 76) // L
             top.onLog(null);
@@ -245,6 +265,19 @@ class UI
           else if (e.keyCode == 51 && !game.isFinished) // 3
             game.player.upgrade(2);
         }
+
+      return true;
+    }
+
+
+// set fullscreen
+  public function setFullscreen(val: Bool)
+    {
+      if (fullscreen)
+        Browser.document.exitFullscreen();
+      else Browser.document.documentElement.requestFullscreen();
+      fullscreen = !fullscreen;
+      game.player.options.set('fullscreen', val);
     }
 
 

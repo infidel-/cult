@@ -10,6 +10,7 @@ typedef OptionInfo =
   var title: String; // parameter title
   var note: String; // parameter note
   var type: String; // parameter type
+  @:optional var y: Int; // optional y
 };
 
 
@@ -41,7 +42,14 @@ class OptionsMenu extends Window
       name: 'sectAdvisor',
       type: 'bool',
       title: 'Sect advisor',
-      note: 'Sect advisor will automatically give tasks to sects depending on the situation'
+      note: 'Sect advisor will automatically give tasks to sects depending on the situation',
+      y: 64,
+    },
+    {
+      name: 'fullscreen',
+      type: 'bool',
+      title: 'Fullscreen',
+      note: 'Enable or disable fullscreen mode'
     },
   ];
 
@@ -126,7 +134,7 @@ class OptionsMenu extends Window
             w: 450,
             h: 20,
             x: 310,
-            y: y,
+            y: (info.y != null ? info.y : y),
             fontSize: 14,
             bold: false,
             container: contents
