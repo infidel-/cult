@@ -625,12 +625,14 @@ class MapUI
       isDrag = true;
       dragEventX = event.clientX;
       dragEventY = event.clientY;
+      map.style.cursor = 'grabbing';
     }
 
 
   public function onMouseUp(event: MouseEvent)
     {
       isDrag = false;
+      map.style.cursor = 'grab';
     }
 
 

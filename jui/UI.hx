@@ -373,6 +373,10 @@ class UI
         w: w,
         h: h,
       });
+      alert("The game is over. After checking out the results you can open the main menu and start a new one.", {
+        w: 600,
+        h: 110
+      });
     }
 
 
