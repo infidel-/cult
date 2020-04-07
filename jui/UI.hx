@@ -116,7 +116,7 @@ class UI
 
 
 // on key press
-  function onKey(e: KeyboardEvent): Bool
+  function onKey(e: KeyboardEvent)
     {
 //      var key = (Browser.window.event) ? Browser.window.event.keyCode : event.keyCode;
       var key = e.keyCode;
@@ -163,7 +163,7 @@ class UI
         {
           // Enter disabled in Sects info
           if (e.keyCode == 13 && sects.isVisible)
-            return true;
+            return;
 
           if (alertWindow.isVisible)
             alertWindow.onClose(null);
@@ -265,8 +265,6 @@ class UI
           else if (e.keyCode == 51 && !game.isFinished) // 3
             game.player.upgrade(2);
         }
-
-      return true;
     }
 
 

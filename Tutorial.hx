@@ -86,6 +86,7 @@ class Tutorial
 
     'gainAdept' => [
       'You have gained your first adept. You can now spend common resources to lower public awareness. Any single adept can only be used once per turn to do it.',
+      'To use an adept, click on A button near the common resource name in the status window on the left.',
       "Coincidentally, you've opened yourself up to the potential investigators. There's a chance that an intrepid investigator will learn about the existence of your cult.",
       'To minimize that chance, keep the awareness low.',
     ],
@@ -138,7 +139,8 @@ class Tutorial
 
     'gainPriest' => [
       'Praise the Elder God! You have a priest now. A single priest and 5 ' + UI.powerName(3) + ' is enough to perform the ritual of Unveiling. This ritual will show where all other cult origins are located on the map.',
-      'During the ritual each priest contributes a point to its execution. You need a fixed amount of points to finish the ritual. That means the more priests you have, the quicker you will complete the ritual.',
+      'During the ritual each priest contributes a point to its execution. You need a fixed amount of points to finish the ritual. That means the more priests you have, the quicker you will complete it.',
+      'You can see the ritual progress in the cults information window.',
       "Don't forget that public awareness lowers the chance of success. It's a good idea to keep it low for the moment when the ritual finishes.",
     ],
 

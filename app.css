@@ -148,6 +148,10 @@ legend {
   padding: 0 3 0 3;
 }
 
+#status\.turns {
+  transition: 0.4s;
+}
+
 .uiButton {
   background: #fbcb62;
   border-radius: 10px;
@@ -168,6 +172,11 @@ legend {
 .uiButton:hover {
   background-color: #166619;
   color: white;
+}
+
+.uiButton:active {
+  background-color: #9dec88;
+  color: #261f1b;
 }
 
 .topButton {
