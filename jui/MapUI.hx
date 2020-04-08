@@ -519,11 +519,13 @@ class MapUI
 // scrolling wheel
   public function onWheel(event: WheelEvent)
     {
-      if (game.difficulty.mapWidth > game.difficulty.mapHeight)
+      if (game.difficulty.mapWidth < game.difficulty.mapHeight)
         minZoom = 1.0 * viewRect.w / game.difficulty.mapWidth;
       else minZoom = 1.0 * viewRect.h / game.difficulty.mapHeight;
       if (minZoom > 1.0)
         minZoom = 1.0;
+      var cx = Std.int(viewRect.w / 2 / zoom + viewRect.x);
+      var cy = Std.int(viewRect.h / 2 / zoom + viewRect.y);
 
       var d = 0;
       if (event != null)
@@ -537,8 +539,7 @@ class MapUI
       if (zoom == oldzoom)
         return;
 
-      rectBounds(); // put rect into map bounds
-      paint();
+      center(cx, cy);
     }
 
 
@@ -676,14 +677,14 @@ class MapUI
 // put view rectangle into map bounds
   function rectBounds()
     {
-      if ((viewRect.x * ui.map.zoom + viewRect.w) >
-          game.difficulty.mapWidth * ui.map.zoom)
-        viewRect.x = Std.int((game.difficulty.mapWidth * ui.map.zoom -
-          viewRect.w) / ui.map.zoom);
-      if (viewRect.y * ui.map.zoom + viewRect.h >
-          game.difficulty.mapHeight * ui.map.zoom)
-        viewRect.y = Std.int((game.difficulty.mapHeight * ui.map.zoom -
-          viewRect.h) / ui.map.zoom);
+      if ((viewRect.x * zoom + viewRect.w) >
+          game.difficulty.mapWidth * zoom)
+        viewRect.x = Std.int((game.difficulty.mapWidth * zoom -
+          viewRect.w) / zoom);
+      if (viewRect.y * zoom + viewRect.h >
+          game.difficulty.mapHeight * zoom)
+        viewRect.y = Std.int((game.difficulty.mapHeight * zoom -
+          viewRect.h) / zoom);
       if (viewRect.x < 0)
         viewRect.x = 0;
       if (viewRect.y < 0)
@@ -694,8 +695,8 @@ class MapUI
 // center on x,y
   public function center(x: Int, y: Int)
     {
-      viewRect.x = Std.int(x - viewRect.w / 2);
-      viewRect.y = Std.int(y - viewRect.h / 2);
+      viewRect.x = Std.int((x * zoom - viewRect.w / 2) / zoom);
+      viewRect.y = Std.int((y * zoom - viewRect.h / 2) / zoom);
 
       rectBounds();
       paint();
@@ -712,7 +713,7 @@ class MapUI
       var mapRect = map.getBoundingClientRect();
       var x = (event.clientX - mapRect.x) / zoom + viewRect.x;
       var y = (event.clientY - mapRect.y) / zoom + viewRect.y;
-//      trace(Std.int(x),Std.int(y));
+//      trace('event ' + Std.int(x),Std.int(y));
 
       // find which node the click was on
       var node = null;
