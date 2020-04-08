@@ -115,7 +115,7 @@ class Sect
       task = newTask;
       taskPoints = 0;
       taskTarget = target;
-//      trace('setTask ' + newTask.id);
+//      trace(name + ' setTask ' + newTask.id);
     }
 
 

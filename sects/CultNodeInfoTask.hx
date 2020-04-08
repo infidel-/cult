@@ -28,7 +28,7 @@ class CultNodeInfoTask extends Task
       // find any unknown nodes and mark them as known until points run out
       for (c in game.cults)
         {
-          if (c == cult)
+          if (c == cult || !c.isDiscovered[cult.id] || c.isDead)
             continue;
 
           var cnt = 0;

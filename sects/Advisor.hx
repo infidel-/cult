@@ -147,17 +147,6 @@ class Advisor
         }
 
       // default task - node info on random cult
-      // check if we have any live known cults
-      var ok = false;
-      for (c in game.cults)
-        if (c != cult && c.isDiscovered[cult.id] && !c.isDead)
-          {
-            ok = true;
-            break;
-          }
-      if (!ok)
-        return;
-
       for (s in cult.sects)
         if ((s.task == null || !s.taskImportant) && s.isAdvisor)
           s.setTaskByID('cultNodeInfo');
