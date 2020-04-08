@@ -375,7 +375,8 @@ class Status
 
             var c = e("status.convert" + i + ii);
             c.style.visibility =
-              (game.player.power[i] >= Game.powerConversionCost[i] ?
+              ((game.player.power[i] >= Game.powerConversionCost[i] &&
+                !game.isFinished) ?
                'visible' : 'hidden');
           }
 
@@ -444,8 +445,10 @@ class Status
       // lower awareness buttons visibility
       for (i in 0...Game.numPowers)
         e("status.lowerAwareness" + i).style.visibility = 'hidden';
-      if (game.player.adeptsUsed < game.player.adepts &&
-          game.player.adepts > 0 && game.player.awareness > 0)
+      if (!game.isFinished &&
+          game.player.adeptsUsed < game.player.adepts &&
+          game.player.adepts > 0 &&
+          game.player.awareness > 0)
         for (i in 0...Game.numPowers)
           if (game.player.power[i] > 0)
             e("status.lowerAwareness" + i).style.visibility = 'visible';
@@ -453,8 +456,11 @@ class Status
       // lower willpower buttons visibility
       for (i in 0...Game.numPowers)
         e("status.lowerWillpower" + i).style.visibility = 'hidden';
-      if (game.player.hasInvestigator && !game.player.investigator.isHidden &&
-          game.player.adeptsUsed < game.player.adepts && game.player.adepts > 0)
+      if (!game.isFinished &&
+          game.player.hasInvestigator &&
+          !game.player.investigator.isHidden &&
+          game.player.adeptsUsed < game.player.adepts &&
+          game.player.adepts > 0)
         for (i in 0...Game.numPowers)
           if (game.player.power[i] >= Game.willPowerCost)
             e("status.lowerWillpower" + i).style.visibility = 'visible';
@@ -462,9 +468,13 @@ class Status
       // upgrade buttons visibility
       for (i in 0...Game.followerNames.length)
         e("status.upgrade" + i).style.visibility =
-          (game.player.canUpgrade(i) ? 'visible' : 'hidden');
+          ((!game.isFinished && game.player.canUpgrade(i)) ?
+           'visible' : 'hidden');
       e("status-ritual-unveiling").style.visibility =
-        (game.player.canStartRitual('unveiling') ? 'visible' : 'hidden');
+        (!game.isFinished && game.player.canStartRitual('unveiling') ?
+         'visible' : 'hidden');
+      e("status.endTurn").style.visibility =
+        (!game.isFinished ? 'visible' : 'hidden');
 
       updateTip("status.follower2",
         Static.rituals['summoning'].priests + " priests and " +

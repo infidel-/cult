@@ -294,7 +294,7 @@ class UI
 
 
 // update status block
-  public function updateStatus()
+  public inline function updateStatus()
     {
       status.update();
     }
@@ -303,6 +303,8 @@ class UI
 // finish game window (ffin)
   public function finish(cult: Cult, state)
     {
+      game.isFinished = true;
+      updateStatus();
       var msg = "<div style='text-size: 20px'><b>GAME OVER</b></div><br>";
       var w = 600;
       var h = 250;

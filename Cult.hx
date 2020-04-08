@@ -816,7 +816,6 @@ class Cult
           return;
         }
 
-      game.isFinished = true;
       ui.finish(this, "summon");
       ui.log2(this, "Game over.");
     }
@@ -1241,7 +1240,6 @@ class Cult
       if (!ok)
         return;
 
-      game.isFinished = true;
       ui.finish(this, "conquer");
     }
 
@@ -1287,11 +1285,8 @@ class Cult
               }
 
           if (!humansAlive)
-            {
-              game.isFinished = true;
-              ui.finish(this,
-                game.difficulty.numPlayers == 1 ? "wiped" : "multiplayerFinish");
-            }
+            ui.finish(this,
+              game.difficulty.numPlayers == 1 ? "wiped" : "multiplayerFinish");
         }
       else checkVictory();
     }
