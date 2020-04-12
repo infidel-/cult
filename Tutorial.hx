@@ -43,8 +43,8 @@ class Tutorial
   static var strings = [
     'start' => [
       'Greetings. You are playing a game about nefarious cults vying for world domination (or destruction). You are controlling one of these cults.',
-      'Your cult consists of followers which have three different categories. You can see their numbers on the left in the status window. The map window shows the icons that represent your followers and persons of interest.',
-      'In the beginning of the game you only have one follower. This is the origin of your cult. To grow your cult you need to gain new followers by clicking their icons on the map.',
+      'Your cult consists of followers who have three different categories. You can see their numbers on the left in the status window. The map window shows the icons that represent your followers and persons of interest.',
+      'At the beginning of the game, you only have one follower. This is the origin of your cult. To grow your cult you need to gain new followers by clicking their icons on the map.',
       'Press the End Turn button in the status window to continue.',
     ],
 
@@ -53,7 +53,7 @@ class Tutorial
       'There are three common resources in the game and one special. ' + UI.powerName(0) + ', ' + UI.powerName(1) + ' and ' + UI.powerName(2) + ' are common resources and are used directly to gain new followers.',
       'You can convert any common resource to another one at a 2:1 ratio. There is also a special resource - ' + UI.powerName(3) + '. You will need ' + UI.powerName(3) + ' for rituals and you can convert them to common resources at a 1:1 ratio.',
       'Common resources are produced by special "generator" followers. They have a thicker outline around their icons on the map. ' + UI.powerName(3) + ' are obtained by your neophytes.',
-      'Your cult origin is a generator. The tooltip for the follower icon shows its information including the resource it generates. On each new turn all your generators will produce resources.',
+      'Your cult origin is a generator. The tooltip for the follower icon shows its information including the resource it generates. On each new turn, all your generators will produce resources.',
       'The resource icon on top of the map icon shows which resource you need to gain that follower. Try to gain a new follower by clicking on their icon. If you do not have enough resources of that type, convert them.',
     ],
 
@@ -73,7 +73,7 @@ class Tutorial
     'gainSect' => [
 'Oh, joy! One of your followers has gained their own little sect. Sects are very useful to handle menial tasks like gathering information about your opponents.',
 'They can also help you find the next investigator when they inevitably appear and confuse them. You can check out your sects in the sects window.',
-'By default the sect tasks are handled automatically with the help of an AI advisor. They grow by themselves and new tasks will appear upon reaching level 2.',
+'By default, the sect tasks are handled automatically with the help of an AI advisor. They grow by themselves and new tasks will appear upon reaching level 2.',
 'A sect will be disbanded if its puppeteer is lost.',
     ],
 
@@ -92,10 +92,10 @@ class Tutorial
     ],
 
     'investigator' => [
-      "Oh, my. Looks like you've gained the attention of one of those pesky little investigators. You can see the investigator information in the cults window.",
+      "Oh, my. It looks like you've gained the attention of one of those pesky little investigators. You can see the investigator information in the cults window.",
       'The investigator has a level and willpower. Each turn they will try to attack the number of your followers equal to their level.',
       "The investigator's willpower is their desire to work against your cult. You need to lower it to zero as quickly as possible. When it goes down to zero, they disappear.",
-      'However, currently the investigator is hidden and you cannot attack them. One of your sects is working on finding them.',
+      'However, currently, the investigator is hidden and you cannot attack them. One of your sects is working on finding them.',
       'In the meantime try to keep awareness close to zero. That will help with protecting your followers from investigator attacks.',
     ],
 
@@ -112,34 +112,34 @@ class Tutorial
     'sectLevel2' => [
       'One of your sects has managed to grow up to level 2. Now it will try to sabotage the rituals of your opponents when necessary. And it can be sacrificed to stop an investigator or harvested for resources.',
       'Sacrificing the sect to stop an investigator will significantly reduce their willpower but will destroy the sect in the process. Not to worry, the puppeteer will create a new one to replace it.',
-      "Harvesting the sect is also a one-time operation. In this case your cult will acquire a stash of resources destroying it in the process. Of course, you can leave the sect alone, but where's the fun in that?",
+      "Harvesting the sect is also a one-time operation. In this case, your cult will acquire a stash of resources destroying it in the process. Of course, you can leave the sect alone, but where's the fun in that?",
     ],
 
     'discoverCult' => [
       "You have discovered one of the other cults I've been talking about. They are ruthless, psychopathic and willing to bring the end of the world as we know it. Just like you are.",
       'Your sects will first automatically gather information about the cult size and then will go on to research every new cult follower you uncover.',
-      'Leave your sects to gather information and plan for eventual hostilities. After all, only one cult will be the one to lead the Earth into glorious new age (hopefully, yours).',
+      'Leave your sects to gather information and plan for eventual hostilities. After all, only one cult will be the one to lead the Earth into a glorious new age (hopefully, yours).',
     ],
 
     'discoverCultNoSects' => [
       "You have discovered one of the other cults I've been talking about. They are ruthless, psychopathic and willing to bring the end of the world as we know it. Just like you are.",
       'You cannot get any information about other cults unless you have sects. They will automatically gather information about the cult size and then will go on to research every new cult follower you uncover.',
-      'Expand carefully to at least 4 followers to get a sect and plan for eventual hostilities. After all, only one cult will be the one to lead the Earth into glorious new age (hopefully, yours).',
+      'Expand carefully to at least 4 followers to get a sect and plan for eventual hostilities. After all, only one cult will be the one to lead the Earth into a glorious new age (hopefully, yours).',
     ],
 
     'cultParalyzed' => [
-      'Tsk, tsk, tsk. Looks like your cult has lost its origin before I could teach you the basics of world domination. The Elder God will be very disappointed.',
+      'Tsk, tsk, tsk. It seems that your cult has lost its origin before I could teach you the basics of world domination. The Elder God will be very disappointed.',
       'You cannot gain any new followers while your cult is paralyzed. Wait for now and reflect on what went wrong. If your cult manages to survive for some time, you will gain a new origin.',
     ],
 
     'gain3Adepts' => [
-'You have 3 adepts now. That and 2 ' + UI.powerName(3) + ' is enough to upgrade one of them into a priest. Whether to do that right now is up to you, of course, but only priests can perform rituals.',
+'You have 3 adepts now. That and 2 ' + UI.powerName(3) + ' are enough to upgrade one of them into a priest. Whether to do that right now is up to you, of course, but only priests can perform rituals.',
 '  You will need 3 priests and a sizable amount of ' + UI.powerName(3) + ' to start summoning the Elder God. If the summoning is a success, you will win the game.',
     ],
 
     'gainPriest' => [
       'Praise the Elder God! You have a priest now. A single priest and 5 ' + UI.powerName(3) + ' is enough to perform the ritual of Unveiling. This ritual will show where all other cult origins are located on the map.',
-      'During the ritual each priest contributes a point to its execution. You need a fixed amount of points to finish the ritual. That means the more priests you have, the quicker you will complete it.',
+      'During the ritual, each priest contributes a point to its execution. You need a fixed amount of points to finish the ritual. That means the more priests you have, the quicker you will complete it.',
       'You can see the ritual progress in the cults information window.',
       "Don't forget that public awareness lowers the chance of success. It's a good idea to keep it low for the moment when the ritual finishes.",
     ],

@@ -817,7 +817,8 @@ class Cult
         }
 
       ui.finish(this, "summon");
-      ui.log2(this, "Game over.");
+      ui.log2(this, fullName + " has completed the " +
+        Static.rituals['summoning'].name + ". Game over.");
     }
 
 
