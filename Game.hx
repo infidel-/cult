@@ -114,7 +114,7 @@ class Game
           "consult the Manual if you have any questions. " +
           "We are not responsible for horrific deaths caused by ignoring the " +
           "Manual. You have been warned.");
-      if (UI.modernMode)
+      if (UI.modernMode && newDifficulty >= 0 && newDifficulty < 2)
         ui.alert("Start the tutorial?",
           { yesNo: true, onYes: onTutorialStart });
       ui.config.set('hasPlayed', '1');
