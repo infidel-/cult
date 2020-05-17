@@ -53,6 +53,8 @@ class UI
       var url = Browser.window.location.href;
       var isClassic = (StringTools.endsWith(url, 'index.html') ||
         StringTools.endsWith(url, 'app-classic.html'));
+      if (StringTools.startsWith(url, 'http'))
+        isClassic = true;
       classicMode = isClassic;
       modernMode = !isClassic;
       vars = (isClassic ? classicModeVars : modernModeVars);
@@ -362,6 +364,8 @@ class UI
           track("loseGame diff:" + game.difficultyLevel, "multiplayerFinish", game.turns);
           h = 190;
         }
+      if (classicMode)
+        h += 5;
 
       // open map fully
       for (n in game.nodes)
@@ -377,7 +381,7 @@ class UI
       });
       alert("The game is over. After checking out the results you can open the main menu and start a new one.", {
         w: 600,
-        h: 110
+        h: (classicMode ? 125 : 110)
       });
     }
 
@@ -481,9 +485,6 @@ class UI
         label = '';
       if (value == null)
         value = 0;
-#if !electron
-      untyped pageTracker._trackEvent('Evil Cult', action, label, value);
-#end
     }
 
 

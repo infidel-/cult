@@ -114,6 +114,11 @@ class Game
           "consult the Manual if you have any questions. " +
           "We are not responsible for horrific deaths caused by ignoring the " +
           "Manual. You have been warned.");
+#if !electron
+      ui.alert('Now available on Steam!<br><br><iframe src="https://store.steampowered.com/widget/1237260/" frameborder="0" style="padding-left:3%" width="95%" height="190"></iframe>', {
+        h: 320
+      });
+#end
       if (UI.modernMode && newDifficulty >= 0 && newDifficulty < 2)
         ui.alert("Start the tutorial?",
           { yesNo: true, onYes: onTutorialStart });
@@ -522,7 +527,7 @@ class Game
           if (difficulty.numPlayers > 1)
             ui.alert("Your turn<br>" + player.fullName, {
               w: 400,
-              h: 120,
+              h: 125,
               shadowOpacity: 1,
             });
         }

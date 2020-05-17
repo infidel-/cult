@@ -51,7 +51,7 @@ class MultiplayerMenu extends Window
 
           if (info.type == 'bool')
             el = Tools.checkbox({
-              id: info.name,
+              id: 'multi_' + info.name,
               text: '' + Reflect.field(Static.difficulty[2], info.name),
               w: 100,
               h: null,
@@ -63,7 +63,7 @@ class MultiplayerMenu extends Window
           else if (info.type == 'select')
             {
               el = js.Browser.document.createElement("select");
-              el.id = info.name;
+              el.id = 'multi_' + info.name;
               el.className = 'selectOption';
               el.style.width = '100px';
               el.style.left = '310px';
@@ -79,7 +79,7 @@ class MultiplayerMenu extends Window
               divel.appendChild(el);
             }
           else el = Tools.textfield({
-            id: info.name,
+            id: 'multi_' + info.name,
             text: '' + Reflect.field(Static.difficulty[2], info.name),
             w: 100,
             h: null,
@@ -119,7 +119,7 @@ class MultiplayerMenu extends Window
     {
       var el = null;
       for (e in difElements)
-        if (e.id == info.name)
+        if (e.id == 'multi_' + info.name)
           {
             el = e;
             break;
