@@ -578,7 +578,7 @@ class UI
     null, // blue
     null, // violet
     null, // red
-    [ null, '70', 'c0' ], // neutral
+    [ null, '60', 'c0' ], // neutral
   ];
 
   public static var modernMode = true; // modern mode flag
