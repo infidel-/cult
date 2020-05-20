@@ -570,7 +570,8 @@ class Cult
         {
           if (!isAI)
             {
-              ui.msg("Ritual failed.");
+              ui.msg('You have failed the ritual to gain ' +
+                (level == 0 ? 'an adept.' : 'a priest.'));
               ui.updateStatus();
             }
           return;
@@ -798,7 +799,10 @@ class Cult
 
           if (!isAI)
             {
-              ui.alert("The stars were not properly aligned. The high priest goes insane.");
+              var msg =
+                "<div style='text-size: 20px'><b>FINAL RITUAL FAILED</b></div><br>" +
+                "The stars were not properly aligned. The high priest goes insane.";
+              ui.alert(msg);
               ui.log2(this, fullName + " has failed to perform the " +
                 Static.rituals['summoning'].name + ".",
               { symbol: 'R' });

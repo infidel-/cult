@@ -67,6 +67,8 @@ class Manual extends Window
                 contents.add('<br>');
               if (firstIndex == 3)
                 contents.add('&nbsp;&nbsp;&nbsp;');
+              if (firstIndex == 4)
+                contents.add('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
               contents.add('<a href="#h' + headerCnt + '">');
               contents.add(tmp);
               contents.add('</a><br>');
