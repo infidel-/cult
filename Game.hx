@@ -207,14 +207,39 @@ class Game
         nodes.remove(n);
 
       // make 15% of nodes generators
-      var cnt = Std.int(0.15 * difficulty.nodesCount);
-      for (i in 0...cnt)
+      // split map into small quadrants for each generator
+      // and pick random node in that quadrant
+      trace('spawning generators...');
+      var dx = Std.int(difficulty.mapWidth /
+        Math.sqrt(0.15 * difficulty.nodesCount));
+      var dy = Std.int(difficulty.mapHeight /
+        Math.sqrt(0.15 * difficulty.nodesCount));
+      var xx = 0, yy = 0;
+      var cnt = 0;
+      while (yy < difficulty.mapHeight)
         {
-          var nodeIndex = Std.random(nodes.length);
-          var node = nodes[nodeIndex];
-
-          node.makeGenerator();
+          xx = 0;
+          while (xx < difficulty.mapWidth)
+            {
+              // form a temp list of nodes in that quadrant
+              var tmp = [];
+              for (n in nodes)
+                if (n.x > xx && n.x < xx + dx &&
+                    n.y > yy && n.y < yy + dy)
+                  tmp.push(n);
+              if (tmp.length > 0)
+                {
+                  var node = tmp[Std.random(tmp.length)];
+                  node.makeGenerator();
+                  cnt++;
+                }
+              else trace('no generator for ' +
+                xx + ',' + yy + ' -> ' + (xx + dx) + ',' + (yy + dy));
+              xx += dx;
+            }
+          yy += dy;
         }
+      trace('done, ' + cnt + ' generators.');
 
       updateLinks(); // update adjacent node links
 
