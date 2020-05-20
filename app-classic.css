@@ -159,6 +159,12 @@ legend {
   position: absolute;
 }
 
+#logPanelClear {
+  left: 217px;
+  position: absolute;
+  top: 5px;
+}
+
 #logPanel {
   width: 20px;
   height: 98.7%;

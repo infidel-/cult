@@ -395,13 +395,20 @@ legend {
   text-shadow: none;
 }
 
+#logPanelClear {
+  left: 221px;
+  position: absolute;
+  top: 5px;
+  color: #5c3d3d;
+}
+
 #logPanel {
   background: #00000021;
   border-radius: 15px;
-  height: 98.7%;
+  height: 96.7%;
   left: 219px;
   position: absolute;
-  top: 5px;
+  top: 27px;
   width: 24px;
 }
 

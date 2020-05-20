@@ -10,6 +10,7 @@ class LogPanel
   var game: Game;
 
   var panel: DivElement;
+  var clearButton: DivElement;
   var list: List<DivElement>;
 
   public function new(uivar: UI, gvar: Game)
@@ -22,6 +23,22 @@ class LogPanel
       panel = Browser.document.createDivElement();
       panel.id = 'logPanel';
       Browser.document.body.appendChild(panel);
+
+      clearButton = Tools.button({
+        id: 'logPanelClear',
+        text: 'X',
+        className: 'uiButton logPanelItemOld',
+        w: null,
+        h: null,
+        x: null,
+        y: null,
+        container: untyped Browser.document.body,
+        title: 'Clear all messages from the panel.',
+        func: function (ev: Dynamic)
+          {
+            clear();
+          }
+        });
     }
 
 
