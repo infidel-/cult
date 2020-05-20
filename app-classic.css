@@ -112,6 +112,15 @@ legend {
   text-align: center;
 }
 
+.uiButtonDisabled {
+  user-select: none;
+  background: #111;
+  border: 1px outset #777;
+  color: #868686 !important;
+  cursor: not-allowed !important;
+  text-align: center;
+}
+
 .musicButton2 {
   border: outset 1px #777;
   cursor: pointer;
@@ -263,7 +272,7 @@ legend {
 }
 
 .statusUpgrade {
-  color: lightgreen;  
+  color: #86ff86;
 }
 
 .statusTable {

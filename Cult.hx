@@ -528,6 +528,9 @@ class Cult
 // start ritual by id
   public function startRitual(id: String)
     {
+      if (!canStartRitual(id))
+        return;
+
       // player is already in ritual
       if (isRitual)
         {

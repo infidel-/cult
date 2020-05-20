@@ -179,6 +179,23 @@ legend {
   color: #261f1b;
 }
 
+.uiButtonDisabled {
+  background: #dbdbdb;
+  border-radius: 10px;
+  border: solid 2px #bbb5a8;
+  box-shadow: 3px 3px 1px #8f7f5c;
+  color: #bdaeae;
+  cursor: not-allowed !important;
+  font-family: var(--text-font);
+  font-size: 14px;
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.4s;
+  user-select: none;
+}
+
 .topButton {
   height: 17px;
   top: 0px;

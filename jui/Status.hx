@@ -8,8 +8,10 @@ class Status
   var ui: UI;
   var game: Game;
 
-  var status: DivElement; // element
-  var statusBorder: DivElement; // element
+  var status: DivElement;
+  var statusBorder: DivElement;
+  var statusUpgrade: Array<DivElement>;
+  var statusRitualUnveiling: DivElement;
 
   public function new(uivar: UI, gvar: Game)
     {
@@ -28,7 +30,7 @@ class Status
       s += "<legend>FOLLOWERS</legend>";
 
       // unveiling ritual button
-      s += "<div class='uiButton statusConvert statusUpgrade' id='status-ritual-unveiling' style='visibility: hidden;'>U</div>";
+      s += "<div class='uiButton statusConvert statusUpgrade' id='status-ritual-unveiling'>U</div>";
 
       s += "<table class=statusTable cellpadding=0>";
 
@@ -39,7 +41,7 @@ class Status
             Game.followerNames[i] + "s";
 
           // icon
-          s += "<td><div class='uiButton statusConvert statusUpgrade' id='status.upgrade" + i + "' style='visibility: hidden;'>";
+          s += "<td><div class='uiButton statusConvert statusUpgrade' id='status.upgrade" + i + "'>";
           if (i < Game.followerNames.length - 1)
             s += "+";
           else s += "!";
@@ -177,15 +179,17 @@ class Status
       b.style.position = null;
 
       // setting events and tooltips
+      statusUpgrade = [];
       for (i in 0...Game.followerNames.length)
         {
           e("status.follower" + i).title = tipFollowers[i];
-          var c = e("status.upgrade" + i);
+          statusUpgrade.push(cast e("status.upgrade" + i));
+          var c = statusUpgrade[i];
           c.onclick = onUpgrade;
           c.title = tipUpgrade[i];
-          c.style.visibility = 'hidden';
         }
-      e('status-ritual-unveiling').onclick = onRitual;
+      statusRitualUnveiling = cast e('status-ritual-unveiling');
+      statusRitualUnveiling.onclick = onRitual;
       for (i in 0...(Game.numPowers + 1))
         {
           if (UI.classicMode)
@@ -467,12 +471,14 @@ class Status
 
       // upgrade buttons visibility
       for (i in 0...Game.followerNames.length)
-        e("status.upgrade" + i).style.visibility =
+        statusUpgrade[i].className =
           ((!game.isFinished && game.player.canUpgrade(i)) ?
-           'visible' : 'hidden');
-      e("status-ritual-unveiling").style.visibility =
+           'uiButton statusConvert statusUpgrade' :
+           'uiButtonDisabled statusConvert statusUpgrade');
+      statusRitualUnveiling.className =
         (!game.isFinished && game.player.canStartRitual('unveiling') ?
-         'visible' : 'hidden');
+         'uiButton statusConvert statusUpgrade' :
+         'uiButtonDisabled statusConvert statusUpgrade');
       e("status.endTurn").style.visibility =
         (!game.isFinished ? 'visible' : 'hidden');
 
