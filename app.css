@@ -509,6 +509,13 @@ div::-webkit-scrollbar-thumb {
   font-size: 12px;
 }
 
+.cultInfoInv2 {
+}
+
+.cultInfoInv3 {
+  color: #91182a;
+}
+
 .uiListSects {
   color: var(--text-color);
   overflow: auto;
@@ -591,4 +598,17 @@ div::-webkit-scrollbar-thumb {
   top: 50%;
   transform: translate(-50%, -50%);
   z-index: 30;
+}
+
+.tutorial-img {
+  border-radius: 11px;
+  border: 1px solid #777;
+  float: left;
+  margin-right: 5px;
+}
+
+.tutorial-img-center {
+  border-radius: 11px;
+  border: 1px solid #777;
+  margin-right: 5px;
 }

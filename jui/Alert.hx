@@ -135,9 +135,21 @@ class Alert
             close.innerHTML = 'Next';
         }
 
+      var html = '';
+      if (opts.img != null)
+        {
+          if (opts.center)
+            html += '<center>';
+          html += '<img class=tutorial-img' +
+            (opts.center ? '-center' : '') +
+            ' src="data/' + opts.img + '.png"/>';
+          if (opts.center)
+            html += '</center>';
+        }
       if (opts.center)
-        text.innerHTML = '<center>' + s + '</center>';
-      else text.innerHTML = s;
+        html += '<center>' + s + '</center>';
+      else html += s;
+      text.innerHTML = html;
       border.style.display = 'inline';
       bg.style.display = 'inline';
       isVisible = true;
@@ -154,5 +166,6 @@ typedef _AlertOptions = {
   @:optional var fontSize: Int;
   @:optional var yesNo: Bool;
   @:optional var onYes: Void -> Void;
+  @:optional var img: String;
 }
 

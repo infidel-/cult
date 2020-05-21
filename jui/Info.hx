@@ -63,7 +63,7 @@ class Info extends Window
                 ', Willpower ' + p.investigator.will;
               s += '</span>';
               if (p.investigator.isHidden)
-                s += " <span class=cultInfoInv2>--- Hidden ---</span>";
+                s += " <span class=cultInfoInv3>&lt;Hidden&gt;</span>";
               s += '<br>';
             }
           if (Game.isDebug && p.investigatorTimeout > 0 && p.isInfoKnown[game.player.id])
