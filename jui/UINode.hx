@@ -1,5 +1,6 @@
 // node ui
 import js.html.CanvasRenderingContext2D;
+import js.html.CanvasElement;
 
 class UINode
 {
@@ -36,7 +37,8 @@ class UINode
 
       var key = '';
       var xx = node.x, yy = node.y,
-        hlx = node.x - 10, hly = node.y - 10,
+//        hlx: Float = node.x - 10, hly: Float = node.y - 10,
+        hlx: Float = node.x, hly: Float = node.y,
         tx = node.x + 4, ty = node.y + 14;
       var text = '';
       var textColor = 'white';
@@ -110,11 +112,21 @@ class UINode
               ctx.drawImage(ui.map.nodeImage,
                 0, 167, 37, 37,
                 hlx, hly, 37, 37);
-            else ctx.drawImage(ui.map.nodeHL,
-              hlx * ui.map.zoom,
-              hly * ui.map.zoom,
-              ui.map.nodeHL.width * ui.map.zoom,
-              ui.map.nodeHL.height * ui.map.zoom);
+            else
+              {
+                // rectangle animation
+                var img = getImage();
+                hlx -= 0.5 * ui.map.highlightZoom * ui.map.nodeHL.width;
+                hlx += 0.5 * img.width;
+                hly -= 0.5 * ui.map.highlightZoom * ui.map.nodeHL.height;
+                hly += 0.5 * img.height;
+
+                ctx.drawImage(ui.map.nodeHL,
+                  hlx * ui.map.zoom,
+                  hly * ui.map.zoom,
+                  ui.map.nodeHL.width * ui.map.zoom * ui.map.highlightZoom,
+                  ui.map.nodeHL.height * ui.map.zoom * ui.map.highlightZoom);
+              }
             break;
           }
 
@@ -138,17 +150,13 @@ class UINode
         }
       else
         {
-          var idx = 8;
-          if (node.owner != null)
-            idx = node.owner.id;
-          else text = '-';
+          if (node.owner == null)
+            text = '-';
 //          ctx.fillStyle = 'red';
 //          ctx.fillRect(xx, yy, 52, 52);
 
           // background
-          var img = (node.isGenerator ?
-            ui.map.nodeImagesGenerator[idx] :
-            ui.map.nodeImages[idx]);
+          var img = getImage();
           ctx.drawImage(img, xx * ui.map.zoom, yy * ui.map.zoom,
             img.width * ui.map.zoom,
             img.height * ui.map.zoom);
@@ -297,6 +305,19 @@ class UINode
                 }
             }
         }
+    }
+
+
+// get node icon for modern mode
+  function getImage(): CanvasElement
+    {
+      var idx = 8;
+      if (node.owner != null)
+        idx = node.owner.id;
+      var img = (node.isGenerator ?
+        ui.map.nodeImagesGenerator[idx] :
+        ui.map.nodeImages[idx]);
+      return img;
     }
 
 

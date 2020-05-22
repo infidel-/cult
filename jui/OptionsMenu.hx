@@ -51,6 +51,12 @@ class OptionsMenu extends Window
       title: 'Fullscreen',
       note: 'Enable or disable fullscreen mode'
     },
+    {
+      name: 'animation',
+      type: 'bool',
+      title: 'Animations',
+      note: 'Enable or disable map animations'
+    },
   ];
 
 
@@ -180,6 +186,10 @@ class OptionsMenu extends Window
           if (info.name == 'sectAdvisor' && !value)
             for (s in game.player.sects)
               s.taskImportant = false;
+
+          // enable animations
+          if (info.name == 'animation' && value)
+            ui.map.enableAnimations();
         }
 
       var fs = game.player.options.getBool('fullscreen');

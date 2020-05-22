@@ -14,6 +14,7 @@ class Config
     sectAdvisor: String,
     music: String,
     musicVolume: String,
+    animation: String,
   }
 #end
 
@@ -28,10 +29,15 @@ class Config
         music: '1',
         musicVolume: '100',
         sectAdvisor: 'true',
+        animation: 'true',
       };
       try {
         var s = Fs.readFileSync('settings.json', 'utf8');
-        obj = Json.parse(s);
+        var obj2 = Json.parse(s);
+
+        // copy existing fields into the object
+        for (f in Reflect.fields(obj2))
+          Reflect.setField(obj, f, Reflect.field(obj2, f));
       }
       catch (e: Dynamic)
         {}

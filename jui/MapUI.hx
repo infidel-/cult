@@ -46,6 +46,14 @@ class MapUI
   public var zoom: Float; // map zoom (on top of base map scale factor)
   var minZoom: Float; // min value for zoom
 
+  // highlight zoom vars
+  public var highlightZoom: Float;
+  var targetHighlightZoom: Float;
+  var lastZoomFrame: Float;
+  static var maxHighlightZoom = 1.1;
+  static var highlightZoomTime = 0.05; // seconds 
+  static var highlightZoomSpeed = 0.007;
+
   public function new(uivar: UI, gvar: Game)
     {
       ui = uivar;
@@ -61,6 +69,8 @@ class MapUI
       isDrag = false;
       zoom = 1.0;
       minZoom = 0.25;
+      targetHighlightZoom = maxHighlightZoom;
+      highlightZoom = 1.0;
 
       // get power colors for canvas
       powerColors = [];
@@ -100,6 +110,7 @@ class MapUI
       tooltip.style.display = 'none';
 
       loadImages();
+      update(0); // first call
     }
 
 
@@ -323,10 +334,44 @@ class MapUI
     }
 
 
+// re-enable animations
+  public function enableAnimations()
+    {
+      Browser.window.requestAnimationFrame(update);
+    }
+
+
+// animation update and repaint
+  function update(t: Float)
+    {
+      if (ui.config.getBool('animation'))
+        Browser.window.requestAnimationFrame(update);
+
+      // animate highlight zoom
+      if (Sys.time() - lastZoomFrame > highlightZoomTime)
+        {
+          if (targetHighlightZoom > highlightZoom)
+            {
+              highlightZoom += highlightZoomSpeed;
+              if (highlightZoom >= targetHighlightZoom)
+                targetHighlightZoom = 1.0;
+            }
+          else
+            {
+              highlightZoom -= highlightZoomSpeed;
+              if (highlightZoom <= targetHighlightZoom)
+                targetHighlightZoom = maxHighlightZoom;
+            }
+          lastZoomFrame = Sys.time();
+        }
+
+      paint();
+    }
+
+
 // paint all map
   public function paint()
     {
-//      trace('paint');
       if (game.isFinished && game.turns == 0)
         return;
 
@@ -341,13 +386,9 @@ class MapUI
           firstTime = false;
         }
 
-//      game.startTimer('map paint 1');
-
       var ctx = map.getContext2d();
       if (UI.modernMode)
         {
-//          trace(mapWidth + ',' + mapHeight + ' : ' +
-//            bgImage.width + ',' + bgImage.height);
           var w = 0.0, h = 0.0;
           if (mapWidth < mapHeight)
             {
@@ -377,20 +418,14 @@ class MapUI
           ctx.fillRect(0, 0, mapWidth, mapHeight);
           ctx.font = "14px Verdana";
         }
-//      game.endTimer('map paint 1');
-//      game.startTimer('map paint 2');
 
       // paint visible lines
       for (l in game.lines)
         l.paint(ctx, game.player.id);
-//      game.endTimer('map paint 2');
-//      game.startTimer('map paint 3');
 
       // paint visible nodes
       for (n in game.nodes)
         n.uiNode.paint(ctx);
-//      game.endTimer('map paint 3');
-//      game.startTimer('map paint 4');
 
       // paint advanced node info
       if (game.player.options.getBool('mapAdvancedMode'))
@@ -401,8 +436,6 @@ class MapUI
           for (n in game.nodes)
             n.uiNode.paintAdvanced(ctx);
         }
-//      game.endTimer('map paint 4');
-//      game.startTimer('map paint 5');
       if (game.difficulty.mapWidth > mapWidth ||
           game.difficulty.mapHeight > mapHeight)
         {
@@ -411,26 +444,6 @@ class MapUI
             mapWidth - minimap.width,
             mapHeight - minimap.height);
         }
-//      game.endTimer('map paint 5');
-//      game.startTimer('map paint 6');
-
-/*
-      if (UI.modernMode)
-        for (i in 0...100)
-          {
-            var xx = 50 + Std.random(mapWidth),
-              yy = 50 + Std.random(mapHeight);
-            ctx.drawImage(
-              nodeImages[Std.random(4)], xx, yy);
-            ctx.drawImage(
-              textImages[Std.random(4)], xx + 35, yy + 1);
-  /-
-            ctx.font = '20px ChangaOne';
-            ctx.fillStyle = 'green';
-            ctx.fillText("Test 1 2 3 S", xx, yy);
-  -/
-          }
-*/
 
       game.endTimer('map paint');
     }

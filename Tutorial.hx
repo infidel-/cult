@@ -23,7 +23,7 @@ class Tutorial
     }
 
 
-// play tutorial part by its tag if it hasn't already played'
+// play tutorial part by its tag if it hasn't already played
   public function play(tag: String)
     {
       if (!game.isTutorial)
@@ -102,6 +102,11 @@ class Tutorial
       [ null, "The investigator's willpower is their desire to work against your cult. You need to lower it to zero as quickly as possible. When it goes down to zero, they disappear." ],
       [ 'tutorial-inv', 'However, currently, the investigator is hidden and you cannot attack them. One of your sects is working on finding them.' ],
       [ null, 'In the meantime try to keep awareness close to zero. That will help with protecting your followers from investigator attacks.' ],
+    ],
+
+    'investigatorKillNode' => [
+      [ null, "It seems that the investigator has found out one of your cult members and disposed of them. I assure you, it was not pretty." ],
+      [ 'tutorial-inv-node', "When that happens, the follower node is highlighted on the map with a border. The nodes are also highlighted when an enemy cult gains or loses them." ],
     ],
 
     'investigatorFound' => [

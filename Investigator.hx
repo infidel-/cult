@@ -163,6 +163,8 @@ class Investigator
         cult.removeSect(node, 'investigator');
       node.generateAttributes(); // regen node
       node.removeOwner(); // clean ownership
+      if (!cult.isAI)
+        game.tutorial.play('investigatorKillNode');
 
       // highlight node
       for (c in game.cults)
