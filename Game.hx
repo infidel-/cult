@@ -15,8 +15,10 @@ class Game
   public var currentPlayerID: Int; // ID of current player's turn
   public var player: Cult;
   public var tutorial: Tutorial;
+  public var highScores: HighScores;
   public var sectTasks: Array<sects.Task>; // available sect tasks
 
+  public var startTS: Float; // ts of game start
   public var turns: Int; // turns passed
   public var isNeverStarted: Bool; // game never started?
   public var isFinished: Bool; // game finished?
@@ -43,7 +45,7 @@ class Game
   public static var powerConversionCost: Array<Int> = [2, 2, 2, 1];
   public static var willPowerCost: Int = 2;
 
-  public static var version = "v6"; // game version
+  public static var version = "v6.1"; // game version
   public static var followerLevels = 3; // number of follower levels
   public static var numPowers = 3; // number of basic powers
   public static var upgradeCost = 3; // cost to upgrade follower
@@ -54,6 +56,7 @@ class Game
   function new()
     {
       ui = new UI(this);
+      highScores = new HighScores(this, ui);
       // apply modern mode difficulty fixes
       if (UI.modernMode)
         for (d in Static.difficulty)
@@ -104,6 +107,7 @@ class Game
 // restart a game
   public function restart(newDifficulty: Int, ?newDif: DifficultyInfo)
     {
+      startTS = Sys.time();
       isNeverStarted = false;
       isTutorial = false;
       tutorial = new Tutorial(this, ui);
@@ -124,7 +128,6 @@ class Game
           { yesNo: true, onYes: onTutorialStart });
       ui.config.set('hasPlayed', '1');
 
-      ui.track("startGame diff:" + newDifficulty);
       startTimer("restart");
 
       difficultyLevel = newDifficulty;

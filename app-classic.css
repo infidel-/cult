@@ -34,6 +34,10 @@ body {
   overflow: hidden;
 }
 
+h2 {
+  margin: 0.15em;
+}
+
 input[type=textfield] {
   background: var(--text-select-bg);
   border: 1px outset #777;
@@ -438,4 +442,17 @@ legend {
   top: 50%;
   transform: translate(-50%, -50%);
   z-index: 30;
+}
+
+.boxes {
+}
+
+.boxleft {
+  float: left;
+  width: 50%;
+}
+
+.boxright {
+  float: left;
+  width: 50%;
 }

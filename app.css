@@ -37,6 +37,10 @@ body {
   overflow: hidden;
 }
 
+h2 {
+  margin: 0.15em;
+}
+
 div {
   font-family: var(--text-font);
 }
@@ -611,4 +615,17 @@ div::-webkit-scrollbar-thumb {
   border-radius: 11px;
   border: 1px solid #777;
   margin-right: 5px;
+}
+
+.boxes {
+}
+
+.boxleft {
+  float: left;
+  width: 50%;
+}
+
+.boxright {
+  float: left;
+  width: 50%;
 }

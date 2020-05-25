@@ -303,21 +303,35 @@ class UI
 
 
 // finish game window (ffin)
-  public function finish(cult: Cult, state)
+  public function finish(cult: Cult, state: String)
     {
       game.isFinished = true;
       updateStatus();
       var msg = "<div style='text-size: 20px'><b>GAME OVER</b></div><br>";
       var w = 600;
       var h = 250;
+      var showHighScore = false;
+      var time = Std.int(Sys.time() - game.startTS);
 
       if (state == "summon" && !cult.isAI)
         {
           msg += "The stars were right. The Elder God was summoned in " +
-            game.turns + " turns.";
-          msg += "<br><br><center><b>YOU WIN</b></center>";
-          track("winGame diff:" + game.difficultyLevel, "summon", game.turns);
-          h = 210;
+            game.turns + " turns (" +
+            game.highScores.convertTime(time) + " of real time).";
+          msg += "<h2>YOU WIN</h2>";
+          h = 330;
+          showHighScore = true;
+        }
+
+      else if (state == "conquer" && !cult.isAI)
+        {
+          msg += cult.fullName + " has taken over the world in " +
+            game.turns + " turns (" +
+            game.highScores.convertTime(time) + " of real time)." +
+            " The Elder God is pleased.";
+          msg += "<h2>YOU WIN</h2>";
+          h = 330;
+          showHighScore = true;
         }
 
       else if (state == "summon" && cult.isAI)
@@ -325,26 +339,15 @@ class UI
           msg += cult.fullName +
             " has completed the " + Static.rituals['summoning'].name +
             ".<br><br>" + cult.info.summonFinish;
-          msg += "<br><br><center><b>YOU LOSE</b></center>";
-          track("loseGame diff:" + game.difficultyLevel, "summon", game.turns);
+          msg += "<h2>YOU LOSE</h2>";
           w = 700;
           h = 470;
-        }
-
-      else if (state == "conquer" && !cult.isAI)
-        {
-          msg += cult.fullName + " has taken over the world in " +
-            game.turns + " turns. The Elder Gods are pleased.";
-          msg += "<br><br><center><b>YOU WIN</b></center>";
-          track("winGame diff:" + game.difficultyLevel, "conquer", game.turns);
-          h = 210;
         }
 
       else if (state == "conquer" && cult.isAI)
         {
           msg += cult.fullName + " has taken over the world. You fail.";
-          msg += "<br><br><center><b>YOU LOSE</b></center>";
-          track("loseGame diff:" + game.difficultyLevel, "conquer", game.turns);
+          msg += "<h2>YOU LOSE</h2>";
           h = 210;
         }
 
@@ -352,20 +355,22 @@ class UI
         {
           msg += cult.fullName + " was wiped away completely. " +
             "The Elder God lies dormant beneath the sea, waiting.";
-          msg += "<br><br><center><b>YOU LOSE</b></center>";
-          track("loseGame diff:" + game.difficultyLevel, "wiped", game.turns);
+          msg += "<h2>YOU LOSE</h2>";
           h = 210;
         }
 
       else if (state == "multiplayerFinish")
         {
           msg += "The great game has ended. Humanity will live.";
-          msg += "<br><br><center><b>YOU ALL LOSE</b></center>";
-          track("loseGame diff:" + game.difficultyLevel, "multiplayerFinish", game.turns);
+          msg += "<h2>YOU ALL LOSE</h2>";
           h = 190;
         }
       if (classicMode)
         h += 5;
+#if electron
+      if (showHighScore && game.difficultyLevel != -1)
+        msg += game.highScores.getTable(time);
+#end
 
       // open map fully
       for (n in game.nodes)
@@ -474,17 +479,6 @@ class UI
   public static inline function getVarInt(s: String): Int
     {
       return Std.parseInt(getVar(s));
-    }
-
-
-// track stuff through google analytics
-  public inline function track(action: String, ?label: String, ?value: Int)
-    {
-      action = "cult " + action +  " " + Game.version;
-      if (label == null)
-        label = '';
-      if (value == null)
-        value = 0;
     }
 
 
