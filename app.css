@@ -7,7 +7,7 @@
   --border-color-1: #ec9c3b;
   --border-color-2: #90015d;
   --text-color: #222d25;
-  --text-color-log-time: #674a17;
+  --text-color-log-time: #604412;
   --text-select-bg: #33333330;
   --text-font: MavenPro;
   --advanced-mode-font-size: 16px;
@@ -628,4 +628,26 @@ div::-webkit-scrollbar-thumb {
 .boxright {
   float: left;
   width: 50%;
+}
+
+#logConsole {
+  background: #fbe3b980;
+  border-radius: 10px;
+  border: solid 1px #00000017;
+  bottom: 12px;
+  height: 98px;
+  left: 257px;
+  overflow: auto;
+  pointer-events: none;
+  position: absolute;
+  user-select: none;
+  width: 62%;
+  z-index: 14;
+}
+
+#logConsoleText {
+  color: black;
+  font-size: 14px;
+  padding: 10px;
+  text-shadow: 1px 1px 1px #adadad;
 }

@@ -52,6 +52,7 @@ class Cult
   public var investigatorTimeout: Int; // timeout before next investigator may appear
 
   public var logMessages: String; // log string
+  public var logMessagesTurn: String; // log string for this turn
   public var logPanelMessages: List<LogPanelMessage>; // log panel messages list
   public var highlightedNodes: List<Node>; // highlighted nodes list
 
@@ -95,6 +96,7 @@ class Cult
       this.investigatorTimeout = 0;
       this.difficulty = game.difficulty;
       this.logMessages = '';
+      this.logMessagesTurn = '';
       this.logPanelMessages = new List();
     }
 
@@ -407,7 +409,8 @@ class Cult
 // lower awareness
   public function lowerAwareness(pwr)
     {
-      if (awareness == 0 || adeptsUsed >= adepts || pwr == 3)
+      if (awareness == 0 || adeptsUsed >= adepts || pwr == 3 ||
+          power[pwr] < 1)
         return;
 
       awareness -= 2;
@@ -832,6 +835,7 @@ class Cult
 // start new turn for this cult (fturn) - gain resources, finish rituals, etc
   public function turn()
     {
+      logMessagesTurn = '';
       // un-paralyzed after 3 turns even if no priests available
       if (isParalyzed && paralyzedTurns > 3)
         {
@@ -1330,6 +1334,8 @@ class Cult
 
       var s2 = ui.logWindow.getRenderedMessage(s);
       logMessages += s2;
+      logMessagesTurn += s2;
+      ui.logConsole.update();
     }
 
 

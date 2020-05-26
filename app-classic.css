@@ -456,3 +456,22 @@ legend {
   float: left;
   width: 50%;
 }
+
+#logConsole {
+  background: #34343480;
+  bottom: 12px;
+  height: 98px;
+  left: 247px;
+  overflow: auto;
+  pointer-events: none;
+  position: absolute;
+  user-select: none;
+  width: 62%;
+  z-index: 14;
+}
+
+#logConsoleText {
+  padding: 10px;
+  font-size: 14px;
+  text-shadow: 1px 1px 1px #3c3c3c;
+}

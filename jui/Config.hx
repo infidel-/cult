@@ -15,6 +15,7 @@ class Config
     music: String,
     musicVolume: String,
     animation: String,
+    consoleLog: String,
   }
 #end
 
@@ -30,6 +31,7 @@ class Config
         musicVolume: '100',
         sectAdvisor: 'true',
         animation: 'true',
+        consoleLog: 'false',
       };
       try {
         var s = Fs.readFileSync('settings.json', 'utf8');

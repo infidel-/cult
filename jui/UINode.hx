@@ -111,7 +111,7 @@ class UINode
             if (UI.classicMode)
               ctx.drawImage(ui.map.nodeImage,
                 0, 167, 37, 37,
-                hlx, hly, 37, 37);
+                hlx - 10, hly - 10, 37, 37);
             else
               {
                 // rectangle animation

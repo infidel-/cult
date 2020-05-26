@@ -31,6 +31,7 @@ class UI
   public var map: MapUI; // map block
   public var config: Config; // configuration
   public var logPanel: LogPanel; // log panel
+  public var logConsole: LogConsole; // log console
   public var top: TopMenu; // top menu block
   public var sects: SectsInfo; // sects info block
   public var options: OptionsMenu; // options block
@@ -85,6 +86,7 @@ class UI
     {
       logWindow = new Log(this, game);
       logPanel = new LogPanel(this, game);
+      logConsole = new LogConsole(this, game);
       alertWindow = new Alert(this, game);
       info = new Info(this, game);
       debug = new Debug(this, game);
@@ -114,6 +116,7 @@ class UI
     {
       map.resize();
       top.resize();
+      logConsole.resize();
     }
 
 
@@ -434,7 +437,8 @@ class UI
               text: s,
               obj: cultOrigin,
               turn: game.turns + 1,
-              params: params });
+              params: params
+            });
           }
     }
 

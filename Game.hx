@@ -139,6 +139,7 @@ class Game
       ui.map.initMinimap();
       ui.clearMap();
       ui.clearLog();
+      ui.logConsole.resize();
 
       if (isDebug)
         trace('nodeActivationRadius: ' + difficulty.nodeActivationRadius);
@@ -549,6 +550,7 @@ class Game
             }
 
           ui.logPanel.paint();
+          ui.logConsole.update();
           ui.updateStatus();
           ui.map.paint();
 

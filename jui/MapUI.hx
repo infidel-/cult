@@ -30,9 +30,9 @@ class MapUI
   var isDrag: Bool; // is viewport being dragged?
   var map: CanvasElement;
   var mapBorder: DivElement;
-  var mapWidth: Float;
-  var mapHeight: Float;
-  var minimap: CanvasElement;
+  public var mapWidth: Float;
+  public var mapHeight: Float;
+  public var minimap: CanvasElement;
 
   // modern mode
   var firstTime: Bool;

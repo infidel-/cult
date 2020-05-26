@@ -57,6 +57,12 @@ class OptionsMenu extends Window
       title: 'Animations',
       note: 'Enable or disable map animations'
     },
+    {
+      name: 'consoleLog',
+      type: 'bool',
+      title: 'Log Console',
+      note: 'Enable or disable log console'
+    },
   ];
 
 
@@ -190,6 +196,9 @@ class OptionsMenu extends Window
           // enable animations
           if (info.name == 'animation' && value)
             ui.map.enableAnimations();
+
+          if (info.name == 'consoleLog')
+            ui.logConsole.show(value);
         }
 
       var fs = game.player.options.getBool('fullscreen');
