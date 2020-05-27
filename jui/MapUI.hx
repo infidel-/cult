@@ -43,13 +43,20 @@ class MapUI
   public var jobImages: Array<Image>; // loaded job images
   public var powerImages: Array<Image>; // loaded power images
   public var powerColors: Array<String>; // css vars cached
-  public var zoom: Float; // map zoom (on top of base map scale factor)
-  var minZoom: Float; // min value for zoom
+
+  // map zoom vars
+  public var zoom: Float; // current value (on top of base map scale factor)
+  var targetZoom: Float; // target value
+  var targetZoomX: Int;
+  var targetZoomY: Int;
+  var lastZoomFrame: Float;
+  static var minZoom = 0.25; // min value for zoom
+  static var zoomSpeed = 15.0;
 
   // highlight zoom vars
   public var highlightZoom: Float;
   var targetHighlightZoom: Float;
-  var lastZoomFrame: Float;
+  var lastHighlightZoomFrame: Float;
   static var maxHighlightZoom = 1.1;
   static var highlightZoomTime = 0.05; // seconds 
   static var highlightZoomSpeed = 0.007;
@@ -68,7 +75,7 @@ class MapUI
       firstTime = true;
       isDrag = false;
       zoom = 1.0;
-      minZoom = 0.25;
+      targetZoom = 1.0;
       targetHighlightZoom = maxHighlightZoom;
       highlightZoom = 1.0;
 
@@ -348,7 +355,7 @@ class MapUI
         Browser.window.requestAnimationFrame(update);
 
       // animate highlight zoom
-      if (Sys.time() - lastZoomFrame > highlightZoomTime)
+      if (Sys.time() - lastHighlightZoomFrame > highlightZoomTime)
         {
           if (targetHighlightZoom > highlightZoom)
             {
@@ -362,9 +369,18 @@ class MapUI
               if (highlightZoom <= targetHighlightZoom)
                 targetHighlightZoom = maxHighlightZoom;
             }
-          lastZoomFrame = Sys.time();
+          lastHighlightZoomFrame = Sys.time();
         }
 
+      // animate map zoom
+      var d = (Sys.time() - lastZoomFrame);
+      zoom += (targetZoom - zoom) * zoomSpeed * d;
+      if (Math.abs(targetZoom - zoom) < 0.001)
+        zoom = targetZoom;
+      lastZoomFrame = Sys.time();
+//      trace('target: ' + targetZoom + ', cur: ' + zoom);
+      if (zoom != targetZoom)
+        center(targetZoomX, targetZoomY);
       paint();
     }
 
@@ -529,7 +545,7 @@ class MapUI
     }
 
 
-// scrolling wheel
+// scrolling wheel - map zoom
   public function onWheel(event: WheelEvent)
     {
       if (game.difficulty.mapWidth < game.difficulty.mapHeight)
@@ -539,18 +555,22 @@ class MapUI
         minZoom = 1.0;
       var cx = Std.int(viewRect.w / 2 / zoom + viewRect.x);
       var cy = Std.int(viewRect.h / 2 / zoom + viewRect.y);
+      targetZoomX = cx;
+      targetZoomY = cy;
 
       var d = 0;
       if (event != null)
         d = (event.deltaY < 0 ? 1 : -1);
-      var oldzoom = zoom;
-      zoom += 0.05 * d;
-      if (zoom < minZoom)
-        zoom = minZoom;
-      if (zoom > 1.0)
-        zoom = 1.0;
-      if (zoom == oldzoom)
+      var oldzoom = targetZoom;
+      targetZoom += 0.05 * d;
+      if (targetZoom < minZoom)
+        targetZoom = minZoom;
+      if (targetZoom > 1.0)
+        targetZoom = 1.0;
+      if (targetZoom == oldzoom)
         return;
+      if (!ui.config.getBool('animation'))
+        zoom = targetZoom;
 
       center(cx, cy);
     }
