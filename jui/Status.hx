@@ -320,6 +320,9 @@ class Status
       for (m in game.player.logPanelMessages)
         m.old = true;
 
+      // clear messages for this turn
+      game.player.logMessagesTurn = '';
+
       game.endTurn();
     }
 

@@ -37,6 +37,7 @@ class LogPanel
         func: function (ev: Dynamic)
           {
             clear();
+            game.player.logPanelMessages = new List();
           }
       });
     }

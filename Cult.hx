@@ -835,7 +835,6 @@ class Cult
 // start new turn for this cult (fturn) - gain resources, finish rituals, etc
   public function turn()
     {
-      logMessagesTurn = '';
       // un-paralyzed after 3 turns even if no priests available
       if (isParalyzed && paralyzedTurns > 3)
         {

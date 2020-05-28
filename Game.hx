@@ -488,6 +488,7 @@ class Game
 // on clicking end turn button (ftu)
   public function endTurn()
     {
+      // ai turns
       var newPlayerID = -1;
       for (i in (currentPlayerID + 1)...cults.length)
         {
