@@ -78,16 +78,19 @@ class MultiplayerMenu extends Window
               el.innerHTML = s;
               divel.appendChild(el);
             }
-          else el = Tools.textfield({
-            id: 'multi_' + info.name,
-            text: '' + Reflect.field(Static.difficulty[2], info.name),
-            w: 100,
-            h: null,
-            x: 310,
-            y: y,
-            fontSize: 14,
-            container: divel
-          });
+          else
+            {
+              el = Tools.textfield({
+                id: 'multi_' + info.name,
+                text: '' + info.value,
+                w: 100,
+                h: null,
+                x: 310,
+                y: y,
+                fontSize: 14,
+                container: divel
+              });
+            }
 
           y += 30;
 
@@ -201,6 +204,13 @@ class MultiplayerMenu extends Window
                   dif.mapHeight = 2320;
                   dif.nodesCount = 1600;
                 }
+
+              if (UI.modernMode)
+                {
+                  dif.mapWidth = Std.int(dif.mapWidth * UI.vars.scaleFactor);
+                  dif.mapHeight = Std.int(dif.mapHeight * UI.vars.scaleFactor);
+
+                }
             }
         }
 
@@ -240,24 +250,28 @@ class MultiplayerMenu extends Window
     {
       name: 'numCults',
       type: 'int',
+      value: '4',
       title: 'Number of cults (2-8)',
       params: null
     },
     {
       name: 'numPlayers',
       type: 'int',
-      title: 'Number of human players (1-8)',
+      value: '2',
+      title: 'Number of human players (2-8)',
       params: null
     },
     {
       name: 'difficulty',
       type: 'select',
+      value: null,
       title: 'Game difficulty',
       params: [ 'Easy', 'Normal', 'Hard' ]
     },
     {
       name: 'mapSize',
       type: 'select',
+      value: null,
       title: 'Map size',
       params: [ 'Small', 'Medium', 'Large', 'Huge' ]
     },
@@ -267,7 +281,8 @@ class MultiplayerMenu extends Window
 typedef MPUIInfo =
 {
   var name: String; // element name (and parameter name too)
-  var title: String; // parameter title
   var type: String; // parameter type
+  var value: String; // default value
+  var title: String; // parameter title
   var params: Dynamic; // additional parameters
 };
