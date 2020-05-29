@@ -381,8 +381,16 @@ class UINode
         {
           s += "<span class=shadow style='color:var(--node-error-color)'>Use sects to gather cult<br>or node information.</span><br>";
           if (node.owner == null || node.owner != game.player)
-            s += "<br>Chance of success: <span class=shadow style='color:white'>" +
-              game.player.getGainChance(node) + "%</span><br>";
+            {
+
+              s += "<br>Chance of success: <span class=shadow style='color:white'>" +
+                game.player.getGainChance(node) + "%</span><br>";
+              if (node.owner != null &&
+                  !node.owner.isInfoKnown[game.player.id])
+                s += "<span class=shadow style='color:var(--node-error-color)'>(-20%, no cult information)</span><br>";
+              if (!node.isKnown[game.player.id])
+                s += "<span class=shadow style='color:var(--node-error-color)'>(-10%, no node information)</span><br>";
+            }
           return s;
         }
 
@@ -446,8 +454,13 @@ class UINode
           if (node.power[i] > 0)
             s += '<b>' + UI.powerName(i) + '</b> ' + node.power[i] + '<br>';
       if (node.owner == null || node.owner.isAI)
-        s += "Chance of success: <span class=shadow style='color:white'>" +
-          game.player.getGainChance(node) + "%</span><br>";
+        {
+
+          s += "Chance of success: <span class=shadow style='color:white'>" +
+            game.player.getGainChance(node) + "%</span><br>";
+          if (node.owner != null && !node.isKnown[game.player.id])
+            s += "<span class=shadow style='color:var(--node-error-color)'>(-10%, no node information)</span><br>";
+        }
 
       if (node.isGenerator && (node.owner == null || node.isKnown[game.player.id]))
         {

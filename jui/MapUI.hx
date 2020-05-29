@@ -613,32 +613,23 @@ class MapUI
 
       // render tooltip for this node
       var text = node.uiNode.getTooltip();
-
-      var cnt = 0;
-      var ii = 0;
-      while (true)
-        {
-          var i = text.indexOf('<br>', ii);
-          if (i == -1)
-            break;
-          ii = i + 1;
-          cnt++;
-        }
-
-      var mapRect = map.getBoundingClientRect();
-      var x = event.clientX - mapRect.x + 10;
-      var y = event.clientY - mapRect.y + 10;
-      if (x + 250 > Browser.window.innerWidth)
-        x = Browser.window.innerWidth - 250;
-      if (y + cnt * 20 + 50 > Browser.window.innerHeight)
-        y = Browser.window.innerHeight - cnt * 20 - 50;
-
       tooltip.innerHTML = text;
+      tooltip.style.display = 'inline';
+
+      // calculate tooltip position
+      var mapRect = map.getBoundingClientRect();
+      var tooltipRect = tooltip.getBoundingClientRect();
+      var x = event.clientX - 20.0 - tooltipRect.width;
+      var y = event.clientY + 5.0;
+      if (x + tooltipRect.width > Browser.window.innerWidth)
+        x = Browser.window.innerWidth - tooltipRect.width;
+      if (y + tooltipRect.height > Browser.window.innerHeight)
+        y = Browser.window.innerHeight - tooltipRect.height;
+
       tooltip.style.left = x + 'px';
       tooltip.style.top = y + 'px';
       tooltip.style.width = null;
       tooltip.style.height = null;
-      tooltip.style.display = 'inline';
     }
 
 
