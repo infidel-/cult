@@ -204,7 +204,7 @@ class UI
           if (e.keyCode == 49) // 1
             alertWindow.onYes(null);
           else if (e.keyCode == 50) // 2
-            alertWindow.onClose(null);
+            alertWindow.onNo(null);
         }
 
       // close window
@@ -281,6 +281,28 @@ class UI
       else Browser.document.documentElement.requestFullscreen();
       fullscreen = !fullscreen;
       game.player.options.set('fullscreen', val);
+    }
+
+
+// start a new game (common for all ui)
+  public function newGame(lvl: Int, ?dif: DifficultyInfo)
+    {
+      game.isTutorial = false;
+      game.difficultyLevel = lvl;
+      if (UI.modernMode && lvl >= 0 && lvl < 2)
+        alert("Start the tutorial?", {
+          yesNo: true,
+          onYes: function ()
+            {
+              game.isTutorial = true;
+              game.restart();
+            },
+          onNo: function ()
+            {
+              game.restart();
+            }
+        });
+      else game.restart(dif);
     }
 
 

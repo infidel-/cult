@@ -13,7 +13,8 @@ class Alert
   var border: DivElement; // border element
   var text: DivElement; // text element
   var bg: DivElement; // background element
-  var yesFunc: Void -> Void; // current yes/no handler
+  var yesFunc: Void -> Void; // current yes handler
+  var noFunc: Void -> Void; // current no handler
   public var isYesNo: Bool;
   public var isVisible: Bool;
 
@@ -25,6 +26,7 @@ class Alert
       isVisible = false;
       queue = new List();
       yesFunc = null;
+      noFunc = null;
     }
 
 
@@ -52,6 +54,15 @@ class Alert
     {
       if (yesFunc != null)
         yesFunc();
+      onClose(event);
+    }
+
+
+// yes button pressed
+  public function onNo(event)
+    {
+      if (noFunc != null)
+        noFunc();
       onClose(event);
     }
 
@@ -124,7 +135,12 @@ class Alert
           var no = Tools.closeButton(window);
           no.innerHTML = 'No';
           no.style.left = '66%';
-          no.onclick = onClose;
+          if (opts.onNo != null)
+            {
+              no.onclick = onNo;
+              noFunc = opts.onNo;
+            }
+          else no.onclick = onClose;
         }
       else
         {
@@ -166,6 +182,7 @@ typedef _AlertOptions = {
   @:optional var fontSize: Int;
   @:optional var yesNo: Bool;
   @:optional var onYes: Void -> Void;
+  @:optional var onNo: Void -> Void;
   @:optional var img: String;
 }
 

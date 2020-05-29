@@ -153,7 +153,7 @@ class CustomMenu extends Window
       if (dif.numCults > 8)
         dif.numCults = 8;
 
-      game.restart(-1, dif);
+      ui.newGame(-1, dif);
       onClose(null);
       ui.mainMenu.onClose(null);
     }

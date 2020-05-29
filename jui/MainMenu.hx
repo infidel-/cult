@@ -321,8 +321,8 @@ class MainMenu extends Window
 // start for real
   function onNewGameReal(dif: Int)
     {
-      game.restart(dif);
       onClose(null);
+      ui.newGame(dif);
     }
 
 

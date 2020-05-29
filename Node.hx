@@ -458,6 +458,12 @@ class Node
     }
 
 
+  public function toString()
+    {
+      return '(' + x + ',' + y + ')';
+    }
+
+
   static var jobs = [
     "Government official",
     "Corporate worker",

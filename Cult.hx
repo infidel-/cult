@@ -278,18 +278,44 @@ class Cult
 // pick an origin fairly
   function setupOriginFair()
     {
-      // split map into four quadrants, pick unused and set origin there
+      // pick unused quadrant and set origin there
       // pick unused quadrant
       var quad = game.freeQuadrants[Std.random(game.freeQuadrants.length)];
       game.freeQuadrants.remove(quad);
 
       // get all nodes in this quadrant
       var tmp = [];
+      var outer: Node = null;
+      var outerd = 10000.0;
       for (n in game.nodes)
         if (quad.x1 <= n.x && quad.y1 <= n.y &&
             n.x <= quad.x2 && n.y <= quad.y2)
-          tmp.push(n);
+          {
+            tmp.push(n);
+
+            // also pick outermost node for tutorial
+            if (outer != null && !isAI)
+              {
+                var d = 0.0;
+                if (quad.id == 0)
+                  d = n.distanceXY(quad.x1, quad.y1);
+                else if (quad.id == 1)
+                  d = n.distanceXY(quad.x2, quad.y1);
+                else if (quad.id == 2)
+                  d = n.distanceXY(quad.x1, quad.y2);
+                else if (quad.id == 3)
+                  d = n.distanceXY(quad.x2, quad.y2);
+                if (d < outerd)
+                  {
+                    outer = n;
+                    outerd = d;
+                  }
+              }
+            else outer = n;
+          }
       var node = tmp[Std.random(tmp.length)];
+      if (game.isTutorial && !isAI)
+        node = outer;
       origin = node;
     }
 

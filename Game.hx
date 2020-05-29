@@ -25,7 +25,7 @@ class Game
   public var isTutorial: Bool; // game is in tutorial mode?
   public var difficultyLevel: Int; // game difficulty (0: easy, 1: normal, 2: hard, -1: custom)
   public var difficulty: DifficultyInfo; // link to difficulty info
-  public var freeQuadrants: Array<{ x1: Int, y1: Int, x2: Int, y2: Int }>; // used during origin location selection
+  public var freeQuadrants: Array<{ id: Int, x1: Int, y1: Int, x2: Int, y2: Int }>; // used during origin location selection
 
   // index of the last node/cult (for id generation)
   var lastNodeIndex: Int;
@@ -96,20 +96,11 @@ class Game
     }
 
 
-// enable and start the tutorial
-  function onTutorialStart()
-    {
-      isTutorial = true;
-      tutorial.play('start');
-    }
-
-
 // restart a game
-  public function restart(newDifficulty: Int, ?newDif: DifficultyInfo)
+  public function restart(?newDif: DifficultyInfo)
     {
       startTS = Sys.time();
       isNeverStarted = false;
-      isTutorial = false;
       tutorial = new Tutorial(this, ui);
 
       // show starting message
@@ -123,14 +114,13 @@ class Game
         h: 320
       });
 #end
-      if (UI.modernMode && newDifficulty >= 0 && newDifficulty < 2)
-        ui.alert("Start the tutorial?",
-          { yesNo: true, onYes: onTutorialStart });
+      if (isTutorial)
+        tutorial.play('start');
       ui.config.set('hasPlayed', '1');
 
       startTimer("restart");
 
-      difficultyLevel = newDifficulty;
+//      difficultyLevel = newDifficulty;
       if (difficultyLevel >= 0)
         difficulty = Static.difficulty[difficultyLevel];
       else difficulty = newDif; // custom difficulty
@@ -252,28 +242,32 @@ class Game
       freeQuadrants = [];
       for (i in 0...4)
         if (i == 0)
-          freeQuadrants.push({
+          freeQuadrants.push({ // top-left
+            id: 0,
             x1: 0,
             y1: 0,
             x2: Std.int(difficulty.mapWidth / 2),
             y2: Std.int(difficulty.mapHeight / 2),
           });
         else if (i == 1)
-          freeQuadrants.push({
+          freeQuadrants.push({ // top-right
+            id: 1,
             x1: Std.int(difficulty.mapWidth / 2),
             y1: 0,
             x2: difficulty.mapWidth,
             y2: Std.int(difficulty.mapHeight / 2),
           });
         else if (i == 2)
-          freeQuadrants.push({
+          freeQuadrants.push({ // bottom-left
+            id: 2,
             x1: 0,
             y1: Std.int(difficulty.mapHeight / 2),
             x2: Std.int(difficulty.mapWidth / 2),
             y2: difficulty.mapHeight,
           });
         else if (i == 3)
-          freeQuadrants.push({
+          freeQuadrants.push({ // bottom-right
+            id: 3,
             x1: Std.int(difficulty.mapWidth / 2),
             y1: Std.int(difficulty.mapHeight / 2),
             x2: difficulty.mapWidth,
