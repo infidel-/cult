@@ -233,7 +233,7 @@ class Cult
   public function setOrigin()
     {
       // change method on the difficulty setting
-      if (game.difficulty.numCults == 4)
+      if (game.difficulty.numCults <= 4)
         setupOriginFair();
       else setupOriginRandom();
 
@@ -294,7 +294,7 @@ class Cult
             tmp.push(n);
 
             // also pick outermost node for tutorial
-            if (outer != null && !isAI)
+            if (outer != null && !isAI && game.isTutorial)
               {
                 var d = 0.0;
                 if (quad.id == 0)
