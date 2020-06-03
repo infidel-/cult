@@ -156,12 +156,12 @@ class Static
   public static var cults: Array<CultInfo> =
     [
       // your cult
-      { name: "Cult&nbsp;of&nbsp;Elder&nbsp;God",
+      { name: "Cult&nbsp;of&nbsp;the&nbsp;Elder&nbsp;God",
         note: "The cult still lives.",
-        longNote: "At the dawn of humanity the great old ones told their secrets in dreams to the first men, who formed a cult which had never died... Hidden in distant and dark places of the world, waiting for the day when the stars will be right again and the mighty Elder God will rise from his slumber under the deep waters to bring the earth beneath his sway once more.",
-        summonStart: "",
-        summonFinish: "",
-        summonFail: "" },
+        longNote: "At the very dawn of humanity the Great Old Ones whispered their fell secrets in dreams to those who would listen to such grim tidings, and those ancient disciples formed a cult which has never died out since. Hidden in the dark distant corners of the Earth, they wait for the day when the stars are right again and the mighty Elder God will rise from his slumber under the deep waters, bringing the Earth beneath his sway once more.",
+        summonStart: "The seas tremble and shake as He Who Sleeps begins to awaken, rogue waves and typhoons disrupting shipping worldwide.  Lightning flashes down from cloudless skies, striking people as those nearby watch them burst into flame.  The night is sharper and clearer than it has been in a century, the stars dazzling pinpricks of light that seem to wheel about in mysterious patterns, baffling astronomers.  And as people awaken from poorly-remembered dreams, the faintest of dark whispers still linger in the air.",
+        summonFinish: "Eternal night falls upon the Earth, the stars locked in place and burning brighter than ever before, forming eldritch patterns no human can look upon for long without going mad.  The oceans steam, then boil, as the Elder God rises from his long sleep, his feet crushing people and buildings alike as he strides the planet once more.  To look upon him is to lose oneself to his thrall, madness and ecstasy conjoined.  What little remains of humanity struggles to hide away from the twisted sky and the thundering steps of He Who Has Awakened, but it is only a matter of time before his disciples find them and pull them out, screaming, into the darkness and light...",
+        summonFail: "The oceans quiet back down as the Elder God returns to his restless slumber, although several unseasonal hurricanes still lash the shores.  The murky red of light pollution once again spreads across the night sky, calming the populace even as more than a few scientists express their disappointment.  The acolytes of He Who Sleeps once again return to the shadows, and the world returns to relative peace, although many still wake in a cold sweat, the words of a dead language dancing on their tongue, alien voices echoing in their dreams." },
 
       { name: "Pharaonic&nbsp;Slumber",
         note: "A group that wants to put the entire world to sleep, feeding on the nightmares of the dreamers.",
@@ -199,10 +199,10 @@ class Static
       summonFail: "What at first seemed like the genuine rise of a new era of freedom and prosperity turns sour, many of its proponents discovered to be frauds and freaks.  The Manipulators themselves stay behind the scenes, protected by layers of misdirection and human shields, but the effects of their manipulations begin to fade.  People once again assert contrary views with candor; for a moment, they view the mass media with a genuinely critical eye.  Then the time passes, advertisements and packaged views reasserting their mundane control on the opinions, just another day in this modern life." },
     {
       name: "The Frozen Dream",
-      note: "A group of ice demons that want to freeze the world. ",
-      longNote: "Led by unholy denizens of frozen wastes, The Frozen Dream works to turn the world into an eternal winter horrorland, full of ice demons and frosthounds cavorting in the terrible chill. What little can survive in the icy bleakness will be hunted for sport. ",
-      summonStart: "As The Frozen Dream begins their dark rituals, temperatures across the world begin to drop. Winter has become bitterly frigid, spring and fall too cold for the plants, and summer a wan shadow of its former self. Weather patterns spiral out of control, and food crops wither and die. ",
-      summonFinish: "Their dark ritual complete, The Frozen Dream's grasp upon the Earth becomes stronger. The biting cold becomes unbearable, freezing and shattering plants and animals alike still on the surface. What little humanity remains is ensconced deep underground, but the unnatural chill manages to penetrate even those bastions, slowly but surely. It is only a matter of time before the thin flame of natural life is extinguished by the icy winds that blow across the planet. ",
+      note: "A group of ice demons that want to freeze the world.",
+      longNote: "Led by unholy denizens of frozen wastes, The Frozen Dream works to turn the world into an eternal winter horrorland, full of ice demons and frosthounds cavorting in the terrible chill. What little can survive in the icy bleakness will be hunted for sport.",
+      summonStart: "As The Frozen Dream begins their dark rituals, temperatures across the world begin to drop. Winter has become bitterly frigid, spring and fall too cold for the plants, and summer a wan shadow of its former self. Weather patterns spiral out of control, and food crops wither and die.",
+      summonFinish: "Their dark ritual complete, The Frozen Dream's grasp upon the Earth becomes stronger. The biting cold becomes unbearable, freezing and shattering plants and animals alike still on the surface. What little humanity remains is ensconced deep underground, but the unnatural chill manages to penetrate even those bastions, slowly but surely. It is only a matter of time before the thin flame of natural life is extinguished by the icy winds that blow across the planet.",
       summonFail: "The unnatural chill of recent days begins to fade, the world scrambling to repair what damage can be fixed. Many still shiver uncontrollably when a gust of cool air blows past them, a psychic remnant of the grasp The Frozen Dream nearly had upon the Earth."
     },
     {
