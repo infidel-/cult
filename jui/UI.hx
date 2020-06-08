@@ -340,6 +340,10 @@ class UI
 
       if (state == "summon" && !cult.isAI)
         {
+          alert(cult.fullName +
+            " has completed the " + Static.rituals['summoning'].name +
+            ".<br><br>" + cult.info.summonFinish,
+            { h: 400 });
           msg += "The stars were right. The Elder God was summoned in " +
             game.turns + " turns (" +
             game.highScores.convertTime(time) + " of real time).";

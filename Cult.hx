@@ -829,6 +829,9 @@ class Cult
                 break;
               }
 
+          ui.alert(fullName +
+            " has failed to perform the " + Static.rituals['summoning'].name + ".<br><br>" +
+            info.summonFail, { h: 380 });
           if (!isAI)
             {
               var msg =
@@ -842,10 +845,7 @@ class Cult
             }
           else
             {
-              ui.alert(fullName +
-                " has failed to perform the " + Static.rituals['summoning'].name + ".<br><br>" +
-                info.summonFail);
-              ui.log2(this, fullName + " has failed the " +
+              ui.log2(this, fullName + " has failed to perform the " +
                 Static.rituals['summoning'].name + ".",
                 { symbol: 'R' });
             }

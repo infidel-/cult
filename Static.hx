@@ -156,7 +156,7 @@ class Static
   public static var cults: Array<CultInfo> =
     [
       // your cult
-      { name: "Cult&nbsp;of&nbsp;the&nbsp;Elder&nbsp;God",
+      { name: "Cult&nbsp;of&nbsp;Elder&nbsp;God",
         note: "The cult still lives.",
         longNote: "At the very dawn of humanity the Great Old Ones whispered their fell secrets in dreams to those who would listen to such grim tidings, and those ancient disciples formed a cult which has never died out since. Hidden in the dark distant corners of the Earth, they wait for the day when the stars are right again and the mighty Elder God will rise from his slumber under the deep waters, bringing the Earth beneath his sway once more.",
         summonStart: "The seas tremble and shake as He Who Sleeps begins to awaken, rogue waves and typhoons disrupting shipping worldwide. Lightning flashes down from cloudless skies, striking people as those nearby watch them burst into flame. The night is sharper and clearer than it has been in a century, the stars dazzling pinpricks of light that seem to wheel about in mysterious patterns, baffling astronomers. And as people awaken from poorly-remembered dreams, the faintest of dark whispers still linger in the air.",
