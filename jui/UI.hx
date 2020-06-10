@@ -39,6 +39,8 @@ class UI
   public var messageWindow: Message;
   public var fullscreen: Bool;
 
+  // expansion ui
+  public var artifacts: artifacts.ArtifactUI;
 
   public function new(g)
     {
@@ -104,6 +106,7 @@ class UI
       manual = new Manual(this, game);
       messageWindow = new Message(this, game);
       music.onRandom = status.onMusic;
+      artifacts = new artifacts.ArtifactUI(game, this);
 
       Browser.document.onkeyup = onKey;
       Browser.window.onresize = onResize;

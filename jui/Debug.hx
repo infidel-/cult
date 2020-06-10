@@ -37,6 +37,11 @@ class Debug extends Window
       addItem(0, 'Upgrade sects', onUpgradeSects);
       lastMenuY = -20;
       addItem(1, 'Trace Director toggle', onDirector);
+      addItem(1, 'Artifacts: Spawn', function(event)
+        {
+          if (game.flags.artifacts)
+            game.artifacts.spawn();
+        });
     }
 
 

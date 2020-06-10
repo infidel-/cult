@@ -143,6 +143,10 @@ class SectsInfo extends Window
               if (t.type == 'investigator' && !game.player.hasInvestigator)
                 continue;
 
+              // skip expansion tasks if they're not available
+              if (t.type == 'artifact' && !game.flags.artifacts)
+                continue;
+
               // sect is too low-level
               if (t.level > sect.level)
                 continue;
@@ -170,7 +174,7 @@ class SectsInfo extends Window
                 }
 
               // untargeted task
-              else if (t.type == 'investigator' || t.type == 'info')
+              else
                 {
                   var ok = t.check(game.player, sect, null);
                   if (!ok)
@@ -180,9 +184,6 @@ class SectsInfo extends Window
                     (sect.task != null && sect.task.id == t.id ? ' selected' : '') +
                     '>' + t.getName(sect);
                 }
-              else s += '<option class=selectOption value=' + sect.leader.id + '.' + t.id + '-0' +
-                (sect.task != null && sect.task.id == t.id ? ' selected' : '') +
-                '>' + t.getName(sect);
 
               // points
               if (sect.task != null && sect.task.id == t.id &&

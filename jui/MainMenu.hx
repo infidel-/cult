@@ -355,6 +355,18 @@ class MainMenu extends Window
       else if (e.keyCode == 81) // q
         onExit(null);
 #end
+
+      // debug game start
+      else if (e.keyCode == 88 && Game.isDebug) // x
+        {
+          onClose(null);
+          game.isTutorial = false;
+          game.difficultyLevel = 1; // 1 - normal
+          game.flags.noMilitary = true;
+          game.flags.sectsBuff = true;
+          game.flags.artifacts = true;
+          game.restart();
+        }
 /*
       // load game
       else if (e.keyCode == 52) // 4

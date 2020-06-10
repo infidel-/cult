@@ -25,36 +25,31 @@ class Game
   public var isTutorial: Bool; // game is in tutorial mode?
   public var difficultyLevel: Int; // game difficulty (0: easy, 1: normal, 2: hard, -1: custom)
   public var difficulty: DifficultyInfo; // link to difficulty info
+  public var flags: Flags; // game flags
+  public var flagDefaults: Flags; // game flag defaults
   public var freeQuadrants: Array<{ id: Int, x1: Int, y1: Int, x2: Int, y2: Int }>; // used during origin location selection
 
+  // expansions
+  public var artifacts: artifacts.ArtifactManager;
+
   // index of the last node/cult (for id generation)
-  var lastNodeIndex: Int;
+  public var lastNodeIndex: Int;
   var lastCultID: Int;
 
   // nodes and lines arrays
   public var nodes: Array<Node>;
   public var lines: List<Line>;
 
-
-  public static var powerNames: Array<String> =
-    [ "Intimidation", "Persuasion", "Bribery", "Virgins" ];
-  public static var powerShortNames: Array<String> =
-    [ "I", "P", "B", "V" ];
-  public static var followerNames: Array<String> =
-    [ "Neophyte", "Adept", "Priest" ];
-  public static var powerConversionCost: Array<Int> = [2, 2, 2, 1];
-  public static var willPowerCost: Int = 2;
-
-  public static var version = "v6.1"; // game version
-  public static var followerLevels = 3; // number of follower levels
-  public static var numPowers = 3; // number of basic powers
-  public static var upgradeCost = 3; // cost to upgrade follower
-  public static var isDebug = false; // debug mode (debug button + extended info window)
-
-
 // constructor
   function new()
     {
+      flagDefaults = {
+        noMilitary: false,
+        sectsBuff: false,
+
+        artifacts: false,
+      };
+      flags = Reflect.copy(flagDefaults);
       ui = new UI(this);
       highScores = new HighScores(this, ui);
       // apply modern mode difficulty fixes
@@ -67,6 +62,7 @@ class Game
               Std.int(d.nodeActivationRadius * UI.vars.scaleFactor);
 //            trace(d.nodeActivationRadius);
           }
+      artifacts = new artifacts.ArtifactManager(this, ui);
 
 #if mydebug
       isDebug = true;
@@ -304,19 +300,20 @@ class Game
     {
       // fill adjacent node lists
       for (n in nodes)
+        n.updateLinks();
+/*
         for (n2 in nodes)
           if (n != n2 && n.distance(n2) <= difficulty.nodeActivationRadius)
             {
               n.links.remove(n2);
               n.links.add(n2);
-            }
+            }*/
     }
 
 
-// spawn new node (fsp)
-  public function spawnNode()
+// find free spot for a new node
+  public function findFreeSpot(d: Int): { x: Int, y: Int }
     {
-      // find node position
       var x = 0, y = 0;
       var cnt = 0;
       var sx = UI.vars.markerWidth * 2;
@@ -333,36 +330,50 @@ class Game
           if (cnt > 100)
             {
               trace('could not spawn node');
-              return;
+              return null;
             }
 
           // check min distance to other nodes
           var ok = 1;
           for (n in nodes)
             if (n.distanceXY(x, y) < d)
-/*
-            if ((x - sx < n.x &&
-                 x + UI.vars.markerWidth + sx > n.x) &&
-                (y - sy < n.y &&
-                 y + UI.vars.markerHeight + sy > n.y))
-*/
-            {
-              ok = 0;
-              break;
-            }
+              {
+                ok = 0;
+                break;
+              }
 
           if (ok == 1)
             break;
         }
+      
+      return { x: x, y: y };
+    }
+
+
+// spawn new node (fsp)
+  function spawnNode()
+    {
+      // find free position
+      var pos = findFreeSpot(UI.vars.markerWidth * 2);
+      if (pos == null)
+        return;
 
       // node attributes
-      var node = new Node(this, ui, x, y, lastNodeIndex++);
+      var node = new Node(this, ui, pos.x, pos.y, lastNodeIndex++);
 
       if (mapVisible)
         node.setVisible(player, true);
 
       node.update();
       nodes.push(node);
+    }
+
+
+// remove node from active game nodes
+  public function removeNode(node: Node)
+    {
+      nodes.remove(node);
+      ui.map.paint();
     }
 
 
@@ -627,4 +638,19 @@ class Game
   public static var debugAI = false; // show AI debug messages
   public static var debugDirector = false; // show director debug messages
   public static var mapVisible = false; // all map is visible at start
+
+  public static var powerNames: Array<String> =
+    [ "Intimidation", "Persuasion", "Bribery", "Virgins" ];
+  public static var powerShortNames: Array<String> =
+    [ "I", "P", "B", "V" ];
+  public static var followerNames: Array<String> =
+    [ "Neophyte", "Adept", "Priest" ];
+  public static var powerConversionCost: Array<Int> = [2, 2, 2, 1];
+  public static var willPowerCost: Int = 2;
+
+  public static var version = "v6.1"; // game version
+  public static var followerLevels = 3; // number of follower levels
+  public static var numPowers = 3; // number of basic powers
+  public static var upgradeCost = 3; // cost to upgrade follower
+  public static var isDebug = false; // debug mode (debug button + extended info window)
 }

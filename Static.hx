@@ -29,6 +29,9 @@ typedef DifficultyInfo = {
   var isInfoKnown: Bool; // is cult info for all cults known at start?
   var isOriginKnown: Bool; // is origin known for all cults at start?
   var isDiscovered: Bool; // are cults marked as discovered on start?
+
+  // artifacts expansion
+//  var artifactMaxAmountIngame: Int; // max amount of artifacts in play
 };
 
 

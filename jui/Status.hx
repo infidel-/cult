@@ -366,6 +366,8 @@ class Status
         {
           updateTip("status.follower" + i, tipFollowers[i]);
           updateTip("status.upgrade" + i, tipUpgrade[i] +
+            ((game.flags.artifacts && i == 1) ?
+             ' You also need an artifact.' : '') +
             "<br>Chance of success: <span class=shadow style='color:white'>" +
             game.player.getUpgradeChance(i) + "%</span>");
         }
@@ -475,11 +477,11 @@ class Status
       // upgrade buttons visibility
       for (i in 0...Game.followerNames.length)
         statusUpgrade[i].className =
-          ((!game.isFinished && game.player.canUpgrade(i)) ?
+          (game.player.canUpgrade(i) ?
            'uiButton statusConvert statusUpgrade' :
            'uiButtonDisabled statusConvert statusUpgrade');
       statusRitualUnveiling.className =
-        (!game.isFinished && game.player.canStartRitual('unveiling') ?
+        (game.player.canStartRitual('unveiling') ?
          'uiButton statusConvert statusUpgrade' :
          'uiButtonDisabled statusConvert statusUpgrade');
       e("status.endTurn").style.visibility =

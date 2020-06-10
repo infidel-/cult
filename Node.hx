@@ -9,6 +9,7 @@ class Node
   public var uiNode: UINode;
 
   public var id: Int;
+  public var type: String;
   public var name: String; // node name
   public var job: String; // job
   public var gender: Bool; // false - male
@@ -32,12 +33,17 @@ class Node
   public var lines: List<Line>; // lines drawn to this node
   public var links: List<Node>; // adjacent nodes buffer
 
+  // expansions
+  public var artifact: artifacts.CultArtifact;
+
 
   public function new(gvar, uivar, newx, newy, index: Int)
     {
       game = gvar;
       ui = uivar;
       id = index;
+      type = 'person';
+      artifact = null;
       lines = new List<Line>();
       links = new List<Node>();
       visibility = [];
@@ -431,6 +437,19 @@ class Node
       for (c in game.cults)
         if (nc.isVisible(c) || this.isVisible(c))
           l.setVisible(c, true);
+    }
+
+
+// update links from this node to others
+  public function updateLinks()
+    {
+      for (n2 in game.nodes)
+        if (this != n2 &&
+            this.distance(n2) <= game.difficulty.nodeActivationRadius)
+          {
+            this.links.remove(n2);
+            this.links.add(n2);
+          }
     }
 
 

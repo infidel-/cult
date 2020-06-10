@@ -231,6 +231,7 @@ priest (10, x/6):
     InvSearchTask,
     InvConfuseTask,
     InvSacrificeTask,
+    artifacts.ArtSearchTask,
     HarvestTask,
   ];
 

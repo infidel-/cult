@@ -352,9 +352,10 @@ class UINode
         return '';
 
       var s = "";
+      if (Game.isDebug)
+        s += 'Node ' + node.id + ' (' + node.x + ',' + node.y + ')<br>';
       if (Game.debugNear)
         {
-          s += 'Node ' + node.id + ' (' + node.x + ',' + node.y + ')<br>';
           s += 'Links: ';
           for (n in node.links)
             s += n.id + " ";

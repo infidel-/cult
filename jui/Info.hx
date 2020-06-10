@@ -79,7 +79,7 @@ class Info extends Window
               var turns = Std.int(p.ritualPoints / p.priests);
               if (p.ritualPoints % p.priests > 0)
                 turns += 1;
-              s += "Casting <span class=shadow title='" + p.ritual.note +
+              s += "Performing <span class=shadow title='" + p.ritual.note +
                 "' id='info.ritual" + i +
                 "' style='color:#ffaaaa'>" + p.ritual.name +
                 "</span>, " + (p.ritual.points - p.ritualPoints) + "/" +
@@ -97,6 +97,10 @@ class Info extends Window
                 s += " --- Paralyzed ---";
               s += '<br>';
             }
+
+          // artifacts
+          if (game.flags.artifacts && !p.isAI)
+            s += ui.artifacts.getInfoString(p);
 
           // description
 //          if (p.isInfoKnown)

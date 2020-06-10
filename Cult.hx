@@ -56,6 +56,9 @@ class Cult
   public var logPanelMessages: List<LogPanelMessage>; // log panel messages list
   public var highlightedNodes: List<Node>; // highlighted nodes list
 
+  // expansion stuff
+  public var artifacts: artifacts.CultArtifacts;
+
 
   public function new(gvar: Game, uivar: UI, id: Int, infoID: Int)
     {
@@ -68,27 +71,24 @@ class Cult
       this.isAI = false;
       this.highlightedNodes = new List<Node>();
       this.options = new Options(game, ui, this);
+      this.artifacts = new artifacts.CultArtifacts(game, this);
 
-      isDiscovered = [];
-      isInfoKnown = [];
-      paralyzedTurns = 0;
-
+      this.isDiscovered = [];
+      this.isInfoKnown = [];
+      this.paralyzedTurns = 0;
       for (i in 0...game.difficulty.numCults)
-        isInfoKnown[i] = game.difficulty.isInfoKnown;
+        this.isInfoKnown[i] = game.difficulty.isInfoKnown;
       for (i in 0...game.difficulty.numCults)
-        isDiscovered[i] = game.difficulty.isDiscovered;
-
+        this.isDiscovered[i] = game.difficulty.isDiscovered;
       // self discovered and info known
       this.isDiscovered[id] = true;
       this.isInfoKnown[id] = true;
 
       this.power = [0, 0, 0, 0];
       this.powerMod = [0, 0, 0, 0];
-
       wars = [];
       for (i in 0...game.difficulty.numCults)
         wars.push(false);
-
       this.adeptsUsed = 0;
       this.awareness = 0;
       this.nodes = new List<Node>();
@@ -522,11 +522,25 @@ class Cult
 
 
 // cult can upgrade?
-  public function canUpgrade(level: Int):Bool
+  public function canUpgrade(level: Int): Bool
     {
+      if (game.isFinished)
+        return false;
       if (level < 2)
-        return (getNumFollowers(level) >= Game.upgradeCost &&
-          virgins >= level + 1);
+        {
+          // base
+          var ok = (getNumFollowers(level) >= Game.upgradeCost &&
+            virgins >= level + 1);
+          if (!ok)
+            return false;
+
+          // flags
+          if (game.flags.artifacts)
+            return (artifacts.length > 0);
+
+          return true;
+        }
+      // final ritual
       else return
         (priests >= Static.rituals['summoning'].priests &&
          virgins >= game.difficulty.numSummonVirgins &&
@@ -537,6 +551,8 @@ class Cult
 // cult can start this ritual?
   public function canStartRitual(id: String): Bool
     {
+      if (game.isFinished)
+        return false;
       var info = Static.rituals[id];
       if (isRitual || priests < info.priests || virgins < info.virgins)
         return false;
@@ -582,10 +598,8 @@ class Cult
 // upgrade nodes (fupgr)
   public function upgrade(level)
     {
-      if (!canUpgrade(level)) return; // cannot upgrade
-
-      if ((level == 2 && virgins < game.difficulty.numSummonVirgins) ||
-          (level < 2 && virgins < level + 1))
+      // cannot upgrade
+      if (!canUpgrade(level))
         return;
 
       // summon
@@ -624,13 +638,22 @@ class Cult
       // find a node with maximum amount of links
       if (!ok)
         {
-          var upNode = findMostLinkedNode(level);
+          upNode = findMostLinkedNode(level);
           if (upNode != null)
             {
               upNode.upgrade();
               ok = true;
             }
         }
+      if (!ok)
+        {
+          trace('BUG: Cannot upgrade. No nodes found.');
+          return;
+        }
+
+      // expansions
+      if (game.flags.artifacts && level == 1)
+        artifacts.onUpgrade(upNode);
 
       if (!isAI)
         ui.updateStatus();
@@ -1037,6 +1060,18 @@ class Cult
       for (i in 0...Game.numPowers)
         power[i] = power[i] - node.power[i];
 
+      // expansion nodes
+      if (node.type != 'person')
+        {
+          if (isAI)
+            {
+              trace('BUG: AI activated ' + node.type + ' node.');
+              return '';
+            }
+          if (node.type == 'artifact')
+            return game.artifacts.activate(this, node);
+        }
+
       // failure chance
       if (100 * Math.random() > getGainChance(node))
         {
@@ -1149,6 +1184,10 @@ class Cult
       awareness++;
       if (!isAI)
         ui.updateStatus();
+
+      // expansions
+      if (game.flags.artifacts)
+        artifacts.onLose(node);
 
       // declare war
       if (cult != null && nodes.length > 0)
@@ -1348,6 +1387,14 @@ class Cult
               game.tutorial.disable('discoverCult');
             }
         }
+    }
+
+
+// add message to log and log panel
+  public function logAndPanel(s: String, ?params:Dynamic = null)
+    {
+      log(s);
+      logPanelShort(s, params);
     }
 
 
