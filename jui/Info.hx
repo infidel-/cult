@@ -76,8 +76,9 @@ class Info extends Window
           // ritual
           if (p.isRitual && p.isInfoKnown[game.player.id])
             {
-              var turns = Std.int(p.ritualPoints / p.priests);
-              if (p.ritualPoints % p.priests > 0)
+              var perTurn = p.getRitualPoints();
+              var turns = Std.int(p.ritualPoints / perTurn);
+              if (p.ritualPoints % perTurn > 0)
                 turns += 1;
               s += "Performing <span class=shadow title='" + p.ritual.note +
                 "' id='info.ritual" + i +

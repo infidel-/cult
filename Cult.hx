@@ -185,6 +185,13 @@ class Cult
       return Std.int(nodes.length / 4);
     }
 
+// get generated ritual points
+  public function getRitualPoints(): Int
+    {
+      if (game.flags.artifacts)
+        return artifacts.getRitualPoints();
+      return priests;
+    }
 
 // create a new sect
   public function createSect(node: Node)
@@ -898,7 +905,8 @@ class Cult
       // if a cult has any adepts, each turn it has a
       // chance of an investigator finding out about it
       if ((priests > 0 || adepts > 0) &&
-          !hasInvestigator && 100 * Math.random() < getInvestigatorChance() &&
+          !hasInvestigator &&
+          100 * Math.random() < getInvestigatorChance() &&
           investigatorTimeout == 0)
         {
           hasInvestigator = true;
@@ -923,7 +931,7 @@ class Cult
       // finish a ritual if there is one
       if (isRitual)
         {
-          ritualPoints -= priests;
+          ritualPoints -= getRitualPoints();
           if (ritualPoints <= 0)
             ritualFinish();
 

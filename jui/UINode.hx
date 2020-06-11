@@ -456,7 +456,6 @@ class UINode
             s += '<b>' + UI.powerName(i) + '</b> ' + node.power[i] + '<br>';
       if (node.owner == null || node.owner.isAI)
         {
-
           s += "Chance of success: <span class=shadow style='color:white'>" +
             game.player.getGainChance(node) + "%</span><br>";
           if (node.owner != null && !node.isKnown[game.player.id])
@@ -486,7 +485,6 @@ class UINode
                   d = dx;
               }
           s += 'DBG dist nearest: ' + Std.int(d) + '<br>';
-
         }
 
       return s;

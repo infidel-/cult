@@ -15,6 +15,16 @@ class CultArtifacts
       storage = [];
     }
 
+// ritual points
+  public function getRitualPoints(): Int
+    {
+      var pts = 0;
+      for (a in storage)
+        if (a.node != null)
+          pts += a.level;
+      return pts;
+    }
+
 // upgrade a node
   public function onUpgrade(node: Node)
     {

@@ -146,6 +146,17 @@ class Advisor
           s.taskImportant = true;
         }
 
+      // artifacts - find artifacts
+      if (game.flags.artifacts)
+        for (s in cult.sects)
+          if (s.level >= 1 && (s.task == null || !s.taskImportant) &&
+              s.isAdvisor)
+            {
+              s.setTaskByID('artSearch');
+              s.taskImportant = true;
+            }
+
+
       // default task - node info on random cult
       for (s in cult.sects)
         if ((s.task == null || !s.taskImportant) && s.isAdvisor)
