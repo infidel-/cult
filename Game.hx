@@ -575,6 +575,14 @@ class Game
           currentPlayerID = -1;
           director.turn();
           endTurn();
+
+          // node turns
+          for (n in nodes)
+            n.turn();
+
+          // expansions
+          if (flags.artifacts)
+            artifacts.turn();
         }
 
       // tutorial hooks

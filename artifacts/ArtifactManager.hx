@@ -31,12 +31,12 @@ class ArtifactManager
         if (!c.isAI)
           node.setVisible(c, true);
 
+      node.level = Std.random(3);
       node.updateLinks();
       node.update();
       game.nodes.push(node);
       game.player.highlightNode(node);
     }
-
 
 // cult activates artifact on map
   public function activate(cult: Cult, node: Node): String
@@ -46,11 +46,16 @@ class ArtifactManager
 
       var artifact: CultArtifact = {
         name: 'Test Cult Artifact',
-        level: 1 + Std.random(3),
+        level: 1 + node.level,
       };
       cult.artifacts.add(artifact);
       ui.log2(cult, cult.fullName + ' is now in possession of ' + artifact.name + '.', { symbol: 'A' });
       
       return 'ok';
+    }
+
+// turn passing
+  public function turn()
+    {
     }
 }

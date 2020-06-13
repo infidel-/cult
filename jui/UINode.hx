@@ -130,14 +130,13 @@ class UINode
             break;
           }
 
-      // paint node image
-      var a: Array<Int> = Reflect.field(imageKeys, key);
-      var y0 = a[0];
-      var w = a[1];
-      var x0 = (node.owner != null ? node.owner.id * w : 0);
-      
+      // paint node images
       if (UI.classicMode)
         {
+          var a: Array<Int> = Reflect.field(imageKeys, key);
+          var y0 = a[0];
+          var w = a[1];
+          var x0 = (node.owner != null ? node.owner.id * w : 0);
           ctx.drawImage(ui.map.nodeImage,
             x0, y0, w, w,
             xx, yy, w, w);
@@ -161,16 +160,8 @@ class UINode
             img.width * ui.map.zoom,
             img.height * ui.map.zoom);
 
-          // job icon
-          var imageID = node.imageID;
-          if (key == 'o' || key == 'op') // origin
-            imageID = 14;
-          var img = ui.map.jobImages[imageID];
-          ctx.drawImage(img,
-            (xx + jobInfo[imageID].x) * ui.map.zoom,
-            (yy + jobInfo[imageID].y + 6) * ui.map.zoom,
-            img.width * ui.map.zoom,
-            img.height * ui.map.zoom);
+          // node icon
+          paintIcon(ctx, xx, yy, key);
 
           // resource to acquire
           if (node.owner != game.player &&
@@ -188,12 +179,7 @@ class UINode
                 }
 
           // level text
-          var img = ui.map.textImages[MapUI.textToIndex[text]];
-          ctx.drawImage(img,
-              (xx + 39) * ui.map.zoom,
-              (yy + 1) * ui.map.zoom,
-              img.width * ui.map.zoom,
-              img.height * ui.map.zoom);
+          paintLevel(ctx, xx, yy, text);
         }
 
       tempx = xx;
@@ -201,6 +187,32 @@ class UINode
 //      game.endTimer('node paint');
     }
 
+// paint node icon (can be overriden)
+  public function paintIcon(ctx: CanvasRenderingContext2D,
+      xx: Int, yy: Int, key: String)
+    {
+      var imageID = node.imageID;
+      if (key == 'o' || key == 'op') // origin
+        imageID = 14;
+      var img = ui.map.jobImages[imageID];
+      ctx.drawImage(img,
+        (xx + jobInfo[imageID].x) * ui.map.zoom,
+        (yy + jobInfo[imageID].y + 6) * ui.map.zoom,
+        img.width * ui.map.zoom,
+        img.height * ui.map.zoom);
+    }
+
+// paint node level (can be overriden)
+  public function paintLevel(ctx: CanvasRenderingContext2D,
+      xx: Int, yy: Int, text: String)
+    {
+      var img = ui.map.textImages[MapUI.textToIndex[text]];
+      ctx.drawImage(img,
+        (xx + 39) * ui.map.zoom,
+        (yy + 1) * ui.map.zoom,
+        img.width * ui.map.zoom,
+        img.height * ui.map.zoom);
+    }
 
 // paint advanced node info
   public function paintAdvanced(ctx: CanvasRenderingContext2D)
@@ -212,6 +224,8 @@ class UINode
       // node out of view rectangle
       if (!inViewRect(UI.vars.markerWidth))
         return;
+
+      ctx.textAlign = 'left';
 
       // draw production indicators
       var productionIndicatorWidth = 6;

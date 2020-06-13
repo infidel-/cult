@@ -40,7 +40,7 @@ class ArtSearchTask extends Task
       if (Std.random(100) > chance)
         return;
 
-      var m = sect.name + ' has uncovered the location of a mysterious artifact.';
+      var m = sect.name + ' has uncovered the location of an occult artifact.';
       cult.log(m);
       cult.logPanelShort(m, { symbol: 'A' });
 

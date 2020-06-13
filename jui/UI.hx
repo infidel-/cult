@@ -451,7 +451,8 @@ class UI
     {
       // no messages about unknown cults
       for (c in game.cults)
-        if (c.isDiscovered[cultOrigin.id] || cultOrigin.isDiscovered[c.id])
+        if (c.isDiscovered[cultOrigin.id] ||
+            cultOrigin.isDiscovered[c.id])
           {
             c.log(s);
 
@@ -469,6 +470,30 @@ class UI
               params: params
             });
           }
+    }
+
+// add message to logs of all player cults
+  public function logGlobal(s: String, ?params: Dynamic)
+    {
+      // no messages about unknown cults
+      for (c in game.cults)
+        {
+          c.log(s);
+
+          // skip sect messages is on
+          if (params != null && params.type == 'sect' &&
+              c.options.getBool('logPanelSkipSects'))
+            continue;
+          c.logPanel({
+            id: -1,
+            old: false,
+            type: 'none',
+            text: s,
+            obj: null,
+            turn: game.turns + 1,
+            params: params
+          });
+        }
     }
 
 

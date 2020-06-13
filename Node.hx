@@ -476,6 +476,8 @@ class Node
         }
     }
 
+  public function turn()
+    {}
 
   public function toString()
     {
