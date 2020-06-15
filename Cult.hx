@@ -543,7 +543,7 @@ class Cult
 
           // flags
           if (game.flags.artifacts)
-            return (artifacts.length > 0);
+            return artifacts.canUpgrade(level);
 
           return true;
         }

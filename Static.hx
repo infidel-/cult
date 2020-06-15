@@ -31,7 +31,8 @@ typedef DifficultyInfo = {
   var isDiscovered: Bool; // are cults marked as discovered on start?
 
   // artifacts expansion
-//  var artifactMaxAmountIngame: Int; // max amount of artifacts in play
+  var artifactMaxAmountIngame: Int; // max amount of artifacts in play
+  var artifactBaseSpawnTime: Int; // base artifact time on map
 };
 
 
@@ -51,7 +52,6 @@ class Static
         numCults: 3,
         numPlayers: 1,
         numSummonVirgins: 6,
-
         upgradeChance: 1.10,
         awarenessResource: 1.25,
         awarenessUpgrade: 0.75,
@@ -66,6 +66,9 @@ class Static
         isInfoKnown: true,
         isOriginKnown: true,
         isDiscovered: true,
+
+        artifactMaxAmountIngame: 8,
+        artifactBaseSpawnTime: 4,
       },
 
       // normal
@@ -79,7 +82,6 @@ class Static
         numCults: 4,
         numPlayers: 1,
         numSummonVirgins: 9,
-
         upgradeChance: 1.0,
         awarenessResource: 1.5,
         awarenessUpgrade: 1.0,
@@ -94,6 +96,9 @@ class Static
         isInfoKnown: false,
         isOriginKnown: false,
         isDiscovered: false,
+
+        artifactMaxAmountIngame: 6,
+        artifactBaseSpawnTime: 2,
       },
 
       // hard
@@ -107,7 +112,6 @@ class Static
         numCults: 4,
         numPlayers: 1,
         numSummonVirgins: 9,
-
         upgradeChance: 0.90,
         awarenessResource: 1.75,
         awarenessUpgrade: 1.25,
@@ -122,6 +126,9 @@ class Static
         isInfoKnown: false,
         isOriginKnown: false,
         isDiscovered: false,
+
+        artifactMaxAmountIngame: 4,
+        artifactBaseSpawnTime: 0,
       },
 
       // test - 2 players multiplayer
@@ -135,7 +142,6 @@ class Static
         numCults: 4,
         numPlayers: 2,
         numSummonVirgins: 9,
-
         upgradeChance: 1.0,
         awarenessResource: 1.5,
         awarenessUpgrade: 1.0,
@@ -150,6 +156,9 @@ class Static
         isInfoKnown: false,
         isOriginKnown: false,
         isDiscovered: false,
+
+        artifactMaxAmountIngame: 6,
+        artifactBaseSpawnTime: 2,
       },
     ];
 
@@ -249,28 +258,57 @@ class Static
         note: 'The ritual of Unveiling will show all cult origins upon completion. Requires 1 priest and 5 virgins to perform.',
       },
     ];
+
+
+// calculate distance between this node and the other one
+  public static inline function distance(x1: Int, y1: Int, x2: Int, y2: Int): Float
+    {
+      return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+    }
+
+// get arbitrary map quadrants
+  public static function getQuadrants(difficulty: DifficultyInfo, size: Int): Array<Quadrant>
+    {
+      var quadrants = [];
+      for (yy in 0...size)
+        for (xx in 0...size)
+          quadrants.push({
+            id: xx + size * yy,
+            x1: Std.int(xx * difficulty.mapWidth / size),
+            y1: Std.int(yy * difficulty.mapHeight / size),
+            x2: Std.int((xx + 1) * difficulty.mapWidth / size),
+            y2: Std.int((yy + 1) * difficulty.mapHeight / size),
+          });
+
+      return quadrants;
+    }
 }
 
+typedef Quadrant = {
+  var id: Int;
+  var x1: Int;
+  var y1: Int;
+  var x2: Int;
+  var y2: Int;
+}
 
 // ritual info
-typedef RitualInfo =
-  {
-    var id: String; // string id of ritual (for use in code)
-    var name: String; // ritual name
-    var note: String; // ritual description
-    var virgins: Int; // used virgins
-    var priests: Int; // min priests needed
-    var points: Int; // points for completion
-  };
+typedef RitualInfo = {
+  var id: String; // string id of ritual (for use in code)
+  var name: String; // ritual name
+  var note: String; // ritual description
+  var virgins: Int; // used virgins
+  var priests: Int; // min priests needed
+  var points: Int; // points for completion
+};
 
 // cult info
-typedef CultInfo =
-  {
-    var name: String; // cult name
-    var note: String; // short description
-    var longNote: String; // long description
-    var summonStart: String; // text on summoning start
-    var summonFinish: String; // text on summoning finish
-    var summonFail: String; // text on summoning failure
-  };
+typedef CultInfo = {
+  var name: String; // cult name
+  var note: String; // short description
+  var longNote: String; // long description
+  var summonStart: String; // text on summoning start
+  var summonFinish: String; // text on summoning finish
+  var summonFail: String; // text on summoning failure
+};
 

@@ -27,7 +27,8 @@ class Game
   public var difficulty: DifficultyInfo; // link to difficulty info
   public var flags: Flags; // game flags
   public var flagDefaults: Flags; // game flag defaults
-  public var freeQuadrants: Array<{ id: Int, x1: Int, y1: Int, x2: Int, y2: Int }>; // used during origin location selection
+  public var freeQuadrants: Array<Quadrant>; // used during origin location selection
+  public var mapQuadrants8x8: Array<Quadrant>; // 8x8 quadrants, used for node generation
 
   // expansions
   public var artifacts: artifacts.ArtifactManager;
@@ -234,41 +235,9 @@ class Game
       updateLinks(); // update adjacent node links
 
       // choose and setup starting nodes
-      // init quadrants first
-      freeQuadrants = [];
-      for (i in 0...4)
-        if (i == 0)
-          freeQuadrants.push({ // top-left
-            id: 0,
-            x1: 0,
-            y1: 0,
-            x2: Std.int(difficulty.mapWidth / 2),
-            y2: Std.int(difficulty.mapHeight / 2),
-          });
-        else if (i == 1)
-          freeQuadrants.push({ // top-right
-            id: 1,
-            x1: Std.int(difficulty.mapWidth / 2),
-            y1: 0,
-            x2: difficulty.mapWidth,
-            y2: Std.int(difficulty.mapHeight / 2),
-          });
-        else if (i == 2)
-          freeQuadrants.push({ // bottom-left
-            id: 2,
-            x1: 0,
-            y1: Std.int(difficulty.mapHeight / 2),
-            x2: Std.int(difficulty.mapWidth / 2),
-            y2: difficulty.mapHeight,
-          });
-        else if (i == 3)
-          freeQuadrants.push({ // bottom-right
-            id: 3,
-            x1: Std.int(difficulty.mapWidth / 2),
-            y1: Std.int(difficulty.mapHeight / 2),
-            x2: difficulty.mapWidth,
-            y2: difficulty.mapHeight,
-          });
+      // init quadrants
+      freeQuadrants = Static.getQuadrants(difficulty, 2);
+      mapQuadrants8x8 = Static.getQuadrants(difficulty, 8);
       for (c in cults)
         c.setOrigin();
 
@@ -325,6 +294,45 @@ class Game
             (difficulty.mapWidth - UI.vars.markerWidth - 40));
           y = Math.round(20 + Math.random() *
             (difficulty.mapHeight - UI.vars.markerHeight - 40));
+
+          cnt++;
+          if (cnt > 100)
+            {
+              trace('could not spawn node');
+              return null;
+            }
+
+          // check min distance to other nodes
+          var ok = 1;
+          for (n in nodes)
+            if (n.distanceXY(x, y) < d)
+              {
+                ok = 0;
+                break;
+              }
+
+          if (ok == 1)
+            break;
+        }
+      
+      return { x: x, y: y };
+    }
+
+
+// find free spot for a new node in a given quad
+  public function findFreeSpotQuad(quad: Quadrant, d: Int): { x: Int, y: Int }
+    {
+      var x = 0, y = 0;
+      var cnt = 0;
+      var sx = UI.vars.markerWidth * 2;
+      var sy = UI.vars.markerHeight * 2;
+      var d = UI.vars.markerWidth * 2;
+      while (true)
+        {
+          x = Math.round(quad.x1 + 20 + Math.random() *
+            (quad.x2 - quad.x1 - UI.vars.markerWidth - 40));
+          y = Math.round(quad.y1 + 20 + Math.random() *
+            (quad.y2 - quad.y1 - UI.vars.markerHeight - 40));
 
           cnt++;
           if (cnt > 100)

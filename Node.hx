@@ -207,16 +207,14 @@ class Node
 // calculate distance between this node and the other one
   public function distance(node: Node): Float
     {
-      return Math.sqrt((node.x - x) * (node.x - x) +
-        (node.y - y) * (node.y - y));
+      return Static.distance(x, y, node.x, node.y);
     }
 
 
 // calculate distance between this node and the other one
   public function distanceXY(xx: Int, yy: Int): Float
     {
-      return Math.sqrt((xx - x) * (xx - x) +
-        (yy - y) * (yy - y));
+      return Static.distance(x, y, xx, yy);
     }
 
 

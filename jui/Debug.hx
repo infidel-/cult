@@ -219,6 +219,7 @@ class Debug extends Window
         func: function(event) {
           func(event);
           ui.map.paint();
+          onClose(null);
         }
       });
       untyped b.name = String.fromCharCode(sym);

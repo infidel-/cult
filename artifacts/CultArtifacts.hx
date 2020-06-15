@@ -25,14 +25,29 @@ class CultArtifacts
       return pts;
     }
 
+// check if we can upgrade a priest
+  public function canUpgrade(level: Int): Bool
+    {
+      if (level < 1)
+        return true;
+
+      for (a in storage)
+        if (a.node == null)
+          return true;
+      return false;
+    }
+
 // upgrade a node
   public function onUpgrade(node: Node)
     {
       // pick an artifact - highest level first
       var art: CultArtifact = null;
       for (a in storage)
-        if (art == null || (art != null && a.level > art.level))
-          art = a;
+        if (a.node == null)
+          {
+            if (art == null || (art != null && a.level > art.level))
+              art = a;
+          }
       art.node = node;
       node.artifact = art;
       cult.logAndPanel(node.name + ' becomes a priest binding with ' + art.name + '.',

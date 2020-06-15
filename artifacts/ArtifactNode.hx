@@ -11,7 +11,6 @@ class ArtifactNode extends Node
       type = 'artifact';
       name = 'TEMP ARTIFACT';
       uiNode = new ArtifactUINode(game, ui, this);
-      turns = 3 + Std.random(7);
     }
 
   public override function turn()

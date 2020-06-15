@@ -6,6 +6,8 @@ import sects.*;
 
 class ArtSearchTask extends Task
 {
+  var bonusChance: Int;
+
   public function new(g: Game, ui: UI)
     {
       super(g, ui);
@@ -15,6 +17,7 @@ class ArtSearchTask extends Task
       isInfinite = true;
       points = 0;
       level = 1;
+      bonusChance = 0;
     }
 
 
@@ -36,8 +39,17 @@ class ArtSearchTask extends Task
   public override function complete(cult: Cult, sect: Sect, points: Int)
     {
       // roll for chance to spawn
-      var chance = 5.0 + sect.size / 50.0;
+      var chance = bonusChance + 5.0 + sect.size / 50.0;
       if (Std.random(100) > chance)
+        {
+          bonusChance += 3; // grows each turn
+          return;
+        }
+      bonusChance = 0; // resets on each success
+
+      // max number reached, spawn not available
+      if (game.artifacts.getTotalArtifacts() >=
+          game.difficulty.artifactMaxAmountIngame)
         return;
 
       var m = sect.name + ' has uncovered the location of an occult artifact.';
