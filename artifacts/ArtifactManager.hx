@@ -88,8 +88,22 @@ class ArtifactManager
       var node = new ArtifactNode(game, ui, pos.x, pos.y,
         game.lastNodeIndex++);
       node.level = level;
-      for (i in 0...node.power.length)
-        node.power[i] = 0;
+      // level equals the amount of resource types needed
+      node.power = [ 0, 0, 0, 0 ];
+      for (i in 0...(level + 1))
+        {
+          var id = 0;
+          while (true)
+            {
+              id = Std.random(node.power.length);
+              if (node.power[id] > 5)
+                continue;
+              break;
+            }
+          node.power[id] += 3 + Std.random(4);
+          if (node.power[id] > 10)
+            node.power[id] = 10;
+        }
 
       // calculate timer
       var dist = game.player.origin.distance(node);
@@ -128,6 +142,7 @@ class ArtifactManager
       };
       cult.artifacts.add(artifact);
       ui.log2(cult, cult.fullName + ' is now in possession of ' + artifact.name + '.', { symbol: 'A' });
+      ui.updateStatus();
       
       return 'ok';
     }

@@ -81,7 +81,7 @@ class MapUI
 
       // get power colors for canvas
       powerColors = [];
-      for (i in 0...Game.numPowers)
+      for (i in 0...(Game.numPowers + 1))
         powerColors[i] = UI.getVar('--power-color-' + i);
 
       // map display

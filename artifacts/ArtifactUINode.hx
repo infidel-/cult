@@ -61,7 +61,7 @@ class ArtifactUINode extends UINode
       s.add("Artifact <span class=shadow style='color:white'>L" +
         (node.level + 1) + "</span><br>");
       s.add('<br>');
-      for (i in 0...Game.numPowers)
+      for (i in 0...node.power.length)
         if (node.power[i] > 0)
           s.add('<b>' + UI.powerName(i) + '</b> ' + node.power[i] + '<br>');
 

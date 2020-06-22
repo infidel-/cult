@@ -284,7 +284,7 @@ class UINode
           if (node.owner == null || node.isKnown[game.player.id])
             {
               var j = 0;
-              for (i in 0...Game.numPowers)
+              for (i in 0...node.power.length)
                 {
                   if (node.power[i] == 0)
                     continue;
@@ -465,7 +465,7 @@ class UINode
 
       // amount of power to conquer
       if (node.owner == null || node.isKnown[game.player.id])
-        for (i in 0...Game.numPowers)
+        for (i in 0...node.power.length)
           if (node.power[i] > 0)
             s += '<b>' + UI.powerName(i) + '</b> ' + node.power[i] + '<br>';
       if (node.owner == null || node.owner.isAI)
@@ -635,5 +635,6 @@ class UINode
 
   static var roman = [
     '', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X',
+    'XI', 'XII', 'XIII', 'XIV', 'XV'
   ];
 }

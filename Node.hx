@@ -79,7 +79,7 @@ class Node
       isKnown = [];
       for (i in 0...game.difficulty.numCults)
         isKnown.push(false);
-      power = [0, 0, 0];
+      power = [0, 0, 0, 0];
       powerGenerated = [0, 0, 0];
       level = 0;
       var index: Int = Math.round((Game.numPowers - 1) * Math.random());
