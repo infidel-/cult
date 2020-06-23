@@ -65,6 +65,15 @@ class CultArtifacts
       node.artifact = art;
       cult.logAndPanel(node.name + ' becomes a priest binding with ' + art.name + '.',
         { symbol: 'A' });
+
+      // ankh: +2 generated virgins
+      if (art.id == 'ankh')
+        {
+          node.isGenerator = true;
+          node.powerGenerated[3] += art.info.val;
+          cult.powerMod[3] += art.info.val; // update cache
+          ui.updateStatus();
+        }
     }
 
 // lose a node
@@ -99,9 +108,9 @@ class CultArtifacts
     }
 
 // sect found investigator
-  public function investigatorFound(sect: sects.Sect)
+  public function onInvestigatorFound(sect: sects.Sect)
     {
-      // kill chance
+      // kill on finding chance
       if (!hasUnique('dagger'))
         return;
       var artifact = getUnique('dagger');
@@ -116,6 +125,15 @@ class CultArtifacts
         info.name + ', ' + artifact.node.name + ' disposes of the investigator.',
         { symbol: 'I' });
       cult.killInvestigator();
+    }
+
+// get sect growth bonus
+  public function getSectGrowthMod(sect: sects.Sect): Float
+    {
+      if (!hasUnique('hand'))
+        return 1.0;
+      var info = StaticArtifacts.uniqueArtifacts['hand'];
+      return (100.0 + info.val ) / 100.0;
     }
 
   // ==================================================

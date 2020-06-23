@@ -667,6 +667,7 @@ class Game
   public static var version = "v6.1"; // game version
   public static var followerLevels = 3; // number of follower levels
   public static var numPowers = 3; // number of basic powers
+  public static var numFullPowers = 4; // number of basic powers + 1
   public static var upgradeCost = 3; // cost to upgrade follower
   public static var isDebug = false; // debug mode (debug button + extended info window)
 }

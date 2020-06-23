@@ -80,7 +80,7 @@ class Node
       for (i in 0...game.difficulty.numCults)
         isKnown.push(false);
       power = [0, 0, 0, 0];
-      powerGenerated = [0, 0, 0];
+      powerGenerated = [0, 0, 0, 0];
       level = 0;
       var index: Int = Math.round((Game.numPowers - 1) * Math.random());
       power[index] = 1;
@@ -146,7 +146,7 @@ class Node
 
           // update power mod cache
           if (owner != null)
-            for (i in 0...Game.numPowers)
+            for (i in 0...Game.numFullPowers)
               owner.powerMod[i] += Math.round(powerGenerated[i]);
         }
     }

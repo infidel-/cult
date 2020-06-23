@@ -114,8 +114,9 @@ class ArtifactManager
         }
       // TODO: unique chance and choice
       node.isUnique = true;
-      node.artifactID = 'dagger';
+      node.artifactID = 'ankh';
       node.name = StaticArtifacts.uniqueArtifacts[node.artifactID].name;
+      node.power = [ 0, 0, 0, 3 ];
 
       // calculate timer
       var dist = game.player.origin.distance(node);

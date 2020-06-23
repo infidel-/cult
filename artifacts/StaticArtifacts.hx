@@ -20,13 +20,13 @@ class StaticArtifacts
     'hand' => {
       id: 'hand',
       name: 'Hand of TODO',
-      note: '',
-      val: 20, // bonus to sect growth speed
+      note: 'All sects grow %v% faster',
+      val: 25, // bonus to sect growth speed
     },
     'ankh' => {
       id: 'ankh',
       name: 'Ankh of TODO',
-      note: '',
+      note: 'Owner generates %v virgins each turn',
       val: 2, // bonus to generated resource
     },
   ];

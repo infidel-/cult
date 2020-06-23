@@ -145,7 +145,12 @@ class Sect
   public function getGrowth(): Int
     {
       if (size < getMaxSize())
-        return 1 + Std.int(size / growth[leader.level]);
+        {
+          var val = 1.0 + (1.0 * size / growth[leader.level]);
+          if (game.flags.artifacts)
+            val = val * cult.artifacts.getSectGrowthMod(this);
+          return Std.int(val);
+        }
       else return 0;
     }
 /*

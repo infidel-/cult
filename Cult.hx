@@ -944,12 +944,12 @@ class Cult
       powerMod = [0, 0, 0, 0];
       for (node in nodes)
         if (node.isGenerator)
-          for (i in 0...Game.numPowers)
+          for (i in 0...Game.numFullPowers)
             {
               // failure chance
               if (100 * Math.random() < getResourceChance())
-                power[i] += Math.round(node.powerGenerated[i]);
-              powerMod[i] += Math.round(node.powerGenerated[i]);
+                power[i] += node.powerGenerated[i];
+              powerMod[i] += node.powerGenerated[i];
             }
 
       // neophytes bring in some virgins

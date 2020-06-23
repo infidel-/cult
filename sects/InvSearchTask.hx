@@ -46,6 +46,6 @@ class InvSearchTask extends Task
       game.tutorial.play('investigatorFound');
 
       if (game.flags.artifacts)
-        cult.artifacts.investigatorFound(sect);
+        cult.artifacts.onInvestigatorFound(sect);
     }
 }

@@ -45,7 +45,7 @@ class UINode
 
       // get power char
       var isI = false, is1 = false;
-      for (i in 0...Game.numPowers)
+      for (i in 0...Game.numFullPowers)
         if (node.power[i] > 0)
           {
             text = Game.powerShortNames[i];
@@ -167,7 +167,7 @@ class UINode
           if (node.owner != game.player &&
               !game.player.options.getBool('mapAdvancedMode') &&
               (node.isKnown[game.player.id] || node.owner == null))
-            for (i in 0...Game.numPowers)
+            for (i in 0...Game.numFullPowers)
               if (node.power[i] > 0)
                 {
                   var img = ui.map.powerImages[i];
@@ -235,7 +235,7 @@ class UINode
             node.isKnown[game.player.id])
           {
             var j = 0;
-            for (i in 0...Game.numPowers)
+            for (i in 0...Game.numFullPowers)
               if (node.powerGenerated[i] > 0)
                 {
                   if (node.powerGenerated[i] == 0)
@@ -439,7 +439,7 @@ class UINode
 
           // check for power
           if (node.isKnown[game.player.id] || node.owner == null)
-            for (i in 0...Game.numPowers)
+            for (i in 0...Game.numFullPowers)
               if (game.player.power[i] < node.power[i])
                 {
                   s += "<span class=shadow style='color:var(--node-error-color)'>Not enough " + Game.powerNames[i] + "</span><br>";
@@ -479,7 +479,7 @@ class UINode
       if (node.isGenerator && (node.owner == null || node.isKnown[game.player.id]))
         {
           s += "<br>Generates:<br>";
-          for (i in 0...Game.numPowers)
+          for (i in 0...Game.numFullPowers)
              if (node.powerGenerated[i] > 0)
                s += '<b>' + UI.powerName(i) + '</b> ' + node.powerGenerated[i] + '<br>';
           if (node.isTempGenerator)

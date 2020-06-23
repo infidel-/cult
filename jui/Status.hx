@@ -422,11 +422,12 @@ class Status
         {
           e("status.power" + i).innerHTML =
             "<b>" + game.player.power[i] + "</b>";
-          if (i == 3)
+          if (i == 3) // virgins
             {
               var t = ' +0';
               if (game.player.maxVirgins() > 0)
-                t = ' +0-' + game.player.maxVirgins();
+                t += '-' +
+                  (game.player.maxVirgins() + game.player.powerMod[i]);
               e("status.powerMod3").innerHTML = t;
             }
           else
