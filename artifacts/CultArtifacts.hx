@@ -15,6 +15,17 @@ class CultArtifacts
       storage = [];
     }
 
+// end turn
+  public function turn()
+    {
+      // active book degrades awareness each turn
+      if (hasUnique('book'))
+        {
+          var info = StaticArtifacts.uniqueArtifacts['book'];
+          cult.awareness -= info.val;
+        }
+    }
+
 // ritual points
   public function getRitualPoints(): Int
     {
@@ -64,6 +75,16 @@ class CultArtifacts
         { symbol: 'A' });
       storage.remove(node.artifact);
       node.artifact = null;
+    }
+
+// returns true if cult has this artifact activated
+  public function hasUnique(id: String): Bool
+    {
+      for (a in storage)
+        if (a.node != null && a.isUnique &&
+            StaticArtifacts.uniqueArtifacts[a.id].id == id)
+          return true;
+      return false;
     }
 
   public function add(a: CultArtifact)

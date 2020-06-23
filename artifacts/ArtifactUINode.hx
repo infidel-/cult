@@ -57,7 +57,7 @@ class ArtifactUINode extends UINode
       var s = new StringBuf();
       if (Game.isDebug)
         s.add('Node ' + node.id + ' (' + node.x + ',' + node.y + ')<br>');
-      s.add("<span class=shadow style='color:white'>" + node.name + "</span><br>");
+      s.add("<span class=shadow style='color:var(--artifact-color)'>" + node.name + "</span><br>");
       s.add("Artifact <span class=shadow style='color:white'>L" +
         (node.level + 1) + "</span><br>");
       s.add('<br>');

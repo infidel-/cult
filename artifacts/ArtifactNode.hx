@@ -4,12 +4,16 @@ package artifacts;
 class ArtifactNode extends Node
 {
   public var turns: Int;
+  public var isUnique: Bool;
+  public var artifactID: String;
 
   public function new(gvar, uivar, newx, newy, index: Int)
     {
       super(gvar, uivar, newx, newy, index);
       type = 'artifact';
       name = 'TEMP ARTIFACT';
+      isUnique = false;
+      artifactID = '';
       uiNode = new ArtifactUINode(game, ui, this);
     }
 

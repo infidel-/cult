@@ -126,8 +126,9 @@ class Info extends Window
       for (i in 0...game.difficulty.numCults)
         {
           var p = game.cults[i];
-
-          new JQuery('#info\\.ritual' + i).tooltip({ delay: 0 });
+          if (game.flags.artifacts && !p.isAI)
+            ui.artifacts.updateCultInfo(p);
+          ui.initTooltip('info.ritual' + i);
 
 /*
           if (!game.cults[i].isDiscovered || !game.cults[i].isInfoKnown)
@@ -139,23 +140,22 @@ class Info extends Window
           var c:Dynamic = e("info.toggleNote" + i);
           c.style.cursor = 'pointer';
           c.noteID = i;
-          c.onclick =
-            function(event)
-              {
-                var t: Dynamic = event.target;
-                if (t.innerHTML == '+')
-                  {
-                    t.innerHTML = '&mdash;';
-                    e("info.longnote" + t.noteID).style.display = 'block';
-                    e("info.note" + t.noteID).style.display = 'none';
-                  }
-                else
-                  {
-                    t.innerHTML = '+';
-                    e("info.longnote" + t.noteID).style.display = 'none';
-                    e("info.note" + t.noteID).style.display = 'block';
-                  }
-              };
+          c.onclick = function(event)
+            {
+              var t: Dynamic = event.target;
+              if (t.innerHTML == '+')
+                {
+                  t.innerHTML = '&mdash;';
+                  e("info.longnote" + t.noteID).style.display = 'block';
+                  e("info.note" + t.noteID).style.display = 'none';
+                }
+              else
+                {
+                  t.innerHTML = '+';
+                  e("info.longnote" + t.noteID).style.display = 'none';
+                  e("info.note" + t.noteID).style.display = 'block';
+                }
+            };
         }
     }
 

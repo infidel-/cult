@@ -524,6 +524,17 @@ class UI
       new JQuery(name).attr('tooltipText', tip);
     }
 
+// init tooltip jquery code for object
+  public function initTooltip(name: String)
+    {
+      name = "#" + name;
+      if (name.indexOf(".") > 0)
+        {
+          name = name.substr(0, name.indexOf(".")) + "\\" +
+            name.substr(name.indexOf("."));
+        }
+      new JQuery(name).tooltip({ delay: 0 });
+    }
 
 // get CSS variable
   public static inline function getVar(s: String): String

@@ -24,6 +24,7 @@
   --close-button-bottom: 6px;
   --alert-window-min-height: 105;
   --alert-window-height-2lines: 120;
+  --artifact-color: #ff9999;
 }
 
 body {

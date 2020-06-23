@@ -972,6 +972,10 @@ class Cult
       // run sect advisor
       if (options.getBool('sectAdvisor'))
         game.sectAdvisor.run(this);
+
+      // expansions
+      if (game.flags.artifacts && !isAI)
+        artifacts.turn();
     }
 
 
@@ -1077,7 +1081,7 @@ class Cult
               return '';
             }
           if (node.type == 'artifact')
-            return game.artifacts.activate(this, node);
+            return game.artifacts.activate(this, cast node);
         }
 
       // failure chance

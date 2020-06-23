@@ -12,6 +12,14 @@ class ArtifactManager
     {
       game = g;
       ui = uivar;
+
+      // apply artifact note templates
+      for (key in StaticArtifacts.uniqueArtifacts.keys())
+        {
+          var info = StaticArtifacts.uniqueArtifacts[key];
+          if (info.note.indexOf('%v') >= 0)
+            info.note = StringTools.replace(info.note, '%v', '' + info.val);
+        }
     }
 
 // get total number of artifacts ingame
@@ -104,6 +112,10 @@ class ArtifactManager
           if (node.power[id] > 10)
             node.power[id] = 10;
         }
+      // TODO: unique chance and choice
+      node.isUnique = true;
+      node.artifactID = 'book';
+      node.name = StaticArtifacts.uniqueArtifacts[node.artifactID].name;
 
       // calculate timer
       var dist = game.player.origin.distance(node);
@@ -119,7 +131,7 @@ class ArtifactManager
       if (node.turns > 9)
         node.turns = 9;
 
-      // make it visible for all human playersn
+      // make it visible for all human players
       for (c in game.cults)
         if (!c.isAI)
           node.setVisible(c, true);
@@ -131,17 +143,21 @@ class ArtifactManager
     }
 
 // cult activates artifact on map
-  public function activate(cult: Cult, node: Node): String
+  public function activate(cult: Cult, node: ArtifactNode): String
     {
       // remove from map
       game.removeNode(node);
 
       var artifact: CultArtifact = {
-        name: 'Test Cult Artifact',
+        name: node.name,
         level: 1 + node.level,
+        isUnique: node.isUnique,
+        id: node.artifactID,
+        info: StaticArtifacts.uniqueArtifacts[node.artifactID],
       };
       cult.artifacts.add(artifact);
-      ui.log2(cult, cult.fullName + ' is now in possession of ' + artifact.name + '.', { symbol: 'A' });
+      ui.log2(cult, cult.fullName + ' is now in possession of ' +
+        artifact.name + '.', { symbol: 'A' });
       ui.updateStatus();
       
       return 'ok';
