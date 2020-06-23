@@ -114,7 +114,7 @@ class ArtifactManager
         }
       // TODO: unique chance and choice
       node.isUnique = true;
-      node.artifactID = 'book';
+      node.artifactID = 'dagger';
       node.name = StaticArtifacts.uniqueArtifacts[node.artifactID].name;
 
       // calculate timer

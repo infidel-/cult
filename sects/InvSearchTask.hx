@@ -40,18 +40,12 @@ class InvSearchTask extends Task
       if (!cult.hasInvestigator || !cult.investigator.isHidden)
         return;
 
-/*
-      // failure
-      if (Math.random() > 0.8)
-        {
-          ui.log2('cult', cult, 'Task completed: Investigator found.');
-          return;
-        }
-*/
-
       cult.investigator.isHidden = false;
       log(cult, 'Task completed: Investigator found.');
 
       game.tutorial.play('investigatorFound');
+
+      if (game.flags.artifacts)
+        cult.artifacts.investigatorFound(sect);
     }
 }

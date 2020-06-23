@@ -71,7 +71,7 @@ class Cult
       this.isAI = false;
       this.highlightedNodes = new List<Node>();
       this.options = new Options(game, ui, this);
-      this.artifacts = new artifacts.CultArtifacts(game, this);
+      this.artifacts = new artifacts.CultArtifacts(game, ui, this);
 
       this.isDiscovered = [];
       this.isInfoKnown = [];

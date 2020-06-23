@@ -14,8 +14,8 @@ class StaticArtifacts
     'dagger' => {
       id: 'dagger',
       name: 'Dagger of TODO',
-      note: '',
-      val: 5, // investigator kill chance
+      note: '%v% chance to kill the investigator on finding',
+      val: 10, // investigator kill chance
     },
     'hand' => {
       id: 'hand',

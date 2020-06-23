@@ -3,13 +3,15 @@ package artifacts;
 
 class CultArtifacts
 {
+  var ui: UI;
   var game: Game;
   var cult: Cult;
   var storage: Array<CultArtifact>;
   public var length(get, null): Int;
 
-  public function new(g: Game, c: Cult)
+  public function new(g: Game, u: UI, c: Cult)
     {
+      ui = u;
       game = g;
       cult = c;
       storage = [];
@@ -86,6 +88,37 @@ class CultArtifacts
           return true;
       return false;
     }
+
+// returns the artifact
+  public function getUnique(id: String): CultArtifact
+    {
+      for (a in storage)
+        if (a.isUnique && StaticArtifacts.uniqueArtifacts[a.id].id == id)
+          return a;
+      return null;
+    }
+
+// sect found investigator
+  public function investigatorFound(sect: sects.Sect)
+    {
+      // kill chance
+      if (!hasUnique('dagger'))
+        return;
+      var artifact = getUnique('dagger');
+      var info = StaticArtifacts.uniqueArtifacts['dagger'];
+      if (Std.random(100) > info.val)
+        {
+          cult.log(artifact.node.name + ' fails to dispose of the investigator with the power of ' + info.name + '.');
+          return;
+        }
+
+      ui.log2(cult, 'Wielding the power of ' +
+        info.name + ', ' + artifact.node.name + ' disposes of the investigator.',
+        { symbol: 'I' });
+      cult.killInvestigator();
+    }
+
+  // ==================================================
 
   public function add(a: CultArtifact)
     {
