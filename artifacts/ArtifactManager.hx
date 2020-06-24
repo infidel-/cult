@@ -7,11 +7,13 @@ class ArtifactManager
 {
   var game: Game;
   var ui: UI;
+  public var deleted: Array<String>;
 
   public function new(g: Game, uivar: UI)
     {
       game = g;
       ui = uivar;
+      deleted = [];
 
       // apply artifact note templates
       for (key in StaticArtifacts.uniqueArtifacts.keys())
@@ -20,6 +22,12 @@ class ArtifactManager
           if (info.note.indexOf('%v') >= 0)
             info.note = StringTools.replace(info.note, '%v', '' + info.val);
         }
+    }
+
+// on game restart
+  public function onRestart()
+    {
+      deleted = [];
     }
 
 // get total number of artifacts ingame
@@ -112,11 +120,16 @@ class ArtifactManager
           if (node.power[id] > 10)
             node.power[id] = 10;
         }
-      // TODO: unique chance and choice
+
+      // chance of making it unique
+      if (level == 2)
+        makeUnique(node);
+/*
+      // TEST
       node.isUnique = true;
       node.artifactID = 'ankh';
       node.name = StaticArtifacts.uniqueArtifacts[node.artifactID].name;
-      node.power = [ 0, 0, 0, 3 ];
+*/
 
       // calculate timer
       var dist = game.player.origin.distance(node);
@@ -141,6 +154,48 @@ class ArtifactManager
       node.update();
       game.nodes.push(node);
       game.player.highlightNode(node);
+    }
+
+// try to make artifact node unique
+  function makeUnique(node: ArtifactNode)
+    {
+      if (Std.random(100) > 10)
+        return;
+
+      // pick available
+      var tmp = [];
+      for (id in StaticArtifacts.uniqueArtifacts.keys())
+        if (!Lambda.has(deleted, id))
+          {
+            // check if any cult has it
+            var ok = true;
+            for (c in game.cults)
+              if (!c.isAI && c.artifacts.getUnique(id) != null)
+                {
+                  ok = false;
+                  break;
+                }
+            if (!ok)
+              continue;
+
+            tmp.push(id);
+          }
+
+      // check if any are on the map already
+      for (n in game.nodes)
+        if (n.type == 'artifact')
+          {
+            var art: ArtifactNode = cast n;
+            if (art.isUnique)
+              tmp.remove(art.artifactID);
+          }
+      if (tmp.length == 0)
+        return;
+
+      // make unique
+      node.isUnique = true;
+      node.artifactID = tmp[Std.random(tmp.length)];
+      node.name = StaticArtifacts.uniqueArtifacts[node.artifactID].name;
     }
 
 // cult activates artifact on map

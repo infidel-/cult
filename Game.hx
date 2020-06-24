@@ -173,6 +173,9 @@ class Game
       currentPlayerID = 0;
       this.lastNodeIndex = 0;
 
+      if (flags.artifacts)
+        artifacts.onRestart();
+
       // spawn nodes
       for (i in 1...(difficulty.nodesCount + 1))
         spawnNode();

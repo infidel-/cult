@@ -27,7 +27,7 @@ class ArtifactUI
               var a = list[i];
               s.add(
                 "<span class=shadow style='color:var(--artifact-color)' id=info.artifact" + cult.id + '_' + i +
-                " title='" + a.info.name + "'>" +
+                " title='" + a.name + "'>" +
                   a.name + '</span>' +
                 " <span class=shadow style='color:white'>L" + a.level + '</span>');
               if (a.node != null)

@@ -85,6 +85,8 @@ class CultArtifacts
       cult.logAndPanel(node.artifact.name + ' is lost with the priest.',
         { symbol: 'A' });
       storage.remove(node.artifact);
+      if (node.artifact.isUnique)
+        game.artifacts.deleted.push(node.artifact.id);
       node.artifact = null;
     }
 
