@@ -203,6 +203,8 @@ class Cult
       sects.add(sect);
       node.sect = sect;
       node.update();
+      if (game.flags.devoted) // DEVOTED: pick a resource to buff with
+        sect.powerID = Std.random(Game.numPowers);
 
       if (!isAI)
         ui.log2(this, node.name +
@@ -213,7 +215,6 @@ class Cult
       if (!isAI)
         game.tutorial.play('gainSect');
     }
-
 
 // remove a sect
   public function removeSect(node: Node, src: String)
@@ -235,6 +236,14 @@ class Cult
       node.update();
     }
 
+// get sect by id
+  public function getSect(id: Int): Sect
+    {
+      for (s in sects)
+        if (s.id == id)
+          return s;
+      return null;
+    }
 
 // setup random starting node
   public function setOrigin()

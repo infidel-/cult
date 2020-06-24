@@ -363,7 +363,7 @@ class MainMenu extends Window
           game.isTutorial = false;
           game.difficultyLevel = 1; // 1 - normal
           game.flags.noBlitz = true;
-          game.flags.sectsBuff = true;
+          game.flags.devoted = true;
           game.flags.artifacts = true;
           game.restart();
         }

@@ -476,3 +476,11 @@ legend {
   font-size: 14px;
   text-shadow: 1px 1px 1px #3c3c3c;
 }
+
+.spanButton {
+  background:#222;
+  border:1px solid #777;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: bold;
+}

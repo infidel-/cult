@@ -2,6 +2,7 @@
 
 import js.Browser;
 import js.html.DivElement;
+import js.html.SpanElement;
 import sects.Sect;
 
 class SectsInfo extends Window
@@ -121,17 +122,29 @@ class SectsInfo extends Window
   override function onShow()
     {
       var s = '<table class=uiListSects cellspacing=3 cellpadding=3>' +
-        '<tr><th>Name<th>Puppeteer<th>LVL<th>Size<th>Current Task<th>AI';
+        '<tr><th>Info<th>Size<th>Current Task<th>AI';
 
       for (sect in game.player.sects)
         {
           s += '<tr class=uiListSectsRow><td>' + sect.name +
-//            (Game.isDebug ? ' ' + sect.taskImportant : '') +
-            '<td>' + sect.leader.name +
-            '<td style="text-align:center">' + (sect.level + 1) +
-            '<td style="text-align:center">' +
+            ' <span class=shadow style="color:white">L' + (sect.level + 1) + '</span>, (' +
+            sect.leader.name + ')';
+          if (game.flags.devoted) // DEVOTED: counter and button
+            {
+              var isDisabled =
+                (game.player.power[sect.powerID] <= 0 ||
+                 (sect.level == 2 && sect.getMaxSize() == sect.size));
+              s += ', <span id=sect.powerCount' + sect.id + '>' +
+                sect.powerStorage + '</span>' +
+                "&nbsp;<span class='uiButton" +
+                  (isDisabled ? 'Disabled' : '') +
+                  " spanButton' id='sect.powerSpend" + sect.id + "' " +
+                  "style='color: var(--power-color-" + sect.powerID + ");'>" +
+                  Game.powerShortNames[sect.powerID] + "</span>";
+            }
+          s += '<td style="text-align:center">' +
             sect.size + '/' + sect.getMaxSize() +
-            ' <span class=uiListSectsPlus>(+' + sect.getGrowth() + ')</span>' +
+            ' <span id=sect.growth' + sect.id + ' class=uiListSectsPlus>(+' + sect.getGrowth() + ')</span>' +
             '<td>';
 
           s += "<select class=selectOption onchange='Game.instance.ui.sects.onSelect(this.value)'>";
@@ -205,11 +218,42 @@ class SectsInfo extends Window
       text.innerHTML = 'Sects: ' + game.player.sects.length + '/' +
         game.player.getMaxSects();
 
+      // DEVOTED: update tooltips
+      if (game.flags.devoted)
+        for (sect in game.player.sects)
+          {
+            ui.initTooltip('sect.powerSpend' + sect.id);
+            ui.updateTip('sect.powerSpend' + sect.id,
+              'Spend ' + sect.getPowerPerTurn() + ' ' +
+              UI.powerName(sect.powerID) +
+              ' per turn to make the sect devoted.' +
+              '<br>When the sect is devoted: ' +
+              '<li>It grows ' + Const.devotedGrowthBonus + '% faster.' +
+              '<li>It adds to the base cult awareness each turn.');
+            var btn: SpanElement = cast UI.e('sect.powerSpend' + sect.id);
+            btn.onclick = onClickSpendPower;
+          }
+
       window.style.display = 'inline';
       bg.style.display = 'inline';
       isVisible = true;
     }
 
+// DEVOTED: spend power to buff sect
+  function onClickSpendPower(event)
+    {
+      var target = Tools.getTarget(event);
+      var sectID = Std.parseInt(target.id.substr(15));
+      var sect = game.player.getSect(sectID);
+      sect.spendPower();
+      var counter = UI.e('sect.powerCount' + sectID);
+      counter.innerHTML = '' + sect.powerStorage;
+      if (game.player.power[sect.powerID] <= 0)
+        target.className = 'uiButtonDisabled spanButton';
+      counter.innerHTML = '' + sect.powerStorage;
+      var growth = UI.e('sect.growth' + sectID);
+      growth.innerHTML = '(+' + sect.getGrowth() + ')';
+    }
 
 // checkbox click callback
   public function onAdvisor(leaderID: Int, checked: Bool)

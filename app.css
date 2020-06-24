@@ -652,3 +652,13 @@ div::-webkit-scrollbar-thumb {
   padding: 10px;
   text-shadow: 1px 1px 1px #adadad;
 }
+
+.spanButton {
+  box-shadow: 1px 1px 2px #41514b;
+  display: inline-block;
+  cursor: pointer;
+  font-size: 15px;
+  padding: 0 4 0 4;
+  text-shadow: 1px 1px 1px #404040;
+  width: 10px;
+}

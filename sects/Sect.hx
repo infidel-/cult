@@ -9,6 +9,7 @@ class Sect
   var game: Game;
   var ui: UI;
 
+  public var id: Int; // unique sect id
   public var name: String; // sect name
   public var leader: Node; // sect leader
   public var cult: Cult; // parent cult
@@ -22,16 +23,23 @@ class Sect
   public var taskTarget: Dynamic; // task target
   public var taskImportant: Bool; // task is important (for sect advisor)
 
+  // sect powers
+  public var powerID: Int; // DEVOTED: power to buff with
+  public var powerStorage: Int; // DEVOTED: power storage
+
   public function new(g: Game, uivar: UI, l: Node, c: Cult)
     {
       game = g;
       ui = uivar;
+      id = (lastSectID++);
       leader = l;
       cult = c;
       taskPoints = 0;
       taskImportant = false;
       size = 10;
       level = 0;
+      powerID = 0;
+      powerStorage = 0;
 
       name = generateName();
 
@@ -147,8 +155,12 @@ class Sect
       if (size < getMaxSize())
         {
           var val = 1.0 + (1.0 * size / growth[leader.level]);
+          // DEVOTED: bonus from devoted
+          if (game.flags.devoted && powerStorage >= getPowerPerTurn())
+            val *= (100.0 + Const.devotedGrowthBonus) / 100.0;
+          // ARTIFACT: bonus from hand
           if (game.flags.artifacts)
-            val = val * cult.artifacts.getSectGrowthMod(this);
+            val *= cult.artifacts.getSectGrowthMod(this);
           return Std.int(val);
         }
       else return 0;
@@ -202,6 +214,10 @@ priest (10, x/6):
             game.tutorial.play('sectLevel2');
         }
 
+      // DEVOTED: power spend
+      if (game.flags.devoted && powerStorage >= getPowerPerTurn())
+        powerStorage -= getPowerPerTurn();
+
       if (task == null) // no task
         return;
 
@@ -212,7 +228,7 @@ priest (10, x/6):
       // complete task - can die (sacrifice)
       task.complete(cult, this, taskPoints);
       taskPoints = 0;
-      if (leader == null)
+      if (leader == null) // dead
         return;
 
       // clean task on finish
@@ -225,6 +241,21 @@ priest (10, x/6):
         }
     }
 
+// DEVOTED: spend sect power
+  public function spendPower()
+    {
+      if (cult.power[powerID] <= 0)
+        return;
+      cult.power[powerID]--;
+      powerStorage++;
+      ui.updateStatus();
+    }
+
+// DEVOTED: power spent per turn to receive devoted status
+  public inline function getPowerPerTurn(): Int
+    {
+      return Const.devotedPowerPerTurn[level];
+    }
 
 // ======================= Sect Tasks ============================
   public static var taskClasses: Array<Dynamic> = [
@@ -314,4 +345,5 @@ priest (10, x/6):
     'Vitality',
     'Wisdom',
   ];
+  static var lastSectID = 0;
 }

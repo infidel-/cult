@@ -109,7 +109,7 @@ class Status
       s += "<table class=statusTable cellpadding=0>";
 
       // awareness
-      s += "<tr id='status.awRow' title='" + tipAwareness +
+      s += "<tr id='status.awRow' title='" + tipAwareness() +
         "'><td>Awareness<td><span id='status.awareness'>0</span>";
       // turns
       s += "<tr id='status.tuRow' title='" + tipTurns +
@@ -352,6 +352,7 @@ class Status
   public function update()
     {
       e("status.cult").innerHTML = game.player.fullName;
+      updateTip('status.awRow', tipAwareness());
 
       // update tooltips
       for (i in 0...(Game.numPowers + 1))
@@ -544,13 +545,19 @@ class Status
     ''
   ];
   static var tipTurns = "Shows the number of turns passed from the start.";
-  static var tipAwareness =
+  static var tipAwarenessBasic =
     "Shows how much human society is aware of the cult.<br>" +
-    "<li>The greater awareness is the harder it is to do anything:<br>" +
-    "gain new followers, resources or make rituals.<br> " +
+    "<li>Higher awareness makes it harder to do anything:<br>" +
+    "gain new followers, resources or perform rituals.<br> " +
     "<li>Adepts can lower the society awareness using resources.<br>" +
     "<li>The more adepts you have the more you can lower awareness each turn." +
     "<li>With very low awareness the cult can stay undetected by an investigator.";
+  static var tipAwarenessDevoted = '<li>Each devoted sect adds to the base cult awareness each turn.';
+  function tipAwareness(): String
+    {
+      return tipAwarenessBasic +
+        (game.flags.devoted ? tipAwarenessDevoted : '');
+    }
   static var tipLowerAwareness =
     "Your adepts can use resources to lower society awareness.";
   static var tipLowerWillpower =

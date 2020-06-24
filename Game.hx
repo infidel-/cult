@@ -46,7 +46,7 @@ class Game
     {
       flagDefaults = {
         noBlitz: false,
-        sectsBuff: false,
+        devoted: false,
 
         artifacts: false,
       };
