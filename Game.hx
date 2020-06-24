@@ -45,7 +45,7 @@ class Game
   function new()
     {
       flagDefaults = {
-        noMilitary: false,
+        noBlitz: false,
         sectsBuff: false,
 
         artifacts: false,

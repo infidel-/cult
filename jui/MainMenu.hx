@@ -362,7 +362,7 @@ class MainMenu extends Window
           onClose(null);
           game.isTutorial = false;
           game.difficultyLevel = 1; // 1 - normal
-          game.flags.noMilitary = true;
+          game.flags.noBlitz = true;
           game.flags.sectsBuff = true;
           game.flags.artifacts = true;
           game.restart();

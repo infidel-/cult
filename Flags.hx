@@ -1,5 +1,5 @@
 typedef Flags = {
-  var noMilitary: Bool; // no military victory
+  var noBlitz: Bool; // no blitz military victory
   var sectsBuff: Bool; // allow buffing sects with resources
 
   // expansions

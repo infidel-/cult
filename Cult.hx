@@ -1319,16 +1319,23 @@ class Cult
         return;
 
       // check for finish
-      var ok = true;
+      var allDead = true, allParalyzed = true;
       for (p in game.cults)
-        if (p != this && !p.isDead && !p.isParalyzed)
-          ok = false;
+        {
+          if (p == this)
+            continue;
+          if (!p.isDead)
+            allDead = false;
+          if (!p.isParalyzed)
+            allParalyzed = false;
+        }
+      // all cults dead, game over
+      if (allDead)
+        ui.finish(this, "conquer");
 
-      // there are active cults left
-      if (!ok)
-        return;
-
-      ui.finish(this, "conquer");
+      // all cults paralyzed, game over if no flag is set
+      else if (allParalyzed && !game.flags.noBlitz)
+        ui.finish(this, "conquer");
     }
 
 
