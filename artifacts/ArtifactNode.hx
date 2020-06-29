@@ -4,6 +4,8 @@ package artifacts;
 class ArtifactNode extends Node
 {
   public var turns: Int;
+  public var artifactType: String;
+  public var artifactTypeID: Int;
   public var isUnique: Bool;
   public var artifactID: String;
 
@@ -11,7 +13,9 @@ class ArtifactNode extends Node
     {
       super(gvar, uivar, newx, newy, index);
       type = 'artifact';
-      name = 'TEMP ARTIFACT';
+      artifactTypeID = Std.random(StaticArtifacts.types.length);
+      artifactType = StaticArtifacts.types[artifactTypeID];
+      name = StaticArtifacts.getRandomName(artifactTypeID);
       isUnique = false;
       artifactID = '';
       uiNode = new ArtifactUINode(game, ui, this);

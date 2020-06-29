@@ -4,6 +4,88 @@ package artifacts;
 
 class StaticArtifacts
 {
+// generate random artifact name by type
+  public static function getRandomName(typeID: Int): String
+    {
+      var info = artifacts[typeID];
+      return names0[Std.random(names0.length)] + ' ' +
+        info.names1[Std.random(info.names1.length)];
+    }
+  public static var types = [ 'book', 'dagger', 'hand', 'ankh' ];
+  public static var names0 = [
+    'Ancient',
+    'Antique',
+    'Arcane',
+    'Black',
+    'Cryptic',
+    'Cursed',
+    'Enchanted',
+    'Magic',
+    'Mystical',
+    'Occult',
+  ];
+  public static var names2 = [
+    'of the Believer',
+    'of Shadows',
+  ];
+  public static var artifacts: Array<ArtifactTypeInfo> = [
+    {
+      id: 'book',
+      names1: [
+        'Codex',
+        'Fragment',
+        'Manuscript',
+        'Parchment',
+        'Script',
+        'Scroll',
+        'Tome',
+        'Tractatus',
+        'Treatise',
+        'Vellum',
+        'Volume',
+      ],
+    },
+    {
+      id: 'dagger',
+      names1: [
+        'Blade',
+        'Cane',
+        'Spear',
+      ],
+    },
+    {
+      id: 'hand',
+      names1: [
+        'Bone',
+        'Eye',
+        'Hand',
+        'Heart',
+        'Limb',
+        'Rib',
+        'Skull',
+        'Spine',
+        'Tail',
+      ],
+    },
+    {
+      id: 'ankh',
+      names1: [
+        'Gem',
+        'Key',
+        'Mask',
+        'Mirror',
+        'Scales',
+        'Scepter',
+        'Sign',
+        'Sphere',
+        'Star',
+        'Statue',
+        'Tablet',
+        'Talisman',
+        'Veil',
+      ],
+    },
+  ];
   public static var uniqueArtifacts: Map<String, UniqueArtifact> = [
     'book' => {
       id: 'book',
@@ -37,4 +119,9 @@ typedef UniqueArtifact = {
   var name: String;
   var note: String;
   var val: Int;
+}
+
+typedef ArtifactTypeInfo = {
+  var id: String;
+  var names1: Array<String>;
 }
