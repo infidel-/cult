@@ -16,6 +16,7 @@ class Sect
   public var size: Int; // sect size
   public var level: Int; // sect level (0-2)
   public var isAdvisor: Bool; // controlled by advisor?
+  public var isDevoted: Bool; // sect is currently devoted?
 
   // current task
   public var task: Task; // task info id
@@ -44,6 +45,7 @@ class Sect
       name = generateName();
 
       isAdvisor = cult.options.getBool('sectAdvisor');
+      isDevoted = false;
     }
 
 
@@ -215,8 +217,15 @@ priest (10, x/6):
         }
 
       // DEVOTED: power spend
-      if (game.flags.devoted && powerStorage >= getPowerPerTurn())
-        powerStorage -= getPowerPerTurn();
+      if (game.flags.devoted)
+        {
+          if (powerStorage >= getPowerPerTurn())
+            {
+              powerStorage -= getPowerPerTurn();
+              isDevoted = true;
+            }
+          else isDevoted = false;
+        }
 
       if (task == null) // no task
         return;

@@ -441,6 +441,8 @@ class Status
         }
 
       e("status.turns").innerHTML = "" + game.turns;
+
+      // awareness counter
       var aw = e("status.awareness");
       aw.innerHTML = "" + game.player.awareness + "%";
       var col = 0;
@@ -459,7 +461,7 @@ class Status
       if (!game.isFinished &&
           game.player.adeptsUsed < game.player.adepts &&
           game.player.adepts > 0 &&
-          game.player.awareness > 0)
+          game.player.awarenessBase > 0)
         for (i in 0...Game.numPowers)
           if (game.player.power[i] > 0)
             e("status.lowerAwareness" + i).style.visibility = 'visible';
@@ -547,16 +549,31 @@ class Status
   static var tipTurns = "Shows the number of turns passed from the start.";
   static var tipAwarenessBasic =
     "Shows how much human society is aware of the cult.<br>" +
-    "<li>Higher awareness makes it harder to do anything:<br>" +
-    "gain new followers, resources or perform rituals.<br> " +
-    "<li>Adepts can lower the society awareness using resources.<br>" +
+    "<li>Higher awareness makes it harder to do anything:" +
+    "gain new followers, resources or perform rituals." +
+    "<li>Adepts can lower the society awareness using resources." +
     "<li>The more adepts you have the more you can lower awareness each turn." +
     "<li>With very low awareness the cult can stay undetected by an investigator.";
   static var tipAwarenessDevoted = '<li>Each devoted sect adds to the base cult awareness each turn.';
   function tipAwareness(): String
     {
-      return tipAwarenessBasic +
-        (game.flags.devoted ? tipAwarenessDevoted : '');
+      var str = tipAwarenessBasic;
+      var bonuses = new StringBuf();
+
+      // DEVOTED: bonus to mod
+      var bonus = 0;
+      if (game.flags.devoted)
+        {
+          str += tipAwarenessDevoted;
+          for (s in game.player.sects)
+            if (s.isDevoted)
+              bonus += Const.devotedAwarenessBonus[s.level];
+          if (bonus > 0)
+            bonuses.add("<li><span class=shadow style='color:var(--node-error-color)'>(+" + bonus + "% from devoted sects)</span>");
+        }
+      if (bonuses.length > 0)
+        str += '</li>Bonuses:<br>' + bonuses.toString() + '</li>';
+      return str;
     }
   static var tipLowerAwareness =
     "Your adepts can use resources to lower society awareness.";

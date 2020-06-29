@@ -262,8 +262,8 @@ class Node
 
       // raise public awareness for new owner
       if (isGenerator)
-        owner.awareness += 2;
-      else owner.awareness++;
+        owner.awarenessBase += 2;
+      else owner.awarenessBase++;
 
       if (!owner.isAI)
         ui.updateStatus();

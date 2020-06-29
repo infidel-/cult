@@ -27,7 +27,9 @@ class Cult
   public var ritual: RitualInfo; // which ritual is in progress
   public var ritualPoints: Int; // amount of ritual points left
 
-  public var awareness(default, set): Int; // public awareness
+  public var awarenessMod: Int; // awareness static mod from expansions
+  public var awarenessBase: Int; // base awareness
+  public var awareness(get, null): Int; // public awareness (combined)
 
   // power reserves
   public var power: Array<Int>; // intimidation, persuasion, bribe, virgins
@@ -90,6 +92,8 @@ class Cult
       for (i in 0...game.difficulty.numCults)
         wars.push(false);
       this.adeptsUsed = 0;
+      this.awarenessBase = 0;
+      this.awarenessMod = 0;
       this.awareness = 0;
       this.nodes = new List<Node>();
       this.sects = new List<Sect>();
@@ -383,17 +387,6 @@ class Cult
     }
 
 
-// setter for awareness
-  function set_awareness(v)
-    {
-      awareness = v;
-      for (n in game.nodes)
-        if (n.isVisible(this) && n.owner != this)
-          n.update();
-      return v;
-    }
-
-
 // get resource chance
   public function getResourceChance()
     {
@@ -451,13 +444,13 @@ class Cult
 // lower awareness
   public function lowerAwareness(pwr)
     {
-      if (awareness == 0 || adeptsUsed >= adepts || pwr == 3 ||
+      if (awarenessBase == 0 || adeptsUsed >= adepts || pwr == 3 ||
           power[pwr] < 1)
         return;
 
-      awareness -= 2;
-      if (awareness < 0)
-        awareness = 0;
+      awarenessBase -= 2;
+      if (awarenessBase < 0)
+        awarenessBase = 0;
       power[pwr]--;
       adeptsUsed++;
 
@@ -985,8 +978,20 @@ class Cult
       // expansions
       if (game.flags.artifacts && !isAI)
         artifacts.turn();
+
+      // recalculate base awareness
+      calcBaseAwareness();
     }
 
+// recalculate base awareness
+  function calcBaseAwareness()
+    {
+      // DEVOTED: bonus to mod
+      awarenessMod = 0;
+      for (s in sects)
+        if (s.isDevoted)
+          awarenessMod += Const.devotedAwarenessBonus[s.level];
+    }
 
 // create new sects
   function createSects()
@@ -1517,6 +1522,11 @@ class Cult
   function get_priests()
     {
       return getNumFollowers(2);
+    }
+
+  function get_awareness()
+    {
+      return awarenessBase + awarenessMod;
     }
 
   function get_fullName(): String

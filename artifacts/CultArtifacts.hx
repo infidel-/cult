@@ -24,7 +24,10 @@ class CultArtifacts
       if (hasUnique('book'))
         {
           var info = StaticArtifacts.uniqueArtifacts['book'];
-          cult.awareness -= info.val;
+          if (cult.awarenessBase > 0)
+            cult.awarenessBase -= info.val;
+          if (cult.awarenessBase < 0)
+            cult.awarenessBase = 0;
         }
     }
 
