@@ -39,7 +39,7 @@ class ArtSearchTask extends Task
   public override function complete(cult: Cult, sect: Sect, points: Int)
     {
       // roll for chance to spawn
-      var chance = bonusChance + 5.0 + sect.size / 50.0;
+      var chance = bonusChance + 5.0 + sect.getSizePoints() / 50.0;
       if (Std.random(100) > chance)
         {
           bonusChance += 3; // grows each turn

@@ -229,6 +229,7 @@ class SectsInfo extends Window
               ' per turn to make the sect devoted.' +
               '<br>When the sect is devoted: ' +
               '<li>It grows ' + Const.devotedGrowthBonus + '% faster.' +
+              '<li>It gains ' + Const.devotedTaskPointsBonus + '% more task points.' +
               '<li>It adds to the base cult awareness each turn.');
             var btn: SpanElement = cast UI.e('sect.powerSpend' + sect.id);
             btn.onclick = onClickSpendPower;

@@ -7,6 +7,8 @@ class Const
   public static var devotedPowerPerTurn = [ 1, 2, 4 ];
   // sect growth % increase
   public static var devotedGrowthBonus = 50;
+  // sect task points % bonus
+  public static var devotedTaskPointsBonus = 20;
   // devoted sect awareness mod bonus
   public static var devotedAwarenessBonus = [ 1, 2, 4 ];
 

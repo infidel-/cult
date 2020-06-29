@@ -230,7 +230,7 @@ priest (10, x/6):
       if (task == null) // no task
         return;
 
-      taskPoints += size; // gain some points
+      taskPoints += getSizePoints(); // gain some points
       if (taskPoints < task.points)
         return;
 
@@ -248,6 +248,16 @@ priest (10, x/6):
           // check for failure of other tasks
           game.failSectTasks();
         }
+    }
+
+// get sect points relative to sect size
+  public function getSizePoints()
+    {
+      var val = size;
+      // DEVOTED: task points bonus
+      if (isDevoted)
+        val = Std.int(val * (100.0 + Const.devotedTaskPointsBonus) / 100.0);
+      return val;
     }
 
 // DEVOTED: spend sect power
