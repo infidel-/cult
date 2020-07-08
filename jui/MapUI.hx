@@ -446,8 +446,8 @@ class MapUI
       // paint advanced node info
       if (game.player.options.getBool('mapAdvancedMode'))
         {
-          var fontSize = Std.int(zoom *
-            UI.getVarInt('--advanced-mode-font-size'));
+          var fontSize = zoom *
+            UI.getVarInt('--advanced-mode-font-size');
           ctx.font = fontSize + 'px ' + UI.getVar('--advanced-mode-font');
           for (n in game.nodes)
             n.uiNode.paintAdvanced(ctx);

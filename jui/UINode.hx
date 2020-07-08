@@ -311,7 +311,7 @@ class UINode
                       var s = roman[node.power[i]];
                       var w = ctx.measureText(s).width;
                       ctx.fillText(s,
-                        ui.map.zoom * (tempx - 4 - w),
+                        ui.map.zoom * (tempx - 4) - w,
                         ui.map.zoom * (tempy + 26 + j * 16));
                       ctx.shadowColor = 'transparent';
                     }
