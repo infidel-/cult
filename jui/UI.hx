@@ -585,7 +585,10 @@ class UI
       [ 168, 87, 0 ],
       [ 153, 0, 9 ]
     ],
-    nodeNeutralPixelColors: [ 120, 120, 120 ],
+    nodeNeutralPixelColors: [
+      'person' => [ 120, 120, 120 ],
+      'artifact' => [ 250, 250, 250 ],
+    ],
     markerWidth: 15,
     markerHeight: 15,
     scaleFactor: 1.0,
@@ -622,7 +625,10 @@ class UI
       [ 142, 0, 193 ], // violet
       [ 51, 0, 0 ] // red
     ],
-    nodeNeutralPixelColors: [ 150, 150, 150 ],
+    nodeNeutralPixelColors: [
+      'person' => [ 150, 150, 150 ],
+      'artifact' => [ 255, 255, 255 ],
+    ],
     markerWidth: 60,
     markerHeight: 60,
     scaleFactor: 4.0, // sqrt(60 * 60 + 60 * 60) / sqrt(15 * 15 + 15 * 15)

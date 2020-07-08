@@ -134,10 +134,11 @@ class TopMenu
 #end
               '<span style="font-size:12px">Unfortunately, due to the fact that the music sources were lost at some point, you cannot purchase the music you listen to in the game. But there\'s a lot of newer works on the Bandcamp page, please check it out.</span><br><br>' +
               'Unceasing gratitude to the man who has acquainted us all with the blasphemous effulgence of cosmic horror - H.P.Lovecraft.<br><br>' +
+              'This project uses icons made by Becris, Pixel perfect, Smashicons, Nikita Golubev, Vitaly Gorbachev, wanicon, and Freepik from ' +
 #if electron
-              'This project uses icons made by Pixel perfect, Nikita Golubev, Vitaly Gorbachev, wanicon, and Freepik from www.flaticon.com.', {
+              'www.flaticon.com.', {
 #else
-              'This project uses icons made by Pixel perfect, Nikita Golubev, Vitaly Gorbachev, wanicon, and Freepik from <a target=_blank href="https://www.flaticon.com">www.flaticon.com</a>.', {
+              '<a target=_blank href="https://www.flaticon.com">www.flaticon.com</a>.', {
 #end
               w: 750,
               h: 300,

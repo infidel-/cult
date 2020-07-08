@@ -490,24 +490,20 @@ class MapUI
             x = Std.int(n.x / xscale);
             y = Std.int(n.y / yscale);
 
-            color = UI.vars.nodeNeutralPixelColors;
+            color = UI.vars.nodeNeutralPixelColors[n.type];
             if (n.owner != null)
               color = UI.vars.nodePixelColors[n.owner.id];
 
-            index = (x + y * minimap.width) * 4;
-            pix[index] = color[0];
-            pix[index + 1] = color[1];
-            pix[index + 2] = color[2];
-            pix[index + 4] = color[0];
-            pix[index + 5] = color[1];
-            pix[index + 6] = color[2];
-            index = (x + (y + 1) * minimap.width) * 4;
-            pix[index] = color[0];
-            pix[index + 1] = color[1];
-            pix[index + 2] = color[2];
-            pix[index + 4] = color[0];
-            pix[index + 5] = color[1];
-            pix[index + 6] = color[2];
+            // larger dots for origins and artifacts
+            var sz = 2;
+            if (n.owner != null && n.owner.origin == n)
+              sz = 3;
+            if (n.type == 'artifact')
+              sz = 3;
+            for (dy in 0...sz)
+              for (dx in 0...sz)
+                paintPixel(pix,
+                  (x + dx + (y + dy) * minimap.width) * 4, color);
           }
 
       ctx.putImageData(imageData, 0, 0);
@@ -523,6 +519,14 @@ class MapUI
         mapHeight / yscale / zoom - 1);
     }
 
+// helper: paint a pixel with color
+  inline function paintPixel(pix: js.lib.Uint8ClampedArray,
+      index: Int, color: Array<Int>)
+    {
+      pix[index] = color[0];
+      pix[index + 1] = color[1];
+      pix[index + 2] = color[2];
+    }
 
 // paint bitmapped text
   public function paintText(ctx: CanvasRenderingContext2D,
