@@ -2,11 +2,12 @@
 
 class GenName
 {
-  // generate a name (false - male)
-  public static function generate(gender: Bool): String
+  // generate a name (false - male, -1: random nationality
+  public static function generate(gender: Bool, nat: Int): String
     {
       var nn = (gender ? namesFemale : namesMale);
-      var nat = Std.random(nn.length);
+      if (nat < 0)
+        nat = Std.random(nn.length);
       var name = nn[nat][Std.random(nn[nat].length)];
       var surname = surnames[nat][Std.random(surnames[nat].length)];
 
@@ -14,7 +15,7 @@ class GenName
     }
 
 
-  static var namesMale = [
+  public static var namesMale = [
     [ // 0 - us
       "Austin",
       "Calvin",
@@ -217,7 +218,7 @@ class GenName
     ]
   ];
 
-  static var namesFemale = [
+  public static var namesFemale = [
     [ // 0 - us
       "Addison",
       "Adeline",

@@ -19,7 +19,7 @@ class Investigator
       this.ui = ui;
       this.game = g;
       gender = (Std.random(2) == 0 ? false : true);
-      name = GenName.generate(gender);
+      name = GenName.generate(gender, -1);
       numTurn = 0;
       isHidden = true;
 

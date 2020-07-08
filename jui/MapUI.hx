@@ -616,9 +616,7 @@ class MapUI
         return;
 
       // render tooltip for this node
-      var text = node.uiNode.getTooltip();
-      tooltip.innerHTML = text;
-      tooltip.style.display = 'inline';
+      showTooltip(node);
 
       // calculate tooltip position
       var mapRect = map.getBoundingClientRect();
@@ -636,6 +634,13 @@ class MapUI
       tooltip.style.height = null;
     }
 
+// also called on changing node owner
+  public function showTooltip(node: Node)
+    {
+      var text = node.uiNode.getTooltip();
+      tooltip.innerHTML = text;
+      tooltip.style.display = 'inline';
+    }
 
 // press and hold
   var dragEventX: Int;

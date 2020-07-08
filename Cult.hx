@@ -1109,16 +1109,15 @@ class Cult
           return "failure";
         }
 
-      // lose 1 level
-      if (node.level > 0)
-        node.level--;
-
       // lose sect
       if (node.sect != null)
         node.owner.removeSect(node, 'attack');
 
-      // save prev owner
-      node.setOwner(this);
+      // on gaining enemy node lite regen it
+      if (node.owner != null)
+        node.generateLite();
+      node.setOwner(this); // set new owner on the node
+      ui.map.showTooltip(node);
 
       // remove temp generator state
       if (node.isTempGenerator)

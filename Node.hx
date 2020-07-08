@@ -11,6 +11,7 @@ class Node
   public var id: Int;
   public var type: String;
   public var name: String; // node name
+  public var nation: Int; // nationality
   public var job: String; // job
   public var gender: Bool; // false - male
   public var jobID: Int;
@@ -43,6 +44,7 @@ class Node
       ui = uivar;
       id = index;
       type = 'person';
+      nation = 0;
       artifact = null;
       lines = new List<Line>();
       links = new List<Node>();
@@ -64,12 +66,28 @@ class Node
       uiNode = new UINode(game, ui, this);
     }
 
+// partial regen when conquered from another cult
+// leave same job
+  public function generateLite()
+    {
+      level = 0; // loses all levels
+      gender = (Std.random(2) == 0 ? false : true);
+      name = GenName.generate(gender, nation);
+      imageID = jobID * 2 + (gender ? 1 : 0);
+
+      // lower all power to 2 max
+      for (i in 0...Game.numPowers)
+        if (power[i] > 2)
+          power[i] = 2;
+    }
 
 // generate new attributes
   public function generateAttributes()
     {
       gender = (Std.random(2) == 0 ? false : true);
-      name = GenName.generate(gender);
+      var nn = (gender ? GenName.namesFemale : GenName.namesMale);
+      nation = Std.random(nn.length);
+      name = GenName.generate(gender, nation);
       jobID = Std.random(jobs.length);
       imageID = jobID * 2 + (gender ? 1 : 0);
       job = jobs[jobID];
