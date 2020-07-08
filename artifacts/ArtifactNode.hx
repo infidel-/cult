@@ -1,6 +1,8 @@
 // artifact node
 package artifacts;
 
+import artifacts.StaticArtifacts;
+
 class ArtifactNode extends Node
 {
   public var turns: Int;
@@ -8,6 +10,7 @@ class ArtifactNode extends Node
   public var artifactTypeID: Int;
   public var isUnique: Bool;
   public var artifactID: String;
+  public var artifactInfo: UniqueArtifact;
 
   public function new(gvar, uivar, newx, newy, index: Int)
     {
@@ -18,6 +21,7 @@ class ArtifactNode extends Node
       name = StaticArtifacts.getRandomName(artifactTypeID);
       isUnique = false;
       artifactID = '';
+      artifactInfo = null;
       uiNode = new ArtifactUINode(game, ui, this);
     }
 

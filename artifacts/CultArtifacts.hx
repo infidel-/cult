@@ -20,10 +20,10 @@ class CultArtifacts
 // end turn
   public function turn()
     {
-      // active book degrades awareness each turn
-      if (hasUnique('book'))
+      // active mask degrades awareness each turn
+      if (hasUnique('mask'))
         {
-          var info = StaticArtifacts.uniqueArtifacts['book'];
+          var info = StaticArtifacts.uniqueArtifacts['mask'];
           if (cult.awarenessBase > 0)
             cult.awarenessBase -= info.val;
           if (cult.awarenessBase < 0)
@@ -69,8 +69,8 @@ class CultArtifacts
       cult.logAndPanel(node.name + ' becomes a priest binding with ' + art.name + '.',
         { symbol: 'A' });
 
-      // ankh: +2 generated virgins
-      if (art.id == 'ankh')
+      // voice: +2 generated virgins
+      if (art.id == 'voice')
         {
           node.isGenerator = true;
           node.powerGenerated[3] += art.info.val;
@@ -116,10 +116,10 @@ class CultArtifacts
   public function onInvestigatorFound(sect: sects.Sect)
     {
       // kill on finding chance
-      if (!hasUnique('dagger'))
+      if (!hasUnique('sign'))
         return;
-      var artifact = getUnique('dagger');
-      var info = StaticArtifacts.uniqueArtifacts['dagger'];
+      var artifact = getUnique('sign');
+      var info = StaticArtifacts.uniqueArtifacts['sign'];
       if (Std.random(100) > info.val)
         {
           cult.log(artifact.node.name + ' fails to dispose of the investigator with the power of ' + info.name + '.');

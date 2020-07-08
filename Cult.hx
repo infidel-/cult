@@ -1019,7 +1019,7 @@ class Cult
 // can this player activate this node?
   public function canActivate(node: Node): Bool
     {
-      for (i in 0...Game.numPowers)
+      for (i in 0...Game.numFullPowers)
         if (power[i] < node.power[i])
           return false;
 
@@ -1073,7 +1073,7 @@ class Cult
         }
 
       // check for power
-      for (i in 0...Game.numPowers)
+      for (i in 0...Game.numFullPowers)
         if (power[i] < node.power[i])
           {
             if (!isAI)
@@ -1083,7 +1083,7 @@ class Cult
           }
 
       // subtract power
-      for (i in 0...Game.numPowers)
+      for (i in 0...Game.numFullPowers)
         power[i] = power[i] - node.power[i];
 
       // expansion nodes

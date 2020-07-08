@@ -1,14 +1,38 @@
+// UI artifact additions
 package artifacts;
+
+import js.html.Image;
 
 class ArtifactUI
 {
   var game: Game;
   var ui: UI;
+  public var mapIconImages: Map<String, Image>; // loaded map icons
 
   public function new(g: Game, uivar: UI)
     {
       game = g;
       ui = uivar;
+
+      loadImagesModern();
+    }
+
+// load images for modern mode
+  public function loadImagesModern()
+    {
+      mapIconImages = new Map();
+      for (key in StaticArtifacts.uniqueArtifacts.keys())
+        {
+          var img = new Image();
+          img.src = 'data/artifact-unique-' + key + '.png';
+          mapIconImages[key] = img;
+        }
+      for (key in StaticArtifacts.types)
+        {
+          var img = new Image();
+          img.src = 'data/artifact-' + key + '.png';
+          mapIconImages[key] = img;
+        }
     }
 
 // artifacts info in cult info window
@@ -51,7 +75,9 @@ class ArtifactUI
           var note =
             "<span class=shadow style='color:var(--artifact-color)'>" + a.name + '</span>';
           if (a.isUnique)
-            note += '<br>' + a.info.note;
+            note += '<br>' + a.info.note +
+              "<br><i style='color:var(--artifact-fluff-color)'>" +
+              a.info.fluff + '</i>';
           var id = 'info.artifact' + cult.id + '_' + i;
           ui.initTooltip(id);
           ui.updateTip(id, note);

@@ -33,6 +33,7 @@ typedef DifficultyInfo = {
   // artifacts expansion
   var artifactMaxAmountIngame: Int; // max amount of artifacts in play
   var artifactBaseSpawnTime: Int; // base artifact time on map
+  var artifactMaxUnique: Int; // max amount of unique artifacts for one cult 
 };
 
 
@@ -69,6 +70,7 @@ class Static
 
         artifactMaxAmountIngame: 8,
         artifactBaseSpawnTime: 4,
+        artifactMaxUnique: 3,
       },
 
       // normal
@@ -99,6 +101,7 @@ class Static
 
         artifactMaxAmountIngame: 6,
         artifactBaseSpawnTime: 2,
+        artifactMaxUnique: 2,
       },
 
       // hard
@@ -129,6 +132,7 @@ class Static
 
         artifactMaxAmountIngame: 4,
         artifactBaseSpawnTime: 0,
+        artifactMaxUnique: 1,
       },
 
       // test - 2 players multiplayer
@@ -159,6 +163,7 @@ class Static
 
         artifactMaxAmountIngame: 6,
         artifactBaseSpawnTime: 2,
+        artifactMaxUnique: 2,
       },
     ];
 

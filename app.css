@@ -28,6 +28,9 @@
   --alert-window-min-height: 90;
   --alert-window-height-2lines: 110;
   --artifact-color: #b7b3ff;
+  --artifact-timer-color: #f4a5a5;
+  --artifact-timer-shadow: #2d2d2d;
+  --artifact-fluff-color: #59305c;
 }
 
 body {

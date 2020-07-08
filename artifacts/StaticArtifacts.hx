@@ -11,7 +11,7 @@ class StaticArtifacts
       return names0[Std.random(names0.length)] + ' ' +
         info.names1[Std.random(info.names1.length)];
     }
-  public static var types = [ 'book', 'dagger', 'hand', 'ankh' ];
+  public static var types = [ 'book', 'dagger', 'skull', 'ankh' ]; // basic
   public static var names0 = [
     'Ancient',
     'Antique',
@@ -31,6 +31,8 @@ class StaticArtifacts
   public static var artifacts: Array<ArtifactTypeInfo> = [
     {
       id: 'book',
+      x: 8,
+      y: 16,
       names1: [
         'Codex',
         'Fragment',
@@ -47,6 +49,8 @@ class StaticArtifacts
     },
     {
       id: 'dagger',
+      x: 11,
+      y: 15,
       names1: [
         'Blade',
         'Cane',
@@ -54,7 +58,9 @@ class StaticArtifacts
       ],
     },
     {
-      id: 'hand',
+      id: 'skull',
+      x: 11,
+      y: 14,
       names1: [
         'Bone',
         'Eye',
@@ -69,10 +75,11 @@ class StaticArtifacts
     },
     {
       id: 'ankh',
+      x: 9,
+      y: 12,
       names1: [
         'Gem',
         'Key',
-        'Mask',
         'Mirror',
         'Scales',
         'Scepter',
@@ -80,36 +87,48 @@ class StaticArtifacts
         'Sphere',
         'Star',
         'Statue',
+        'Symbol',
         'Tablet',
         'Talisman',
-        'Veil',
       ],
     },
   ];
   public static var uniqueArtifacts: Map<String, UniqueArtifact> = [
-    'book' => {
-      id: 'book',
-      name: 'Tome of TODO',
+    'mask' => {
+      id: 'mask',
+      name: 'Mask of Many Faces',
+      fluff: 'Offering a gaze into the void,<br>it also cloaks the wearer.',
       note: '-%v to cult awareness each turn when active',
       val: 1, // awareness mod
+      x: 7,
+      y: 10,
     },
-    'dagger' => {
-      id: 'dagger',
-      name: 'Dagger of TODO',
+    'sign' => {
+      id: 'sign',
+      name: 'Sign of Awakening',
+      fluff: 'We are all living in a dream.<br>And for some it\'s time to wake up.',
       note: '%v% chance to kill the investigator on finding',
       val: 10, // investigator kill chance
+      x: 5,
+      y: 8,
     },
     'hand' => {
       id: 'hand',
-      name: 'Hand of TODO',
+      name: 'Guiding Hand',
+      fluff: 'The hand that beckons<br>lesser mortals to follow.',
       note: 'All sects grow %v% faster',
       val: 25, // bonus to sect growth speed
+      x: 2,
+      y: 10,
     },
-    'ankh' => {
-      id: 'ankh',
-      name: 'Ankh of TODO',
+    'voice' => {
+      id: 'voice',
+      name: 'Vox Dulcis',
+      fluff: 'Those pure of body and soul<br>are enchanted by its beauty.',
       note: 'Owner generates %v virgins each turn',
       val: 2, // bonus to generated resource
+      x: 8,
+      y: 17,
     },
   ];
 }
@@ -118,10 +137,15 @@ typedef UniqueArtifact = {
   var id: String;
   var name: String;
   var note: String;
+  var fluff: String;
   var val: Int;
+  var x: Int;
+  var y: Int;
 }
 
 typedef ArtifactTypeInfo = {
   var id: String;
+  var x: Int;
+  var y: Int;
   var names1: Array<String>;
 }

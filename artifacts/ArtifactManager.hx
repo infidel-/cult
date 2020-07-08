@@ -124,11 +124,13 @@ class ArtifactManager
       // chance of making it unique
       if (level == 2)
         makeUnique(node);
-/*
+
       // TEST
+/*
       node.isUnique = true;
-      node.artifactID = 'ankh';
-      node.name = StaticArtifacts.uniqueArtifacts[node.artifactID].name;
+      node.artifactID = 'mask';
+      node.artifactInfo = StaticArtifacts.uniqueArtifacts[node.artifactID];
+      node.name = node.artifactInfo.name;
 */
 
       // calculate timer
@@ -160,6 +162,14 @@ class ArtifactManager
   function makeUnique(node: ArtifactNode)
     {
       if (Std.random(100) > 10)
+        return;
+
+      // check if player has max number of unique artifacts
+      var count = 0;
+      for (a in game.player.artifacts)
+        if (a.isUnique)
+          count++;
+      if (count >= game.difficulty.artifactMaxUnique)
         return;
 
       // pick available
@@ -195,7 +205,8 @@ class ArtifactManager
       // make unique
       node.isUnique = true;
       node.artifactID = tmp[Std.random(tmp.length)];
-      node.name = StaticArtifacts.uniqueArtifacts[node.artifactID].name;
+      node.artifactInfo = StaticArtifacts.uniqueArtifacts[node.artifactID];
+      node.name = node.artifactInfo.name;
     }
 
 // cult activates artifact on map
