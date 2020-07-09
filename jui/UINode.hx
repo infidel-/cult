@@ -45,15 +45,22 @@ class UINode
 
       // get power char
       var isI = false, is1 = false;
+      var cnt = 0;
       for (i in 0...Game.numFullPowers)
         if (node.power[i] > 0)
           {
+            cnt++;
             text = Game.powerShortNames[i];
             textColor = UI.getVar('--power-color-' + i);
             isI = false;
             if (Game.powerShortNames[i] == "I")
               isI = true;
           }
+      if (cnt > 1)
+        {
+          text = Game.powerShortNames[4];
+          textColor = UI.getVar('--power-color-4');
+        }
 
       // get bg and node char
       if (node.owner != null)
@@ -167,16 +174,21 @@ class UINode
           if (node.owner != game.player &&
               !game.player.options.getBool('mapAdvancedMode') &&
               (node.isKnown[game.player.id] || node.owner == null))
-            for (i in 0...Game.numFullPowers)
-              if (node.power[i] > 0)
-                {
-                  var img = ui.map.powerImages[i];
-                  ctx.drawImage(img,
-                    (xx + 1) * ui.map.zoom, yy * ui.map.zoom,
-                    img.width * ui.map.zoom,
-                    img.height * ui.map.zoom);
-                  break;
-                }
+            {
+              var idx = -1;
+              for (i in 0...Game.numFullPowers)
+                if (node.power[i] > 0)
+                  {
+                    if (idx == -1)
+                      idx = i;
+                    else idx = Game.numFullPowers;
+                  }
+              var img = ui.map.powerImages[idx];
+              ctx.drawImage(img,
+                (xx + 1) * ui.map.zoom, yy * ui.map.zoom,
+                img.width * ui.map.zoom,
+                img.height * ui.map.zoom);
+            }
 
           // level text
           paintLevel(ctx, xx, yy, text);

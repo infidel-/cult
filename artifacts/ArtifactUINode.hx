@@ -47,6 +47,7 @@ class ArtifactUINode extends UINode
       ctx.fillText('' + art.turns,
         (xx + 28) * ui.map.zoom,
         (yy + 43) * ui.map.zoom);
+      ctx.shadowColor = 'rgba(0,0,0,0)'; // clear
     }
 
 // paint node level

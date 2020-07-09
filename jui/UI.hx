@@ -638,6 +638,7 @@ class UI
     'power-persuasion',
     'power-bribery',
     'power-virgins',
+    'power-multi', // NOTE: has to be last!
   ];
   public static var modernGeneratorColors = [
     null, // green

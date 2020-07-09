@@ -661,7 +661,7 @@ class Game
   public static var powerNames: Array<String> =
     [ "Intimidation", "Persuasion", "Bribery", "Virgins" ];
   public static var powerShortNames: Array<String> =
-    [ "I", "P", "B", "V" ];
+    [ "I", "P", "B", "V", "*" ];
   public static var followerNames: Array<String> =
     [ "Neophyte", "Adept", "Priest" ];
   public static var powerConversionCost: Array<Int> = [2, 2, 2, 1];

@@ -15,6 +15,7 @@
   --power-color-1: rgb(0, 255, 255);
   --power-color-2: rgb(0, 255, 0);
   --power-color-3: rgb(255, 255, 0);
+  --power-color-4: rgb(240, 240, 240);
   --awareness-text-color-0: white;
   --awareness-text-color-1: #e3e32b;
   --awareness-text-color-2: #ff5858;
@@ -27,7 +28,7 @@
   --artifact-color: #ff9999;
   --artifact-timer-color: #402b2b;
   --artifact-timer-shadow: #84aa9d;
-  --artifact-fluff-color: #59305c;
+  --artifact-fluff-color: #aa5cb0;
 }
 
 body {
