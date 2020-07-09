@@ -201,8 +201,8 @@ class Cult
   public function getMaxRitualPoints(): Int
     {
       var pts = ritual.points;
-      if (game.flags.artifacts)
-        return Std.int(Const.artifactRitualPoints * pts);
+      if (game.flags.longRituals)
+        return Std.int(Const.longRitualsRitualPoints * pts);
       return pts;
     }
 

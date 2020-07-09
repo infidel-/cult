@@ -47,6 +47,7 @@ class Game
       flagDefaults = {
         noBlitz: false,
         devoted: false,
+        longRituals: false,
 
         artifacts: false,
       };
