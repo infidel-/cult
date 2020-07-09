@@ -361,7 +361,7 @@ class MainMenu extends Window
         {
           onClose(null);
           game.isTutorial = false;
-          game.difficultyLevel = 1; // 1 - normal
+          game.difficultyLevel = 2; // 1 - normal
           game.flags.noBlitz = true;
           game.flags.devoted = true;
           game.flags.longRituals = true;

@@ -131,7 +131,7 @@ class Static
         isDiscovered: false,
 
         artifactMaxAmountIngame: 4,
-        artifactBaseSpawnTime: 0,
+        artifactBaseSpawnTime: 1,
         artifactMaxUnique: 1,
       },
 

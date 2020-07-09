@@ -161,8 +161,9 @@ class ArtifactManager
 // try to make artifact node unique
   function makeUnique(node: ArtifactNode)
     {
-      if (Std.random(100) > 10)
-        return;
+// NOTE: all level 3 arts are unique for now if it's possible
+//      if (Std.random(100) > 10)
+//        return;
 
       // check if player has max number of unique artifacts
       var count = 0;
