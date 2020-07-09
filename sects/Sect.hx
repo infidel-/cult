@@ -19,7 +19,7 @@ class Sect
   public var isDevoted: Bool; // sect is currently devoted?
 
   // current task
-  public var task: Task; // task info id
+  public var task: Task; // task info
   public var taskPoints: Int; // points to completion
   public var taskTarget: Dynamic; // task target
   public var taskImportant: Bool; // task is important (for sect advisor)

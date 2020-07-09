@@ -197,6 +197,15 @@ class Cult
       return priests;
     }
 
+// get max ritual points
+  public function getMaxRitualPoints(): Int
+    {
+      var pts = ritual.points;
+      if (game.flags.artifacts)
+        return Std.int(Const.artifactRitualPoints * pts);
+      return pts;
+    }
+
 // create a new sect
   public function createSect(node: Node)
     {
@@ -595,7 +604,7 @@ class Cult
       var info = Static.rituals[id];
       virgins -= info.virgins;
       ritual = info;
-      ritualPoints = ritual.points;
+      ritualPoints = getMaxRitualPoints();
       isRitual = true;
       ui.log2(this, fullName + " has started the " + ritual.name + ".",
         { symbol: 'R' });
@@ -788,7 +797,7 @@ class Cult
       for (c in game.cults)
         isInfoKnown[c.id] = true;
       ritual = Static.rituals['summoning'];
-      ritualPoints = ritual.points;
+      ritualPoints = getMaxRitualPoints();
 
       // every cult starts war with this one
       for (p in game.cults)
@@ -1117,7 +1126,8 @@ class Cult
       if (node.owner != null)
         node.generateLite();
       node.setOwner(this); // set new owner on the node
-      ui.map.showTooltip(node);
+      if (!isAI)
+        ui.map.showTooltip(node);
 
       // remove temp generator state
       if (node.isTempGenerator)

@@ -12,4 +12,7 @@ class Const
   // devoted sect awareness mod bonus
   public static var devotedAwarenessBonus = [ 1, 2, 4 ];
 
+  // ARTIFACT: artifacts expansion
+  // ritual points needed multiplier
+  public static var artifactRitualPoints = 2.0;
 }

@@ -26,10 +26,17 @@ class Task
       isInfinite = false;
     }
 
+// get debug info in name
+  public function getDebugName(sect: Sect): String
+    {
+      return '';
+    }
 
 // get task name
   public function getName(sect: Sect)
     {
+      if (Game.isDebug)
+        return name + getDebugName(sect);
       return name;
     }
 

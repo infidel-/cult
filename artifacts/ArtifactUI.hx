@@ -42,25 +42,24 @@ class ArtifactUI
 
       s.add('Artifacts: ');
       if (cult.artifacts.length == 0)
-        s.add('None');
+        s.add('None<br>');
       else
         {
+          s.add('<br>');
           var list = cult.artifacts.list();
           for (i in 0...list.length)
             {
               var a = list[i];
               s.add(
-                "<span class=shadow style='color:var(--artifact-color)' id=info.artifact" + cult.id + '_' + i +
+                "&nbsp;&nbsp;&nbsp;<span class=shadow style='color:var(--artifact-color)' id=info.artifact" + cult.id + '_' + i +
                 " title='" + a.name + "'>" +
                   a.name + '</span>' +
                 " <span class=shadow style='color:white'>L" + a.level + '</span>');
               if (a.node != null)
                 s.add(' (' + a.node.name + ')');
-              if (i < cult.artifacts.length - 1)
-                s.add(', ');
+              s.add('<br>');
             }
         }
-      s.add('<br>');
 
       return s.toString();
     }

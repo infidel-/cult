@@ -34,15 +34,27 @@ class ArtSearchTask extends Task
       return false;
     }
 
+// chance of finding artifact
+  public override function getDebugName(sect: Sect): String
+    {
+      return ' (' + getChance(sect) + '%)';
+
+    }
+
+  public function getChance(sect: Sect): Float
+    {
+      return bonusChance + 5.0 + sect.getSizePoints() / 50.0;
+    }
+
 
 // on task complete
   public override function complete(cult: Cult, sect: Sect, points: Int)
     {
       // roll for chance to spawn
-      var chance = bonusChance + 5.0 + sect.getSizePoints() / 50.0;
+      var chance = getChance(sect);
       if (Std.random(100) > chance)
         {
-          bonusChance += 3; // grows each turn
+          bonusChance += 2; // grows each turn
           return;
         }
       bonusChance = 0; // resets on each success

@@ -83,8 +83,8 @@ class Info extends Window
               s += "Performing <span class=shadow title='" + p.ritual.note +
                 "' id='info.ritual" + i +
                 "' style='color:#ffaaaa'>" + p.ritual.name +
-                "</span>, " + (p.ritual.points - p.ritualPoints) + "/" +
-                p.ritual.points + " points, " + turns +
+                "</span>, " + (p.getMaxRitualPoints() - p.ritualPoints) + "/" +
+                p.getMaxRitualPoints() + " points, " + turns +
                 " turns left<br>";
             }
 
