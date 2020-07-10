@@ -99,7 +99,7 @@ class StaticArtifacts
       name: 'Mask of Many Faces',
       fluff: 'Offering a gaze into the void,<br>it also cloaks the wearer.',
       note: '-%v to cult awareness each turn when active',
-      val: 1, // awareness mod
+      val: 2, // awareness mod
       x: 7,
       y: 10,
     },
@@ -108,7 +108,7 @@ class StaticArtifacts
       name: 'Sign of Awakening',
       fluff: 'We are all living in a dream.<br>And for some it\'s time to wake up.',
       note: '%v% chance to kill the investigator on finding',
-      val: 10, // investigator kill chance
+      val: 20, // investigator kill chance
       x: 5,
       y: 8,
     },

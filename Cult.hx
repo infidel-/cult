@@ -859,16 +859,16 @@ class Cult
   public function summonFinish()
     {
       // chance of failure
-      if (100 * Math.random() > getUpgradeChance(2))
+//      if (100 * Math.random() > getUpgradeChance(2))
+      if (true)
         {
           // 1 priest goes totally insane and has to be replaced with neophyte
+          var tmp = [];
           for (n in nodes)
             if (n.level == 2)
-              {
-                n.level = 0;
-                n.update();
-                break;
-              }
+              tmp.push(n);
+          var n = tmp[Std.random(tmp.length)];
+          n.generateLite();
 
           ui.alert(fullName +
             " has failed to perform the " + Static.rituals['summoning'].name + ".<br><br>" +
@@ -877,7 +877,7 @@ class Cult
             {
               var msg =
                 "<div style='text-size: 20px'><b>FINAL RITUAL FAILED</b></div><br>" +
-                "The stars were not properly aligned. The high priest goes insane.";
+                "The stars were not properly aligned. One of the high priests goes insane.";
               ui.alert(msg);
               ui.log2(this, fullName + " has failed to perform the " +
                 Static.rituals['summoning'].name + ".",

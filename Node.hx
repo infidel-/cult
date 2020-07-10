@@ -68,6 +68,7 @@ class Node
 
 // partial regen when conquered from another cult
 // leave same job
+// disbands sects
   public function generateLite()
     {
       level = 0; // loses all levels
@@ -79,6 +80,11 @@ class Node
       for (i in 0...Game.numPowers)
         if (power[i] > 2)
           power[i] = 2;
+      if (sect != null) // will already be removed in case of attack
+        owner.removeSect(this, 'investigator');
+      if (game.flags.artifacts)
+        owner.artifacts.onLose(this);
+      update();
     }
 
 // generate new attributes
