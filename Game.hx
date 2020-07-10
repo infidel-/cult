@@ -75,7 +75,6 @@ class Game
       this.turns = 0;
     }
 
-
 // init game
   public function init()
     {
@@ -620,6 +619,27 @@ class Game
       ui.map.paint();
     }
 
+// returns true if game flags are default
+  public function isFlagsDefault(): Bool
+    {
+      for (f in Reflect.fields(flags))
+        if (Reflect.field(flags, f) != Reflect.field(flagDefaults, f))
+          return false;
+      return true;
+    }
+
+// get flags string
+  public function getFlagsString(): String
+    {
+      var s = new StringBuf();
+      for (f in Reflect.fields(flags))
+        if (Reflect.field(flags, f))
+          {
+            s.add(f.toUpperCase());
+            s.add(' ');
+          }
+      return s.toString();
+    }
 
 // start counting time
   var timerTime: Float;
@@ -629,7 +649,6 @@ class Game
         timerTime = Browser.window.performance.now();
 //        timerTime = Date.now().getTime();
     }
-
 
 // end counting time and display it
   public inline function endTimer(name)

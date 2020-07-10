@@ -4,5 +4,5 @@ typedef Flags = {
   var longRituals: Bool; // LONGRITUALS - all rituals take longer
 
   // expansions
-  var artifacts: Bool; // artifacts
+  var artifacts: Bool; // ARTIFACTS
 }

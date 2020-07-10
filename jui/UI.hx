@@ -400,8 +400,10 @@ class UI
       if (classicMode)
         h += 5;
 #if electron
-      if (showHighScore && game.difficultyLevel != -1)
+      if (showHighScore && game.difficultyLevel != -1 &&
+          game.isFlagsDefault())
         msg += game.highScores.getTable(time);
+      else msg += 'Flags: ' + game.getFlagsString();
 #end
 
       // open map fully
