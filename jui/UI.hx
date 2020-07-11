@@ -357,6 +357,10 @@ class UI
 
       else if (state == "conquer" && !cult.isAI)
         {
+          alert('<h2>MILITARY VICTORY</h2>' + Static.templates['conquer'], {
+            w: 700,
+            h: 370,
+          });
           msg += cult.fullName + " has taken over the world in " +
             game.turns + " turns (" +
             game.highScores.convertTime(time) + " of real time)." +
@@ -378,6 +382,10 @@ class UI
 
       else if (state == "conquer" && cult.isAI)
         {
+          alert('<h2>MILITARY DEFEAT</h2>' + Static.templates['conquer'], {
+            w: 700,
+            h: 370,
+          });
           msg += cult.fullName + " has taken over the world. You fail.";
           msg += "<h2>YOU LOSE</h2>";
           h = 210;
@@ -403,7 +411,8 @@ class UI
       if (showHighScore && game.difficultyLevel != -1 &&
           game.isFlagsDefault())
         msg += game.highScores.getTable(time);
-      else msg += 'Flags: ' + game.getFlagsString();
+      else if (!game.isFlagsDefault())
+        msg += 'Flags: ' + game.getFlagsString();
 #end
 
       // open map fully

@@ -25,8 +25,12 @@ class Debug extends Window
       addItem(0, 'Open map', onOpenMap);
       addItem(0, 'Investigator: AI', onInvestigatorAI);
       addItem(0, 'Investigator: Player', onInvestigatorPlayer);
-      addItem(0, 'Victory: Summon', onVictorySummon);
-      addItem(0, 'AI Victory: Summon', onVictorySummonAI);
+      addItem(0, 'Victory: Summon', function(event) {
+        ui.finish(game.cults[0], "summon");
+      });
+      addItem(0, 'AI Victory: Summon', function(event) {
+        ui.finish(game.cults[1], "summon");
+      });
       addItem(0, 'Total war', onTotalWar);
       addItem(0, 'Invisibility toggle', onToggleInvisible);
       addItem(0, 'Trace timing toggle', onTiming);
@@ -42,6 +46,12 @@ class Debug extends Window
           if (game.flags.artifacts)
             game.artifacts.spawn();
         });
+      addItem(1, 'Victory: Conquer', function(event) {
+        ui.finish(game.cults[0], "conquer");
+      });
+      addItem(1, 'AI Victory: Conquer', function(event) {
+        ui.finish(game.cults[1], "conquer");
+      });
     }
 
 
@@ -130,21 +140,6 @@ class Debug extends Window
           if (i != p.id)
             p.wars[i] = true;
     }
-
-
-// win by summoning
-  function onVictorySummon(event)
-    {
-      ui.finish(game.cults[0], "summon");
-    }
-
-
-// AI wins by summoning
-  function onVictorySummonAI(event)
-    {
-      ui.finish(game.cults[1], "summon");
-    }
-
 
 // unleash investigators on AI cults
   function onInvestigatorAI(event)
