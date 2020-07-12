@@ -242,7 +242,10 @@ class Static
 
   // text templates
   public static var templates: Map<String, String> = [
-    'conquer' => 'Pitched firefights in alleys thick with refuse and blood. A deadly game of cat and mouse in a long abandoned warehouse. Air crackling with eldritch energy, spell and counter-spell sizzling over the heads of combatants. A hasty retreat from a hopeless battle brought to a sudden end by a single bullet. The sharp crack echoes in the night before fading to silence, the steady thrum of the living city returning, inhabitants unaware of the inevitable victory won with that final shot.  The leaders of all the rival cults are dead or dying, and with the backing of their army of cultists and mercenaries alike, nothing can stand in the way of the Final Ritual.'
+    'conquer' => 'Pitched firefights in alleys thick with refuse and blood. A deadly game of cat and mouse in a long abandoned warehouse. Air crackling with eldritch energy, spell and counter-spell sizzling over the heads of combatants. A hasty retreat from a hopeless battle brought to a sudden end by a single bullet. The sharp crack echoes in the night before fading to silence, the steady thrum of the living city returning, inhabitants unaware of the inevitable victory won with that final shot. The leaders of all the rival cults are dead or dying, and with the backing of their army of cultists and mercenaries alike, nothing can stand in the way of the Final Ritual.',
+    'ritualUnveiling' => 'Arcane energies flux and writhe through the air, blue-black sparks jumping from unreal to real as the ritual of Unveiling draws to its conclusion. Awareness blooms in our minds even as the final sacrifices draw their last burbling breaths, knowledge stolen and shining. We know who threatens our goals. We know where they live.',
+    'sectHarvested' => 'What was once a thriving group of willing conspirators is now dissolute, abandoned, maddened by what they have been told, what worth has been wrenched from them. No matter; their ruined lives feed the greater purpose, bringing us ever closer to victory, their cries cut short by blade and padded cell alike.',
+    'sectSacrificed' => "The grisly murder of %inv in a seedy hotel room, body splayed next to those of %number other members of %sect, was just the beginning. The primary suspect's mysterious death in their jail cell only fed the media frenzy. A last minute confession led to their leader's capture, but they are of no use to us now. Let them rot.",
   ];
 
 
@@ -267,6 +270,14 @@ class Static
     },
   ];
 
+// format text template
+  public static function template(id: String, tags: Dynamic): String
+    {
+      var t = templates[id];
+      for (tag in Reflect.fields(tags))
+        t = StringTools.replace(t, '%' + tag, Reflect.field(tags, tag));
+      return t;
+    }
 
 // calculate distance between this node and the other one
   public static inline function distance(x1: Int, y1: Int, x2: Int, y2: Int): Float

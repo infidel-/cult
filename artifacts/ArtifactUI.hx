@@ -76,8 +76,8 @@ class ArtifactUI
           if (a.isUnique)
             note += '<br>' + a.info.note +
               '<br>(only after the artifact is bound to a priest)' +
-              "<br><i style='color:var(--artifact-fluff-color)'>" +
-              a.info.fluff + '</i>';
+              "<br><div class=fluffNote>" +
+              a.info.fluff + '</div>';
           var id = 'info.artifact' + cult.id + '_' + i;
           ui.initTooltip(id);
           ui.updateTip(id, note);

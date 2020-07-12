@@ -60,6 +60,7 @@ class Cult
 
   // expansion stuff
   public var artifacts: artifacts.CultArtifacts;
+  public var fluffShown: Map<String, Bool>;
 
 
   public function new(gvar: Game, uivar: UI, id: Int, infoID: Int)
@@ -74,6 +75,7 @@ class Cult
       this.highlightedNodes = new List<Node>();
       this.options = new Options(game, ui, this);
       this.artifacts = new artifacts.CultArtifacts(game, ui, this);
+      this.fluffShown = new Map();
 
       this.isDiscovered = [];
       this.isInfoKnown = [];
@@ -807,8 +809,9 @@ class Cult
             wars[p.id] = true;
           }
 
-      ui.alert(fullName + " has started the " + ritual.name + ".<br><br>" +
-        info.summonStart, {
+      ui.alert('<h2>FINAL RITUAL STARTED</h2><div class=fluff>' +
+        info.summonStart + '</div><br>' +
+        fullName + ' has started the ' + ritual.name + '.', {
           w: 700,
           h: 400,
         });
@@ -841,9 +844,15 @@ class Cult
   function unveilingFinish()
     {
       if (!isAI)
-        ui.alert(fullName + ' has finished the ' + ritual.name +
-          '. All cult origins are revealed.',
-          { h: 130 });
+        {
+          ui.alert('<h2>RITUAL COMPLETED</h2><div class=fluff>' +
+            Static.templates['ritualUnveiling'] + '</div><br>' +
+            fullName + ' has finished the ' + ritual.name +
+            '. All cult origins are revealed.', {
+            w: 600,
+            h: 345,
+          });
+        }
 
       for (c in game.cults)
         if (c.origin != null)
@@ -859,8 +868,7 @@ class Cult
   public function summonFinish()
     {
       // chance of failure
-//      if (100 * Math.random() > getUpgradeChance(2))
-      if (true)
+      if (100 * Math.random() > getUpgradeChance(2))
         {
           // 1 priest goes totally insane and has to be replaced with neophyte
           var tmp = [];
@@ -870,15 +878,16 @@ class Cult
           var n = tmp[Std.random(tmp.length)];
           n.generateLite();
 
-          ui.alert(fullName +
-            " has failed to perform the " + Static.rituals['summoning'].name + ".<br><br>" +
-            info.summonFail, { h: 380 });
+          var msg =
+            '<h2>FINAL RITUAL FAILED</h2><div class=fluff>' +
+            info.summonFail + '</div><br>' +
+            fullName + " has failed to perform the " +
+            Static.rituals['summoning'].name +
+            '. The stars were not properly aligned. One of the high priests goes insane.';
+
+          ui.alert(msg, { w: 700, h: 400 });
           if (!isAI)
             {
-              var msg =
-                "<div style='text-size: 20px'><b>FINAL RITUAL FAILED</b></div><br>" +
-                "The stars were not properly aligned. One of the high priests goes insane.";
-              ui.alert(msg);
               ui.log2(this, fullName + " has failed to perform the " +
                 Static.rituals['summoning'].name + ".",
               { symbol: 'R' });

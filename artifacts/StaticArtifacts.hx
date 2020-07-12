@@ -97,7 +97,7 @@ class StaticArtifacts
     'mask' => {
       id: 'mask',
       name: 'Mask of Many Faces',
-      fluff: 'Offering a gaze into the void,<br>it also cloaks the wearer.',
+      fluff: 'Offering a gaze into the void, it also<br>cloaks the wearer from mortal eyes.',
       note: '-%v to cult awareness each turn when active',
       val: 2, // awareness mod
       x: 7,

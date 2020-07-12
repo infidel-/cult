@@ -77,7 +77,7 @@ class ArtifactUINode extends UINode
       s.add("Artifact <span class=shadow style='color:white'>L" +
         (node.level + 1) + "</span><br>");
       if (art.isUnique)
-        s.add("<i style='color:var(--artifact-fluff-color)'>" + art.artifactInfo.fluff + '</i><br>');
+        s.add("<div class=fluffNote>" + art.artifactInfo.fluff + '</div>');
       s.add('<br>');
 
       var br = false;

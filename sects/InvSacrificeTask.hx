@@ -48,8 +48,21 @@ class InvSacrificeTask extends Task
       if (!cult.hasInvestigator)
         return;
     
+      var name = cult.investigator.name;
       cult.investigator.lowerWillpower(will[level]);
       cult.removeSect(sect.leader, 'sacrifice');
+      if (!cult.hasInvestigator && !cult.fluffShown['sectSacrificed'])
+        {
+          var num = [ 'two', 'three', 'four', 'five' ];
+          ui.alert('<h2>SECT SACRIFICED</h2><div class=fluff>' +
+          Static.template('sectSacrificed', {
+            inv: name,
+            number: num[Std.random(num.length)],
+            sect: sect.name,
+          }) + '</div><br>' + sect.name + ' was sacrificed to dispose of the investigator.', { h: 340 });
+
+          cult.fluffShown['sectSacrificed'] = true;
+        }
     }
 
 

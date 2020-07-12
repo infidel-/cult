@@ -33,7 +33,11 @@ class HarvestTask extends Task
   public override function complete(cult: Cult, sect: Sect, points: Int)
     {
       cult.removeSect(sect.leader, null);
-      var text = sect.name + ' was harvested for ';
+      var text = '';
+      if (!cult.fluffShown['sectHarvested'])
+        text += '<h2>SECT HARVESTED</h2><div class=fluff>' +
+          Static.templates['sectHarvested'] + '</div><br>';
+      text += sect.name + ' was harvested for ';
       var val = res[sect.level];
       var id = Std.random(3);
       if (Std.random(100) < 25)
@@ -41,8 +45,11 @@ class HarvestTask extends Task
       text += val + ' ' + UI.powerName(id) + '.';
       cult.power[id] += val;
       log(cult, text);
-      ui.alert(text,
+      if (!cult.fluffShown['sectHarvested'])
+        ui.alert(text, { h: 340 });
+      else ui.alert(text,
         { h: UI.getVarInt('--alert-window-height-2lines') });
+      cult.fluffShown['sectHarvested'] = true;
     }
 
 

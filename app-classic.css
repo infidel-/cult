@@ -28,7 +28,7 @@
   --artifact-color: #ff9999;
   --artifact-timer-color: #402b2b;
   --artifact-timer-shadow: #84aa9d;
-  --artifact-fluff-color: #aa5cb0;
+  --fluff-color: #c37402;
 }
 
 body {
@@ -487,4 +487,18 @@ legend {
   cursor: pointer;
   font-size: 10px;
   font-weight: bold;
+}
+
+.fluff {
+  color: var(--fluff-color);
+  text-justify: inter-character;
+  text-align: justify;
+  text-indent: 2em;
+  font-style: italic;
+  padding: 0 10px 0 10px;
+}
+
+.fluffNote {
+  color: var(--fluff-color);
+  font-style: italic;
 }
