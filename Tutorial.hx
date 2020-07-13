@@ -56,7 +56,7 @@ class Tutorial
     'endTurn' => [
       [ 'tutorial-resources1', 'To gain followers you need to spend common resources. You can see all your resources in the status window on the left.' ],
       [ null, 'There are three common resources in the game and one special. ' + UI.powerName(0) + ', ' + UI.powerName(1) + ' and ' + UI.powerName(2) + ' are common resources and are used directly to gain new followers.' ],
-      [ null, 'You can convert any common resource to another one at a 2:1 ratio. There is also a special resource - ' + UI.powerName(3) + '. You will need ' + UI.powerName(3) + ' for rituals and you can convert them to common resources at a 1:1 ratio.' ],
+      [ 'tutorial-resources-convert', 'You can convert any common resource to another one at a 2:1 ratio. There is also a special resource - ' + UI.powerName(3) + '. You will need ' + UI.powerName(3) + ' for rituals and you can convert them to common resources at a 1:1 ratio.' ],
       [ 'tutorial-resources-gen', 'Common resources are produced by special "generator" followers. They have a thicker outline around their icons on the map.' ],
       [ null, UI.powerName(3) + ' are obtained by your neophytes automatically. The larger your cult is, the more virgins are found.' ],
       [ 'tutorial-followers-origin', 'Your cult origin is a generator. The tooltip for the follower icon shows its information including the resource it generates. On each new turn, all your generators will produce resources.' ],
@@ -79,7 +79,7 @@ class Tutorial
     'gainSect' => [
       [ null, 'Oh, joy! One of your followers has gained their own little sect. Sects are very useful to handle menial tasks like gathering information about your opponents.' ],
       [ 'tutorial-sects', 'They can also help you find the next investigator when they inevitably appear and confuse them. You can check out your sects in the sects window.' ],
-      [ null, 'By default, the sect tasks are handled automatically with the help of an AI advisor. They grow by themselves and new tasks will appear upon reaching level 2.' ],
+      [ null, 'By default, the sect tasks are handled automatically with the help of an AI advisor. They grow by themselves and new tasks will be available upon reaching level 2.' ],
       [ null, 'A sect will be disbanded if its puppeteer is lost.' ],
     ],
 

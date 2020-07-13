@@ -473,6 +473,7 @@ legend {
   user-select: none;
   width: 62%;
   z-index: 14;
+  transition: 0.4s;
 }
 
 #logConsoleText {

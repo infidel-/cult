@@ -2,6 +2,7 @@
 
 import js.Browser;
 import js.html.DivElement;
+import js.html.MouseEvent;
 
 class LogConsole
 {
@@ -27,7 +28,6 @@ class LogConsole
       show(ui.config.getBool('consoleLog'));
     }
 
-
 // add message to cult log
   public function getRenderedMessage(s: String): String
     {
@@ -38,9 +38,22 @@ class LogConsole
         " Turn " + (game.turns + 1) + ": " + s + "<br>";
     }
 
+// toggle console on mouse over
+  public function check(event: MouseEvent)
+    {
+      if (!ui.config.getBool('consoleLog'))
+        return;
+      var consoleRect = window.getBoundingClientRect();
+      if (consoleRect.x < event.clientX &&
+          consoleRect.y < event.clientY &&
+          event.clientX < consoleRect.x + consoleRect.width &&
+          event.clientY < consoleRect.y + consoleRect.height)
+        window.style.opacity = '0.1';
+      else window.style.opacity = '1.0';
+    }
 
 // show/hide
-  public function show(val: Bool)
+  public inline function show(val: Bool)
     {
       window.style.visibility = (val ? 'visible' : 'hidden');
     }

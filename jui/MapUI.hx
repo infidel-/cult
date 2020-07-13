@@ -583,6 +583,9 @@ class MapUI
 // on moving over map
   public function onMouseMove(event: MouseEvent)
     {
+      // toggle console
+      ui.logConsole.check(event);
+
       // clear drag and selection
       if (event.buttons == 0)
         isDrag = false;
