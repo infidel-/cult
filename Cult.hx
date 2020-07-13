@@ -498,13 +498,16 @@ class Cult
         {
           if (!isAI)
             {
-              ui.msg("You have failed to shatter the will of the investigator.");
+              ui.msg('You have failed to shatter the will of the investigator.');
               ui.updateStatus();
             }
           return;
         }
 
       investigator.lowerWillpower(1);
+      if (hasInvestigator)
+        ui.msg('Investigator willpower lowered.');
+      else ui.msg('The investigator disappeared.');
       if (!isAI)
         ui.updateStatus();
     }
