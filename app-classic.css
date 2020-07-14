@@ -503,3 +503,17 @@ legend {
   color: var(--fluff-color);
   font-style: italic;
 }
+
+#newGameMenuContents {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  height: 72%;
+  top: 12.5%;
+  width: 95.6%;
+}
+
+input[type=radio] {
+  transform: scale(1.5);
+  margin-right: 7px;
+}

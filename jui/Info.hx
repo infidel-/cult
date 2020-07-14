@@ -10,7 +10,7 @@ class Info extends Window
 
   public function new(uivar: UI, gvar: Game)
     {
-      super(uivar, gvar, 'cultInfo', 800, 536, 20, 493);
+      super(uivar, gvar, 'cultInfo', 800, 536, 20);
 
       // info text
       text = Browser.document.createDivElement();

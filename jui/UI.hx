@@ -18,16 +18,17 @@ class UI
   public var music: Music; // music player
 
   // ui blocks
-  public var status: Status; // status block
-  public var mainMenu: MainMenu; // main menu block
-  public var loadMenu: LoadMenu; // load menu block
-  public var saveMenu: SaveMenu; // save menu block
-  public var customMenu: CustomMenu; // custom menu block
-  public var mpMenu: MultiplayerMenu; // multiplayer menu block
-  public var info: Info; // cult info block
-  public var logWindow: Log; // log block
-  public var alertWindow: Alert; // alert block
-  public var debug: Debug; // debug menu block
+  public var status: Status; // status panel
+  public var mainMenu: MainMenu; // main menu
+  public var newGameMenu: NewGameMenu; // new game menu
+  public var loadMenu: LoadMenu; // load menu
+  public var saveMenu: SaveMenu; // save menu
+  public var customMenu: CustomMenu; // custom menu
+  public var mpMenu: MultiplayerMenu; // multiplayer menu
+  public var info: Info; // cult info
+  public var logWindow: Log; // log
+  public var alertWindow: Alert; // alert
+  public var debug: Debug; // debug menu
   public var map: MapUI; // map block
   public var config: Config; // configuration
   public var logPanel: LogPanel; // log panel
@@ -96,6 +97,7 @@ class UI
       map = new MapUI(this, game);
       music = new Music(this);
       mainMenu = new MainMenu(this, game);
+      newGameMenu = new NewGameMenu(this, game);
       loadMenu = new LoadMenu(this, game);
       saveMenu = new SaveMenu(this, game);
       customMenu = new CustomMenu(this, game);

@@ -18,7 +18,7 @@ class CustomMenu extends Window
 
   public function new(uivar: UI, gvar: Game)
     {
-      super(uivar, gvar, 'customMenu', 1000, 536, 20, 493);
+      super(uivar, gvar, 'customMenu', 1000, 536, 20);
 
       Tools.label({
         id: 'titleLabel',

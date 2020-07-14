@@ -16,7 +16,7 @@ class Window
 
 
   public function new(uivar: UI, gvar: Game, name: String,
-      w: Int, h: Int, z: Int, closeY: Int)
+      w: Int, h: Int, z: Int)
     {
       ui = uivar;
       game = gvar;
@@ -35,7 +35,7 @@ class Window
     }
 
 
-// show main menu
+// show window
   public function show()
     {
       border.style.display = 'inline';

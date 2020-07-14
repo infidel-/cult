@@ -6,3 +6,20 @@ typedef Flags = {
   // expansions
   var artifacts: Bool; // ARTIFACTS
 }
+
+class FlagStatic
+{
+  public static var names = [
+    'noBlitz' => 'No military blitz victory',
+    'devoted' => 'Devoted sects',
+    'longRituals' => 'Long rituals',
+    'artifacts' => 'Artifacts of the Arcane',
+  ];
+
+  public static var notes = [
+    'noBlitz' => 'Disables automatic victory when all enemy cults are paralyzed.',
+    'devoted' => 'Enables spending resources to make sects devoted.',
+    'longRituals' => 'Increases needed ritual points for all rituals by a factor of ' + Const.longRitualsRitualPoints + '.',
+    'artifacts' => 'Enables Artifacts of the Arcane expansion. Adepts will need artifacts to be upgraded into priests. Automatically enables other flags.',
+  ];
+}

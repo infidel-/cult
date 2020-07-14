@@ -11,7 +11,7 @@ class Log extends Window
 
   public function new(uivar: UI, gvar: Game)
     {
-      super(uivar, gvar, 'log', 800, 536, 20, 493);
+      super(uivar, gvar, 'log', 800, 536, 20);
 
       // log text
       var logBG = Browser.document.createDivElement();

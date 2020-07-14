@@ -3,6 +3,8 @@
 // difficulty info
 typedef DifficultyInfo = {
   var level: Int;
+  var name: String;
+  var note: String;
 
   var mapWidth: Int; // map width
   var mapHeight: Int; // map height
@@ -45,6 +47,8 @@ class Static
       // easy
       {
         level: 0,
+        name: 'Easy',
+        note: 'Easy difficulty has three cults total, investigators are less skilled, and awareness influence on all rolls is more lax.',
 
         mapWidth: 780,
         mapHeight: 580,
@@ -76,6 +80,8 @@ class Static
       // normal
       {
         level: 1,
+        name: 'Normal',
+        note: 'On normal difficulty there are four cults total, investigators are ordinary, and awareness has average influence on all rolls.',
 
         mapWidth: 780,
         mapHeight: 580,
@@ -107,6 +113,8 @@ class Static
       // hard
       {
         level: 2,
+        name: 'Hard',
+        note: 'Hard difficulty has four total cults playing, investigators are tenacious, and awareness has serious influence on all rolls.',
 
         mapWidth: 780,
         mapHeight: 580,
@@ -138,6 +146,8 @@ class Static
       // test - 2 players multiplayer
       {
         level: -1,
+        name: 'Custom',
+        note: 'Custom difficulty',
 
         mapWidth: 780,
         mapHeight: 580,

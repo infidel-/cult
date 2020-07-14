@@ -10,7 +10,7 @@ class MultiplayerMenu extends Window
 
   public function new(uivar: UI, gvar: Game)
     {
-      super(uivar, gvar, 'multiMenu', 450, 236, 20, 493);
+      super(uivar, gvar, 'multiMenu', 450, 236, 20);
 
       Tools.label({
         id: 'titleLabel',

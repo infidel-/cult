@@ -17,7 +17,7 @@ class SectsInfo extends Window
 
   public function new(uivar: UI, gvar: Game)
     {
-      super(uivar, gvar, 'sects', 800, 536, 20, 493);
+      super(uivar, gvar, 'sects', 800, 536, 20);
 
       selectedNode = null;
       selectedNodeID = 0;

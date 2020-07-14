@@ -12,12 +12,10 @@ class MainMenu extends Window
     {
 #if electron
       var h = 324;
-      var closeY = 280;
 #else
       var h = 280;
-      var closeY = 240;
 #end
-      super(uivar, gvar, 'mainMenu', 420, h, 20, closeY);
+      super(uivar, gvar, 'mainMenu', 420, h, 20);
 
       Tools.label({
         id: 'mainMenuTitle',
@@ -36,39 +34,18 @@ class MainMenu extends Window
 
       // main menu contents
       Tools.button({
-        id: 'newGameEasy',
-        text: "START NEW GAME - EASY",
+        id: 'newGame',
+        text: "NEW GAME",
         className: 'uiButton statusButton mainMenuButton',
         w: null,
         h: null,
         x: x,
         y: y,
         container: window,
-        func: onNewGame
-      });
-      y += d;
-      Tools.button({
-        id: 'newGameNormal',
-        text: "START NEW GAME - NORMAL",
-        className: 'uiButton statusButton mainMenuButton',
-        w: null,
-        h: null,
-        x: x,
-        y: y,
-        container: window,
-        func: onNewGame
-      });
-      y += d;
-      Tools.button({
-        id: 'newGameHard',
-        text: "START NEW GAME - HARD",
-        className: 'uiButton statusButton mainMenuButton',
-        w: null,
-        h: null,
-        x: x,
-        y: y,
-        container: window,
-        func: onNewGame
+        func: function(event)
+          {
+            ui.newGameMenu.show();
+          }
       });
       y += d;
 
