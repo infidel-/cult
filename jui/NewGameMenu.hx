@@ -137,6 +137,22 @@ class NewGameMenu extends Window
       cb.id = key;
       cb.type = 'checkbox';
       cb.style.margin = '7px 10px 0px 10px';
+      cb.onclick = function(event)
+        {
+          var cb: InputElement = cast Tools.getTarget(event);
+          var id = cb.id.substr(cb.id.indexOf('_') + 1);
+          var arr = null;
+          if (cb.checked) // auto on/off
+            arr = FlagStatic.autoOn[id];
+          else arr = FlagStatic.autoOff[id];
+          if (arr == null)
+            return;
+          for (tid in arr)
+            {
+              var t: InputElement = cast UI.e('startFlag_' + tid);
+              t.checked = cb.checked;
+            }
+        }
       var title = Browser.document.createElement("div");
       row.appendChild(title);
       title.innerHTML = name;

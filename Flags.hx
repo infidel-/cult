@@ -9,6 +9,15 @@ typedef Flags = {
 
 class FlagStatic
 {
+  public static var autoOn = [
+    'artifacts' => [ 'noBlitz', 'devoted', 'longRituals' ],
+  ];
+  public static var autoOff = [
+    'noBlitz' => [ 'artifacts' ],
+    'devoted' => [ 'artifacts' ],
+    'longRituals' => [ 'artifacts' ],
+  ];
+
   public static var names = [
     'noBlitz' => 'No military blitz victory',
     'devoted' => 'Devoted sects',
