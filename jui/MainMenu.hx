@@ -281,50 +281,20 @@ class MainMenu extends Window
     }
 */
 
-// start new game
-  function onNewGame(event: Dynamic)
-    {
-      var id = Tools.getTarget(event).id;
-      var dif = 0;
-      if (id == "newGameEasy")
-        dif = 0;
-      else if (id == "newGameNormal")
-        dif = 1;
-      else dif = 2;
-      onNewGameReal(dif);
-    }
-
-
-// start for real
-  function onNewGameReal(dif: Int)
-    {
-      onClose(null);
-      ui.newGame(dif);
-    }
-
-
 // key press
   public override function onKey(e: Dynamic)
     {
 //      trace(e.keyCode);
-      // new game - easy
+      // new game menu
       if (e.keyCode == 49) // 1
-        onNewGameReal(0);
-
-      // new game - normal
-      else if (e.keyCode == 50) // 2
-        onNewGameReal(1);
-
-      // new game - hard
-      else if (e.keyCode == 51) // 3
-        onNewGameReal(2);
+        ui.newGameMenu.show();
 
       // custom game
-      else if (e.keyCode == 52) // 4
+      else if (e.keyCode == 50) // 2
         onCustomGame(null);
 
       // multiplayer game
-      else if (e.keyCode == 53) // 5
+      else if (e.keyCode == 51) // 3
         onMultiplayerGame(null);
 
 #if electron

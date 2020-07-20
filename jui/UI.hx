@@ -142,29 +142,34 @@ class UI
         info.isVisible ||
         sects.isVisible ||
         customMenu.isVisible ||
-        manual.isVisible
+        manual.isVisible ||
+        newGameMenu.isVisible
       );
 
-      if (loadMenu.isVisible) // load menu keys
+      // windows keys
+      if (loadMenu.isVisible)
         loadMenu.onKey(e);
 
-      else if (saveMenu.isVisible) // save menu keys
+      else if (saveMenu.isVisible)
         saveMenu.onKey(e);
 
-      else if (mainMenu.isVisible) // main menu keys
+      else if (mainMenu.isVisible && !newGameMenu.isVisible)
         mainMenu.onKey(e);
 
-      else if (customMenu.isVisible) // custom menu keys
+      else if (customMenu.isVisible)
         customMenu.onKey(e);
 
-      else if (mpMenu.isVisible) // multiplayer menu keys
+      else if (mpMenu.isVisible)
         mpMenu.onKey(e);
 
-      else if (debug.isVisible) // debug menu keys
+      else if (debug.isVisible)
         debug.onKey(e);
 
-      else if (sects.isVisible) // sects keys
+      else if (sects.isVisible)
         sects.onKey(e);
+
+      else if (newGameMenu.isVisible)
+        newGameMenu.onKey(e);
 
       // close current window
       else if (e.keyCode == 27 || // ESC
@@ -192,6 +197,9 @@ class UI
 
           else if (manual.isVisible)
             manual.onClose(null);
+
+          else if (newGameMenu.isVisible)
+            newGameMenu.onClose(null);
 
           // open main menu
           else if (e.keyCode == 27)

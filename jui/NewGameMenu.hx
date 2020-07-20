@@ -22,7 +22,7 @@ class NewGameMenu extends Window
       close.innerHTML = 'CANCEL';
       close.style.left = '67%';
       var start = Tools.closeButton(window);
-      start.onclick = function(event) { trace('start!'); };
+      start.onclick = onStart;
       start.innerHTML = 'START';
       start.style.left = '30%';
 
@@ -134,6 +134,7 @@ class NewGameMenu extends Window
       row.style.cursor = 'hand';
       var cb: InputElement = cast Browser.document.createElement("input");
       row.appendChild(cb);
+      cb.id = key;
       cb.type = 'checkbox';
       cb.style.margin = '7px 10px 0px 10px';
       var title = Browser.document.createElement("div");
@@ -151,50 +152,32 @@ class NewGameMenu extends Window
 
   override function onShow()
     {
-    }
-
-/*
-// custom game menu
-  function onCustomGame(event: Dynamic)
-    {
-      ui.customMenu.show();
-      onClose(null);
-    }
-
-
-// multiplayer game menu
-  function onMultiplayerGame(event: Dynamic)
-    {
-      ui.mpMenu.show();
-      onClose(null);
-    }
-
-
-// load game menu
-  function onLoadGame(event: Dynamic)
-    {
-      ui.loadMenu.show();
-      onClose(null);
-    }
-
-
-// save game menu
-  function onSaveGame(event: Dynamic)
-    {
-      ui.saveMenu.show();
-      onClose(null);
+      bg.style.display = 'none';
     }
 
 // start new game
-  function onNewGame(event: Dynamic)
+  function onStart(event: Dynamic)
     {
-      var id = Tools.getTarget(event).id;
-      var dif = 0;
-      if (id == "newGameEasy")
-        dif = 0;
-      else if (id == "newGameNormal")
-        dif = 1;
-      else dif = 2;
+      // get difficulty
+      var dif = -1;
+      for (d in Static.difficulty)
+        {
+          if (d.level < 0)
+            continue;
+          var opt: InputElement = cast UI.e('startDiff' + d.level);
+          if (opt.checked)
+            dif = d.level;
+        }
+
+      // get flags
+      var flags: Flags = Reflect.copy(game.flagDefaults);
+      for (f in Reflect.fields(flags))
+        {
+          var opt: InputElement = cast UI.e('startFlag_' + f);
+          if (opt.checked)
+            Reflect.setField(flags, f, true);
+        }
+      game.flags = flags;
       onNewGameReal(dif);
     }
 
@@ -202,19 +185,22 @@ class NewGameMenu extends Window
 // start for real
   function onNewGameReal(dif: Int)
     {
+      trace(dif);
+      trace(game.flags);
+      ui.mainMenu.onClose(null);
       onClose(null);
       ui.newGame(dif);
     }
-*/
-
 
 // key press
   public override function onKey(e: Dynamic)
     {
-/*
-//      trace(e.keyCode);
+      // exit menu
+      if (e.keyCode == 27) // ESC
+        onClose(null);
+
       // new game - easy
-      if (e.keyCode == 49) // 1
+      else if (e.keyCode == 49) // 1
         onNewGameReal(0);
 
       // new game - normal
@@ -224,30 +210,5 @@ class NewGameMenu extends Window
       // new game - hard
       else if (e.keyCode == 51) // 3
         onNewGameReal(2);
-
-      // custom game
-      else if (e.keyCode == 52) // 4
-        onCustomGame(null);
-
-      // multiplayer game
-      else if (e.keyCode == 53) // 5
-        onMultiplayerGame(null);
-
-      // debug game start
-      else if (e.keyCode == 88 && Game.isDebug) // x
-        {
-          onClose(null);
-          game.isTutorial = false;
-          game.difficultyLevel = 2; // 1 - normal
-          game.flags.noBlitz = true;
-          game.flags.devoted = true;
-          game.flags.longRituals = true;
-          game.flags.artifacts = true;
-          game.restart();
-        }
-      // exit menu
-      else if (e.keyCode == 27 && !game.isNeverStarted) // ESC
-        onClose(null);
-*/
     }
 }
