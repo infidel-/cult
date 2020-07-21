@@ -444,7 +444,7 @@ class MapUI
         n.uiNode.paint(ctx);
 
       // paint advanced node info
-      if (game.player.options.getBool('mapAdvancedMode'))
+      if (game.options.getBool('mapAdvancedMode'))
         {
           var fontSize = zoom *
             UI.getVarInt('--advanced-mode-font-size');
@@ -615,7 +615,7 @@ class MapUI
       map.style.cursor = 'pointer';
 
       // no tooltips in advanced mode
-      if (game.player.options.getBool('mapAdvancedMode'))
+      if (game.options.getBool('mapAdvancedMode'))
         return;
 
       // render tooltip for this node

@@ -671,9 +671,10 @@ div::-webkit-scrollbar-thumb {
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  height: 72%;
-  top: 12.5%;
-  width: 95.6%;
+  height: 270px;
+  left: 0.4%;
+  top: 9%;
+  width: 94.6%;
 }
 
 input[type=radio] {

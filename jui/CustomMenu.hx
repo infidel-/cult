@@ -20,15 +20,16 @@ class CustomMenu extends Window
     {
       super(uivar, gvar, 'customMenu', 1000, 536, 20);
 
-      Tools.label({
+      var title = Tools.label({
         id: 'titleLabel',
         text: 'Custom game parameters',
-        w: 300,
-        h: 30,
+        w: null,
+        h: null,
         x: 320,
-        y: 5,
+        y: 2,
         container: window
       });
+      title.style.fontSize = 'larger';
 
       var divel = js.Browser.document.createElement("div");
       divel.className = 'uiText';

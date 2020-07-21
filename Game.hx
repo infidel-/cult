@@ -17,6 +17,7 @@ class Game
   public var tutorial: Tutorial;
   public var highScores: HighScores;
   public var sectTasks: Array<sects.Task>; // available sect tasks
+  public var options: Options; // player options
 
   public var startTS: Float; // ts of game start
   public var turns: Int; // turns passed
@@ -53,6 +54,18 @@ class Game
       };
       flags = Reflect.copy(flagDefaults);
       ui = new UI(this);
+      options = new Options(this, ui);
+      // update player options from config
+      for (info in OptionsMenu.elementInfo)
+        {
+          var val: Dynamic = null;
+          if (info.type == 'bool')
+            val = ui.config.getBool(info.name);
+          else if (info.type == 'int')
+            val = ui.config.getInt(info.name);
+
+          options.set(info.name, val);
+        }
       highScores = new HighScores(this, ui);
       // apply modern mode difficulty fixes
       if (UI.modernMode)
@@ -243,19 +256,6 @@ class Game
       mapQuadrants8x8 = Static.getQuadrants(difficulty, 8);
       for (c in cults)
         c.setOrigin();
-
-      // update player options from config
-      if (difficulty.numPlayers == 1)
-        for (info in OptionsMenu.elementInfo)
-          {
-            var val: Dynamic = null;
-            if (info.type == 'bool')
-              val = ui.config.getBool(info.name);
-            else if (info.type == 'int')
-              val = ui.config.getInt(info.name);
-
-            player.options.set(info.name, val);
-          }
 
 //      ui.map.paint();
       ui.map.center(player.origin.x, player.origin.y);
@@ -538,8 +538,6 @@ class Game
           player = cults[newPlayerID];
           currentPlayerID = newPlayerID;
 
-          applyPlayerOptions(); // apply options for this player
-
           player.turn();
           for (c in cults)
             c.checkVictory();
@@ -610,13 +608,6 @@ class Game
         for (s in c.sects)
           if (s.task != null && s.task.checkFailure(s) == true)
             s.clearTask();
-    }
-
-
-// apply current player options
-  public function applyPlayerOptions()
-    {
-      ui.map.paint();
     }
 
 // returns true if game flags are default

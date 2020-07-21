@@ -11,11 +11,11 @@ class MainMenu extends Window
   public function new(uivar: UI, gvar: Game)
     {
 #if electron
-      var h = 244;
+      var h = 284;
 #else
       var h = 200;
 #end
-      super(uivar, gvar, 'mainMenu', 330, h, 20);
+      super(uivar, gvar, 'mainMenu', 350, h, 20);
 
       Tools.label({
         id: 'mainMenuTitle',
@@ -28,12 +28,12 @@ class MainMenu extends Window
         container: window
       });
 
+      // main menu contents
       var contents: DivElement = cast Browser.document.createElement("div");
       contents.id = 'mainMenuContents';
       window.appendChild(contents);
 
-      // main menu contents
-      var b = Tools.button({
+      Tools.button({
         id: 'newGame',
         text: "NEW GAME",
         className: 'uiButton statusButton mainMenuButton',
@@ -43,10 +43,9 @@ class MainMenu extends Window
         y: null,
         flow: true,
         container: contents,
-        func: function(event)
-          {
-            ui.newGameMenu.show();
-          }
+        func: function(event) {
+          ui.newGameMenu.show();
+        }
       });
 
       Tools.button({
@@ -63,7 +62,7 @@ class MainMenu extends Window
       });
 
       Tools.button({
-        id: 'customGame',
+        id: 'multiGame',
         text: "MULTIPLAYER GAME",
         className: 'uiButton statusButton mainMenuButton',
         w: null,
@@ -74,6 +73,22 @@ class MainMenu extends Window
         container: contents,
         func: onMultiplayerGame
       });
+
+      Tools.button({
+        id: 'optionsMenu',
+        text: "OPTIONS",
+        className: 'uiButton statusButton mainMenuButton',
+        w: null,
+        h: null,
+        x: null,
+        y: null,
+        flow: true,
+        container: contents,
+        func: function(event) {
+          ui.options.show();
+        }
+      });
+
 
 #if electron
       Tools.button({

@@ -47,7 +47,6 @@ class Cult
   public var nodes: List<Node>; // cache of owned nodes
   public var adeptsUsed: Int; // how many adepts were used this turn
   public var sects: List<Sect>; // list of controlled sects
-  public var options: Options; // player options
 
   public var hasInvestigator: Bool; // does this cult has investigator on its back?
   public var investigator: Investigator; // investigator
@@ -73,7 +72,6 @@ class Cult
       this.name = this.info.name;
       this.isAI = false;
       this.highlightedNodes = new List<Node>();
-      this.options = new Options(game, ui, this);
       this.artifacts = new artifacts.CultArtifacts(game, ui, this);
       this.fluffShown = new Map();
 
@@ -993,7 +991,7 @@ class Cult
       createSects(); // create new sects
 
       // run sect advisor
-      if (options.getBool('sectAdvisor'))
+      if (game.options.getBool('sectAdvisor'))
         game.sectAdvisor.run(this);
 
       // expansions

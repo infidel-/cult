@@ -68,22 +68,28 @@ class OptionsMenu extends Window
 
   public function new(uivar: UI, gvar: Game)
     {
-      super(uivar, gvar, 'options', 800, 536, 20);
+      super(uivar, gvar, 'options', 800, 366, 20);
 
-/*
-      Tools.label({
-        id: 'titleLabel',
-        text: 'Game Options',
-        w: 158,
-        h: 30,
+      // title
+      var title = Tools.label({
+        id: 'optionsTitle',
+        text: 'OPTIONS',
+        w: null,
+        h: null,
         x: null,
-        y: 10,
+        y: 2,
+        fontSize: null,
         container: window
       });
-*/
+      title.style.width = '100%';
+      title.style.textAlign = 'center';
+      title.style.fontSize = 'larger';
+      title.style.paddingBottom = '10px';
 
       contents = Browser.document.createDivElement();
       contents.className = 'uiText';
+      contents.style.top = '27px';
+      contents.style.height = '76%';
       window.appendChild(contents);
     }
 
@@ -92,6 +98,7 @@ class OptionsMenu extends Window
   override function onShow()
     {
       contents.innerHTML = '';
+      bg.style.display = 'none';
 
       elements = new List();
       var y = 10;
@@ -118,7 +125,6 @@ class OptionsMenu extends Window
               el = Tools.checkbox({
                 id: info.name,
                 text: '',
-//                text: '' + game.player.options.get(info.name),
                 w: 70,
                 h: null,
                 x: 240,
@@ -126,11 +132,11 @@ class OptionsMenu extends Window
                 fontSize: 14,
                 container: contents
               });
-              untyped el.checked = game.player.options.getBool(info.name);
+              untyped el.checked = game.options.getBool(info.name);
             }
           else el = Tools.textfield({
             id: info.name,
-            text: '' + game.player.options.get(info.name),
+            text: '' + game.options.get(info.name),
             w: 70,
             h: 20,
             x: 240,
@@ -181,15 +187,12 @@ class OptionsMenu extends Window
           else if (info.type == 'bool')
             value = untyped el.checked;
 
-          // save option
-          game.player.options.set(info.name, value);
-
-          // save to config in single player
-          if (game.difficulty.numPlayers == 1)
-            ui.config.set(info.name, '' + value);
+          // save option and config
+          game.options.set(info.name, value);
+          ui.config.set(info.name, '' + value);
 
           // sect advisor off, clear task importance flag
-          if (info.name == 'sectAdvisor' && !value)
+          if (!game.isFinished && info.name == 'sectAdvisor' && !value)
             for (s in game.player.sects)
               s.taskImportant = false;
 
@@ -201,10 +204,10 @@ class OptionsMenu extends Window
             ui.logConsole.show(value);
         }
 
-      var fs = game.player.options.getBool('fullscreen');
+      var fs = game.options.getBool('fullscreen');
       if (ui.fullscreen != fs)
         ui.setFullscreen(fs);
-      game.applyPlayerOptions(); // apply player options
+      ui.map.paint();
     }
 
 

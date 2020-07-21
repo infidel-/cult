@@ -62,19 +62,6 @@ class TopMenu
         func: onLog
       });
 
-      Tools.button({
-        id: 'options',
-        text: "OPTIONS",
-        className: 'topButton uiButton',
-        w: 100,
-        h: null,
-        x: 290,
-        y: null,
-        container: panel,
-        title: "Click to view options (or press <span class=shadow style=\"color:white\">O</span>).",
-        func: onOptions
-      });
-
       if (Game.isDebug)
         Tools.button({
           id: 'debug',
@@ -82,7 +69,7 @@ class TopMenu
           className: 'topButton uiButton',
           w: 70,
           h: null,
-          x: 410,
+          x: 290,
           y: null,
           container: panel,
           title: "Click to open debug menu (or press <span class=shadow style=\"color:white\">D</span>).",
@@ -177,18 +164,10 @@ class TopMenu
       ui.sects.show();
     }
 
-
   public function onLog(event: Dynamic)
     {
       ui.logWindow.show();
     }
-
-
-  public function onOptions(event: Dynamic)
-    {
-      ui.options.show();
-    }
-
 
   public function onDebug(event)
     {
@@ -201,8 +180,8 @@ class TopMenu
 
   public function onAdvanced(event)
     {
-      game.player.options.set('mapAdvancedMode',
-        !game.player.options.getBool('mapAdvancedMode'));
+      game.options.set('mapAdvancedMode',
+        !game.options.getBool('mapAdvancedMode'));
       ui.map.paint();
     }
 

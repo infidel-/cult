@@ -47,7 +47,7 @@ class Config
     }
 
 
-// get a stored variable
+// get config variable
   public inline function get(name: String): String
     {
 #if electron
@@ -60,7 +60,7 @@ class Config
     }
 
 
-// get a int variable
+// get int variable
   public function getInt(name: String): Int
     {
       var str = get(name);
@@ -71,7 +71,7 @@ class Config
     }
 
 
-// get a bool variable
+// get bool variable
   public function getBool(name: String): Bool
     {
       var str = get(name);
@@ -82,7 +82,7 @@ class Config
     }
 
 
-// get a stored variable
+// set config variable
   public inline function set(name: String, val: String)
     {
 #if electron

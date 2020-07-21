@@ -172,7 +172,7 @@ class UINode
 
           // resource to acquire
           if (node.owner != game.player &&
-              !game.player.options.getBool('mapAdvancedMode') &&
+              !game.options.getBool('mapAdvancedMode') &&
               (node.isKnown[game.player.id] || node.owner == null))
             {
               var idx = -1;

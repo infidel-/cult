@@ -143,7 +143,8 @@ class UI
         sects.isVisible ||
         customMenu.isVisible ||
         manual.isVisible ||
-        newGameMenu.isVisible
+        newGameMenu.isVisible ||
+        options.isVisible
       );
 
       // windows keys
@@ -153,7 +154,9 @@ class UI
       else if (saveMenu.isVisible)
         saveMenu.onKey(e);
 
-      else if (mainMenu.isVisible && !newGameMenu.isVisible)
+      else if (mainMenu.isVisible &&
+          !newGameMenu.isVisible &&
+          !options.isVisible)
         mainMenu.onKey(e);
 
       else if (customMenu.isVisible)
@@ -206,7 +209,7 @@ class UI
             {
               // since browser forces fullscreen off here, fix state
               fullscreen = false;
-              game.player.options.set('fullscreen', false);
+              game.options.set('fullscreen', false);
               mainMenu.show();
             }
         }
@@ -263,10 +266,6 @@ class UI
           else if (e.keyCode == 77) // M
             manual.show();
 
-          // options
-          else if (e.keyCode == 79) // O
-            top.onOptions(null);
-
           // sects
           else if (e.keyCode == 83) // S
             top.onSects(null);
@@ -293,7 +292,7 @@ class UI
         Browser.document.exitFullscreen();
       else Browser.document.documentElement.requestFullscreen();
       fullscreen = !fullscreen;
-      game.player.options.set('fullscreen', val);
+      game.options.set('fullscreen', val);
     }
 
 
@@ -484,7 +483,7 @@ class UI
 
             // skip sect messages is on
             if (params != null && params.type == 'sect' &&
-                c.options.getBool('logPanelSkipSects'))
+                game.options.getBool('logPanelSkipSects'))
               continue;
             c.logPanel({
               id: -1,
@@ -508,7 +507,7 @@ class UI
 
           // skip sect messages is on
           if (params != null && params.type == 'sect' &&
-              c.options.getBool('logPanelSkipSects'))
+              game.options.getBool('logPanelSkipSects'))
             continue;
           c.logPanel({
             id: -1,

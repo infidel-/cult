@@ -13,7 +13,7 @@ class NewGameMenu extends Window
   public function new(uivar: UI, gvar: Game)
     {
 #if electron
-      var h = 380;
+      var h = 354;
 #else
       var h = 334;
 #end
@@ -30,10 +30,10 @@ class NewGameMenu extends Window
       var title = Tools.label({
         id: 'newGameMenuTitle',
         text: 'START NEW GAME',
-        w: 0,
-        h: 30,
+        w: null,
+        h: null,
         x: null,
-        y: null,
+        y: 2,
         fontSize: null,
         container: window
       });

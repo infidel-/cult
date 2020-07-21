@@ -44,7 +44,7 @@ class Sect
 
       name = generateName();
 
-      isAdvisor = cult.options.getBool('sectAdvisor');
+      isAdvisor = game.options.getBool('sectAdvisor');
       isDevoted = false;
     }
 
