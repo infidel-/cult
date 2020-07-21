@@ -107,12 +107,6 @@ legend {
   padding: 2;
 }
 
-.mainMenuButton {
-  height: 27px;
-  width: 350px;
-  font-size: 20px;
-}
-
 .uiButton {
   user-select: none;
   background: #111;
@@ -432,11 +426,6 @@ legend {
   100% { background: black; }
 }
 
-#mainMenuTitle {
-  left: 130px;
-  top: 10px;
-}
-
 .messageText {
   background: #242424;
   border: solid 2px #848484;
@@ -516,4 +505,26 @@ legend {
 input[type=radio] {
   transform: scale(1.5);
   margin-right: 7px;
+}
+
+#mainMenuTitle {
+  top: 10px;
+  left: 60%;
+  transform: translate(-50%);
+}
+
+.mainMenuButton {
+  height: 27px;
+  margin: 6px 0px 0px 0px;
+  width: 240px;
+  font-size: 20px;
+}
+
+#mainMenuContents {
+  display: flex;
+  flex-direction: column;
+  left: 50%;
+  transform: translate(-50%);
+  position: absolute;
+  top: 47px;
 }

@@ -228,12 +228,6 @@ legend {
   padding: 1px !important;
 }
 
-.mainMenuButton {
-  font-size: 18px;
-  padding: 3px !important;
-  width: 320px;
-}
-
 .selectOption {
   background-color: #feb757;
   border-radius: 10px;
@@ -581,14 +575,6 @@ div::-webkit-scrollbar-thumb {
   100% { color: black; }
 }
 
-#mainMenuTitle {
-  font-family: Monoton;
-  font-size: 34px;
-  left: 94px;
-  text-shadow: 1px 1px 1px #0000003b;
-  top: -1px;
-}
-
 #titleVersion {
   font-family: MavenPro;
   font-size: 17px;
@@ -693,4 +679,29 @@ div::-webkit-scrollbar-thumb {
 input[type=radio] {
   transform: scale(1.5);
   margin-right: 7px;
+}
+
+#mainMenuTitle {
+  font-family: Monoton;
+  font-size: 34px;
+  text-shadow: 1px 1px 1px #0000003b;
+  left: 60%;
+  transform: translate(-50%);
+  top: -1px;
+}
+
+.mainMenuButton {
+  font-size: 18px;
+  margin: 6px 0px 0px 0px;
+  padding: 3px !important;
+  width: 270px;
+}
+
+#mainMenuContents {
+  display: flex;
+  flex-direction: column;
+  left: 50%;
+  transform: translate(-50%);
+  position: absolute;
+  top: 47px;
 }

@@ -46,7 +46,8 @@ class Tools
         (params.className != null ? params.className : 'uiButton');
       if (params.fontSize != null)
         b.style.fontSize = params.fontSize + 'px';
-      b.style.position = 'absolute';
+      if (!params.flow)
+        b.style.position = 'absolute';
       if (params.w != null)
         b.style.width = params.w + 'px';
       if (params.h != null)
@@ -246,6 +247,7 @@ typedef _ButtonParams = {
   var h: Int;
   var x: Int;
   var y: Int;
+  @:optional var flow: Bool;
   @:optional var fontSize: Int;
   var container: DivElement; 
   @:optional var func: Dynamic -> Void; 

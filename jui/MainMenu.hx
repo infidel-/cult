@@ -11,11 +11,11 @@ class MainMenu extends Window
   public function new(uivar: UI, gvar: Game)
     {
 #if electron
-      var h = 324;
+      var h = 244;
 #else
-      var h = 280;
+      var h = 200;
 #end
-      super(uivar, gvar, 'mainMenu', 420, h, 20);
+      super(uivar, gvar, 'mainMenu', 330, h, 20);
 
       Tools.label({
         id: 'mainMenuTitle',
@@ -28,26 +28,26 @@ class MainMenu extends Window
         container: window
       });
 
-      var x = (UI.classicMode ? 26 : 36);
-      var y = (UI.classicMode ? 40 : 47);
-      var d = (UI.classicMode ? 38 : 40);
+      var contents: DivElement = cast Browser.document.createElement("div");
+      contents.id = 'mainMenuContents';
+      window.appendChild(contents);
 
       // main menu contents
-      Tools.button({
+      var b = Tools.button({
         id: 'newGame',
         text: "NEW GAME",
         className: 'uiButton statusButton mainMenuButton',
         w: null,
         h: null,
-        x: x,
-        y: y,
-        container: window,
+        x: null,
+        y: null,
+        flow: true,
+        container: contents,
         func: function(event)
           {
             ui.newGameMenu.show();
           }
       });
-      y += d;
 
       Tools.button({
         id: 'customGame',
@@ -55,12 +55,12 @@ class MainMenu extends Window
         className: 'uiButton statusButton mainMenuButton',
         w: null,
         h: null,
-        x: x,
-        y: y,
-        container: window,
+        x: null,
+        y: null,
+        flow: true,
+        container: contents,
         func: onCustomGame
       });
-      y += d;
 
       Tools.button({
         id: 'customGame',
@@ -68,12 +68,12 @@ class MainMenu extends Window
         className: 'uiButton statusButton mainMenuButton',
         w: null,
         h: null,
-        x: x,
-        y: y,
-        container: window,
+        x: null,
+        y: null,
+        flow: true,
+        container: contents,
         func: onMultiplayerGame
       });
-      y += d;
 
 #if electron
       Tools.button({
@@ -82,9 +82,10 @@ class MainMenu extends Window
         className: 'uiButton statusButton mainMenuButton',
         w: null,
         h: null,
-        x: x,
-        y: y,
-        container: window,
+        x: null,
+        y: null,
+        flow: true,
+        container: contents,
         func: onExit
       });
 #end
