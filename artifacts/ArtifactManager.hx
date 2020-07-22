@@ -33,6 +33,7 @@ class ArtifactManager
 // get total number of artifacts ingame
   public function getTotalArtifacts(): Int
     {
+      // NOTE: in multiplayer we do not calculate the artifacts number with all player cults
       var cnt = game.player.artifacts.length;
       for (n in game.nodes)
         if (n.type == 'artifact')

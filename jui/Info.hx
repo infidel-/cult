@@ -66,7 +66,9 @@ class Info extends Window
                 s += " <span class=cultInfoInv3>&lt;Hidden&gt;</span>";
               s += '<br>';
             }
-          if (Game.isDebug && p.investigatorTimeout > 0 && p.isInfoKnown[game.player.id])
+          if (Game.isDebug &&
+              p.investigatorTimeout > 0 &&
+              p.isInfoKnown[game.player.id])
             s += " Investigator timeout: " + p.investigatorTimeout + "<br>";
 
           // debug info
@@ -100,7 +102,8 @@ class Info extends Window
             }
 
           // artifacts
-          if (game.flags.artifacts && !p.isAI)
+          if (game.flags.artifacts && !p.isAI &&
+              p.isInfoKnown[game.player.id])
             s += ui.artifacts.getInfoString(p);
 
           // description

@@ -37,8 +37,7 @@ class ArtSearchTask extends Task
 // chance of finding artifact
   public override function getDebugName(sect: Sect): String
     {
-      return ' (' + getChance(sect) + '%)';
-
+      return ' (' + Std.int(getChance(sect)) + '%)';
     }
 
   public function getChance(sect: Sect): Float

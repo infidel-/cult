@@ -52,7 +52,7 @@ class Game
 
         artifacts: false,
       };
-      flags = Reflect.copy(flagDefaults);
+      resetFlags();
       ui = new UI(this);
       options = new Options(this, ui);
       // update player options from config
@@ -86,6 +86,12 @@ class Game
       isFinished = true;
       isTutorial = false;
       this.turns = 0;
+    }
+
+// reset game flags
+  public inline function resetFlags()
+    {
+      flags = Reflect.copy(flagDefaults);
     }
 
 // init game

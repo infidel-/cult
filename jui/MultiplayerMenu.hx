@@ -2,6 +2,7 @@
 
 import js.html.DivElement;
 import js.html.Element;
+import Flags;
 
 class MultiplayerMenu extends Window
 {
@@ -156,7 +157,7 @@ class MultiplayerMenu extends Window
       var dif: Dynamic = { level: -1 };
 
       // get difficulty level
-      var level = getInfoValue(difElementInfo[2]);
+      var level: Int = getInfoValue(difElementInfo[2]);
 
       // copy over stuff from this difficulty level
       for (f in Reflect.fields(Static.difficulty[level]))
@@ -224,6 +225,13 @@ class MultiplayerMenu extends Window
       if (dif.numCults > 8)
         dif.numCults = 8;
 
+      // artifacts and dependent flags
+      game.resetFlags();
+      game.flags.artifacts = getInfoValue(difElementInfo[4]);
+      if (game.flags.artifacts)
+        for (f in FlagStatic.autoOn['artifacts'])
+          Reflect.setField(game.flags, f, true);
+
       ui.newGame(-1, dif);
       onClose(null);
       ui.mainMenu.onClose(null);
@@ -274,6 +282,13 @@ class MultiplayerMenu extends Window
       value: null,
       title: 'Map size',
       params: [ 'Small', 'Medium', 'Large', 'Huge' ]
+    },
+    {
+      name: 'artifacts',
+      type: 'bool',
+      value: null,
+      title: 'Artifacts of the Arcane',
+      params: null,
     },
   ];
 }
