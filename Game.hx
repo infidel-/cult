@@ -346,7 +346,7 @@ class Game
           cnt++;
           if (cnt > 100)
             {
-              trace('could not spawn node');
+//              trace('could not spawn node, quad ' + quad);
               return null;
             }
 

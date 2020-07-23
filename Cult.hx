@@ -1464,7 +1464,7 @@ class Cult
 
 
 // add message to log panel (short)
-  public inline function logPanelShort(s: String, ?params:Dynamic = null)
+  public inline function logPanelShort(s: String, ?params:LogPanelMessageParams = null)
     {
       logPanel({
         id: -1,
@@ -1557,14 +1557,17 @@ class Cult
 
 // log panel message type
 
-typedef LogPanelMessage =
-{
+typedef LogPanelMessage = {
   var id: Int; // message id
   var old: Bool; // message old?
   var type: String; // message type (cult, cults, etc)
   var text: String; // message text
   var obj: Dynamic; // message object (origin etc)
   var turn: Int; // turn on which message appeared
-  var params: Dynamic; // additional message parameters
+  var params: LogPanelMessageParams; // additional message parameters
+};
+typedef LogPanelMessageParams = {
+  @:optional var symbol: String;
+  @:optional var color: String;
 };
 

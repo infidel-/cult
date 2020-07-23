@@ -65,7 +65,10 @@ class ArtSearchTask extends Task
 
       var m = sect.name + ' has uncovered the location of an occult artifact.';
       cult.log(m);
-      cult.logPanelShort(m, { symbol: 'A' });
+      cult.logPanelShort(m, {
+        symbol: 'A',
+        color: UI.getVar('--artifact-color'),
+      });
 
       // spawn artifact
       game.artifacts.spawn();

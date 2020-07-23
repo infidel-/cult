@@ -91,15 +91,28 @@ class ArtifactManager
           return;
         }
 
-      // find free position in random quad
-      var pos = game.findFreeSpotQuad(quads[Std.random(quads.length)],
-        UI.vars.markerWidth);
-//      var pos = game.findFreeSpot(UI.vars.markerWidth);
+      // find free position in random quad (go through more quads if needed)
+      var pos = null;
+      var tries = 0;
+      while (true)
+        {
+          var q = quads[Std.random(quads.length)];
+          tries++;
+          pos = game.findFreeSpotQuad(q, UI.vars.markerWidth);
+          if (pos != null)
+            break;
+
+          quads.remove(q);
+          if (quads.length == 0)
+            break;
+        }
       if (pos == null)
         {
           trace('BUG: no free spot');
           return;
         }
+      if (tries > 1)
+        trace('Tries: ' + tries);
 
       // node attributes
       var node = new ArtifactNode(game, ui, pos.x, pos.y,

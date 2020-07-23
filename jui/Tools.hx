@@ -133,8 +133,8 @@ class Tools
       var y = Std.int((Browser.window.innerHeight - params.h) / 2);
       if (params.z == null)
         params.z = 10;
-      if (UI.modernMode)
-        params.h += 16;
+      // old kludge
+      params.h += 16;
       if (params.border == null)
         params.border = true;
 

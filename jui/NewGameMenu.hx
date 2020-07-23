@@ -201,8 +201,10 @@ class NewGameMenu extends Window
 // start for real
   function onNewGameReal(dif: Int)
     {
+/*
       trace(dif);
       trace(game.flags);
+*/
       ui.mainMenu.onClose(null);
       onClose(null);
       ui.newGame(dif);

@@ -648,7 +648,7 @@ div::-webkit-scrollbar-thumb {
   display: inline-block;
   cursor: pointer;
   font-size: 15px;
-  padding: 0 4 0 4;
+  padding: 0 4px 0 4px;
   text-shadow: 1px 1px 1px #404040;
   width: 10px;
 }

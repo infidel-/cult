@@ -61,6 +61,12 @@ class UINode
           text = Game.powerShortNames[4];
           textColor = UI.getVar('--power-color-4');
         }
+      if (node.type == 'artifact')
+        {
+          isI = false;
+          text = 'A';
+          textColor = UI.getVar('--artifact-color');
+        }
 
       // get bg and node char
       if (node.owner != null)
@@ -153,6 +159,11 @@ class UINode
           // paint node symbol
           ctx.fillStyle = textColor;
           ctx.fillText(text, tx, ty);
+          if (node.type == 'artifact')
+            {
+              var art: artifacts.ArtifactNode = cast node;
+              ctx.fillText('' + art.turns, tx + 15, ty + 8);
+            }
         }
       else
         {

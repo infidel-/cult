@@ -35,6 +35,9 @@ class ArtifactNode extends Node
       // remove from map
       game.removeNode(this);
 
-      ui.logGlobal('The location of ' + name + ' has been obscured again.', { symbol: 'A' });
+      ui.logGlobal('The location of ' + name + ' has been obscured again.', {
+        symbol: 'A',
+        color: UI.getVar('--artifact-color'),
+      });
     }
 }

@@ -25,7 +25,7 @@
   --close-button-bottom: 6px;
   --alert-window-min-height: 105;
   --alert-window-height-2lines: 120;
-  --artifact-color: #ff9999;
+  --artifact-color: #de39f9;
   --artifact-timer-color: #402b2b;
   --artifact-timer-shadow: #84aa9d;
   --fluff-color: #c37402;
@@ -475,8 +475,11 @@ legend {
   background:#222;
   border:1px solid #777;
   cursor: pointer;
+  display: inline-block;
   font-size: 10px;
   font-weight: bold;
+  padding: 0 2px 0 2px;
+  width: 8px;
 }
 
 .fluff {
@@ -509,8 +512,8 @@ input[type=radio] {
 }
 
 #mainMenuTitle {
-  top: 10px;
-  left: 60%;
+  top: 6px;
+  left: 65%;
   transform: translate(-50%);
 }
 
@@ -527,5 +530,5 @@ input[type=radio] {
   left: 50%;
   transform: translate(-50%);
   position: absolute;
-  top: 47px;
+  top: 29px;
 }

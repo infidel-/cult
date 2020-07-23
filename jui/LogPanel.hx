@@ -50,6 +50,8 @@ class LogPanel
 
       for (m in game.player.logPanelMessages)
         {
+          if (m.params == null)
+            m.params = {};
           // choose symbol/color pair
           var sym = '';
           var col = (UI.modernMode ? '#d6d6d6' : '#303030');
@@ -67,8 +69,8 @@ class LogPanel
               sym = "<span class=shadow style='color:" + UI.vars.lineColors[cult.id] + "'>" + ch + "</span>" +
                 "<span class=shadow style='color:" + UI.vars.lineColors[cult2.id] + "'>" + ch + "</span>";
             }
-          if (m.params != null && m.params.symbol != null)
-             sym = m.params.symbol;
+          if (m.params.symbol != null)
+            sym = m.params.symbol;
 
           // create element
           var e = Browser.document.createDivElement();
@@ -79,7 +81,8 @@ class LogPanel
           e.style.background = col;
           untyped e.messageID = m.id;
           e.style.top = '' + (list.length * 22);
-//          e.style.color = col;
+          if (m.params.color != null)
+            e.style.color = m.params.color;
           e.innerHTML = sym;
           panel.appendChild(e);
 
