@@ -41,7 +41,9 @@ class Manual extends Window
                 s.add('<ul>');
               isList = true;
               s.add('<li>');
-              s.add(l.substring(3));
+              if (l.indexOf('_') >= 0 || l.indexOf('**') >= 0)
+                parseDecoration(s, l.substring(3));
+              else s.add(l.substring(3));
               continue;
             }
           else if (isList)
@@ -57,7 +59,8 @@ class Manual extends Window
               while (l.charAt(firstIndex) == '#')
                 firstIndex++;
 
-              s.add('<h' + firstIndex + ' id=h' + headerCnt + '>');
+              s.add('<h' + firstIndex + ' id=h' + headerCnt +
+              " style='font-weight:900'>");
               
               var lastIndex = l.length - 1;
               while (l.charAt(lastIndex) == '#')
@@ -78,50 +81,56 @@ class Manual extends Window
               continue;
             }
 
+          s.add('<p>');
           if (l.indexOf('_') >= 0 || l.indexOf('**') >= 0)
-            {
-              var i = 0;
-              var isBold = false;
-              var isItalic = false;
-              var isList = false;
-              while (i < l.length)
-                {
-                  var ch = l.charAt(i);
-                  // italic
-                  if (ch == '_')
-                    {
-                      isItalic = !isItalic;
-                      if (isItalic)
-                        s.add('<i>');
-                      else s.add('</i>');
-                    }
-
-                  // bold
-                  else if (ch == '*' && i < l.length - 1 && l.charAt(i + 1) == '*')
-                    {
-                      isBold = !isBold;
-                      if (isBold)
-                        s.add('<b>');
-                      else s.add('</b>');
-                      i++;
-                    }
-                  else s.add(ch);
-
-                  i++;
-                }
-            }
+            parseDecoration(s, l);
 
           else
             {
               s.add(l);
-              s.add('<br>');
+//              s.add('<br>');
             }
+          s.add('</p>');
         }
       text.innerHTML = contents.toString() + s.toString();
       text.scrollTop = 0;
 #end
     }
 
+// parse line for font decoration tags
+  function parseDecoration(s: StringBuf, l: String)
+    {
+      var i = 0;
+      var isBold = false;
+      var isItalic = false;
+      var isList = false;
+      while (i < l.length)
+        {
+          var ch = l.charAt(i);
+          // italic
+          if (ch == '_')
+            {
+              isItalic = !isItalic;
+              if (isItalic)
+                s.add('<i>');
+              else s.add('</i>');
+            }
+
+          // bold
+          else if (ch == '*' && i < l.length - 1 &&
+              l.charAt(i + 1) == '*')
+            {
+              isBold = !isBold;
+              if (isBold)
+                s.add("<span style='font-weight:900'>");
+              else s.add('</span>');
+              i++;
+            }
+          else s.add(ch);
+
+          i++;
+        }
+    }
 
 // show log
   override function onShow()
