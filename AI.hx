@@ -48,7 +48,7 @@ class AI extends Cult
       if (hasInvestigator && adepts > 0)
         {
           // try to lower awareness even using virgins
-          if (awareness >= difficulty.maxAwareness)
+          if (awareness >= difficulty.maxAwarenessAI)
             aiLowerAwarenessHard();
 
           // try to destroy investigator
@@ -74,9 +74,19 @@ class AI extends Cult
       aiSummon();
 
       // if awareness is too high, stop here
-      if (awareness > difficulty.maxAwareness && adepts > 0)
+      if (awareness > difficulty.maxAwarenessAI && adepts > 0)
         return;
 
+      // try to gain some nodes if possible
+      aiGainNodes();
+
+      // during the final ritual AIs will try to make peace
+      aiTryPeace();
+    }
+
+// try to gain some nodes
+  function aiGainNodes()
+    {
       // TODO: point-based weighted prioritization raises some thoughts
       // about current AI
       // "mood". Is it in an aggressive mood? +1 for any owned node
@@ -84,14 +94,22 @@ class AI extends Cult
       // give/take a point for each node attribute, storing the result
 
       // loop over visible nodes making a target list with priority
-      var list = new Array<Dynamic>();
+      var list = [];
+      var listYummy = [];
       for (node in game.nodes)
         {
           if (node.owner == this || !node.isVisible(this) ||
               (node.owner != null && node.owner.isDebugInvisible))
             continue;
 
-          var item = { node: node, priority: 0 };
+          var item = {
+            node: node,
+            priority: 0,
+            isGenerator: node.isGenerator,
+            hasOwner: (node.owner != null),
+          };
+          if (item.isGenerator && !item.hasOwner)
+            listYummy.push(item);
 
           // priests are first priority when they are performing the final ritual
           if (node.owner != null && node.level == 2 &&
@@ -102,22 +120,25 @@ class AI extends Cult
           if (node.owner == null)
             item.priority++;
 
-          // enemy node
-          if (node.owner != null && wars[node.owner.id])
-            item.priority++;
+          // node has owner
+          if (node.owner != null)
+            {
+              // enemy node
+              if (wars[node.owner.id])
+                item.priority++;
 
-          // enemy node + enemy is in final ritual
-          else if (node.owner != null &&
-                   node.owner.isRitual && node.owner.ritual.id == "summoning")
-            item.priority += 2;
+              // owned node, no war
+              else item.priority--;
 
-          // owned node
-          else if (node.owner != null)
-            item.priority--;
+              // enemy node + enemy is in final ritual
+              if (node.owner.isRitual &&
+                  node.owner.ritual.id == "summoning")
+                item.priority += 2;
 
-          // lower priority more when having investigator
-          if (node.owner != null && hasInvestigator)
-             item.priority--;
+              // lower priority more when having investigator
+              if (hasInvestigator)
+                 item.priority--;
+            }
 
           // unprotected generators are always yummy
           if (node.isGenerator && !node.isProtected)
@@ -137,10 +158,41 @@ class AI extends Cult
         else if (x.priority > y.priority)
           return -1;
         else return 1;
-        });
+      });
 
-//      for (l in list)
-//        trace(id + " " + l.priority + " " + l.node.id);
+      if (Game.debugAI && id == 1)
+        {
+          trace('=== cult ' + id + ', ' + power + ' awareness:' + awareness);
+          for (l in listYummy)
+            trace("YUMMY prio:" + l.priority + " node:" + l.node.id);
+          for (l in list)
+            trace("prio:" + l.priority + " node:" + l.node.id);
+        }
+
+      // if we have especially yummy targets, i.e. free generators,
+      // pick the one with the highest priority and stockpile resources to grab it
+      if (listYummy.length > 0) 
+        {
+          // pick yummiest
+          var yummyItem = null;
+          var yummyPrio = 0;
+          for (item in listYummy)
+            if (item.priority > yummyPrio)
+              {
+                yummyItem = item;
+                yummyPrio = item.priority;
+              }
+
+          if (Game.debugAI && id == 1)
+            trace('stockpile for ' + yummyItem.node.id + ' ' +
+              yummyItem.node.power);
+          aiStockpile(yummyItem.node.power);
+          var ret = '';
+          if (canActivate(yummyItem.node))
+            ret = activate(yummyItem.node);
+          if (ret != 'ok')
+            return;
+        }
 
       // loop over target list activating it one by one
       for (item in list)
@@ -160,11 +212,39 @@ class AI extends Cult
           else if (ret == "hasLinks")
             1;
         }
-
-      // during the final ritual AIs will try to make peace
-      aiTryPeace();
     }
 
+// try to stockpile/convert resources efficiently to a given target
+  function aiStockpile(target: Array<Int>)
+    {
+      // form a list of indexes that
+      // a) ai does not have generators for
+      // b) not enough power yet
+      var indexes = [];
+      for (i in 0...target.length - 1)
+        if (target[i] > 0 && powerMod[i] == 0 && power[i] < target[i])
+          indexes.push(i);
+
+      // try to convert virgins into these resources
+      if (power[3] > 0)
+        for (idx in indexes)
+          while (power[3] > 0 && power[idx] < target[idx])
+            convert(3, idx);
+
+      // try to convert generated resources into needed ones
+      for (idx in indexes)
+        {
+          // already enough
+          if (power[idx] >= target[idx])
+            continue;
+
+          for (i in 0...power.length - 1)
+            if (i != idx && powerMod[i] > 0)
+              while (power[i] >= Game.powerConversionCost[i] &&
+                  power[idx] < target[idx])
+                convert(i, idx);
+        }
+    }
 
 // try to make peace with any not in ritual cults
   function aiTryPeace()
@@ -174,7 +254,7 @@ class AI extends Cult
       // check if any cult is in ritual
       var ok = false;
       for (c in game.cults)
-        if (c.isRitual)
+        if (c.isRitual && c.ritual.id == "summoning")
           {
             ok = true;
             break;
@@ -276,7 +356,7 @@ class AI extends Cult
 // try to lower awareness (virgins are not used)
   function aiLowerAwareness()
     {
-      if ((awareness < difficulty.maxAwareness && !hasInvestigator) ||
+      if ((awareness < difficulty.maxAwarenessAI && !hasInvestigator) ||
           (awareness < 5 && hasInvestigator) ||
           adepts == 0 || adeptsUsed >= adepts)
         return;
@@ -286,7 +366,7 @@ class AI extends Cult
       // spend all we have
       for (i in 0...Game.numPowers)
         while (power[i] > 0 && adeptsUsed < adepts &&
-               awareness >= difficulty.maxAwareness)
+               awareness >= difficulty.maxAwarenessAI)
           lowerAwareness(i);
 
       if (Game.debugAI && awareness != prevAwareness)

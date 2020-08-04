@@ -27,7 +27,7 @@ typedef DifficultyInfo = {
   var investigatorGainWill: Float; // higher value raises chance of investigator gaining will
   var investigatorCultSize: Float; // starting investigator willpower - cult size multiplier (less - easier)
 
-  var maxAwareness: Int; // max awareness for AI to have without using adepts
+  var maxAwarenessAI: Int; // max awareness for AI to have without using adepts
   var isInfoKnown: Bool; // is cult info for all cults known at start?
   var isOriginKnown: Bool; // is origin known for all cults at start?
   var isDiscovered: Bool; // are cults marked as discovered on start?
@@ -36,6 +36,7 @@ typedef DifficultyInfo = {
   var artifactMaxAmountIngame: Int; // max amount of artifacts in play
   var artifactBaseSpawnTime: Int; // base artifact time on map
   var artifactMaxUnique: Int; // max amount of unique artifacts for one cult 
+  var artifactPriestRitualPointsAI: Int; // amount of ritual points generated per priest by AI
 };
 
 
@@ -67,7 +68,7 @@ class Static
         investigatorTurnVisible: 0,
         investigatorGainWill: 0.50,
         investigatorCultSize: 0.05,
-        maxAwareness: 10,
+        maxAwarenessAI: 5, // reverse!
         isInfoKnown: true,
         isOriginKnown: true,
         isDiscovered: true,
@@ -75,6 +76,7 @@ class Static
         artifactMaxAmountIngame: 8,
         artifactBaseSpawnTime: 4,
         artifactMaxUnique: 3,
+        artifactPriestRitualPointsAI: 2, // reverse!
       },
 
       // normal
@@ -100,7 +102,7 @@ class Static
         investigatorTurnVisible: 10,
         investigatorGainWill: 0.75,
         investigatorCultSize: 0.1,
-        maxAwareness: 5,
+        maxAwarenessAI: 5,
         isInfoKnown: false,
         isOriginKnown: false,
         isDiscovered: false,
@@ -108,6 +110,7 @@ class Static
         artifactMaxAmountIngame: 6,
         artifactBaseSpawnTime: 2,
         artifactMaxUnique: 2,
+        artifactPriestRitualPointsAI: 2, // reverse!
       },
 
       // hard
@@ -133,7 +136,7 @@ class Static
         investigatorTurnVisible: 2000,
         investigatorGainWill: 1.0,
         investigatorCultSize: 0.15,
-        maxAwareness: 5,
+        maxAwarenessAI: 10, // reverse!
         isInfoKnown: false,
         isOriginKnown: false,
         isDiscovered: false,
@@ -141,6 +144,7 @@ class Static
         artifactMaxAmountIngame: 4,
         artifactBaseSpawnTime: 1,
         artifactMaxUnique: 1,
+        artifactPriestRitualPointsAI: 1, // reverse!
       },
 
       // test - 2 players multiplayer
@@ -166,7 +170,7 @@ class Static
         investigatorTurnVisible: 10,
         investigatorGainWill: 0.75,
         investigatorCultSize: 0.1,
-        maxAwareness: 5,
+        maxAwarenessAI: 5,
         isInfoKnown: false,
         isOriginKnown: false,
         isDiscovered: false,
@@ -174,6 +178,7 @@ class Static
         artifactMaxAmountIngame: 6,
         artifactBaseSpawnTime: 2,
         artifactMaxUnique: 2,
+        artifactPriestRitualPointsAI: 2, // reverse!
       },
     ];
 

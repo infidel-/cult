@@ -503,11 +503,13 @@ class Cult
         }
 
       investigator.lowerWillpower(1);
-      if (hasInvestigator)
-        ui.msg('Investigator willpower lowered.');
-      else ui.msg('The investigator disappeared.');
       if (!isAI)
-        ui.updateStatus();
+        {
+          if (hasInvestigator)
+            ui.msg('Investigator willpower lowered.');
+          else ui.msg('The investigator disappeared.');
+          ui.updateStatus();
+        }
     }
 
 
@@ -528,6 +530,8 @@ class Cult
 // convert resources
   public function convert(from: Int, to: Int)
     {
+      if (from == to)
+        return;
       if (power[from] < Game.powerConversionCost[from])
         {
 //          if (!isAI)

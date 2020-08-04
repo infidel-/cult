@@ -34,6 +34,8 @@ class CultArtifacts
 // ritual points
   public function getRitualPoints(): Int
     {
+      if (cult.isAI)
+        return cult.priests * cult.difficulty.artifactPriestRitualPointsAI;
       var pts = 0;
       for (a in storage)
         if (a.node != null)
@@ -44,6 +46,8 @@ class CultArtifacts
 // check if we can upgrade a priest
   public function canUpgrade(level: Int): Bool
     {
+      if (cult.isAI)
+        return true;
       if (level < 1)
         return true;
 
@@ -56,6 +60,8 @@ class CultArtifacts
 // upgrade a node
   public function onUpgrade(node: Node)
     {
+      if (cult.isAI)
+        return;
       // pick an artifact - highest level first
       var art: CultArtifact = null;
       for (a in storage)
@@ -82,7 +88,7 @@ class CultArtifacts
 // lose a node
   public function onLose(node: Node)
     {
-      if (node.artifact == null)
+      if (cult.isAI || node.artifact == null)
         return;
 
       cult.logAndPanel(node.artifact.name + ' is lost with the priest.',
