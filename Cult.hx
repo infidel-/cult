@@ -1223,6 +1223,10 @@ class Cult
             c.log(text);
             c.logPanel(m);
           }
+
+      if (!cult.isAI)
+        ui.alert(text,
+          { h: UI.getVarInt('--alert-window-height-2lines') });
     }
 
 

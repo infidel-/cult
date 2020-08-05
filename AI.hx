@@ -169,6 +169,29 @@ class AI extends Cult
             trace("prio:" + l.priority + " node:" + l.node.id);
         }
 
+      // special check - we might be out of options to expand due to resources
+      // in this case add the top list item to yummy list
+      if (listYummy.length == 0)
+        {
+          // check if we have generated resources for any node
+          var ok = false;
+          for (item in list)
+            for (i in 0...item.node.power.length)
+              if (item.node.power[i] > 0 && powerMod[i] > 0)
+                {
+                  ok = true;
+                  break;
+                }
+          if (!ok)
+            {
+              var item = list[0];
+              if (Game.debugAI)
+                trace(name + " FORCED YUMMY prio:" + item.priority +
+                  " node:" + item.node.id);
+              listYummy.push(item);
+            }
+        }
+
       // if we have especially yummy targets, i.e. free generators,
       // pick the one with the highest priority and stockpile resources to grab it
       if (listYummy.length > 0) 
