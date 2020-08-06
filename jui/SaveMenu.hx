@@ -204,8 +204,7 @@ class SaveMenu
         "&name=" + name +
         "&version=" + Game.version, false);
       var obj = game.save();
-      var str:String = untyped JSON.stringify(obj);
-//      var str = hxjson2.JSON.encode(obj);
+      var str = haxe.Json.stringify(obj);
 //      trace("length:" + str.length + " " + str);
       req.send(str);
       var text = req.responseText;

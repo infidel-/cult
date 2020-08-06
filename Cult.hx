@@ -2,6 +2,7 @@
 
 import Static;
 import sects.Sect;
+import _SaveGame;
 
 class Cult
 {
@@ -71,6 +72,8 @@ class Cult
       this.info = Static.cults[infoID];
       this.name = this.info.name;
       this.isAI = false;
+      this.isDead = false;
+      this.isParalyzed = false;
       this.highlightedNodes = new List<Node>();
       this.artifacts = new artifacts.CultArtifacts(game, ui, this);
       this.fluffShown = new Map();
@@ -102,84 +105,6 @@ class Cult
       this.logMessages = '';
       this.logMessagesTurn = '';
       this.logPanelMessages = new List();
-    }
-
-
-// load node info from json-object
-  public function load(c:Dynamic)
-    {
-      difficulty = Static.difficulty[c.dif];
-      isDead = (c.ide ? true : false);
-      isParalyzed = (c.ip ? true : false);
-      trace('TODO load isDiscovered isInfoKnown');
-//      isDiscovered = (c.idi ? true : false);
-//      isInfoKnown = (c.iin ? true : false);
-      power = c.p;
-      adeptsUsed = c.au;
-      investigatorTimeout = c.it;
-      if (c.inv != null)
-        {
-          hasInvestigator = true;
-          investigator = new Investigator(this, ui, game);
-          investigator.load(c.inv);
-        }
-      if (c.r != null)
-        {
-          isRitual = true;
-          ritualPoints = c.rp;
-          for (r in Static.rituals)
-            if (r.id == c.r)
-              ritual = r;
-        }
-      awareness = c.aw;
-      if (c.w != null)
-        {
-          var wlist:Array<Int> = c.w;
-          wars = [];
-          for (w in wlist)
-            wars.push(w == 1 ? true : false);
-        }
-    }
-
-
-// dump cult info for saving
-  public function save(): Dynamic
-    {
-      trace('TODO save isDiscovered isInfoKnown');
-      var obj:Dynamic = {
-        id: id,
-        iid: infoID,
-        dif: difficulty.level,
-        ia: (isAI ? 1 : 0),
-        ide: (isDead ? 1 : 0),
-        ip: (isParalyzed ? 1 : 0),
-//        idi: (isDiscovered ? 1 : 0),
-//        iin: (isInfoKnown ? 1 : 0),
-        p: power,
-        or: (origin != null ? origin.id : 0),
-        au: adeptsUsed,
-        it: investigatorTimeout
-        };
-      if (hasInvestigator)
-        obj.inv = investigator.save();
-      if (isRitual)
-        {
-          obj.r = ritual.id;
-          obj.rp = ritualPoints;
-        }
-      obj.aw = awareness;
-      var ww = [];
-      var savewars = false;
-      for (w in wars)
-        {
-          ww.push(w ? 1 : 0);
-          if (w)
-            savewars = true;
-        }
-      if (savewars)
-        obj.w = wars;
-
-      return obj;
     }
 
 
@@ -1532,6 +1457,70 @@ class Cult
       return cnt;
     }
 
+// dump cult info for saving
+  public function save(): _SaveCult
+    {
+      trace('TODO save isDiscovered isInfoKnown');
+      var obj: _SaveCult = {
+        id: id,
+        infoID: infoID,
+        difficulty: difficulty.level,
+        isAI: isAI,
+        isDead: isDead,
+        isParalyzed: isParalyzed,
+//        idi: (isDiscovered ? 1 : 0),
+//        iin: (isInfoKnown ? 1 : 0),
+        power: power,
+        origin: (origin != null ? origin.id : 0),
+        adeptsUsed: adeptsUsed,
+        investigatorTimeout: investigatorTimeout,
+        ritualPoints: 0,
+        awarenessMod: awarenessMod,
+        awarenessBase: awarenessBase,
+        wars: wars,
+      };
+      if (hasInvestigator)
+        obj.investigator = investigator.save();
+      if (isRitual)
+        {
+          obj.ritual = ritual.id;
+          obj.ritualPoints = ritualPoints;
+        }
+      return obj;
+    }
+
+// load node info from json-object
+  public function load(c: _SaveCult)
+    {
+      difficulty = Static.difficulty[c.difficulty];
+      isDead = c.isDead;
+      isParalyzed = c.isParalyzed;
+      trace('TODO load isDiscovered isInfoKnown');
+//      isDiscovered = (c.idi ? true : false);
+//      isInfoKnown = (c.iin ? true : false);
+      power = c.power;
+      adeptsUsed = c.adeptsUsed;
+      investigatorTimeout = c.investigatorTimeout;
+      if (c.investigator != null)
+        {
+          hasInvestigator = true;
+          investigator = new Investigator(this, ui, game);
+          investigator.load(c.investigator);
+        }
+      if (c.ritual != null)
+        {
+          isRitual = true;
+          ritualPoints = c.ritualPoints;
+          for (r in Static.rituals)
+            if (r.id == c.ritual)
+              ritual = r;
+        }
+      awarenessMod = c.awarenessMod;
+      awarenessBase = c.awarenessBase;
+      wars = c.wars;
+    }
+
+  // ============================================================
 
 // getters and setters for different numFollowers
   function get_neophytes()

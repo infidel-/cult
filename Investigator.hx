@@ -1,4 +1,5 @@
 // cult investigator class
+import _SaveGame;
 
 class Investigator
 {
@@ -33,29 +34,6 @@ class Investigator
       if (level > 2)
         level = 2;
     }
-
-
-// load info
-  public function load(obj: Dynamic)
-    {
-      name = obj.n;
-      will = obj.w;
-      level = obj.l;
-      isHidden = (obj.h == 1 ? true : false);
-    }
-
-
-// save info
-  public function save(): Dynamic
-    {
-      return {
-        n: name,
-        w: will,
-        l: level,
-        h: (isHidden ? 1 : 0)
-      };
-    }
-
 
 // investigator's turn
   public function turn()
@@ -237,5 +215,25 @@ class Investigator
         chance = 5;
 
       return chance;
+    }
+
+// save info
+  public function save(): _SaveInvestigator
+    {
+      return {
+        name: name,
+        will: will,
+        level: level,
+        isHidden: isHidden,
+      };
+    }
+
+// load info
+  public function load(obj: _SaveInvestigator)
+    {
+      name = obj.name;
+      will = obj.will;
+      level = obj.level;
+      isHidden = obj.isHidden;
     }
 }

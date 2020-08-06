@@ -2,6 +2,7 @@
 package artifacts;
 
 import artifacts.StaticArtifacts;
+import _SaveGame;
 
 class ArtifactNode extends Node
 {
@@ -39,5 +40,31 @@ class ArtifactNode extends Node
         symbol: 'A',
         color: UI.getVar('--artifact-color'),
       });
+    }
+
+// save
+  public override function save(): _SaveNode
+    {
+      var obj: _SaveArtifactNode = untyped super.save();
+      obj.turns = turns;
+      obj.artifactType = artifactType;
+      obj.artifactTypeID = artifactTypeID;
+      obj.isUnique = isUnique;
+      obj.artifactID = artifactID;
+      return untyped obj;
+    }
+
+// load
+  public override function load(o: _SaveNode)
+    {
+      super.load(o);
+      var obj: _SaveArtifactNode = untyped o;
+      turns = obj.turns;
+      artifactType = obj.artifactType;
+      artifactTypeID = obj.artifactTypeID;
+      isUnique = obj.isUnique;
+      artifactID = obj.artifactID;
+      if (isUnique)
+        artifactInfo = StaticArtifacts.uniqueArtifacts[artifactID];
     }
 }

@@ -1,6 +1,7 @@
 // node class
 
 import sects.Sect;
+import _SaveGame;
 
 class Node
 {
@@ -134,77 +135,6 @@ class Node
       powerGenerated[ii] = 1;
 
       setGenerator(true);
-    }
-
-
-// load node info from json-object
-  public function load(n:Dynamic)
-    {
-      power = n.p;
-      if (n.l != null)
-        level = n.l;
-      if (n.vis != null) // visibility
-        {
-          var vis:Array<Int> = n.vis;
-          visibility = [];
-          var i = 0;
-          for (v in vis)
-            {
-              visibility.push(v == 1 ? true : false);
-              if (v == 1)
-                uiNode.setVisible(game.cults[i], true);
-              i++;
-            }
-        }
-
-      if (n.o != null)
-        {
-          owner = game.cults[n.o];
-          owner.nodes.add(this);
-        }
-
-      if (n.pg != null)
-        {
-          isGenerator = true;
-          powerGenerated = n.pg;
-
-          // update power mod cache
-          if (owner != null)
-            for (i in 0...Game.numFullPowers)
-              owner.powerMod[i] += Math.round(powerGenerated[i]);
-        }
-    }
-
-
-// dump node info for saving (skip everything that's default)
-  public function save(): Dynamic
-    {
-      var obj:Dynamic = {
-        id: id,
-//        nm: name,
-//        j: job,
-        p: power,
-        x: x,
-        y: y,
-        };
-      if (owner != null)
-        obj.o = owner.id;
-      if (level > 0)
-        obj.l = level;
-      var vis = [];
-      var savevis = false;
-      for (v in visibility)
-        {
-          vis.push(v ? 1 : 0);
-          if (v)
-            savevis = true;
-        }
-      if (savevis)
-        obj.vis = vis;
-      if (isGenerator)
-        obj.pg = powerGenerated;
-
-      return obj;
     }
 
 
@@ -500,6 +430,85 @@ class Node
 
   public function turn()
     {}
+
+// dump node info for saving (skip everything that's default)
+  public function save(): _SaveNode
+    {
+      var obj: _SaveNode = {
+        id: id,
+        type: type,
+        name: name,
+        nation: nation,
+        job: job,
+        gender: gender,
+        jobID: jobID,
+        imageID: imageID,
+        power: power,
+        x: x,
+        y: y,
+        centerX: centerX,
+        centerY: centerY,
+        vis: visibility,
+        isKnown: isKnown, 
+        isTempGenerator: isTempGenerator,
+        isProtected: isProtected,
+        level: level,
+        owner: (owner != null ? owner.id : -1),
+        sect: (sect != null ? sect.id : -1),
+        artifact: -1,
+      };
+      if (isGenerator)
+        obj.powerGenerated = powerGenerated;
+      if (artifact != null)
+        for (idx in 0...owner.artifacts.list().length)
+          if (artifact == owner.artifacts.list()[idx])
+            {
+              obj.artifact = idx;
+              break;
+            }
+
+      return obj;
+    }
+
+// load node info from json-object
+  public function load(n: _SaveNode)
+    {
+      type = n.type;
+      name = n.name;
+      nation = n.nation;
+      job = n.job;
+      gender = n.gender;
+      jobID = n.jobID;
+      imageID = n.imageID;
+      power = n.power;
+      centerX = n.centerX;
+      centerY = n.centerY;
+      visibility = n.vis;
+      for (i in 0...n.vis.length)
+        if (n.vis[i])
+          uiNode.setVisible(game.cults[i], true);
+      isKnown = n.isKnown;
+      isTempGenerator = n.isTempGenerator;
+      isProtected = n.isProtected;
+      level = n.level;
+      if (n.owner >= 0)
+        {
+          owner = game.cults[n.owner];
+          owner.nodes.add(this);
+        }
+      if (n.powerGenerated != null)
+        {
+          isGenerator = true;
+          powerGenerated = n.powerGenerated;
+
+          // update power mod cache
+          if (owner != null)
+            for (i in 0...Game.numFullPowers)
+              owner.powerMod[i] += Math.round(powerGenerated[i]);
+        }
+      if (n.artifact >= 0)
+        artifact = owner.artifacts.list()[n.artifact];
+    }
 
   public function toString()
     {

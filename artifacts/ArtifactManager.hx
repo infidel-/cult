@@ -2,6 +2,7 @@
 package artifacts;
 
 import Static;
+import _SaveGame;
 
 class ArtifactManager
 {
@@ -248,5 +249,20 @@ class ArtifactManager
 // turn passing
   public function turn()
     {
+    }
+
+// save
+  public function save(): _SaveArtifacts
+    {
+      var obj: _SaveArtifacts = {
+        deleted: deleted,
+      }
+      return obj;
+    }
+
+// load
+  public function load(obj: _SaveArtifacts)
+    {
+      deleted = obj.deleted;
     }
 }

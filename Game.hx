@@ -2,6 +2,7 @@
 
 import js.Browser;
 import Static;
+import _SaveGame;
 
 @:expose
 class Game
@@ -394,109 +395,6 @@ class Game
     }
 
 
-// load game (flo)
-  public function load(save: Dynamic)
-    {
-      // clear everything
-      this.isFinished = false;
-      this.turns = 0;
-      ui.clearMap();
-      ui.clearLog();
-
-      this.lines = new List<Line>();
-      this.nodes = new Array<Node>();
-      this.cults = new Array<Cult>();
-
-      difficultyLevel = save.dif;
-      difficulty = Static.difficulty[difficultyLevel];
-      turns = save.turns;
-
-      // load cults
-      var savecults:Array<Dynamic> = save.cults;
-      for (c in savecults)
-        {
-          var cult = null;
-          if (c.ia == 0)
-            {
-              cult = new Cult(this, ui, c.id, c.iid);
-              player = cult;
-            }
-          else cult = new AI(this, ui, c.id, c.iid);
-          cult.load(c);
-          cults.push(cult);
-        }
-
-      //trace(obj);
-
-      // load nodes
-      var savenodes:Array<Dynamic> = save.nodes;
-//      this.lastNodeIndex = 0;
-      for (n in savenodes)
-        {
-          var node = new Node(this, ui, n.x, n.y, n.id);
-          node.load(n);
-          nodes.push(node);
-          if (node.owner == player)
-            node.isKnown[player.id] = true;
-        }
-      updateLinks(); // update adjacent node links
-
-      for (c in savecults) // misc cult info
-        for (cc in cults)
-          if (c.id == cc.id)
-            {
-              var n = getNode(c.or); // cult origin
-              if (n != null)
-                cc.origin = n;
-            }
-
-      for (n in nodes) // update node display
-        n.update();
-
-      // load lines
-      var savelines:Array<Dynamic> = save.lines;
-      for (l in savelines)
-        {
-          var startNode = getNode(l[0]);
-          var endNode = getNode(l[1]);
-          var cult = cults[l[2]];
-          var line = Line.create(ui, cult, startNode, endNode);
-          trace('TODO: load lines visibility bug!');
-//          if (l[3] == 1)
-//            line.setVisible(game.player, true);
-          lines.add(line);
-          startNode.lines.add(line);
-          endNode.lines.add(line);
-        }
-
-      ui.updateStatus();
-    }
-
-
-// save game (fsa)
-  public function save(): Dynamic
-    {
-      // TODO: save log? - possibly last 10 records
-      var save: Dynamic = {};
-      save.nodes = new Array<Dynamic>();
-      for (n in nodes)
-        save.nodes.push(n.save());
-      save.cults = new Array<Dynamic>();
-      for (c in cults)
-        save.cults.push(c.save());
-      save.lines = new Array<Dynamic>();
-      trace('TODO: save lines fail');
-/*
-      for (l in lines) // pack lines into int arrays
-        save.lines.push([ l.startNode.id, l.endNode.id, l.owner.id,
-          (l.isVisible ? 1 : 0) ]);
-*/
-      save.turns = turns;
-      save.dif = difficultyLevel;
-      return save;
-    }
-
-
 // get node by id
   public function getNode(id: Int): Node
     {
@@ -655,6 +553,110 @@ class Game
         trace(name + ": " + (Browser.window.performance.now() - timerTime) + "ms");
     }
 
+// save game (fsa)
+  public function save(): _SaveGame
+    {
+      // TODO: save log? - possibly last 10 records
+      var save: _SaveGame = {
+        mode: (UI.modernMode ? 'modern' : 'classic'),
+        date: DateTools.format(Date.now(), "%d %b %Y %H:%M:%S"),
+        version: Game.version,
+        currentPlayerID: currentPlayerID,
+        turns: turns,
+        difficulty: difficultyLevel,
+        artifacts: artifacts.save(),
+        flags: flags,
+        lastNodeIndex: lastNodeIndex,
+        cults: [],
+        nodes: [],
+        lines: [],
+      };
+      for (c in cults)
+        save.cults.push(c.save());
+      for (n in nodes)
+        save.nodes.push(n.save());
+      for (l in lines)
+        save.lines.push({
+          start: l.startNode.id,
+          end: l.endNode.id,
+          owner: l.owner.id,
+          vis: l.visibility,
+        });
+      return save;
+    }
+
+// load game (flo)
+  public function load(save: _SaveGame)
+    {
+      // clear everything
+      this.isFinished = false;
+      this.turns = 0;
+      ui.clearMap();
+      ui.clearLog();
+      this.lines = new List<Line>();
+      this.nodes = new Array<Node>();
+      this.cults = new Array<Cult>();
+
+      // load
+      currentPlayerID = save.currentPlayerID;
+      turns = save.turns;
+      difficultyLevel = save.difficulty;
+      difficulty = Static.difficulty[difficultyLevel];
+      artifacts.load(save.artifacts);
+      flags = save.flags;
+      lastNodeIndex = save.lastNodeIndex;
+
+      // load cults
+      for (c in save.cults)
+        {
+          var cult = null;
+          if (!c.isAI)
+            {
+              cult = new Cult(this, ui, c.id, c.infoID);
+              player = cult;
+            }
+          else cult = new AI(this, ui, c.id, c.infoID);
+          cult.load(c);
+          cults.push(cult);
+        }
+      //trace(obj);
+
+      // load nodes
+      for (n in save.nodes)
+        {
+          var node = new Node(this, ui, n.x, n.y, n.id);
+          node.load(n);
+          nodes.push(node);
+        }
+      updateLinks(); // update adjacent node links
+
+      for (c in save.cults) // misc cult info
+        for (cc in cults)
+          if (c.id == cc.id)
+            {
+              var n = getNode(c.origin); // cult origin
+              if (n != null)
+                cc.origin = n;
+            }
+
+      for (n in nodes) // update node display
+        n.update();
+
+      // load lines
+      for (l in save.lines)
+        {
+          var startNode = getNode(l.start);
+          var endNode = getNode(l.end);
+          var cult = cults[l.owner];
+          var line = Line.create(ui, cult, startNode, endNode);
+          line.visibility = l.vis;
+          lines.add(line);
+          startNode.lines.add(line);
+          endNode.lines.add(line);
+        }
+
+      ui.updateStatus();
+    }
 
 // main function
   static var instance: Game;

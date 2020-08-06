@@ -4,14 +4,19 @@ import js.Browser;
 import js.html.DivElement;
 #if electron
 import electron.renderer.Remote;
+import haxe.Json;
+import js.node.Fs;
 #end
+
 
 class MainMenu extends Window
 {
+  var saveButton: DivElement;
+
   public function new(uivar: UI, gvar: Game)
     {
 #if electron
-      var h = 284;
+      var h = 354;
 #else
       var h = 200;
 #end
@@ -75,6 +80,32 @@ class MainMenu extends Window
       });
 
       Tools.button({
+        id: 'loadGame',
+        text: "LOAD GAME",
+        className: 'uiButton statusButton mainMenuButton',
+        w: null,
+        h: null,
+        x: null,
+        y: null,
+        flow: true,
+        container: contents,
+        func: onLoadGame
+      });
+
+      saveButton = Tools.button({
+        id: 'saveGame',
+        text: "SAVE GAME",
+        className: 'uiButton statusButton mainMenuButton',
+        w: null,
+        h: null,
+        x: null,
+        y: null,
+        flow: true,
+        container: contents,
+        func: onSaveGame
+      });
+
+      Tools.button({
         id: 'optionsMenu',
         text: "OPTIONS",
         className: 'uiButton statusButton mainMenuButton',
@@ -127,30 +158,6 @@ class MainMenu extends Window
         func: onJoinMult
         });
 */
-
-//      saveButton = { style: {} };
-/*
-      Tools.button({
-        id: 'loadGame',
-        text: "LOAD GAME",
-        w: 350,
-        h: 30,
-        x: x,
-        y: 160,
-        container: window,
-        func: onLoadGame
-        });
-      saveButton = Tools.button({
-        id: 'saveGame',
-        text: "SAVE GAME",
-        w: 350,
-        h: 30,
-        x: x,
-        y: 200,
-        container: window,
-        func: onSaveGame
-        });
-*/
     }
 
 
@@ -158,6 +165,10 @@ class MainMenu extends Window
     {
       close.style.visibility =
         (game.isNeverStarted ? 'hidden' : 'visible');
+      if (game.isNeverStarted || game.isFinished)
+        saveButton.className = 'uiButtonDisabled statusButton mainMenuButton';
+      else saveButton.className = 'uiButton statusButton mainMenuButton';
+
     }
 
 
@@ -197,7 +208,18 @@ class MainMenu extends Window
 // save game menu
   function onSaveGame(event: Dynamic)
     {
-      ui.saveMenu.show();
+      if (game.isNeverStarted || game.isFinished)
+        return;
+
+#if electron
+      var name = Date.now().toString();
+      var obj = game.save();
+      var str = Json.stringify(obj, null, '  ');
+      var file = 'save.json';
+      Fs.writeFileSync(file, str, 'utf8');
+      trace('game saved to ' + file);
+#end
+//      ui.saveMenu.show();
       onClose(null);
     }
 
@@ -331,15 +353,15 @@ class MainMenu extends Window
           game.flags.artifacts = true;
           game.restart();
         }
-/*
+
       // load game
       else if (e.keyCode == 52) // 4
         onLoadGame(null);
 
       // save game
-      else if (e.keyCode == 53) // 5
+      else if (e.keyCode == 53 && !game.isNeverStarted) // 5
         onSaveGame(null);
-*/
+
       // exit menu
       else if (e.keyCode == 27 && !game.isNeverStarted) // ESC
         onClose(null);
