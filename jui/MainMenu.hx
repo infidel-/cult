@@ -200,7 +200,15 @@ class MainMenu extends Window
 // load game menu
   function onLoadGame(event: Dynamic)
     {
-      ui.loadMenu.show();
+#if electron
+      var file = 'save.json';
+      var str = Fs.readFileSync(file, 'utf8');
+      var obj = Json.parse(str);
+      game.load(obj);
+      trace('game loaded from ' + file);
+#end
+
+//      ui.loadMenu.show();
       onClose(null);
     }
 

@@ -3,6 +3,7 @@
 import js.Browser;
 import Static;
 import _SaveGame;
+import sects.Sect;
 
 @:expose
 class Game
@@ -83,10 +84,17 @@ class Game
 #if mydebug
       isDebug = true;
 #end
+      // NOTE: most of these are for loading the game from the main menu
       isNeverStarted = true;
       isFinished = true;
       isTutorial = false;
-      this.turns = 0;
+      turns = 0;
+      lines = new List<Line>();
+      nodes = new Array<Node>();
+      cults = new Array<Cult>();
+      lastCultID = 0;
+      difficulty = Static.difficulty[0];
+      tutorial = new Tutorial(this, ui);
     }
 
 // reset game flags
@@ -141,8 +149,8 @@ class Game
       if (difficultyLevel >= 0)
         difficulty = Static.difficulty[difficultyLevel];
       else difficulty = newDif; // custom difficulty
-      this.isFinished = false;
-      this.turns = 0;
+      isFinished = false;
+      turns = 0;
       ui.map.initMinimap();
       ui.clearMap();
       ui.clearLog();
@@ -151,10 +159,10 @@ class Game
       if (isDebug)
         trace('nodeActivationRadius: ' + difficulty.nodeActivationRadius);
 
-      this.lines = new List<Line>();
-      this.nodes = new Array<Node>();
-      this.cults = new Array<Cult>();
-      this.lastCultID = 0;
+      lines = new List<Line>();
+      nodes = new Array<Node>();
+      cults = new Array<Cult>();
+      lastCultID = 0;
 
       // clear cults
       var cultInfo = new Array<Int>();
@@ -556,7 +564,6 @@ class Game
 // save game (fsa)
   public function save(): _SaveGame
     {
-      // TODO: save log? - possibly last 10 records
       var save: _SaveGame = {
         mode: (UI.modernMode ? 'modern' : 'classic'),
         date: DateTools.format(Date.now(), "%d %b %Y %H:%M:%S"),
@@ -588,14 +595,20 @@ class Game
 // load game (flo)
   public function load(save: _SaveGame)
     {
-      // clear everything
-      this.isFinished = false;
-      this.turns = 0;
+      // clear everything (first fake-end the game to disable map paints)
+      isFinished = true;
+      isNeverStarted = true;
+      isTutorial = false;
+      turns = 0;
+      ui.map.initMinimap();
       ui.clearMap();
       ui.clearLog();
-      this.lines = new List<Line>();
-      this.nodes = new Array<Node>();
-      this.cults = new Array<Cult>();
+      lines = new List<Line>();
+      nodes = new Array<Node>();
+      cults = new Array<Cult>();
+      isFinished = false;
+      isNeverStarted = false;
+      ui.logConsole.resize();
 
       // load
       currentPlayerID = save.currentPlayerID;
@@ -630,14 +643,29 @@ class Game
         }
       updateLinks(); // update adjacent node links
 
-      for (c in save.cults) // misc cult info
-        for (cc in cults)
-          if (c.id == cc.id)
+      // misc cult info - needs nodes loaded
+      for (c in save.cults)
+        {
+          // set cult origin
+          for (cc in cults)
+            if (c.id == cc.id)
+              {
+                var n = getNode(c.origin);
+                if (n != null)
+                  cc.origin = n;
+              }
+
+          // load sects
+          for (s in c.sects)
             {
-              var n = getNode(c.origin); // cult origin
-              if (n != null)
-                cc.origin = n;
+              var node = getNode(s.leader);
+              var cult = cults[c.id];
+              var sect = new Sect(this, ui, node, cult);
+              cult.sects.add(sect);
+              node.sect = sect;
+              sect.load(s);
             }
+        }
 
       for (n in nodes) // update node display
         n.update();
@@ -655,6 +683,10 @@ class Game
           endNode.lines.add(line);
         }
 
+      freeQuadrants = Static.getQuadrants(difficulty, 2);
+      mapQuadrants8x8 = Static.getQuadrants(difficulty, 8);
+      ui.map.center(player.origin.x, player.origin.y);
+      ui.logPanel.paint();
       ui.updateStatus();
     }
 

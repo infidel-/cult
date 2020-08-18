@@ -454,7 +454,7 @@ class Node
         isProtected: isProtected,
         level: level,
         owner: (owner != null ? owner.id : -1),
-        sect: (sect != null ? sect.id : -1),
+        // NOTE: sect link is restored in Sect.hx
         artifact: -1,
       };
       if (isGenerator)

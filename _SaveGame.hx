@@ -1,3 +1,5 @@
+import Cult;
+
 typedef _SaveGame = {
   var version: String;
   var mode: String;
@@ -34,7 +36,6 @@ typedef _SaveNode = {
   var isProtected: Bool; // node protected by neighbours?
   var level: Int;
   var owner: Int;
-  var sect: Int;
   var artifact: Int;
 }
 
@@ -49,19 +50,46 @@ typedef _SaveCult = {
   var id: Int;
   var infoID: Int;
   var difficulty: Int;
+  var isInfoKnown: Array<Bool>;
+  var isDiscovered: Array<Bool>;
   var isAI: Bool;
   var isDead: Bool;
   var isParalyzed: Bool;
-  var power: Array<Int>;
-  var origin: Int;
-  var adeptsUsed: Int;
-  var investigatorTimeout: Int;
-  @:optional var investigator: _SaveInvestigator;
+  var paralyzedTurns: Int;
   @:optional var ritual: String;
   var ritualPoints: Int;
   var awarenessMod: Int;
   var awarenessBase: Int;
+  var power: Array<Int>;
   var wars: Array<Bool>;
+  var origin: Int;
+  var adeptsUsed: Int;
+  var sects: Array<_SaveSect>;
+  var investigatorTimeout: Int;
+  @:optional var investigator: _SaveInvestigator;
+  var logMessages: String;
+  var logMessagesTurn: String;
+  //var logPanelMessages: Array<_SaveMessage>;
+  var logPanelMessages: Array<LogPanelMessage>;
+  var artifacts: _SaveCultArtifacts;
+  var fluffShown: Array<String>;
+}
+
+typedef _SaveSect = {
+  var id: Int;
+  var name: String;
+  var leader: Int;
+  var cult: Int;
+  var size: Int;
+  var level: Int;
+  var isAdvisor: Bool;
+  var isDevoted: Bool;
+  var task: String;
+  var taskPoints: Int;
+  var taskTarget: Int;
+  var taskImportant: Bool;
+  var powerID: Int;
+  var powerStorage: Int;
 }
 
 typedef _SaveInvestigator = {
@@ -69,6 +97,18 @@ typedef _SaveInvestigator = {
   var will: Int;
   var level: Int;
   var isHidden: Bool;
+}
+
+typedef _SaveCultArtifacts = {
+  var storage: Array<_SaveCultArtifact>;
+}
+
+typedef _SaveCultArtifact = {
+  var name: String;
+  var id: String;
+  var level: Int;
+  var isUnique: Bool;
+  var node: Int;
 }
 
 typedef _SaveArtifacts = {

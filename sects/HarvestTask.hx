@@ -34,8 +34,9 @@ class HarvestTask extends Task
     {
       cult.removeSect(sect.leader, null);
       var text = '';
+      var textFull = '';
       if (!cult.fluffShown['sectHarvested'])
-        text += '<h2>SECT HARVESTED</h2><div class=fluff>' +
+        textFull = '<h2>SECT HARVESTED</h2><div class=fluff>' +
           Static.templates['sectHarvested'] + '</div><br>';
       text += sect.name + ' was harvested for ';
       var val = res[sect.level];
@@ -44,9 +45,10 @@ class HarvestTask extends Task
         id = 3;
       text += val + ' ' + UI.powerName(id) + '.';
       cult.power[id] += val;
+      textFull += text;
       log(cult, text);
       if (!cult.fluffShown['sectHarvested'])
-        ui.alert(text, { h: 340 });
+        ui.alert(textFull, { h: 340 });
       else ui.alert(text,
         { h: UI.getVarInt('--alert-window-height-2lines') });
       cult.fluffShown['sectHarvested'] = true;

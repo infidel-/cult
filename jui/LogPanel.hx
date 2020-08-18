@@ -57,14 +57,14 @@ class LogPanel
           var col = (UI.modernMode ? '#d6d6d6' : '#303030');
           if (m.type == 'cult' || m.type == null) // cult-related message
             {
-              var cult: Cult = m.obj;
+              var cult = game.cults[m.objID];
               col = UI.vars.lineColors[cult.id] +
                 (UI.modernMode ? 'e0' : 'b0');
             }
           else if (m.type == 'cults') // messages relating to 2 cults
             {
-              var cult: Cult = m.obj.c1;
-              var cult2: Cult = m.obj.c2;
+              var cult = game.cults[m.objID];
+              var cult2 = game.cults[m.objID2];
               var ch = (UI.modernMode ? 'I' : '!');
               sym = "<span class=shadow style='color:" + UI.vars.lineColors[cult.id] + "'>" + ch + "</span>" +
                 "<span class=shadow style='color:" + UI.vars.lineColors[cult2.id] + "'>" + ch + "</span>";

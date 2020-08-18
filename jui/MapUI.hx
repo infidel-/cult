@@ -124,8 +124,12 @@ class MapUI
 // reinit minimap on new game
   public function initMinimap()
     {
-      minimap = cast Browser.document.createElement('canvas');
-      minimap.id = 'minimap';
+      // can be called from load()
+      if (minimap == null)
+        {
+          minimap = cast Browser.document.createElement('canvas');
+          minimap.id = 'minimap';
+        }
       minimap.width = Std.int(game.difficulty.mapWidth * 100.0 /
         game.difficulty.mapHeight);
       minimap.height = 100;

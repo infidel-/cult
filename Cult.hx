@@ -1103,7 +1103,8 @@ class Cult
         old: false,
         type: 'cults',
         text: text,
-        obj: { c1: this, c2: cult },
+        objID: this.id,
+        objID2: cult.id,
         turn: game.turns + 1,
         params: {}
       };
@@ -1137,7 +1138,8 @@ class Cult
         old: false,
         type: 'cults',
         text: text,
-        obj: { c1: this, c2: cult },
+        objID: this.id,
+        objID2: cult.id,
         turn: game.turns + 1,
         params: {}
       };
@@ -1404,7 +1406,7 @@ class Cult
         old: false,
         type: 'cult',
         text: s,
-        obj: this,
+        objID: this.id,
         turn: game.turns + 1,
         params: (params == null ? {} : params)
       });
@@ -1460,32 +1462,44 @@ class Cult
 // dump cult info for saving
   public function save(): _SaveCult
     {
-      trace('TODO save isDiscovered isInfoKnown');
       var obj: _SaveCult = {
         id: id,
         infoID: infoID,
         difficulty: difficulty.level,
+        isInfoKnown: isInfoKnown,
+        isDiscovered: isDiscovered,
         isAI: isAI,
         isDead: isDead,
         isParalyzed: isParalyzed,
-//        idi: (isDiscovered ? 1 : 0),
-//        iin: (isInfoKnown ? 1 : 0),
-        power: power,
-        origin: (origin != null ? origin.id : 0),
-        adeptsUsed: adeptsUsed,
-        investigatorTimeout: investigatorTimeout,
+        paralyzedTurns: paralyzedTurns,
         ritualPoints: 0,
         awarenessMod: awarenessMod,
         awarenessBase: awarenessBase,
+        power: power,
         wars: wars,
+        origin: (origin != null ? origin.id : -1),
+        adeptsUsed: adeptsUsed,
+        sects: [],
+        investigatorTimeout: investigatorTimeout,
+        logMessages: logMessages,
+        logMessagesTurn: logMessagesTurn,
+        logPanelMessages: [],
+        artifacts: artifacts.save(),
+        fluffShown: [],
       };
-      if (hasInvestigator)
-        obj.investigator = investigator.save();
       if (isRitual)
         {
           obj.ritual = ritual.id;
           obj.ritualPoints = ritualPoints;
         }
+      for (s in sects)
+        obj.sects.push(s.save());
+      if (hasInvestigator)
+        obj.investigator = investigator.save();
+      for (m in logPanelMessages)
+        obj.logPanelMessages.push(m);
+      for (f in fluffShown.keys())
+        obj.fluffShown.push(f);
       return obj;
     }
 
@@ -1493,20 +1507,11 @@ class Cult
   public function load(c: _SaveCult)
     {
       difficulty = Static.difficulty[c.difficulty];
+      isInfoKnown = c.isInfoKnown;
+      isDiscovered = c.isDiscovered;
       isDead = c.isDead;
       isParalyzed = c.isParalyzed;
-      trace('TODO load isDiscovered isInfoKnown');
-//      isDiscovered = (c.idi ? true : false);
-//      isInfoKnown = (c.iin ? true : false);
-      power = c.power;
-      adeptsUsed = c.adeptsUsed;
-      investigatorTimeout = c.investigatorTimeout;
-      if (c.investigator != null)
-        {
-          hasInvestigator = true;
-          investigator = new Investigator(this, ui, game);
-          investigator.load(c.investigator);
-        }
+      paralyzedTurns = c.paralyzedTurns;
       if (c.ritual != null)
         {
           isRitual = true;
@@ -1517,7 +1522,24 @@ class Cult
         }
       awarenessMod = c.awarenessMod;
       awarenessBase = c.awarenessBase;
+      power = c.power;
       wars = c.wars;
+      // NOTE: origin is loaded in Game.hx
+      adeptsUsed = c.adeptsUsed;
+      // NOTE: sects are loaded in Game.hx
+      investigatorTimeout = c.investigatorTimeout;
+      if (c.investigator != null)
+        {
+          hasInvestigator = true;
+          investigator = new Investigator(this, ui, game);
+          investigator.load(c.investigator);
+        }
+      logMessages = c.logMessages;
+      logMessagesTurn = c.logMessagesTurn;
+      for (m in c.logPanelMessages)
+        logPanelMessages.add(m);
+      for (f in c.fluffShown)
+        fluffShown[f] = true;
     }
 
   // ============================================================
@@ -1559,7 +1581,8 @@ typedef LogPanelMessage = {
   var old: Bool; // message old?
   var type: String; // message type (cult, cults, etc)
   var text: String; // message text
-  var obj: Dynamic; // message object (origin etc)
+  @:optional var objID: Int; // message object ID (origin etc)
+  @:optional var objID2: Int; // message object ID 2 (cult etc)
   var turn: Int; // turn on which message appeared
   var params: LogPanelMessageParams; // additional message parameters
 };

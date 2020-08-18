@@ -490,7 +490,7 @@ class UI
               old: false,
               type: null,
               text: s,
-              obj: cultOrigin,
+              objID: cultOrigin.id,
               turn: game.turns + 1,
               params: params
             });
@@ -514,7 +514,6 @@ class UI
             old: false,
             type: 'none',
             text: s,
-            obj: null,
             turn: game.turns + 1,
             params: params
           });

@@ -3,6 +3,7 @@
 package sects;
 
 import Static;
+import _SaveGame;
 
 class Sect
 {
@@ -274,6 +275,45 @@ priest (10, x/6):
   public inline function getPowerPerTurn(): Int
     {
       return Const.devotedPowerPerTurn[level];
+    }
+
+// save info
+  public function save(): _SaveSect
+    {
+      return {
+        id: id,
+        name: name,
+        leader: leader.id,
+        cult: cult.id,
+        size: size,
+        level: level,
+        isAdvisor: isAdvisor,
+        isDevoted: isDevoted,
+        task: task.id,
+        taskPoints: taskPoints,
+        taskTarget: (taskTarget != null ? taskTarget.id : -1),
+        taskImportant: taskImportant,
+        powerID: powerID,
+        powerStorage: powerStorage,
+      };
+    }
+
+// load info
+  public function load(obj: _SaveSect)
+    {
+      id = obj.id;
+      name = obj.name;
+      // NOTE: leader, cult are setup in Cult.hx
+      size = obj.size;
+      level = obj.level;
+      isAdvisor = obj.isAdvisor;
+      isDevoted = obj.isDevoted;
+      // NOTE: we assume task target is cult
+      setTaskByID(obj.task, game.cults[obj.taskTarget]);
+      taskPoints = obj.taskPoints;
+      taskImportant = obj.taskImportant;
+      powerID = obj.powerID;
+      powerStorage = obj.powerStorage;
     }
 
 // ======================= Sect Tasks ============================

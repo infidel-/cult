@@ -1,6 +1,8 @@
 // cult artifacts storage
 package artifacts;
 
+import _SaveGame;
+
 class CultArtifacts
 {
   var ui: UI;
@@ -145,6 +147,40 @@ class CultArtifacts
         return 1.0;
       var info = StaticArtifacts.uniqueArtifacts['hand'];
       return (100.0 + info.val ) / 100.0;
+    }
+
+// save info
+  public function save(): _SaveCultArtifacts
+    {
+      var o: _SaveCultArtifacts = {
+        storage: [],
+      };
+      for (a in storage)
+        o.storage.push({
+          name: a.name,
+          id: a.id,
+          level: a.level,
+          isUnique: a.isUnique,
+          node: (a.node != null ? a.node.id : -1),
+        });
+      return o;
+    }
+
+// load info
+  public function load(obj: _SaveCultArtifacts)
+    {
+      for (a in obj.storage)
+        {
+          var art: CultArtifact = {
+            name: a.name,
+            id: a.id,
+            level: a.level,
+            isUnique: a.isUnique,
+            node: (a.node >= 0 ? game.getNode(a.node) : null),
+            info: StaticArtifacts.uniqueArtifacts[a.id],
+          };
+          storage.push(art);
+        }
     }
 
   // ==================================================
