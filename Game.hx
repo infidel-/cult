@@ -145,7 +145,6 @@ class Game
 
       startTimer("restart");
 
-//      difficultyLevel = newDifficulty;
       if (difficultyLevel >= 0)
         difficulty = Static.difficulty[difficultyLevel];
       else difficulty = newDif; // custom difficulty
@@ -570,7 +569,7 @@ class Game
         version: Game.version,
         currentPlayerID: currentPlayerID,
         turns: turns,
-        difficulty: difficultyLevel,
+        difficulty: difficulty,
         artifacts: artifacts.save(),
         flags: flags,
         lastNodeIndex: lastNodeIndex,
@@ -613,8 +612,8 @@ class Game
       // load
       currentPlayerID = save.currentPlayerID;
       turns = save.turns;
-      difficultyLevel = save.difficulty;
-      difficulty = Static.difficulty[difficultyLevel];
+      difficultyLevel = save.difficulty.level;
+      difficulty = save.difficulty;
       artifacts.load(save.artifacts);
       flags = save.flags;
       lastNodeIndex = save.lastNodeIndex;
@@ -624,20 +623,21 @@ class Game
         {
           var cult = null;
           if (!c.isAI)
-            {
-              cult = new Cult(this, ui, c.id, c.infoID);
-              player = cult;
-            }
+            cult = new Cult(this, ui, c.id, c.infoID);
           else cult = new AI(this, ui, c.id, c.infoID);
           cult.load(c);
           cults.push(cult);
         }
+      player = cults[currentPlayerID];
       //trace(obj);
 
       // load nodes
       for (n in save.nodes)
         {
-          var node = new Node(this, ui, n.x, n.y, n.id);
+          var node: Node = null;
+          if (n.type == 'artifact')
+            node = new artifacts.ArtifactNode(this, ui, n.x, n.y, n.id);
+          else node = new Node(this, ui, n.x, n.y, n.id);
           node.load(n);
           nodes.push(node);
         }
@@ -646,6 +646,7 @@ class Game
       // misc cult info - needs nodes loaded
       for (c in save.cults)
         {
+          var cult = cults[c.id];
           // set cult origin
           for (cc in cults)
             if (c.id == cc.id)
@@ -659,12 +660,14 @@ class Game
           for (s in c.sects)
             {
               var node = getNode(s.leader);
-              var cult = cults[c.id];
               var sect = new Sect(this, ui, node, cult);
               cult.sects.add(sect);
               node.sect = sect;
               sect.load(s);
             }
+
+          // load artifacts
+          cult.artifacts.load(c.artifacts);
         }
 
       for (n in nodes) // update node display

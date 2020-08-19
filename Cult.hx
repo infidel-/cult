@@ -1538,6 +1538,7 @@ class Cult
       logMessagesTurn = c.logMessagesTurn;
       for (m in c.logPanelMessages)
         logPanelMessages.add(m);
+      // NOTE: artifacts are loaded in Game.hx
       for (f in c.fluffShown)
         fluffShown[f] = true;
     }

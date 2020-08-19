@@ -180,6 +180,10 @@ class CultArtifacts
             info: StaticArtifacts.uniqueArtifacts[a.id],
           };
           storage.push(art);
+
+          // fix node link
+          if (art.node != null)
+            art.node.artifact = art;
         }
     }
 

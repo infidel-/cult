@@ -1,4 +1,7 @@
+// save game object
+
 import Cult;
+import Static;
 
 typedef _SaveGame = {
   var version: String;
@@ -6,7 +9,7 @@ typedef _SaveGame = {
   var date: String;
   var currentPlayerID: Int;
   var turns: Int;
-  var difficulty: Int;
+  var difficulty: DifficultyInfo; // will work for single, custom and multi
   var artifacts: _SaveArtifacts;
   var flags: Flags;
   var lastNodeIndex: Int;
