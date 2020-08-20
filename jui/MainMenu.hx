@@ -168,7 +168,6 @@ class MainMenu extends Window
       if (game.isNeverStarted || game.isFinished)
         saveButton.className = 'uiButtonDisabled statusButton mainMenuButton';
       else saveButton.className = 'uiButton statusButton mainMenuButton';
-
     }
 
 
@@ -200,6 +199,7 @@ class MainMenu extends Window
 // load game menu
   function onLoadGame(event: Dynamic)
     {
+/*
 #if electron
       var file = 'save.json';
       var str = Fs.readFileSync(file, 'utf8');
@@ -207,8 +207,9 @@ class MainMenu extends Window
       game.load(obj);
       trace('game loaded from ' + file);
 #end
+*/
 
-//      ui.loadMenu.show();
+      ui.loadMenu.show();
       onClose(null);
     }
 
@@ -219,6 +220,7 @@ class MainMenu extends Window
       if (game.isNeverStarted || game.isFinished)
         return;
 
+/*
 #if electron
       var name = Date.now().toString();
       var obj = game.save();
@@ -227,7 +229,8 @@ class MainMenu extends Window
       Fs.writeFileSync(file, str, 'utf8');
       trace('game saved to ' + file);
 #end
-//      ui.saveMenu.show();
+*/
+      ui.saveMenu.show();
       onClose(null);
     }
 

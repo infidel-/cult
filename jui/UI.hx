@@ -65,7 +65,7 @@ class UI
     }
 
 
-  function onError(msg: Dynamic, url: String, line: Int, col: Int, err: Dynamic): Bool
+  public function onError(msg: Dynamic, url: String, line: Int, col: Int, err: Dynamic): Bool
     {
       var d = Date.now();
       var l = d.getHours() + ':' +
@@ -680,5 +680,5 @@ class UI
   public static var classicMode = false; // classic mode flag
   public static var vars = modernModeVars;
 
-  public static var maxSaves:Int = 5; // max number of saves displayed
+  public static var maxSaves = 5; // max number of saves displayed
 }

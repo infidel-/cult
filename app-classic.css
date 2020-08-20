@@ -532,3 +532,36 @@ input[type=radio] {
   position: absolute;
   top: 29px;
 }
+
+#saveMenuTitle {
+  top: 6px;
+  left: 65%;
+  transform: translate(-50%);
+}
+
+#saveMenuContents {
+  display: flex;
+  flex-direction: column;
+  left: 50%;
+  transform: translate(-50%);
+  position: absolute;
+  top: 29px;
+}
+
+.saveMenuButton {
+  height: 27px;
+  margin: 6px 0px 0px 0px;
+  width: 240px;
+  font-size: 18px;
+}
+
+.saveMenuText2 {
+  font-size: 12px;
+}
+
+#loadMenuTitle {
+  top: 6px;
+  left: 65%;
+  transform: translate(-50%);
+}
+

@@ -3,6 +3,14 @@
 import Cult;
 import Static;
 
+typedef _SaveInfo = {
+  var version: String;
+  var date: String;
+  var flags: String;
+  var turns: Int;
+  var difficulty: String; // easy, normal, hard, multiplayer, custom
+}
+
 typedef _SaveGame = {
   var version: String;
   var mode: String;

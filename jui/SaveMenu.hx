@@ -1,182 +1,85 @@
 // save game menu
 
-class SaveMenu
+import js.Browser;
+import js.html.DivElement;
+#if electron
+import electron.renderer.Remote;
+import haxe.Json;
+import js.node.Fs;
+#end
+import _SaveGame;
+
+class SaveMenu extends Window
 {
-  var ui: UI;
-  var game: Game;
-
-  var window: Dynamic; // window element
-  var bg: Dynamic; // background element
-  var close: Dynamic; // close button element
-  var key: Dynamic; // key textfield element
-  var noKey: Dynamic; // no key found
-  var keyFocused: Bool; // is textfield focused?
-  var saveButtons: Array<Dynamic>; // saves buttons
-  var delButtons: Array<Dynamic>; // delete buttons
-  var saves: Array<Dynamic>; // saves
-  public var isVisible: Bool;
-
+  var saveButtons: Array<DivElement>;
 
   public function new(uivar: UI, gvar: Game)
     {
-      ui = uivar;
-      game = gvar;
-      isVisible = false;
-
-      // save menu window
-      window = Tools.window({
-        id: "saveMenuWindow",
-        w: 420,
-        h: 320,
-        z: 25
-      });
+#if electron
+      var h = 464;
+#else
+      var h = 200;
+#end
+      super(uivar, gvar, 'saveMenu', 350, h, 25);
 
       Tools.label({
-        id: 'saveLabel',
-        text: 'Key',
-        w: 60,
+        id: 'saveMenuTitle',
+        text: 'SAVE GAME',
+        w: 260,
         h: 30,
-        x: 35,
-        y: 30,
-        container: window
-      });
-
-      // text field
-      key = Tools.textfield({
-        id: 'saveKey',
-        text: ui.config.get("owner"),
-        w: 205,
-        h: 30,
-        x: 85,
-        y: 30,
-        container: window
-      });
-      key.onclick = onKeyClick;
-
-      Tools.button({ // refresh button
-        id: 'saveRefresh',
-        text: "Refresh",
-        w: 100,
-        h: 30,
-        x: 300,
-        y: 30,
-        container: window,
-        func: onRefresh
-      });
-
-      noKey = Tools.label({
-        id: 'loadLabel2',
-        text: 'Type in key to proceed.',
-        w: 270,
-        h: 30,
-        x: 90,
-        y: 150,
+        x: null,
+        y: null,
+        fontSize: null,
         container: window
       });
 
       // save menu contents
-      saves = new Array<Dynamic>();
-      saveButtons = new Array<Dynamic>();
-      delButtons = new Array<Dynamic>();
+      var contents: DivElement = cast Browser.document.createElement("div");
+      contents.id = 'saveMenuContents';
+      window.appendChild(contents);
+      saveButtons = [];
       for (i in 0...UI.maxSaves)
         {
           var b = Tools.button({
             id: 'save' + i,
-            text: "...",
-            w: 330,
-            h: 30,
-            x: 35,
-            y: 70 + 40 * i,
-            container: window,
+            text: '&lt;EMPTY&gt;',
+            className: 'uiButton statusButton saveMenuButton',
+            w: null,
+            h: null,
+            x: null,
+            y: null,
+            flow: true,
+            container: contents,
             func: onSaveGame
           });
           saveButtons.push(b);
-          var b2 = Tools.button({
-            id: 'del' + i,
-            text: "X",
-            w: 20,
-            h: 30,
-            x: 380,
-            y: 70 + 40 * i,
-            container: window,
-            func: onDelGame
-          });
-          delButtons.push(b2);
         }
-
-      bg = Tools.bg();
-      close = Tools.closeButton(window);
-      close.onclick = onClose;
     }
-
 
 // show save menu
-  public function show()
+  override function onShow()
     {
-      for (b in delButtons)
-        b.style.display = 'none';
-
-      // load list of saved games
-      if (ui.config.get("owner") != '' && ui.config.get("owner") != null)
+      // form the list of saved games
+      for (i in 0...UI.maxSaves)
         {
-          var req = new js.html.XMLHttpRequest();
-          req.open("GET", "/save.list?owner=" +
-            ui.config.get("owner"), false);
-          req.send(null);
-          var text = req.responseText;
-          var list = untyped JSON.parse(text);
+          var b = saveButtons[i];
+          try {
+            var files = getFileNames(i);
+            var s = Fs.readFileSync(files[0], 'utf8');
+            var obj: _SaveInfo = Json.parse(s);
+            b.innerHTML = obj.date + '<hr><span class=saveMenuText2>' +
+              'TURNS ' + obj.turns + ': ' +
+              obj.difficulty.toUpperCase() + ', ' +
+              (obj.flags != '' ? obj.flags : 'DEFAULT FLAGS') + '</span>';
+            continue;
+          }
+          catch (e: Dynamic)
+            {}
 
-          saves = list;
-
-          for(b in saveButtons)
-            {
-              b.style.display = 'inline';
-              b.innerHTML = '---';
-            }
-
-          var i = 0;
-          for (item in list)
-            {
-              var b = saveButtons[i];
-              if (b == null) break;
-              b.innerHTML = item.name;
-              delButtons[i].style.display = 'inline';
-              i++;
-            }
-
-          noKey.style.display = 'none';
+          // no save
+          b.innerHTML = '&lt;EMPTY&gt;';
         }
-      else
-        {
-          for (b in saveButtons)
-            b.style.display = 'none';
-
-          noKey.style.display = 'inline';
-        }
-
-      key.value = ui.config.get("owner");
-      window.style.display = 'inline';
-      bg.style.display = 'inline';
-      close.style.display = 'inline';
-      isVisible = true;
-      keyFocused = false;
     }
-
-
-// click on key textfield
-  function onKeyClick()
-    {
-      keyFocused = true;
-    }
-
-
-// refresh
-  function onRefresh(event: Dynamic)
-    {
-      ui.config.set("owner", key.value);
-      show();
-    }
-
 
 // save game
   function onSaveGame(event: Dynamic)
@@ -191,70 +94,45 @@ class SaveMenu
 // save a game (real)
   function onSaveReal(n: Int)
     {
-      var save = saves[n];
-      var id = 0;
-      if (save != null)
-        id = save.id;
+#if electron
+      var files = getFileNames(n);
 
-      // save game
-      var name = Date.now().toString();
-      var req = new js.html.XMLHttpRequest();
-      req.open("POST", "/save.save?owner=" +
-        ui.config.get("owner") + "&id=" + id +
-        "&name=" + name +
-        "&version=" + Game.version, false);
+      // info
+      var info = game.saveInfo();
+      var str = Json.stringify(info, null, '  ');
+      Fs.writeFileSync(files[0], str, 'utf8');
+      trace('info saved to ' + files[0]);
+
+      // save
       var obj = game.save();
-      var str = haxe.Json.stringify(obj);
-//      trace("length:" + str.length + " " + str);
-      req.send(str);
-      var text = req.responseText;
-      if (text == "TooBig")
-        {
-          ui.alert("Save file too big (" + Std.int(str.length / 1024) +
-            "kb)! Contact me to raise limit.");
-          return;
-        }
-      else if (text == "TooManySaves")
-        {
-          ui.alert("Too many saved games already.");
-          return;
-        }
+      var str = Json.stringify(obj, null, '  ');
+      Fs.writeFileSync(files[1], str, 'utf8');
+      trace('game saved to ' + files[1]);
+
+      ui.msg('Game saved.');
+#end
 
       onClose(null);
     }
 
-
-// del game
-  function onDelGame(event: Dynamic)
+// get save info and save game file names
+  public function getFileNames(i: Int): Array<String>
     {
-      var b = Tools.getTarget(event);
-      var n = Std.parseInt(b.id.substring(3));
+#if electron
+      return [
+        (UI.classicMode ? 'classic_' : '') +
+          'save' + (i < 10 ? '0' : '') + (i + 1) + '_info.json',
+        (UI.classicMode ? 'classic_' : '') +
+          'save' + (i < 10 ? '0' : '') + (i + 1) + '.json',
+      ];
+#end
 
-      onDelReal(n);
+      return null;
     }
-
-
-// delete a game
-  function onDelReal(n: Int)
-    {
-      var save = saves[n];
-
-      // delete game
-      var req = new js.html.XMLHttpRequest();
-      req.open("GET", "/save.delete?owner=" +
-        ui.config.get("owner") + "&id=" + save.id, false);
-      req.send(null);
-      var text = req.responseText;
-
-      show();
-    }
-
 
 // key press
-  public function onKey(e: Dynamic)
+  public override function onKey(e: Dynamic)
     {
-      if (keyFocused) return;
-
       if (e.keyCode == 49) // 1
         onSaveReal(0);
 
@@ -273,20 +151,5 @@ class SaveMenu
       // exit menu
       else if (e.keyCode == 27) // ESC
         onClose(null);
-    }
-
-
-// hide menu
-  function onClose(event: Dynamic)
-    {
-      window.style.display = 'none';
-      bg.style.display = 'none';
-      close.style.display = 'none';
-      noKey.style.display = 'none';
-      for (b in delButtons)
-        b.style.display = 'none';
-      for (b in saveButtons)
-        b.style.display = 'none';
-      isVisible = false;
     }
 }

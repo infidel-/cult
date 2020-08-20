@@ -560,6 +560,29 @@ class Game
         trace(name + ": " + (Browser.window.performance.now() - timerTime) + "ms");
     }
 
+// save info
+  public function saveInfo(): _SaveInfo
+    {
+      var info: _SaveInfo = {
+        date: DateTools.format(Date.now(), "%d %b %Y %H:%M:%S"),
+        version: Game.version,
+        flags: getFlagsString(),
+        turns: turns,
+        difficulty: null,
+      }
+      if (difficulty.numPlayers > 1)
+        info.difficulty = 'multiplayer';
+      else if (difficulty.level == 0)
+        info.difficulty = 'easy';
+      else if (difficulty.level == 1)
+        info.difficulty = 'normal';
+      else if (difficulty.level == 2)
+        info.difficulty = 'hard';
+      else info.difficulty = 'custom';
+
+      return info;
+    }
+
 // save game (fsa)
   public function save(): _SaveGame
     {

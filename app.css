@@ -706,3 +706,38 @@ input[type=radio] {
   position: absolute;
   top: 47px;
 }
+
+#saveMenuTitle {
+  text-shadow: 1px 1px 1px #0000003b;
+  left: 70%;
+  transform: translate(-50%);
+  top: 4px;
+}
+
+#saveMenuContents {
+  display: flex;
+  flex-direction: column;
+  left: 50%;
+  transform: translate(-50%);
+  position: absolute;
+  top: 28px;
+}
+
+.saveMenuButton {
+  font-size: 15px;
+  margin: 6px 0px 0px 0px;
+  padding: 3px !important;
+  width: 270px;
+}
+
+.saveMenuText2 {
+  font-size: 12px;
+}
+
+#loadMenuTitle {
+  text-shadow: 1px 1px 1px #0000003b;
+  left: 70%;
+  transform: translate(-50%);
+  top: 4px;
+}
+
