@@ -69,8 +69,15 @@ class ArtSearchTask extends Task
         symbol: 'A',
         color: UI.getVar('--artifact-color'),
       });
-
       // spawn artifact
-      game.artifacts.spawn();
+      var node = game.artifacts.spawn();
+      if (node != null && !cult.fluffShown['artifactFound'])
+        {
+          ui.alert('<h2>ARTIFACT FOUND</h2><div class=fluff>' +
+          Static.template('artifactFound', {
+            name: node.name,
+          }) + '</div><br>' + m, { h: 340 });
+          cult.fluffShown['artifactFound'] = true;
+        }
     }
 }

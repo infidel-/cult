@@ -44,7 +44,7 @@ class ArtifactManager
 
 // spawn a new one on map
 // NOTE: check for max number is in sect task
-  public function spawn()
+  public function spawn(): ArtifactNode
     {
       // everything is based on node level
       var level = Std.random(3);
@@ -89,7 +89,7 @@ class ArtifactManager
       if (quads.length == 0)
         {
           trace('BUG: no quads');
-          return;
+          return null;
         }
 
       // find free position in random quad (go through more quads if needed)
@@ -110,7 +110,7 @@ class ArtifactManager
       if (pos == null)
         {
           trace('BUG: no free spot');
-          return;
+          return null;
         }
       if (tries > 1)
         trace('Tries: ' + tries);
@@ -159,6 +159,8 @@ class ArtifactManager
         ' (dist:' + dist + ' / rad:' +
         game.difficulty.nodeActivationRadius + ')');
 */
+      if (node.turns < 2)
+        node.turns = 2;
       if (node.turns > 9)
         node.turns = 9;
 
@@ -171,6 +173,7 @@ class ArtifactManager
       node.update();
       game.nodes.push(node);
       game.player.highlightNode(node);
+      return node;
     }
 
 // try to make artifact node unique
@@ -239,9 +242,18 @@ class ArtifactManager
         info: StaticArtifacts.uniqueArtifacts[node.artifactID],
       };
       cult.artifacts.add(artifact);
-      ui.log2(cult, cult.fullName + ' is now in possession of ' +
-        artifact.name + '.', { symbol: 'A' });
+      var m = cult.fullName + ' is now in possession of ' +
+        artifact.name + '.';
+      ui.log2(cult, m, { symbol: 'A' });
       ui.updateStatus();
+      if (!cult.fluffShown['artifactRecovered'])
+        {
+          ui.alert('<h2>ARTIFACT RECOVERED</h2><div class=fluff>' +
+          Static.template('artifactRecovered', {
+            name: node.name,
+          }) + '</div><br>' + m, { h: 340 });
+          cult.fluffShown['artifactRecovered'] = true;
+        }
       
       return 'ok';
     }

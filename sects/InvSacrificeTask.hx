@@ -60,7 +60,6 @@ class InvSacrificeTask extends Task
             number: num[Std.random(num.length)],
             sect: sect.name,
           }) + '</div><br>' + sect.name + ' was sacrificed to dispose of the investigator.', { h: 340 });
-
           cult.fluffShown['sectSacrificed'] = true;
         }
     }

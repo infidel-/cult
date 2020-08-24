@@ -261,6 +261,9 @@ class Static
     'ritualUnveiling' => 'Arcane energies flux and writhe through the air, blue-black sparks jumping from unreal to real as the ritual of Unveiling draws to its conclusion. Awareness blooms in our minds even as the final sacrifices draw their last burbling breaths, knowledge stolen and shining. We know who threatens our goals. We know where they live.',
     'sectHarvested' => 'What was once a thriving group of willing conspirators is now dissolute, abandoned, maddened by what they have been told, what worth has been wrenched from them. No matter; their ruined lives feed the greater purpose, bringing us ever closer to victory, their cries cut short by blade and padded cell alike.',
     'sectSacrificed' => "The grisly murder of %inv in a seedy hotel room, body splayed next to those of %number other members of %sect, was just the beginning. The primary suspect's mysterious death in their jail cell only fed the media frenzy. A last minute confession led to their leader's capture, but they are of no use to us now. Let them rot.",
+    'artifactFound' => 'Nights spent poring over dusty tomes and days spent interrogating wizened historians have come to fruition. You have discovered the location of the %name, a secret no longer, to be stolen before the caretakers hide it away once again...',
+    'artifactRecovered' => "The last of the protectors lies bleeding at your cultists' feet, clutching their precious object of devotion. No matter; the %name is wrested from their weakening grasp. It is now yours, to do with as you will, as it should be.",
+    'artifactBound' => "The air is leaden with black potential, energy flowing between the %art and %priest as the Ritual of Binding draws to a close. A final burst sprays from the artifact, blinding the cultists there to witness. From the darkness, a low chuckle comes from %priest's ragged throat. \"It is done.\"",
   ];
 
 

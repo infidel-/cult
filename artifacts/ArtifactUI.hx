@@ -75,7 +75,7 @@ class ArtifactUI
             "<span class=shadow style='color:var(--artifact-color)'>" + a.name + '</span>';
           if (a.isUnique)
             note += '<br>' + a.info.note +
-              '<br>(only after the artifact is bound to a priest)' +
+              '<br>(only after the artifact was bound to a priest)' +
               "<br><div class=fluffNote>" +
               a.info.fluff + '</div>';
           var id = 'info.artifact' + cult.id + '_' + i;
