@@ -630,6 +630,8 @@ class MapUI
       var tooltipRect = tooltip.getBoundingClientRect();
       var x = event.clientX - 20.0 - tooltipRect.width;
       var y = event.clientY + 5.0;
+      if (x < 0)
+        x = event.clientX + 20.0;
       if (x + tooltipRect.width > Browser.window.innerWidth)
         x = Browser.window.innerWidth - tooltipRect.width;
       if (y + tooltipRect.height > Browser.window.innerHeight)
