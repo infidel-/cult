@@ -132,7 +132,7 @@ class Static
         awarenessGain: 1.25,
         investigatorChance: 1.25,
         investigatorKill: 1.25,
-        investigatorWillpower: 1.25,
+        investigatorWillpower: 1.1,
         investigatorTurnVisible: 2000,
         investigatorGainWill: 1.0,
         investigatorCultSize: 0.15,

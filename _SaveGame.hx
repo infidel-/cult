@@ -17,6 +17,7 @@ typedef _SaveGame = {
   var date: String;
   var currentPlayerID: Int;
   var turns: Int;
+  var secondsPlayed: Float;
   var difficulty: DifficultyInfo; // will work for single, custom and multi
   var artifacts: _SaveArtifacts;
   var flags: Flags;

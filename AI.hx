@@ -11,7 +11,7 @@ class AI extends Cult
       if (game.difficultyLevel == 0)
         difficulty = Static.difficulty[2];
       else if (game.difficultyLevel == 2)
-        difficulty = Static.difficulty[0];
+        difficulty = Static.difficulty[1];
       else
         difficulty = Static.difficulty[1];
     }

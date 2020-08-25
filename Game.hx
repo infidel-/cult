@@ -587,6 +587,7 @@ class Game
   public function save(): _SaveGame
     {
       var save: _SaveGame = {
+        secondsPlayed: (Sys.time() - startTS),
         mode: (UI.modernMode ? 'modern' : 'classic'),
         date: DateTools.format(Date.now(), "%d %b %Y %H:%M:%S"),
         version: Game.version,
@@ -640,6 +641,7 @@ class Game
       artifacts.load(save.artifacts);
       flags = save.flags;
       lastNodeIndex = save.lastNodeIndex;
+      startTS = Sys.time() - save.secondsPlayed;
 
       // load cults
       for (c in save.cults)

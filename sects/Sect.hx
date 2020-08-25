@@ -289,7 +289,7 @@ priest (10, x/6):
         level: level,
         isAdvisor: isAdvisor,
         isDevoted: isDevoted,
-        task: task.id,
+        task: (task != null ? task.id : null),
         taskPoints: taskPoints,
         taskTarget: (taskTarget != null ? taskTarget.id : -1),
         taskImportant: taskImportant,

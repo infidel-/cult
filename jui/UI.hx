@@ -301,7 +301,8 @@ class UI
     {
       game.isTutorial = false;
       game.difficultyLevel = lvl;
-      if (UI.modernMode && lvl >= 0 && lvl < 2)
+      if (UI.modernMode && lvl >= 0 && lvl < 2 &&
+          !game.flags.artifacts)
         alert("Start the tutorial?", {
           yesNo: true,
           onYes: function ()
