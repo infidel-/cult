@@ -86,7 +86,6 @@ class SaveMenu extends Window
     {
       var b = Tools.getTarget(event);
       var n = Std.parseInt(b.id.substring(4));
-
       onSaveReal(n);
     }
 

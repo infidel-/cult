@@ -53,6 +53,7 @@ class LoadMenu extends Window
             container: contents,
             func: onLoadGame
           });
+          b.onclick = onLoadReal.bind(i);
           saveButtons.push(b);
         }
     }
@@ -92,15 +93,14 @@ class LoadMenu extends Window
     {
       var b = Tools.getTarget(event);
       var n = Std.parseInt(b.id.substring(4));
-
-      if (!saveExist[n])
-        return;
       onLoadReal(n);
     }
 
 // load a game (real)
   function onLoadReal(n: Int)
     {
+      if (!saveExist[n])
+        return;
 #if electron
       var state = 0;
       try {
