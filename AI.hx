@@ -12,8 +12,7 @@ class AI extends Cult
         difficulty = Static.difficulty[2];
       else if (game.difficultyLevel == 2)
         difficulty = Static.difficulty[1];
-      else
-        difficulty = Static.difficulty[1];
+      else difficulty = Static.difficulty[1];
     }
 
 
@@ -93,6 +92,12 @@ class AI extends Cult
       // Is it in a war rage? +1 for any enemy node
       // give/take a point for each node attribute, storing the result
 
+      // someone is casting final ritual but not this cult
+      var finalRitual = false;
+      for (c in game.cults)
+        if (c.id != this.id && c.isRitual && c.ritual.id == 'summoning')
+          finalRitual = true;
+
       // loop over visible nodes making a target list with priority
       var list = [];
       var listYummy = [];
@@ -138,6 +143,14 @@ class AI extends Cult
               // lower priority more when having investigator
               if (hasInvestigator)
                  item.priority--;
+
+              // special case - not in war with owner
+              // and there is a cult casting final ritual
+              // and its not the owner
+              // then ignore these nodes
+              if (!wars[node.owner.id] && !node.owner.isRitual &&
+                  finalRitual)
+                continue;
             }
 
           // unprotected generators are always yummy
@@ -182,7 +195,7 @@ class AI extends Cult
                   ok = true;
                   break;
                 }
-          if (!ok)
+          if (!ok && list.length > 0)
             {
               var item = list[0];
               if (Game.debugAI)
