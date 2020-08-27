@@ -421,7 +421,7 @@ class UI
           h = 190;
         }
       if (classicMode)
-        h += 5;
+        h += 7;
 #if electron
       if (showHighScore && game.difficultyLevel != -1 &&
           game.isFlagsDefault())

@@ -232,7 +232,7 @@ legend {
 
 #status-ritual-unveiling {
   position: absolute;
-  left: 99px;
+  left: 118px;
   top: 87px;
 }
 
@@ -535,7 +535,7 @@ input[type=radio] {
 
 #saveMenuTitle {
   top: 6px;
-  left: 65%;
+  left: 70%;
   transform: translate(-50%);
 }
 
@@ -549,19 +549,18 @@ input[type=radio] {
 }
 
 .saveMenuButton {
-  height: 27px;
   margin: 6px 0px 0px 0px;
   width: 240px;
-  font-size: 18px;
+  font-size: 15px;
 }
 
 .saveMenuText2 {
-  font-size: 12px;
+  font-size: 10px;
 }
 
 #loadMenuTitle {
   top: 6px;
-  left: 65%;
+  left: 69%;
   transform: translate(-50%);
 }
 
