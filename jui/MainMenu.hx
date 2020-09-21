@@ -12,6 +12,9 @@ import js.node.Fs;
 class MainMenu extends Window
 {
   var saveButton: DivElement;
+  var customGameButton: DivElement;
+  var mpGameButton: DivElement;
+  var loadGameButton: DivElement;
 
   public function new(uivar: UI, gvar: Game)
     {
@@ -53,7 +56,7 @@ class MainMenu extends Window
         }
       });
 
-      Tools.button({
+      customGameButton = Tools.button({
         id: 'customGame',
         text: "CUSTOM GAME",
         className: 'uiButton statusButton mainMenuButton',
@@ -66,7 +69,7 @@ class MainMenu extends Window
         func: onCustomGame
       });
 
-      Tools.button({
+      mpGameButton = Tools.button({
         id: 'multiGame',
         text: "MULTIPLAYER GAME",
         className: 'uiButton statusButton mainMenuButton',
@@ -79,7 +82,7 @@ class MainMenu extends Window
         func: onMultiplayerGame
       });
 
-      Tools.button({
+      loadGameButton = Tools.button({
         id: 'loadGame',
         text: "LOAD GAME",
         className: 'uiButton statusButton mainMenuButton',
@@ -168,6 +171,10 @@ class MainMenu extends Window
       if (game.isNeverStarted || game.isFinished)
         saveButton.className = 'uiButtonDisabled statusButton mainMenuButton';
       else saveButton.className = 'uiButton statusButton mainMenuButton';
+#if demo
+      for (btn in [ saveButton, customGameButton, mpGameButton, loadGameButton ])
+        btn.className = 'uiButtonDisabled statusButton mainMenuButton';
+#end
     }
 
 
@@ -183,34 +190,30 @@ class MainMenu extends Window
 // custom game menu
   function onCustomGame(event: Dynamic)
     {
+#if !demo
       ui.customMenu.show();
       onClose(null);
+#end
     }
 
 
 // multiplayer game menu
   function onMultiplayerGame(event: Dynamic)
     {
+#if !demo
       ui.mpMenu.show();
       onClose(null);
+#end
     }
 
 
 // load game menu
   function onLoadGame(event: Dynamic)
     {
-/*
-#if electron
-      var file = 'save.json';
-      var str = Fs.readFileSync(file, 'utf8');
-      var obj = Json.parse(str);
-      game.load(obj);
-      trace('game loaded from ' + file);
-#end
-*/
-
+#if !demo
       ui.loadMenu.show();
       onClose(null);
+#end
     }
 
 
@@ -220,18 +223,10 @@ class MainMenu extends Window
       if (game.isNeverStarted || game.isFinished)
         return;
 
-/*
-#if electron
-      var name = Date.now().toString();
-      var obj = game.save();
-      var str = Json.stringify(obj, null, '  ');
-      var file = 'save.json';
-      Fs.writeFileSync(file, str, 'utf8');
-      trace('game saved to ' + file);
-#end
-*/
+#if !demo
       ui.saveMenu.show();
       onClose(null);
+#end
     }
 
 /*

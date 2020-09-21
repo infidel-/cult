@@ -29,6 +29,7 @@ class StaticArtifacts
     'of Shadows',
   ];
   public static var artifacts: Array<ArtifactTypeInfo> = [
+#if !demo
     {
       id: 'book',
       x: 8,
@@ -92,8 +93,10 @@ class StaticArtifacts
         'Talisman',
       ],
     },
+#end
   ];
   public static var uniqueArtifacts: Map<String, UniqueArtifact> = [
+#if !demo
     'mask' => {
       id: 'mask',
       name: 'Mask of Many Faces',
@@ -130,6 +133,7 @@ class StaticArtifacts
       x: 8,
       y: 17,
     },
+#end
   ];
 }
 

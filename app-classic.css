@@ -4,6 +4,7 @@
   --map-margin-x: 10;
   --map-margin-y: 12;
   --text-color: white;
+  --text-color-disabled: #868686;
   --text-color-log-time: #888888;
   --text-select-bg: #333333;
   --text-font: Verdana;

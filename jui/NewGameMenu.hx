@@ -93,6 +93,9 @@ class NewGameMenu extends Window
       row2.style.textAlign = 'center';
       row2.style.padding = '5px 0px 5px';
       row2.innerHTML = 'Flags';
+#if demo
+      row2.style.color = UI.getVar('--text-color-disabled');
+#end
       for (f in Reflect.fields(game.flags))
         {
           if (f == 'artifacts')
@@ -107,6 +110,9 @@ class NewGameMenu extends Window
       row3.style.textAlign = 'center';
       row3.style.padding = '5px 0px 5px';
       row3.innerHTML = 'Expansions';
+#if demo
+      row3.style.color = UI.getVar('--text-color-disabled');
+#end
       addCheckbox(contents, 'startFlag_artifacts',
         FlagStatic.names['artifacts'],
         FlagStatic.notes['artifacts']);
@@ -131,7 +137,11 @@ class NewGameMenu extends Window
       var row = Browser.document.createElement("label");
       contents.appendChild(row);
       row.style.display = 'flex';
+#if demo
+      row.style.cursor = 'not-allowed';
+#else
       row.style.cursor = 'hand';
+#end
       var cb: InputElement = cast Browser.document.createElement("input");
       row.appendChild(cb);
       cb.id = key;
@@ -153,6 +163,9 @@ class NewGameMenu extends Window
               t.checked = cb.checked;
             }
         }
+#if demo
+      cb.disabled = true;
+#end
       var title = Browser.document.createElement("div");
       row.appendChild(title);
       title.innerHTML = name;
@@ -164,6 +177,9 @@ class NewGameMenu extends Window
         {
           note.innerHTML = text;
         }
+#if demo
+      title.style.color = UI.getVar('--text-color-disabled');
+#end
     }
 
   override function onShow()
@@ -196,7 +212,6 @@ class NewGameMenu extends Window
       game.flags = flags;
       onNewGameReal(dif);
     }
-
 
 // start for real
   function onNewGameReal(dif: Int)

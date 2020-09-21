@@ -333,15 +333,23 @@ class Music
 
 #if electron
       // local music files
+      var pl = [];
       for (row in playlist)
         {
           row[3] = StringTools.replace(row[3],
             'http://ftp.scene.org/pub/music/groups/kahvicollective/',
+#if demo
+            'data/music/demo/');
+          if (row[1] == 'Gewesen')
+            pl.push(row);
+#else
             'data/music/');
+#end
           row[3] = StringTools.replace(row[3], '.ogg', '.mp3');
-
         }
-//      trace(playlist);
+#if demo
+      playlist = pl;
+#end
 #end
     }
 
