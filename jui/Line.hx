@@ -74,31 +74,29 @@ class Line
       if (!visibility[cultID])
         return;
 
-      if (UI.classicMode)
-        for (p in pixels)
-          {
-            // pixel out of view rectangle
-            if (p.x < map.viewRect.x - 2 ||
-                p.y < map.viewRect.y - 2 ||
-                p.x > map.viewRect.x + map.viewRect.w ||
-                p.y > map.viewRect.y + map.viewRect.h)
-              continue;
+      // both nodes significantly out of view rect, can skip
+      var out = 0;
+      if (!startNode.uiNode.inViewRect(200))
+        out++;
+      if (!endNode.uiNode.inViewRect(200))
+        out++;
+      if (out == 2)
+        return;
 
+      if (UI.classicMode)
+        {
+          var pixelSize = Std.int(ui.map.zoom * 2);
+          if (pixelSize < 1)
+            pixelSize = 1;
+          for (p in pixels)
             ctx.drawImage(map.nodeImage,
               owner.id * 2, 120, 2, 2,
-              p.x - map.viewRect.x, p.y - map.viewRect.y, 2, 2);
-          }
+              ui.map.zoom * (p.x - map.viewRect.x),
+              ui.map.zoom * (p.y - map.viewRect.y),
+              pixelSize, pixelSize);
+        }
       else
         {
-          // both nodes significantly out of view rect, can skip
-          var out = 0;
-          if (!startNode.uiNode.inViewRect(200))
-            out++;
-          if (!endNode.uiNode.inViewRect(200))
-            out++;
-          if (out == 2)
-            return;
-
           ctx.strokeStyle = UI.vars.cultColors[owner.id];
           ctx.lineWidth = 3 * ui.map.zoom;
           ctx.beginPath();

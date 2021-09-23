@@ -124,7 +124,10 @@ class UINode
             if (UI.classicMode)
               ctx.drawImage(ui.map.nodeImage,
                 0, 167, 37, 37,
-                hlx - 10, hly - 10, 37, 37);
+                (hlx - 10) * ui.map.zoom,
+                (hly - 10) * ui.map.zoom,
+                37 * ui.map.zoom,
+                37 * ui.map.zoom);
             else
               {
                 // rectangle animation
@@ -152,13 +155,16 @@ class UINode
           var x0 = (node.owner != null ? node.owner.id * w : 0);
           ctx.drawImage(ui.map.nodeImage,
             x0, y0, w, w,
-            xx, yy, w, w);
+            xx * ui.map.zoom,
+            yy * ui.map.zoom,
+            w * ui.map.zoom,
+            w * ui.map.zoom);
 //          ctx.fillStyle = 'red';
 //          ctx.fillRect(xx, yy, 20, 20);
 
           // paint node symbol
           ctx.fillStyle = textColor;
-          ctx.fillText(text, tx, ty);
+          ctx.fillText(text, tx * ui.map.zoom, ty * ui.map.zoom);
           if (node.type == 'artifact')
             {
               var art: artifacts.ArtifactNode = cast node;
@@ -266,11 +272,11 @@ class UINode
                   ctx.fillStyle = ui.map.powerColors[i];
                   if (UI.classicMode)
                     ctx.fillRect(
-                      tempx + (tempd - 1) +
-                      i * (productionIndicatorWidth + 1),
-                      tempy - productionIndicatorHeight,
-                      productionIndicatorWidth,
-                      productionIndicatorHeight);
+                      (tempx + (tempd - 1) +
+                      i * (productionIndicatorWidth + 1)) * ui.map.zoom,
+                      (tempy - productionIndicatorHeight) * ui.map.zoom,
+                      productionIndicatorWidth * ui.map.zoom,
+                      productionIndicatorHeight * ui.map.zoom);
                   else 
                     {
                       ctx.shadowColor = 'black';
@@ -288,8 +294,12 @@ class UINode
           // chance to gain node
           var ch = game.player.getGainChance(node);
           if (UI.classicMode)
-            ui.map.paintText(ctx, [ Std.int(ch / 10), ch % 10, 10 ], 0,
-               tempx + tempd + 1, tempy - 11);
+            {
+              ctx.fillStyle = "#aaa";
+              ctx.fillText(ch + '%',
+                ui.map.zoom * (tempx - 4),
+                ui.map.zoom * (tempy - 4));
+            }
           else
             {
               ctx.fillStyle = "#402b2b";
@@ -307,18 +317,23 @@ class UINode
           if (node.owner == null || node.isKnown[game.player.id])
             {
               var j = 0;
+              var isOrigin =
+                (node.owner != null && node.owner.origin == node);
               for (i in 0...node.power.length)
                 {
                   if (node.power[i] == 0)
                     continue;
                   if (UI.classicMode)
                     {
-                      if (node.power[i] > 0)
-                        ui.map.paintText(ctx, [ node.power[i] ], j + 1,
-                          tempd + tempx + j * 6, tempy + temph + 3);
-                      else
-                        ui.map.paintText(ctx, [ 10 ], i + 1,
-                          tempd + tempx + j * 6, tempy + temph + 3);
+                      ctx.fillStyle = ui.map.powerColors[i];
+                      var d = 0;
+                      if (node.isGenerator)
+                        d += 4;
+                      if (isOrigin)
+                        d += 4;
+                      ctx.fillText(node.power[i] + '',
+                        ui.map.zoom * (tempx - 4),
+                        ui.map.zoom * (tempy + 27 + d + j * 16));
                     }
                   else
                     {
@@ -369,7 +384,7 @@ class UINode
             (ui.map.viewRect.x * ui.map.zoom + ui.map.viewRect.w +
              UI.vars.markerWidth * ui.map.zoom) ||
           node.y * ui.map.zoom >
-            (ui.map.viewRect.y + ui.map.viewRect.h +
+            (ui.map.viewRect.y * ui.map.zoom + ui.map.viewRect.h +
              UI.vars.markerHeight * ui.map.zoom))
         return false;
       return true;

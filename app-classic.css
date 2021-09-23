@@ -3,12 +3,14 @@
   --window-bg-color: #222;
   --map-margin-x: 10;
   --map-margin-y: 12;
+  --map-font: Verdana;
+  --map-font-size: 14;
   --text-color: white;
   --text-color-disabled: #868686;
   --text-color-log-time: #888888;
   --text-select-bg: #333333;
   --text-font: Verdana;
-  --advanced-mode-font-size: 11px;
+  --advanced-mode-font-size: 10px;
   --advanced-mode-font: Verdana;
   --advanced-mode-margin-x: 8;
   --node-error-color: #ff8888;

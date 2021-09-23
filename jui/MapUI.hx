@@ -51,6 +51,7 @@ class MapUI
   var targetZoomY: Int;
   var lastZoomFrame: Float;
   static var minZoom = 0.25; // min value for zoom
+  static var maxZoom = 1.0; // min value for zoom
   static var zoomSpeed = 15.0;
 
   // highlight zoom vars
@@ -83,6 +84,8 @@ class MapUI
       powerColors = [];
       for (i in 0...(Game.numPowers + 1))
         powerColors[i] = UI.getVar('--power-color-' + i);
+      if (UI.classicMode)
+        maxZoom = 3.0;
 
       // map display
       mapBorder = cast UI.e("mapBorder");
@@ -102,8 +105,7 @@ class MapUI
           if (event.relatedTarget == null)
             isDrag = false;
         }
-      if (UI.modernMode)
-        map.onwheel = onWheel;
+      map.onwheel = onWheel;
 
       // tooltip element
       tooltip = Tools.window({
@@ -436,7 +438,9 @@ class MapUI
         {
           ctx.fillStyle = "black";
           ctx.fillRect(0, 0, mapWidth, mapHeight);
-          ctx.font = "14px Verdana";
+          ctx.font =
+            (UI.getVarInt('--map-font-size') * zoom) + 'px ' +
+            UI.getVar('--map-font');
         }
 
       // paint visible lines
@@ -532,26 +536,10 @@ class MapUI
       pix[index + 2] = color[2];
     }
 
-// paint bitmapped text
-  public function paintText(ctx: CanvasRenderingContext2D,
-      syms: Array<Int>, row: Int, x: Int, y: Int)
-    {
-      var i = 0;
-      for (ch in syms)
-        {
-          ctx.drawImage(fontImage,
-            ch * 5, row * 8, 5, 8,
-            x + i * 6, y, 5, 8);
-          i++;
-        }
-    }
-
-
   public inline function hideTooltip()
     {
       tooltip.style.display = 'none';
     }
-
 
 // scrolling wheel - map zoom
   public function onWheel(event: WheelEvent)
@@ -570,11 +558,11 @@ class MapUI
       if (event != null)
         d = (event.deltaY < 0 ? 1 : -1);
       var oldzoom = targetZoom;
-      targetZoom += 0.05 * d;
+      targetZoom += (UI.classicMode ? 0.15 : 0.05) * d;
       if (targetZoom < minZoom)
         targetZoom = minZoom;
-      if (targetZoom > 1.0)
-        targetZoom = 1.0;
+      if (targetZoom > maxZoom) 
+        targetZoom = maxZoom;
       if (targetZoom == oldzoom)
         return;
       if (!ui.config.getBool('animation'))
@@ -582,7 +570,6 @@ class MapUI
 
       center(cx, cy);
     }
-
 
 // on moving over map
   public function onMouseMove(event: MouseEvent)
