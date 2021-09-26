@@ -37,6 +37,7 @@ class UI
   public var sects: SectsInfo; // sects info block
   public var options: OptionsMenu; // options block
   public var manual: Manual; // ingame manual
+  public var score: Score; // high scores window
   public var messageWindow: Message;
   public var fullscreen: Bool;
 
@@ -106,6 +107,7 @@ class UI
       sects = new SectsInfo(this, game);
       options = new OptionsMenu(this, game);
       manual = new Manual(this, game);
+      score = new Score(this, game);
       messageWindow = new Message(this, game);
       music.onRandom = status.onMusic;
       artifacts = new artifacts.ArtifactUI(game, this);
@@ -143,6 +145,7 @@ class UI
         sects.isVisible ||
         customMenu.isVisible ||
         manual.isVisible ||
+        score.isVisible ||
         newGameMenu.isVisible ||
         options.isVisible
       );
@@ -198,6 +201,9 @@ class UI
 
           else if (newGameMenu.isVisible)
             newGameMenu.onClose(null);
+
+          else if (score.isVisible)
+            score.onClose(null);
 
           // open main menu
           else if (e.keyCode == 27)
@@ -255,7 +261,7 @@ class UI
 
           // log
           else if (e.keyCode == 76) // L
-            top.onLog(null);
+            logWindow.show();
 
           // manual
           else if (e.keyCode == 77) // M

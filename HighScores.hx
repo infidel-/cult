@@ -59,7 +59,8 @@ class HighScores
         timearr.pop();
 
       // save updated tables
-      Fs.writeFileSync('highscores.json', Json.stringify(obj), 'utf8');
+      if (time > 0)
+        Fs.writeFileSync('highscores.json', Json.stringify(obj), 'utf8');
 
       // show table
       var idx = 0;

@@ -9,6 +9,7 @@ class TopMenu
   var game: Game;
 
   var panel: DivElement;
+  var score: DivElement;
   var manual: DivElement;
   var about: DivElement;
   var advanced: DivElement;
@@ -59,7 +60,7 @@ class TopMenu
         y: null,
         container: panel,
         title: "Click to view message log (or press <span class=shadow style=\"color:white\">L</span>).",
-        func: onLog
+        func: function(e: Dynamic) { ui.logWindow.show(); }
       });
 
       if (Game.isDebug)
@@ -75,6 +76,19 @@ class TopMenu
           title: "Click to open debug menu (or press <span class=shadow style=\"color:white\">D</span>).",
           func: onDebug
         });
+
+      score = Tools.button({
+        id: 'score',
+        text: "SCORE",
+        className: 'topButton uiButton',
+        w: 70,
+        h: null,
+        x: 497,
+        y: null,
+        container: panel,
+        title: "Click to view high scores table.",
+        func: function(e: Dynamic) { ui.score.show(); }
+      });
 
       manual = Tools.button({
         id: 'manual',
@@ -164,11 +178,6 @@ class TopMenu
       ui.sects.show();
     }
 
-  public function onLog(event: Dynamic)
-    {
-      ui.logWindow.show();
-    }
-
   public function onDebug(event)
     {
       if (game.isFinished || !Game.isDebug)
@@ -197,6 +206,8 @@ class TopMenu
       about.style.left = x + 'px';
       x -= (Std.parseInt(manual.style.width) + 20);
       manual.style.left = x + 'px';
+      x -= (Std.parseInt(score.style.width) + 20);
+      score.style.left = x + 'px';
 
       var marginx = UI.getVarInt('--advanced-mode-margin-x');
       advanced.style.left = (Browser.window.innerWidth -
