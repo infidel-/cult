@@ -298,7 +298,8 @@ class UI
 
 
 // start a new game (common for all ui)
-  public function newGame(lvl: Int, ?dif: DifficultyInfo)
+  public function newGame(lvl: Int, ?dif: DifficultyInfo = null,
+      ?cultID: Int = 0)
     {
       game.isTutorial = false;
       game.difficultyLevel = lvl;
@@ -309,14 +310,14 @@ class UI
           onYes: function ()
             {
               game.isTutorial = true;
-              game.restart();
+              game.restart(null, cultID);
             },
           onNo: function ()
             {
-              game.restart();
+              game.restart(null, cultID);
             }
         });
-      else game.restart(dif);
+      else game.restart(dif, cultID);
     }
 
 

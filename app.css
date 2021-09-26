@@ -672,7 +672,7 @@ div::-webkit-scrollbar-thumb {
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  height: 270px;
+  height: 310px;
   left: 0.4%;
   top: 9%;
   width: 94.6%;

@@ -122,7 +122,8 @@ class Game
 
 
 // restart a game
-  public function restart(?newDif: DifficultyInfo)
+  public function restart(?newDif: DifficultyInfo = null,
+      ?playerCultID: Int = 0)
     {
       startTS = Sys.time();
       isNeverStarted = false;
@@ -170,7 +171,7 @@ class Game
         {
           var p = null;
           var id = this.lastCultID++;
-          var infoID = 0;
+          var infoID = playerCultID;
           if (i > 0)
             while (true)
               {

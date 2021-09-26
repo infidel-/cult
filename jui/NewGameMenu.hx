@@ -4,18 +4,21 @@ import js.Browser;
 import js.html.Element;
 import js.html.DivElement;
 import js.html.InputElement;
+import js.html.SelectElement;
+import js.html.OptionElement;
 import Flags;
 
 class NewGameMenu extends Window
 {
   var note: Element;
+  var cult: SelectElement;
 
   public function new(uivar: UI, gvar: Game)
     {
 #if electron
-      var h = 354;
+      var h = 394;
 #else
-      var h = 334;
+      var h = 374;
 #end
       super(uivar, gvar, 'newGameMenu', 420, h, 20);
 
@@ -48,6 +51,36 @@ class NewGameMenu extends Window
       contents.className = 'uiText';
       contents.style.userSelect = 'none';
       window.appendChild(contents);
+
+      // cult name
+      var row0 = Browser.document.createElement("div");
+      row0.style.display = 'flex';
+      contents.appendChild(row0);
+      var cultLabel = Browser.document.createElement("div");
+      cultLabel.innerHTML = 'Cult';
+      cultLabel.style.padding= '0px 12px 0px 11px';
+      row0.appendChild(cultLabel);
+      cult = cast Browser.document.createElement("select");
+      cult.className = 'selectOption';
+      cult.style.fontSize = '20px';
+      row0.appendChild(cult);
+      var idx = 0;
+      for (c in Static.cults)
+        {
+          var opt: OptionElement =
+            cast Browser.document.createElement("option");
+          opt.value = '' + (idx++);
+          opt.innerHTML = c.name;
+          cult.appendChild(opt);
+        }
+      cult.onmouseout = function(event)
+        {
+          note.innerHTML = '';
+        }
+      cult.onmouseover = function(event)
+        {
+          note.innerHTML = 'The choice of cult is purely cosmetical.';
+        }
 
       // difficulty
       var row1 = Browser.document.createElement("div");
@@ -216,13 +249,16 @@ class NewGameMenu extends Window
 // start for real
   function onNewGameReal(dif: Int)
     {
+      // selected cult
+      var opt: OptionElement = cast cult.selectedOptions.item(0);
+      var cultID = Std.parseInt(opt.value);
 /*
       trace(dif);
       trace(game.flags);
 */
       ui.mainMenu.onClose(null);
       onClose(null);
-      ui.newGame(dif);
+      ui.newGame(dif, null, cultID);
     }
 
 // key press
