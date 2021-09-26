@@ -967,6 +967,13 @@ class Cult
 // can this player activate this node?
   public function canActivate(node: Node): Bool
     {
+      if (game.isFinished)
+        return false;
+
+      // tutorial: do not allow clicking nodes on first turn
+      if (!isAI && game.isTutorial && game.turns == 0)
+        return false;
+
       for (i in 0...Game.numFullPowers)
         if (power[i] < node.power[i])
           return false;

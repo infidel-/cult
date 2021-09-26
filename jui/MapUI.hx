@@ -603,7 +603,8 @@ class MapUI
           hideTooltip();
           return;
         }
-      map.style.cursor = 'pointer';
+      map.style.cursor =
+        (game.player.canActivate(node) ? 'pointer' : 'not-allowed');
 
       // no tooltips in advanced mode
       if (game.options.getBool('mapAdvancedMode'))
@@ -675,17 +676,12 @@ class MapUI
 // on clicking map
   public function onClick(event: MouseEvent)
     {
-      if (game.isFinished)
-        return;
-
       var node = getEventNode(event);
       if (node == null)
         return;
-
-      // tutorial: do not allow clicking nodes on first turn
-      if (game.isTutorial && game.turns == 0)
+      if (!game.player.canActivate(node))
         {
-//          game.tutorial.play('');
+          map.style.cursor = 'not-allowed';
           return;
         }
 
