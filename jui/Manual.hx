@@ -5,10 +5,12 @@ import js.Node.__dirname;
 #end
 import js.Browser;
 import js.html.DivElement;
+import js.html.InputElement;
 
 class Manual extends Window
 {
   var text: DivElement; // text element
+  var search: InputElement; // search box
 
   public function new(uivar: UI, gvar: Game)
     {
@@ -18,6 +20,19 @@ class Manual extends Window
       text.className = 'uiText';
       text.style.fontSize = '14px';
       window.appendChild(text);
+
+      search = Tools.textfield({
+        id: 'manualSearch',
+        text: '',
+        w: 200,
+        h: 25,
+        x: 320,
+        y: 20,
+        fontSize: 18,
+        container: window,
+      });
+      search.style.visibility = 'hidden';
+      search.placeholder = 'Type text to search';
 
       // load manual text
 #if electron
@@ -132,9 +147,52 @@ class Manual extends Window
         }
     }
 
+  override function onKey(e: Dynamic)
+    {
+      var searchVisible = (search.style.visibility == 'visible');
+      if (searchVisible)
+        {
+          // ctrl-f
+          if (e.keyCode == 70 && e.ctrlKey)
+            {
+              Browser.window.getSelection().removeAllRanges();
+              search.focus();
+            }
+          else if (e.keyCode == 27)
+            search.style.visibility = 'hidden';
+          else if (e.keyCode == 13)
+            {
+              var ret = Browser.window.find(search.value,
+                false, false, true);
+              if (ret)
+                {
+                  var el = Browser.window.getSelection().anchorNode.parentElement;
+                  untyped el.scrollIntoView({ behavior: 'smooth'});
+                }
+            }
+        }
+      else
+        {
+          // ctrl-f
+          if (e.keyCode == 70 && e.ctrlKey)
+            {
+              search.value = '';
+              search.style.visibility = 'visible';
+              search.focus();
+            }
+          // ESC
+          else if (e.keyCode == 27)
+            onClose(null);
+        }
+    }
+
 // show log
   override function onShow()
     {
       text.scrollTop = 0;
+    }
+  override function onCloseHook()
+    {
+      search.style.visibility = 'hidden';
     }
 }

@@ -150,29 +150,24 @@ class UI
       // windows keys
       if (loadMenu.isVisible)
         loadMenu.onKey(e);
-
       else if (saveMenu.isVisible)
         saveMenu.onKey(e);
-
       else if (mainMenu.isVisible &&
           !newGameMenu.isVisible &&
           !options.isVisible)
         mainMenu.onKey(e);
-
       else if (customMenu.isVisible)
         customMenu.onKey(e);
-
       else if (mpMenu.isVisible)
         mpMenu.onKey(e);
-
       else if (debug.isVisible)
         debug.onKey(e);
-
       else if (sects.isVisible)
         sects.onKey(e);
-
       else if (newGameMenu.isVisible)
         newGameMenu.onKey(e);
+      else if (manual.isVisible)
+        manual.onKey(e);
 
       // close current window
       else if (e.keyCode == 27 || // ESC
