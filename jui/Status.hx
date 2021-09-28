@@ -228,24 +228,28 @@ class Status
 
   public function onPlay(event)
     {
+      ui.sound.play('click');
       ui.music.play();
     }
 
 
   public function onPause(event)
     {
+      ui.sound.play('click');
       ui.music.pause();
     }
 
 
   public function onStop(event)
     {
+      ui.sound.play('click');
       ui.music.stop();
     }
 
 
   public function onRandom(event)
     {
+      ui.sound.play('click');
       ui.music.random();
     }
 
@@ -255,6 +259,8 @@ class Status
     {
       if (game.isFinished)
         return;
+      if (event != null)
+        ui.sound.play('click');
 
       var power = Std.parseInt(Tools.getTarget(event).id.substr(21, 1));
       game.player.lowerAwareness(power);
@@ -266,6 +272,8 @@ class Status
     {
       if (game.isFinished)
         return;
+      if (event != null)
+        ui.sound.play('click');
 
       var power = Std.parseInt(Tools.getTarget(event).id.substr(21, 1));
       game.player.lowerWillpower(power);
@@ -277,9 +285,18 @@ class Status
     {
       if (game.isFinished)
         return;
-
       var lvl = Std.parseInt(Tools.getTarget(event).id.substr(14, 1));
-      game.player.upgrade(lvl);
+      if (!game.player.canUpgrade(lvl))
+        return;
+
+      var ret = game.player.upgrade(lvl);
+      if (event != null)
+        {
+          var snd = 'click';
+          if (ret == false)
+            snd = 'click-fail';
+          ui.sound.play(snd);
+        }
     }
 
 
@@ -288,8 +305,11 @@ class Status
     {
       if (game.isFinished)
         return;
+      if (event != null)
+        ui.sound.play('click');
 
       var id = Tools.getTarget(event).id.substr(14);
+      ui.sound.play('unveiling-ritual-start');
       game.player.startRitual(id);
     }
 
@@ -299,6 +319,8 @@ class Status
     {
       if (game.isFinished)
         return;
+      if (event != null)
+        ui.sound.play('click');
 
       var from = Std.parseInt(Tools.getTarget(event).id.substr(14, 1));
       var to = Std.parseInt(Tools.getTarget(event).id.substr(15, 1));
@@ -312,6 +334,8 @@ class Status
     {
       if (game.isFinished)
         return;
+      if (event != null)
+        ui.sound.play('click');
 
       // clear node highlight
       game.player.highlightedNodes.clear();
@@ -330,6 +354,8 @@ class Status
 // main menu button
   function onMainMenu(event: Dynamic)
     {
+      if (event != null)
+        ui.sound.play('click');
       ui.mainMenu.show();
     }
 

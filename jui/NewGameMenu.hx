@@ -24,8 +24,7 @@ class NewGameMenu extends Window
 
       close.innerHTML = 'CANCEL';
       close.style.left = '67%';
-      var start = Tools.closeButton(window);
-      start.onclick = onStart;
+      var start = Tools.closeButton(window, onStart);
       start.innerHTML = 'START';
       start.style.left = '30%';
 

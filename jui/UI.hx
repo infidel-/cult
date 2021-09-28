@@ -16,6 +16,7 @@ class UI
 {
   var game: Game;
   public var music: Music; // music player
+  public var sound: Sound;
 
   // ui blocks
   public var status: Status; // status panel
@@ -97,6 +98,9 @@ class UI
       status = new Status(this, game);
       map = new MapUI(this, game);
       music = new Music(this);
+      sound = new Sound(this, game);
+      if (UI.modernMode)
+        Browser.window.setTimeout(sound.init);
       mainMenu = new MainMenu(this, game);
       newGameMenu = new NewGameMenu(this, game);
       loadMenu = new LoadMenu(this, game);

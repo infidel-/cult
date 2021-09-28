@@ -14,6 +14,8 @@ class Config
     sectAdvisor: String,
     music: String,
     musicVolume: String,
+    soundVolume: String,
+    ambienceVolume: String,
     animation: String,
     consoleLog: String,
   }
@@ -29,6 +31,8 @@ class Config
         mapAdvancedMode: 'false',
         music: '1',
         musicVolume: '100',
+        soundVolume: '100',
+        ambienceVolume: '50',
         sectAdvisor: 'true',
         animation: 'true',
         consoleLog: 'false',

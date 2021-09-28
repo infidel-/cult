@@ -546,17 +546,17 @@ class Cult
 
 
 // upgrade nodes (fupgr)
-  public function upgrade(level)
+  public function upgrade(level): Bool
     {
       // cannot upgrade
       if (!canUpgrade(level))
-        return;
+        return false;
 
       // summon
       if (level == 2)
         {
           summonStart();
-          return;
+          return true;
         }
 
       virgins -= (level + 1);
@@ -570,7 +570,7 @@ class Cult
                 (level == 0 ? 'an adept.' : 'a priest.'));
               ui.updateStatus();
             }
-          return;
+          return false;
         }
 
       awareness += level;
@@ -598,7 +598,7 @@ class Cult
       if (!ok)
         {
           trace('BUG: Cannot upgrade. No nodes found.');
-          return;
+          return false;
         }
 
       // expansions
@@ -631,6 +631,7 @@ class Cult
           if (priests >= 1)
             game.tutorial.play('gainPriest');
         }
+      return true;
     }
 
 
@@ -739,6 +740,7 @@ class Cult
             wars[p.id] = true;
           }
 
+      ui.sound.play('final-ritual-start');
       ui.alert('<h2>FINAL RITUAL STARTED</h2><div class=fluff>' +
         info.summonStart + '</div><br>' +
         fullName + ' has started the ' + ritual.name + '.', {
@@ -775,6 +777,7 @@ class Cult
     {
       if (!isAI)
         {
+          ui.sound.play('unveiling-ritual-finish');
           ui.alert('<h2>RITUAL COMPLETED</h2><div class=fluff>' +
             Static.templates['ritualUnveiling'] + '</div><br>' +
             fullName + ' has finished the ' + ritual.name +

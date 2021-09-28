@@ -30,8 +30,7 @@ class Window
       });
       border = cast UI.e(name + 'Border');
       bg = cast UI.e(name + 'BG');
-      close = Tools.closeButton(window);
-      close.onclick = onClose;
+      close = Tools.closeButton(window, onClose);
     }
 
 

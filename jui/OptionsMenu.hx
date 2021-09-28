@@ -2,6 +2,7 @@
 
 import js.Browser;
 import js.html.DivElement;
+import js.html.InputElement;
 import js.html.Element;
 
 typedef OptionInfo =
@@ -18,6 +19,9 @@ class OptionsMenu extends Window
 {
   var elements: List<Element>; // ui elements
   var contents: DivElement;
+  var musicVolume: InputElement;
+  var soundVolume: InputElement;
+  var ambienceVolume: InputElement;
 
   public static var elementInfo: Array<OptionInfo> = [
 /*
@@ -68,7 +72,7 @@ class OptionsMenu extends Window
 
   public function new(uivar: UI, gvar: Game)
     {
-      super(uivar, gvar, 'options', 800, 366, 20);
+      super(uivar, gvar, 'options', 800, 390, 20);
 
       // title
       var title = Tools.label({
@@ -162,6 +166,169 @@ class OptionsMenu extends Window
 
           elements.add(el);
         }
+
+      // music volume
+      y += 30;
+      Tools.label({
+        id: 'labelMusicVolume',
+        text: 'Music volume',
+        w: 240,
+        h: 20,
+        x: 10,
+        y: y,
+        fontSize: 14,
+        container: contents
+      });
+      Tools.button({
+        id: 'musicVolumeDown',
+        text: "-",
+        className: 'uiButton',
+        w: 16,
+        h: 16,
+        x: 230,
+        y: y,
+        fontSize: 14,
+        container: contents,
+        func: function(e) {
+          ui.music.decreaseVolume();
+          musicVolume.value = ui.config.get('musicVolume');
+        }
+      });
+      musicVolume = Tools.textfield({
+        id: 'musicVolumeText',
+        text: ui.config.get('musicVolume'),
+        w: 42,
+        h: 20,
+        x: 257,
+        y: y,
+        fontSize: 16,
+        container: contents
+      });
+      musicVolume.readOnly = true;
+      Tools.button({
+        id: 'musicVolumeUp',
+        text: "+",
+        className: 'uiButton',
+        w: 16,
+        h: 16,
+        x: 302,
+        y: y,
+        fontSize: 14,
+        container: contents,
+        func: function(e) {
+          ui.music.increaseVolume();
+          musicVolume.value = ui.config.get('musicVolume');
+        }
+      });
+      y += 30;
+
+      // sound volume
+      Tools.label({
+        id: 'labelSoundVolume',
+        text: 'Sound volume',
+        w: 240,
+        h: 20,
+        x: 10,
+        y: y,
+        fontSize: 14,
+        container: contents
+      });
+      Tools.button({
+        id: 'soundVolumeDown',
+        text: "-",
+        className: 'uiButton',
+        w: 16,
+        h: 16,
+        x: 230,
+        y: y,
+        fontSize: 14,
+        container: contents,
+        func: function(e) {
+          ui.sound.decreaseSoundVolume();
+          soundVolume.value = ui.config.get('soundVolume');
+        }
+      });
+      soundVolume = Tools.textfield({
+        id: 'soundVolumeText',
+        text: ui.config.get('soundVolume'),
+        w: 42,
+        h: 20,
+        x: 257,
+        y: y,
+        fontSize: 16,
+        container: contents
+      });
+      soundVolume.readOnly = true;
+      Tools.button({
+        id: 'soundVolumeUp',
+        text: "+",
+        className: 'uiButton',
+        w: 16,
+        h: 16,
+        x: 302,
+        y: y,
+        fontSize: 14,
+        container: contents,
+        func: function(e) {
+          ui.sound.increaseSoundVolume();
+          soundVolume.value = ui.config.get('soundVolume');
+        }
+      });
+      y += 30;
+
+      // ambience volume
+      Tools.label({
+        id: 'labelAmbienceVolume',
+        text: 'Ambience volume',
+        w: 240,
+        h: 20,
+        x: 10,
+        y: y,
+        fontSize: 14,
+        container: contents
+      });
+      Tools.button({
+        id: 'ambienceVolumeDown',
+        text: "-",
+        className: 'uiButton',
+        w: 16,
+        h: 16,
+        x: 230,
+        y: y,
+        fontSize: 14,
+        container: contents,
+        func: function(e) {
+          ui.sound.decreaseAmbienceVolume();
+          ambienceVolume.value = ui.config.get('ambienceVolume');
+        }
+      });
+      ambienceVolume = Tools.textfield({
+        id: 'ambienceVolumeText',
+        text: ui.config.get('ambienceVolume'),
+        w: 42,
+        h: 20,
+        x: 257,
+        y: y,
+        fontSize: 16,
+        container: contents
+      });
+      ambienceVolume.readOnly = true;
+      Tools.button({
+        id: 'ambienceVolumeUp',
+        text: "+",
+        className: 'uiButton',
+        w: 16,
+        h: 16,
+        x: 302,
+        y: y,
+        fontSize: 14,
+        container: contents,
+        func: function(e) {
+          ui.sound.increaseAmbienceVolume();
+          ambienceVolume.value = ui.config.get('ambienceVolume');
+        }
+      });
+      y += 30;
     }
 
 

@@ -165,7 +165,7 @@ legend {
   background: #fbcb62;
   border-radius: 10px;
   border: solid 2px #dbac45;
-  box-shadow: 3px 3px 1px #8f7f5c;
+  box-shadow: 2px 2px 1px #8f7f5c;
   color: #5c3d3d;
   cursor: pointer;
   font-family: var(--text-font);

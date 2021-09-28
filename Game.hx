@@ -720,7 +720,7 @@ class Game
     }
 
 // main function
-  static var instance: Game;
+  public static var instance: Game;
   static function main()
     {
       instance = new Game();

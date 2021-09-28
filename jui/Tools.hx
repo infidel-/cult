@@ -57,8 +57,12 @@ class Tools
       if (params.y != null)
         b.style.top = params.y + 'px';
       params.container.appendChild(b);
-      if (params.func != null)
-        b.onclick = params.func;
+      b.onclick = function (e)
+        {
+          @:privateAccess Game.instance.ui.sound.play('click');
+          if (params.func != null)
+            params.func(e);
+        }
       if (params.title != null)
         {
           b.title = params.title;
@@ -69,7 +73,8 @@ class Tools
 
 
 // create close button
-  public inline static function closeButton(container: DivElement): DivElement
+  public static function closeButton(container: DivElement,
+      func: Dynamic -> Void): DivElement
     {
       var w = Std.parseInt(container.style.width);
       var b = Tools.button({
@@ -79,7 +84,8 @@ class Tools
         h: null,
         x: null,
         y: null,
-        container: container
+        container: container,
+        func: func,
       });
       b.style.left = '50%';
       b.style.bottom = 'var(--close-button-bottom)';

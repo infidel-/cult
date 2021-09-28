@@ -126,27 +126,25 @@ class Alert
       // yes/no dialog
       if (opts.yesNo != null)
         {
-          var yes = Tools.closeButton(window);
+          var yes = Tools.closeButton(window, onYes);
           yes.innerHTML = 'Yes';
           yes.style.left = '33%';
-          yes.onclick = onYes;
           yesFunc = opts.onYes;
 
-          var no = Tools.closeButton(window);
+          var no = Tools.closeButton(window, function(e) {
+            if (opts.onNo != null)
+              opts.onNo();
+            onClose(e);
+          });
           no.innerHTML = 'No';
           no.style.left = '66%';
           if (opts.onNo != null)
-            {
-              no.onclick = onNo;
-              noFunc = opts.onNo;
-            }
-          else no.onclick = onClose;
+            noFunc = opts.onNo;
         }
       else
         {
           // close button
-          var close = Tools.closeButton(window);
-          close.onclick = onClose;
+          var close = Tools.closeButton(window, onClose);
           if (queue.length > 0)
             close.innerHTML = 'Next';
         }
