@@ -689,7 +689,8 @@ class MapUI
       var ret = game.player.activate(node);
       if (ret == 'ok')
         {
-          ui.sound.playRandom('node-gain');
+          if (node.type == 'person')
+            ui.sound.playRandom('node-gain');
           game.tutorial.play('gainNode');
           if (game.player.origin.isProtected)
             game.tutorial.play('originProtected');

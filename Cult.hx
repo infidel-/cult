@@ -818,7 +818,11 @@ class Cult
             Static.rituals['summoning'].name +
             '. The stars were not properly aligned. One of the high priests goes insane.';
 
-          ui.alert(msg, { w: 700, h: 400 });
+          ui.alert(msg, {
+            w: 700,
+            h: 400,
+            sound: 'final-ritual-fail',
+          });
           if (!isAI)
             {
               ui.log2(this, fullName + " has failed to perform the " +
@@ -851,8 +855,10 @@ class Cult
           var text = fullName + " has gained an origin and is no longer paralyzed.";
           ui.log2(this, text);
           if (!isAI)
-            ui.alert(text,
-              { h: UI.getVarInt('--alert-window-height-2lines') });
+            ui.alert(text, {
+              h: UI.getVarInt('--alert-window-height-2lines'),
+              sound: 'window-open',
+            });
         }
 
       // if a cult has any adepts, each turn it has a
@@ -978,11 +984,7 @@ class Cult
         return false;
 
       if (isParalyzed)
-        {
-          if (!isAI)
-            ui.alert("Cult is paralyzed without the Origin.");
-          return false;
-        }
+        return false;
 
       // check for power
       for (i in 0...Game.numFullPowers)
@@ -998,11 +1000,7 @@ class Cult
             break;
           }
       if (!ok)
-        {
-          if (!isAI)
-            ui.alert("Must have an adjacent node to activate.");
-          return false;
-        }
+        return false;
 
       if (node.owner == this)
         return false;
@@ -1122,8 +1120,10 @@ class Cult
           }
 
       if (!cult.isAI)
-        ui.alert(text,
-          { h: UI.getVarInt('--alert-window-height-2lines') });
+        ui.alert(text, {
+          sound: 'cult-declare-war',
+          h: UI.getVarInt('--alert-window-height-2lines'),
+        });
     }
 
 
@@ -1157,8 +1157,10 @@ class Cult
           }
 
       if (!cult.isAI)
-        ui.alert(text,
-          { h: UI.getVarInt('--alert-window-height-2lines') });
+        ui.alert(text, {
+          h: UI.getVarInt('--alert-window-height-2lines'),
+          sound: 'window-open',
+        });
     }
 
 
@@ -1222,8 +1224,13 @@ class Cult
       if (!ok)
         {
           if (nodes.length > 0)
-            ui.log2(this, "Destroying the origin of " + fullName +
-              " has left it completely paralyzed.", { symbol: 'X' });
+            {
+              if (!isAI)
+                ui.alert(fullName + ' has lost its Origin. It is now completely paralyzed.',
+                  { h: 110, sound: 'cult-paralyzed' });
+              ui.log2(this, "Destroying the origin of " + fullName +
+                " has left it completely paralyzed.", { symbol: 'X' });
+            }
           isParalyzed = true;
 
           if (hasInvestigator) // remove investigator
@@ -1278,8 +1285,10 @@ class Cult
       ui.log2(from, text);
       if (!isAI)
         {
-          ui.alert(text,
-            { h: UI.getVarInt('--alert-window-height-2lines') });
+          ui.alert(text, {
+            h: UI.getVarInt('--alert-window-height-2lines'),
+            sound: 'cult-gain-stash',
+          });
           ui.status.update();
         }
     }

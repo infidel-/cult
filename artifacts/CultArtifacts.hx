@@ -76,15 +76,19 @@ class CultArtifacts
       node.artifact = art;
       var m = node.name + ' becomes a priest binding with ' + art.name + '.';
       cult.logAndPanel(m, { symbol: 'A' });
-      if (node != null && !cult.fluffShown['artifactBound'])
+      if (!cult.fluffShown['artifactBound'])
         {
           ui.alert('<h2>ARTIFACT BOUND</h2><div class=fluff>' +
           Static.template('artifactBound', {
             art: art.name,
             priest: node.name,
-          }) + '</div><br>' + m, { h: 340 });
+          }) + '</div><br>' + m, {
+            h: 340,
+            sound: 'artifact-bind',
+          });
           cult.fluffShown['artifactBound'] = true;
         }
+      else ui.sound.play('artifact-bind');
 
       // voice: +2 generated virgins
       if (art.id == 'voice')

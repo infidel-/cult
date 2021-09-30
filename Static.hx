@@ -321,6 +321,12 @@ class Static
 
       return quadrants;
     }
+
+// trace call stack for debug
+  public static inline function traceStack()
+    {
+      trace(haxe.CallStack.toString(haxe.CallStack.callStack()));
+    }
 }
 
 typedef Quadrant = {

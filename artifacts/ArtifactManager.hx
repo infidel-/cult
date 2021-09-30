@@ -251,9 +251,13 @@ class ArtifactManager
           ui.alert('<h2>ARTIFACT RECOVERED</h2><div class=fluff>' +
           Static.template('artifactRecovered', {
             name: node.name,
-          }) + '</div><br>' + m, { h: 340 });
+          }) + '</div><br>' + m, {
+            h: 340,
+            sound: 'artifact-gain',
+          });
           cult.fluffShown['artifactRecovered'] = true;
         }
+      else ui.sound.play('artifact-gain');
       
       return 'ok';
     }

@@ -70,6 +70,7 @@ class Alert
 
 
 // show window
+// NOTE: height 110px - two lines
   public function show(s: String, opts: _AlertOptions)
     {
       // alert window already visible, push to queue
@@ -169,6 +170,8 @@ class Alert
       border.style.display = 'inline';
       bg.style.display = 'inline';
       isVisible = true;
+      if (opts.sound != null)
+        ui.sound.play(opts.sound);
     }
 }
 
@@ -184,5 +187,6 @@ typedef _AlertOptions = {
   @:optional var onYes: Void -> Void;
   @:optional var onNo: Void -> Void;
   @:optional var img: String;
+  @:optional var sound: String;
 }
 

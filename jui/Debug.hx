@@ -73,7 +73,7 @@ class Debug extends Window
             if (n.level < 1 && Math.random() < 0.5)
               n.upgrade();
             for (n2 in n.links)
-              if (Math.random() < 0.2)
+              if (Math.random() < 0.2 && game.player.canActivate(n2))
                 game.player.activate(n2);
           }
       game.player.awarenessBase = 0;

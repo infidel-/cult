@@ -134,7 +134,9 @@ class Game
         ui.alert("Welcome.<br><br>If this is your first time playing, do not hesitate to " +
           "consult the Manual if you have any questions. " +
           "We are not responsible for horrific deaths caused by ignoring the " +
-          "Manual. You have been warned.");
+          "Manual. You have been warned.", {
+            sound: 'window-open',
+          });
 #if !electron
       ui.alert('Now available on Steam!<br><br><iframe src="https://store.steampowered.com/widget/1237260/" frameborder="0" style="padding-left:3%" width="95%" height="190"></iframe>', {
         h: 320
@@ -486,6 +488,7 @@ class Game
               w: 400,
               h: 125,
               shadowOpacity: 1,
+              sound: 'window-open',
             });
         }
 

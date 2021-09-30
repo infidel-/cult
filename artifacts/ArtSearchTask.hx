@@ -71,13 +71,23 @@ class ArtSearchTask extends Task
       });
       // spawn artifact
       var node = game.artifacts.spawn();
-      if (node != null && !cult.fluffShown['artifactFound'])
+      if (node == null)
+        return;
+      if (!cult.fluffShown['artifactFound'])
         {
           ui.alert('<h2>ARTIFACT FOUND</h2><div class=fluff>' +
           Static.template('artifactFound', {
             name: node.name,
-          }) + '</div><br>' + m, { h: 340 });
+          }) + '</div><br>' + m, {
+            h: 340,
+            sound: 'artifact-find',
+          });
           cult.fluffShown['artifactFound'] = true;
         }
+      else ui.alert(sect.name + ' has uncovered the location of ' +
+        node.name + '.', {
+          h: 110,
+          sound: 'artifact-find',
+        });
     }
 }

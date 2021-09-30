@@ -9,13 +9,14 @@ class Sound
   var lastDroneTS: Float; // 0 - not playing, -1 - playing, >0 - end time
   var lastDroneID: Int;
   var soundsRandom: Map<String, Array<String>>;
+  var lastSoundTS: Map<String, Float>;
 
   public function new(ui: UI, g: Game)
     {
       this.ui = ui;
       this.game = g;
       soundVolume = 100;
-      var v = ui.config.get('soundsoundVolume');
+      var v = ui.config.get('soundVolume');
       if (v != null)
         soundVolume = Std.parseInt(v);
       ambienceVolume = 100;
@@ -23,6 +24,7 @@ class Sound
       if (v != null)
         ambienceVolume = Std.parseInt(v);
       soundsRandom = [];
+      lastSoundTS = [];
 
       lastVoiceTS = 0;
       lastVoiceID = 0;
@@ -122,6 +124,7 @@ class Sound
     'final-ritual-start',
     'final-ritual-success',
     'final-ritual-success-other',
+    'final-ritual-fail',
     'victory',
     'defeat',
     'unveiling-ritual-start',
@@ -149,6 +152,14 @@ class Sound
     'node-fail-male7',
     'node-fail-male8',
     'node-fail-male9',
+    'window-open',
+    'window-close',
+    'cult-declare-war',
+    'cult-paralyzed',
+    'cult-gain-stash',
+    'artifact-gain',
+    'artifact-bind',
+    'artifact-find',
   ];
   // sounds to stop on event window close
   static var soundsStopOnClose = [
@@ -177,6 +188,11 @@ class Sound
 // play a sound
   public function play(id: String)
     {
+      // ignore duplicate sounds
+      var last = lastSoundTS[id];
+      if (last != null && Sys.time() - last < 0.10)
+        return;
+      lastSoundTS[id] = Sys.time();
       SoundManager.play(id, { volume: soundVolume });
     }
 

@@ -359,13 +359,15 @@ class UI
 
       if (state == "summon" && !cult.isAI)
         {
-          sound.play('final-ritual-success' +
-            (cult.infoID == 0 ? '' : '-other'));
           alert('<h2>FINAL RITUAL COMPLETED</h2><div class=fluff>' +
             cult.info.summonFinish + '</div><br>' +
             cult.fullName + " has completed the " +
-            Static.rituals['summoning'].name + '.',
-            { w: 700, h: 440 });
+            Static.rituals['summoning'].name + '.', {
+            w: 700,
+            h: 440,
+            sound: 'final-ritual-success' +
+              (cult.infoID == 0 ? '' : '-other')
+          });
 
           msg += "The stars were right. The Elder God was summoned in " +
             game.turns + " turns (" +
@@ -377,11 +379,13 @@ class UI
 
       else if (state == "conquer" && !cult.isAI)
         {
-          sound.play('victory');
           alert('<h2>MILITARY VICTORY</h2><div class=fluff>' +
             Static.templates['conquer'] + '</div><br>' +
-            cult.fullName + ' has taken over the world.',
-            { w: 700, h: 420 });
+            cult.fullName + ' has taken over the world.', {
+            w: 700,
+            h: 420,
+            sound: 'victory',
+          });
 
           msg += cult.fullName + " has taken over the world in " +
             game.turns + " turns (" +
@@ -395,23 +399,26 @@ class UI
 
       else if (state == "summon" && cult.isAI)
         {
-          sound.play('defeat');
           alert('<h2>FINAL RITUAL COMPLETED</h2><div class=fluff>' +
             cult.info.summonFinish + '</div><br>' +
             cult.fullName + " has completed the " +
-            Static.rituals['summoning'].name + '.',
-            { w: 700, h: 440 });
-
+            Static.rituals['summoning'].name + '.', {
+            w: 700,
+            h: 440,
+            sound: 'defeat',
+          });
           msg += "<h2>YOU LOSE</h2>";
         }
 
       else if (state == "conquer" && cult.isAI)
         {
-          sound.play('defeat');
           alert('<h2>MILITARY DEFEAT</h2><div class=fluff>' +
             Static.templates['conquer'] + '</div><br>' +
-            cult.fullName + ' has taken over the world.',
-            { w: 700, h: 420 });
+            cult.fullName + ' has taken over the world.', {
+            w: 700,
+            h: 420,
+            sound: 'defeat',
+          });
 
           msg += cult.fullName + " has taken over the world. You fail.";
           msg += "<h2>YOU LOSE</h2>";

@@ -48,9 +48,14 @@ class HarvestTask extends Task
       textFull += text;
       log(cult, text);
       if (!cult.fluffShown['sectHarvested'])
-        ui.alert(textFull, { h: 340 });
-      else ui.alert(text,
-        { h: UI.getVarInt('--alert-window-height-2lines') });
+        ui.alert(textFull, {
+          h: 340,
+          sound: 'window-open',
+        });
+      else ui.alert(text, {
+        h: UI.getVarInt('--alert-window-height-2lines'),
+        sound: 'window-open',
+      });
       cult.fluffShown['sectHarvested'] = true;
     }
 
