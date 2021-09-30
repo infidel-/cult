@@ -8,6 +8,7 @@ class Sound
   var lastVoiceID: Int;
   var lastDroneTS: Float; // 0 - not playing, -1 - playing, >0 - end time
   var lastDroneID: Int;
+  var soundsRandom: Map<String, Array<String>>;
 
   public function new(ui: UI, g: Game)
     {
@@ -21,18 +22,27 @@ class Sound
       var v = ui.config.get('ambienceVolume');
       if (v != null)
         ambienceVolume = Std.parseInt(v);
+      soundsRandom = [];
 
       lastVoiceTS = 0;
       lastVoiceID = 0;
       lastDroneTS = 0;
       lastDroneID = 0;
-      js.Browser.window.setInterval(checkAmbient, 1000);
+      js.Browser.window.setInterval(checkAmbient, 100);
     }
 
 // timer - check if voices/drone is playing
   function checkAmbient()
     {
-      if (game.isFinished)
+      // check if someone is casting final ritual
+      var isRitual = false;
+      for (c in game.cults)
+        if (c.isRitual && c.ritual.id == 'summoning')
+          {
+            isRitual = true;
+            break;
+          }
+      if (game.isFinished || !isRitual)
         {
           SoundManager.stop('voices');
           SoundManager.stop('drone');
@@ -110,8 +120,42 @@ class Sound
     'click',
     'click-fail',
     'final-ritual-start',
+    'final-ritual-success',
+    'final-ritual-success-other',
+    'victory',
+    'defeat',
     'unveiling-ritual-start',
     'unveiling-ritual-finish',
+    'node-gain1',
+    'node-gain2',
+    'node-gain3',
+    'node-gain4',
+    'node-gain5',
+    'node-fail-female1',
+    'node-fail-female2',
+    'node-fail-female3',
+    'node-fail-female4',
+    'node-fail-female5',
+    'node-fail-female6',
+    'node-fail-female7',
+    'node-fail-female8',
+    'node-fail-female9',
+    'node-fail-male1',
+    'node-fail-male2',
+    'node-fail-male3',
+    'node-fail-male4',
+    'node-fail-male5',
+    'node-fail-male6',
+    'node-fail-male7',
+    'node-fail-male8',
+    'node-fail-male9',
+  ];
+  // sounds to stop on event window close
+  static var soundsStopOnClose = [
+    'final-ritual-success',
+    'final-ritual-success-other',
+    'victory',
+    'defeat',
   ];
   public function init()
     {
@@ -123,10 +167,42 @@ class Sound
         });
     }
 
+// stop event sounds on event window close
+  public function stopOnClose()
+    {
+      for (s in soundsStopOnClose)
+        ui.sound.stop(s);
+    }
+
 // play a sound
   public function play(id: String)
     {
       SoundManager.play(id, { volume: soundVolume });
+    }
+
+// stop a sound
+  public function stop(id: String)
+    {
+      SoundManager.stop(id);
+    }
+
+// play a random sound from a group
+  public function playRandom(prefix: String)
+    {
+      var tmp = soundsRandom[prefix];
+      if (tmp == null || tmp.length == 0)
+        {
+          tmp = [];
+          for (s in sounds)
+            if (StringTools.startsWith(s, prefix))
+              tmp.push(s);
+          if (tmp.length == 0)
+            throw 'No sounds with this prefix: ' + prefix;
+          soundsRandom[prefix] = tmp;
+        }
+      var rnd = tmp[Std.random(tmp.length)];
+      tmp.remove(rnd);
+      SoundManager.play(rnd, { volume: soundVolume });
     }
 
 // increase sound volume

@@ -40,6 +40,8 @@ class Alert
       Browser.document.body.removeChild(bg);
       isVisible = false;
 
+      ui.sound.stopOnClose();
+
       // messages in queue - show next message
       if (queue.length > 0)
         {

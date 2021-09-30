@@ -359,6 +359,8 @@ class UI
 
       if (state == "summon" && !cult.isAI)
         {
+          sound.play('final-ritual-success' +
+            (cult.infoID == 0 ? '' : '-other'));
           alert('<h2>FINAL RITUAL COMPLETED</h2><div class=fluff>' +
             cult.info.summonFinish + '</div><br>' +
             cult.fullName + " has completed the " +
@@ -375,6 +377,7 @@ class UI
 
       else if (state == "conquer" && !cult.isAI)
         {
+          sound.play('victory');
           alert('<h2>MILITARY VICTORY</h2><div class=fluff>' +
             Static.templates['conquer'] + '</div><br>' +
             cult.fullName + ' has taken over the world.',
@@ -382,8 +385,9 @@ class UI
 
           msg += cult.fullName + " has taken over the world in " +
             game.turns + " turns (" +
-            game.highScores.convertTime(time) + " of real time)." +
-            " The Elder God is pleased.";
+            game.highScores.convertTime(time) + " of real time).";
+          if (cult.infoID == 0)
+            msg += " The Elder God is pleased.";
           msg += "<h2>YOU WIN</h2>";
           h = 330;
           showHighScore = true;
@@ -391,6 +395,7 @@ class UI
 
       else if (state == "summon" && cult.isAI)
         {
+          sound.play('defeat');
           alert('<h2>FINAL RITUAL COMPLETED</h2><div class=fluff>' +
             cult.info.summonFinish + '</div><br>' +
             cult.fullName + " has completed the " +
@@ -402,6 +407,7 @@ class UI
 
       else if (state == "conquer" && cult.isAI)
         {
+          sound.play('defeat');
           alert('<h2>MILITARY DEFEAT</h2><div class=fluff>' +
             Static.templates['conquer'] + '</div><br>' +
             cult.fullName + ' has taken over the world.',
@@ -414,14 +420,17 @@ class UI
 
       else if (state == "wiped")
         {
-          msg += cult.fullName + " was wiped away completely. " +
-            "The Elder God lies dormant beneath the sea, waiting.";
+          sound.play('defeat');
+          msg += cult.fullName + " was wiped away completely.";
+          if (cult.infoID == 0)
+            msg += " The Elder God lies dormant beneath the sea, waiting.";
           msg += "<h2>YOU LOSE</h2>";
           h = 210;
         }
 
       else if (state == "multiplayerFinish")
         {
+          sound.play('defeat');
           msg += "The great game has ended. Humanity will live.";
           msg += "<h2>YOU ALL LOSE</h2>";
           h = 190;

@@ -977,23 +977,17 @@ class Cult
       if (!isAI && game.isTutorial && game.turns == 0)
         return false;
 
-      for (i in 0...Game.numFullPowers)
-        if (power[i] < node.power[i])
-          return false;
-
-      return true;
-    }
-
-
-// activate node (fact) (returns result for AI stuff)
-  public function activate(node: Node): String
-    {
       if (isParalyzed)
         {
           if (!isAI)
             ui.alert("Cult is paralyzed without the Origin.");
-          return "";
+          return false;
         }
+
+      // check for power
+      for (i in 0...Game.numFullPowers)
+        if (power[i] < node.power[i])
+          return false;
 
       // check for adjacent nodes of this cult
       var ok = false;
@@ -1007,11 +1001,11 @@ class Cult
         {
           if (!isAI)
             ui.alert("Must have an adjacent node to activate.");
-          return "";
+          return false;
         }
 
       if (node.owner == this)
-        return "isOwner";
+        return false;
 
       // cannot gain a generator if it has 3+ active links
       if (node.isGenerator && node.owner != null)
@@ -1023,22 +1017,23 @@ class Cult
               cnt++;
 
           if (cnt >= 3)
-            {
-              if (!isAI)
-                ui.alert("Generator has " + cnt + " links.");
-              return "hasLinks";
-            }
+            return false;
         }
 
+      return true;
+    }
+
+
+// activate node (fact) (returns result for AI stuff)
+// all checks go into canActivate()  
+// except power check - necessary for AI
+  public function activate(node: Node): String
+    {
       // check for power
+      // return result needed for AI!
       for (i in 0...Game.numFullPowers)
         if (power[i] < node.power[i])
-          {
-            if (!isAI)
-              ui.alert("Not enough resources of needed type.");
-
-            return "notEnoughPower";
-          }
+          return 'notEnoughPower';
 
       // subtract power
       for (i in 0...Game.numFullPowers)
