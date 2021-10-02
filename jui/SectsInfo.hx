@@ -243,6 +243,7 @@ class SectsInfo extends Window
 // DEVOTED: spend power to buff sect
   function onClickSpendPower(event)
     {
+      ui.sound.play('click');
       var target = Tools.getTarget(event);
       var sectID = Std.parseInt(target.id.substr(15));
       var sect = game.player.getSect(sectID);

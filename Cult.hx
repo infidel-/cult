@@ -432,7 +432,11 @@ class Cult
         {
           if (hasInvestigator)
             ui.msg('Investigator willpower lowered.');
-          else ui.msg('The investigator disappeared.');
+          else
+            {
+              ui.msg('The investigator disappeared.');
+              ui.sound.play('inv-disappear');
+            }
           ui.updateStatus();
         }
     }
@@ -869,10 +873,14 @@ class Cult
           investigatorTimeout == 0)
         {
           hasInvestigator = true;
-          ui.log2(this, "An investigator has found out about " + fullName + ".",
-            {
-              important: !this.isAI,
-              symbol: 'I'
+          ui.log2(this, "An investigator has found out about " + fullName + ".", {
+            important: !this.isAI,
+            symbol: 'I'
+          });
+          if (!isAI)
+            ui.alert("An investigator has found out about your cult.", {
+              h: UI.getVarInt('--alert-window-min-height'),
+              sound: 'inv-appear',
             });
           investigator = new Investigator(this, ui, game);
 
@@ -1226,8 +1234,10 @@ class Cult
           if (nodes.length > 0)
             {
               if (!isAI)
-                ui.alert(fullName + ' has lost its Origin. It is now completely paralyzed.',
-                  { h: 110, sound: 'cult-paralyzed' });
+                ui.alert(fullName + ' has lost its Origin. It is now completely paralyzed.', {
+                  h: UI.getVarInt('--alert-window-height-2lines'),
+                  sound: 'cult-paralyzed',
+                });
               ui.log2(this, "Destroying the origin of " + fullName +
                 " has left it completely paralyzed.", { symbol: 'X' });
             }

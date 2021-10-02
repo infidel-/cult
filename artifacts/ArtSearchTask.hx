@@ -86,7 +86,7 @@ class ArtSearchTask extends Task
         }
       else ui.alert(sect.name + ' has uncovered the location of ' +
         node.name + '.', {
-          h: 110,
+          h: UI.getVarInt('--alert-window-height-2lines'),
           sound: 'artifact-find',
         });
     }

@@ -15,11 +15,11 @@ class Sound
     {
       this.ui = ui;
       this.game = g;
-      soundVolume = 100;
+      soundVolume = 70;
       var v = ui.config.get('soundVolume');
       if (v != null)
         soundVolume = Std.parseInt(v);
-      ambienceVolume = 100;
+      ambienceVolume = 70;
       var v = ui.config.get('ambienceVolume');
       if (v != null)
         ambienceVolume = Std.parseInt(v);
@@ -99,7 +99,7 @@ class Sound
         return;
       var rnd = 1;
       while (rnd == lastDroneID)
-        rnd = 1 + Std.random(10);
+        rnd = 1 + Std.random(11);
       lastDroneID = rnd;
       trace('drone ' + rnd + ' ' + lastDroneTS);
       SoundManager.createSound({
@@ -160,6 +160,8 @@ class Sound
     'artifact-gain',
     'artifact-bind',
     'artifact-find',
+    'inv-appear',
+    'inv-disappear',
   ];
   // sounds to stop on event window close
   static var soundsStopOnClose = [

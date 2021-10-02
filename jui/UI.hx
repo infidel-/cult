@@ -99,8 +99,7 @@ class UI
       map = new MapUI(this, game);
       music = new Music(this);
       sound = new Sound(this, game);
-      if (UI.modernMode)
-        Browser.window.setTimeout(sound.init);
+      Browser.window.setTimeout(sound.init);
       mainMenu = new MainMenu(this, game);
       newGameMenu = new NewGameMenu(this, game);
       loadMenu = new LoadMenu(this, game);

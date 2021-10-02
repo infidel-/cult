@@ -753,7 +753,7 @@ class Game
 #if demo
   public static var version = "<span style='font-size:smaller'>DEMO</span>"; // game version
 #else
-  public static var version = "v7.0"; // game version
+  public static var version = "v8.0"; // game version
 #end
   public static var followerLevels = 3; // number of follower levels
   public static var numPowers = 3; // number of basic powers

@@ -70,7 +70,10 @@ class Alert
 
 
 // show window
+// NOTE: height 90px - one line
+// h: UI.getVarInt('--alert-window-min-height'),
 // NOTE: height 110px - two lines
+// h: UI.getVarInt('--alert-window-height-2lines'),
   public function show(s: String, opts: _AlertOptions)
     {
       // alert window already visible, push to queue
